@@ -1,14 +1,11 @@
-/* @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
 
 /* card scroll list */
 .card-list {
-    padding: 0;
     margin: 0;
     background-color: #011327;
     color: #fff;
     font-family: Montserrat;
-    
-    
     display: flex;
     padding-top: 3rem;
     padding-left: 3rem;
@@ -18,7 +15,7 @@
 
 /* card scroll list scroll bar*/
 .card-list::-webkit-scrollbar {
-    height: 14px;
+    height: 14px; width: 14px;
     background-color: #011327;
 }
 
@@ -43,38 +40,126 @@
 .card {
     display: flex;
     flex-direction: column;
-    /* height: 170px; */
-    /* width: 400px; */
-    min-width: 250px;
+    height: 300px;
+    min-width: 280px;
     padding: 1.5rem;
     
     border-radius: 16px;
     background: #011327;
-    box-shadow: -1rem 0rem 3rem #000;
-    transition: 100ms;
-    scroll-snap-align: start;
+    box-shadow: -1rem 0rem 3rem rgba(0, 0, 0, 0.5);
     
+    transition: 1000ms;
+    scroll-snap-align: start;
     clear: both;
     position: relative;
 }
 
 .card:hover {
+    cursor: default;
     transform: translateY(-1rem);
     transition-duration: 600ms;
 }
 
 .card:focus-within~.card, .card:hover~.card {
-    transform: translateX(130px);
+    transform: translateX(170px);
     transition-duration: 300ms;
 }
 
 .card:not(:first-child) {
-    margin-left: -130px;
+    margin-left: -170px;
 }
 
-.card-header h2:hover {
+/* Text Gradient */
+/* .card:hover h2 {
     background: linear-gradient(90deg, #707AFF, coral);
     background-clip: text; 
     -webkit-background-clip: text; 
     -webkit-text-fill-color: transparent;
+} */
+
+.card:hover {
+    background: #707AFF;
+    color: #011327;
+    transition: 500ms;
+}
+
+/* Course name */
+.card-header {
+    min-height: 50%;
+}
+
+/* Course list */
+.course-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 50%;
+}
+
+.course-container h4 {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 22px;
+    text-align: center;
+    letter-spacing: 0.1px;
+    text-transform: capitalize;
+    color: #011327;
+}
+
+.tags {
+    margin: 8px 0px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-content: space-between;
+    overflow-y: auto;
+}
+
+/* Course list verticle scroll bar*/
+.tags::-webkit-scrollbar {
+    width: 8px; height: 8px;
+    background-color: #707AFF;
+}
+
+.tags::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 6px #0000005d;
+	border-radius: 10px;
+	background-color: #fff;
+}
+
+.tags::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: #A8A8A8;
+}
+
+.tags::-webkit-scrollbar-thumb:hover {
+	background-color: #666;
+}
+
+
+/* Individual Course */
+.course {
+    margin-bottom: 10px;
+    /* font-family: 'Monaco', 'MonoLisa', 'DM Mono'; */
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-weight: 700;
+    font-size: 14px;
+    color: #011327;
+    text-transform: uppercase;
+    
+    border: 3px solid #011327;
+    border-radius: 2rem;
+    padding: .2rem .85rem .25rem;
+}
+
+.course:hover {
+    text-shadow: 5px;
+    color: white;
+    border-color: white;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
 }

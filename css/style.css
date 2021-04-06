@@ -24,7 +24,7 @@ a {
 nav {
     height: 180px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
     text-align: center;
 }
@@ -64,6 +64,7 @@ nav {
 
 /* [top] Navigation Items */
 .nav-item {
+    margin: 180px;
     font-family: Montserrat;
     font-style: normal;
     font-weight: 600;
@@ -93,3 +94,17 @@ nav {
     color: #ffffff;
 }
 
+
+.select-course {
+    margin: 60px 0 8px 0;
+    
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 40px;
+    line-height: 22px;
+    text-align: center;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #707AFF;
+}
