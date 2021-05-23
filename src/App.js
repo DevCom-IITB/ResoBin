@@ -6,7 +6,7 @@ import { lightTheme, darkTheme } from './styles/theme'
 
 const App = () => {
   return (
-		<ThemeProvider theme={lightTheme}>
+		<ThemeProvider theme={darkTheme}>
 			<GlobalStyles />
 			<Dashboard />
 		</ThemeProvider>

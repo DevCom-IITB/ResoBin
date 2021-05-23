@@ -1,8 +1,11 @@
 import React from 'react'
 import styled from 'styled-components';
-import Img from '../../assets/images/ProfileImg.jpg'
+import Img from '../../../assets/images/ProfileImg.jpg'
 
 const Container = styled.div`
+	height: 3rem;
+	width: 100%;
+	padding: 0px 0.75rem;
 	display: flex;
 	align-items: center;
 `
@@ -28,14 +31,20 @@ const Border = styled.svg`
 
 const ProfileImg = styled.div`
 	position: relative;
-	width: 32px;
-	height: 32px;
+	min-width: 32px;
+	min-height: 32px;
 `
 
-const ProfileName = styled.h1`
-	font-size: 1rem;
+// h4 is default 1 rem (16px)
+const ProfileName = styled.h4`
 	font-weight: 300;
 	color: ${({ theme }) => theme.textColor};
+	margin-left: 1rem;
+
+	max-height: 2.5rem;
+	/* text-overflow: ellipsis; */
+	overflow: hidden;
+	/* white-space: nowrap; */
 `
 
 const Profile = () => {
@@ -45,7 +54,7 @@ const Profile = () => {
 				<Image src={Img} />
 				<Border />
 			</ProfileImg>
-			<ProfileName>Laxman Desai</ProfileName>
+			<ProfileName>Laxman Uttam Desai</ProfileName>
 		</Container>
 	)
 }
