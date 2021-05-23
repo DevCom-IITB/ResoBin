@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import Img from '../../../assets/image/ProfileImg.jpg'
+import Img from '@images/ProfileImg.jpg'
 
 const Container = styled.div`
 	height: 3rem;
