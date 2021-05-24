@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import SidebarItem from '@components/Sidebar/SidebarItem'
+
 import ProfileImage from '@images/ProfileImg.jpg'
-import ProfileImg from '@components/Sidebar/ProfileImg'
 import ProfileImgItem from '@components/Sidebar/ProfileImgItem'
+
+import { BookOpen, Bookmark, ChartPie, CloudUpload, Cog, Logout } from '@styled-icons/heroicons-outline'
 
 // 1 rem = 20 px
 const Container = styled.div`
@@ -11,7 +13,7 @@ const Container = styled.div`
 	left: 0rem;
 	top: 0rem;
 	bottom: 0rem;
-	width: 12.5rem; /* width: 200 px */
+	width: 11.5rem; /* width: 184 px */
 	position: fixed;
 	margin-top: 4rem;
 	display: flex;
@@ -30,15 +32,15 @@ const Divider = styled.div`
 const Sidebar = () => {
 	return (
 		<Container>
-			<SidebarItem noAnim title="Courses" active />
-			<SidebarItem title="Contribute" />
-			<SidebarItem title="Stats" />
+			<SidebarItem title="Courses" icon={<BookOpen size="20" />} active />
+			<SidebarItem title="Contribute" icon={<CloudUpload size="20" />} />
+			<SidebarItem title="Stats" icon={<ChartPie size="20" />} />
 			<Divider />
-			<ProfileImgItem title="Laxman Desai" icon={<ProfileImg src={ProfileImage} />} />
-			{/* <SidebarItem noAnim title="Laxman Desai" icon={<ProfileImg src={ProfileImage} />} /> */}
-			<SidebarItem title="Account" />
-			<SidebarItem title="Favorites" />
-			<SidebarItem title="Sign out" />
+			<ProfileImgItem title="Laxman Desai" src={ProfileImage} />
+			{/* <SidebarItem title="Laxman Desai" icon={<ProfileImg src={ProfileImage} />} /> */}
+			<SidebarItem title="Account" icon={<Cog size="20" />} />
+			<SidebarItem title="Favorites" icon={<Bookmark size="20" title="Check course material" />} />
+			<SidebarItem title="Sign out" icon={<Logout size="20" />} />
 		</Container>
 	)
 }

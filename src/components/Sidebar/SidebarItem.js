@@ -8,22 +8,30 @@ const Container = styled.div`
 
 	display: flex;
 	flex-direction: row;
-
-	border-left: 3px solid ${(props) => (props.active ? props.theme.activeMenu : 'transparent')};
-	background-color: ${(props) => (props.active ? props.theme.headerNumber : props.theme.secondary)};
 	cursor: pointer;
+
+	color: ${(props) => (props.active ? props.theme.textColor : '#AAA5A5')};
+	background-color: ${(props) => (props.active ? props.theme.headerNumber : props.theme.secondary)};
+	border-left: 3px solid ${(props) => (props.active ? props.theme.activeMenu : 'transparent')};
+
 	&:hover {
-		text-decoration: underline;
 		background-color: rgba(0, 0, 0, 0.1);
-		/* box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.24);
-		transform: scale(1.02) */
+		text-decoration: underline;
+		text-underline-offset: 1px;
+		box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.24);
 	}
+`
+
+const IconContainer = styled.div`
+	width: 30%; /* width: 60px */
+	padding-left: 6px;
+	min-height: 100%;
+	display: flex;
+	align-items: center;
 `
 
 const Title = styled.h4`
 	font-weight: 400;
-	color: ${(props) => (props.active ? props.theme.textColor : '#AAA5A5')};
-
 	min-height: 100%;
 	width: 70%;
 
@@ -35,20 +43,10 @@ const Title = styled.h4`
 	align-items: center;
 `
 
-const IconContainer = styled.div`
-	width: 30%; /* width: 60px */
-	min-height: 100%;
-
-	display: flex;
-	align-items: center;
-`
-
 const SidebarItem = ({ title, icon, active }) => {
 	return (
 		<Container active={active}>
-			<IconContainer className="iconify" data-inline="false" data-icon={`mdi-light:${icon}`}>
-				{icon}
-			</IconContainer>
+			<IconContainer>{icon}</IconContainer>
 			<Title active={active}>{title}</Title>
 		</Container>
 	)

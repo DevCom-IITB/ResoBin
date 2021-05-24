@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
+import ProfileImg from '@components/Sidebar/ProfileImg'
 
 const Container = styled.div`
 	min-height: 3.5rem;
@@ -7,25 +8,10 @@ const Container = styled.div`
 	padding: 0px 0.75rem;
 
 	display: flex;
-	flex-direction: row;
+	align-items: center;
 
 	border-left: 3px solid transparent;
 	background-color: ${(props) => props.theme.secondary};
-`
-
-const Title = styled.h4`
-	font-weight: 200;
-	color: ${({ theme }) => theme.textColor};
-
-	min-height: 100%;
-	width: 70%;
-
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-
-	display: flex;
-	align-items: center;
 `
 
 const IconContainer = styled.div`
@@ -36,13 +22,25 @@ const IconContainer = styled.div`
 	align-items: center;
 `
 
-const ProfileImgItem = ({ title, icon }) => {
+const Title = styled.h4`
+	font-weight: 200;
+	color: ${({ theme }) => theme.textColor};
+	width: 70%;
+	
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+`
+
+const ProfileImgItem = ({ title, src }) => {
     return (
-        <Container>
-			<IconContainer>{icon}</IconContainer>
+		<Container>
+			<IconContainer>
+				<ProfileImg src={src} />
+			</IconContainer>
 			<Title>{title}</Title>
 		</Container>
-    )
+	)
 }
 
 export default ProfileImgItem
