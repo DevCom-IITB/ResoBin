@@ -1,13 +1,10 @@
-# `ResoBin` - Easily Share Course Material  
-
-* [Preview the page](https://htmlpreview.github.io/?https://github.com/relaxxpls/ResoBin/blob/master/index.html)
-* Note: UI might take 3-5 mins to load
+# [`ResoBin`](/) - Easily Share Course Material  
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm init`
+### `yarn install`
 
 ### `yarn start`
 
