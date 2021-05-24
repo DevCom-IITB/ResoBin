@@ -1,0 +1,36 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "checkJs": true,
+        "jsx": "react",
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": "./src",
+        "paths": {
+            "@app/*": [
+                "./*"
+            ],
+            "@components/*": [
+                "components/*"
+            ],
+            "@containers/*": [
+                "containers/*"
+            ],
+            "@assets/*": [
+                "assets/*"
+            ],
+            "@images/*": [
+                "assets/images/*"
+            ],
+            "@svgs/*": [
+                "assets/svgs/*"
+            ],
+            "@styles/*": [
+                "styles/*"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}
