@@ -1,12 +1,4 @@
 {
-    "typeAcquisition": {
-        "exclude": [
-            "dotenv",
-            "source-map-js",
-            "source-map",
-            "tsconfig-paths",
-        ]
-    },
     "compilerOptions": {
         "target": "es6",
         "checkJs": true,
@@ -14,18 +6,31 @@
         "allowSyntheticDefaultImports": true,
         "baseUrl": "./src",
         "paths": {
-            "@app/*": ["./*"],
-            "@components/*": ["components/*"],
-            "@containers/*": ["containers/*"],
-            "@assets/*": ["assets/*"],
-            "@images/*": ["assets/images/*"],
-            "@svgs/*": ["assets/svgs/*"],
-			"@styles/*": ["styles/*"],
+            "@app/*": [
+                "./*"
+            ],
+            "@components/*": [
+                "components/*"
+            ],
+            "@containers/*": [
+                "containers/*"
+            ],
+            "@assets/*": [
+                "assets/*"
+            ],
+            "@images/*": [
+                "assets/images/*"
+            ],
+            "@svgs/*": [
+                "assets/svgs/*"
+            ],
+            "@styles/*": [
+                "styles/*"
+            ]
         }
     },
     "exclude": [
         "node_modules",
-        "**/node_modules/*",
         "dist"
-    ],
+    ]
 }

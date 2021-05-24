@@ -24,5 +24,5 @@ module.exports = {
 				'^@svgs(.*)$': '<rootDir>/../src/assets/svgs$1'
 			},
 		},
-	},
+	}
 }
