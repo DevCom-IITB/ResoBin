@@ -3,17 +3,17 @@ import styled from 'styled-components'
 import SidebarItem from '@components/Sidebar/SidebarItem'
 import ProfileImage from '@images/ProfileImg.jpg'
 import ProfileImg from '@components/Sidebar/ProfileImg'
+import ProfileImgItem from '@components/Sidebar/ProfileImgItem'
 
 // 1 rem = 20 px
 const Container = styled.div`
 	background: ${({ theme }) => theme.secondary};
+	left: 0rem;
+	top: 0rem;
+	bottom: 0rem;
+	width: 12.5rem; /* width: 200 px */
 	position: fixed;
-	left: 0px;
-	top: 0px;
-	bottom: 0px;
-	width: 12.5rem; /* 200 px */
-
-	padding: 20px 0px;
+	margin-top: 4rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -30,11 +30,12 @@ const Divider = styled.div`
 const Sidebar = () => {
 	return (
 		<Container>
-			<SidebarItem title="Courses" active />
+			<SidebarItem noAnim title="Courses" active />
 			<SidebarItem title="Contribute" />
 			<SidebarItem title="Stats" />
 			<Divider />
-			<SidebarItem title="Laxman Desai" icon={<ProfileImg src={ProfileImage} />} />
+			<ProfileImgItem title="Laxman Desai" icon={<ProfileImg src={ProfileImage} />} />
+			{/* <SidebarItem noAnim title="Laxman Desai" icon={<ProfileImg src={ProfileImage} />} /> */}
 			<SidebarItem title="Account" />
 			<SidebarItem title="Favorites" />
 			<SidebarItem title="Sign out" />
