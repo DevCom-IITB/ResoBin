@@ -21,13 +21,13 @@ export const lightTheme = {
 	headerNumber: '#FFF',
 	activeMenu: '#585280',
 	courseBG: '#B2BFE1',
-	logoPrimary: '#707AFF',
-	logoSecondary: '#1B1728',
+	logo: '#707AFF',
 	...globalTheme,
 }
 
 export const darkTheme = {
 	primary: '#FEDFED',
+	// primary: '#302C40',
 	secondary: '#2C2839',
 	darksecondary: '#1b1728',
 	textColor: '#FFF',
@@ -36,7 +36,6 @@ export const darkTheme = {
 	headerNumber: '#585280',
 	activeMenu: '#FFF',
 	courseBG: '#B2BFE1',
-	logoPrimary: '#707AFF',
-	logoSecondary: '#1B1728',
+	logo: '#707AFF',
 	...globalTheme,
 }

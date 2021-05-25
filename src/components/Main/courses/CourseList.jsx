@@ -3,10 +3,10 @@ import styled from 'styled-components'
 
 const Container = styled.div`
 	background-color: #1b1728;
-	margin: 2rem;
-	height: 1000px;
+	margin: 1rem 2rem 2rem;
+	height: 1500px; /* Test height */
 	border-radius: 8px;
-	/* box-shadow: 0px 2px 6px rgba(0, 0, 0, 1.25); */
+	box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.5);
 `
 
 const Title = styled.h4`
@@ -23,9 +23,8 @@ const Title = styled.h4`
 const CourseList = () => {
     return (
         <Container>
-            <Title>Courses</Title>
+            <Title> Courses </Title>
 			<Divider />
-			{/* Hello World */}
         </Container>
     )
 }
