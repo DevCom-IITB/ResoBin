@@ -20,6 +20,7 @@ export const lightTheme = {
 	header: '#585280',
 	headerNumber: '#FFF',
 	activeMenu: '#585280',
+	courseBG: '#B2BFE1',
 	...globalTheme,
 }
 
@@ -32,5 +33,6 @@ export const darkTheme = {
 	header: '#FFF',
 	headerNumber: '#585280',
 	activeMenu: '#FFF',
+	courseBG: '#B2BFE1',
 	...globalTheme,
 }
