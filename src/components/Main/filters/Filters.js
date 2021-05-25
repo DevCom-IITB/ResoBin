@@ -8,6 +8,7 @@ const Container = styled.div`
 	width: 19rem;
 	height: 100%;
 	padding: 2rem;
+	z-index: 9; /* To put searchbar at the bottom */
 `
 
 const Filters = () => {

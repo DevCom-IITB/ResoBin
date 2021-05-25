@@ -16,6 +16,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	z-index: 9; /* To put searchbar at the bottom */
 `
 
 const Sidebar = () => {
@@ -24,7 +25,7 @@ const Sidebar = () => {
 			<SidebarItem title="Courses" icon={<BookOpen size="20" />} active />
 			<SidebarItem title="Contribute" icon={<CloudUpload size="20" />} />
 			<SidebarItem title="Stats" icon={<ChartPie size="20" />} />
-			<Divider />
+			<Divider margin="1.5rem 0" />
 			<ProfileImgItem title="Laxman D." src={ProfileImage} />
 			<SidebarItem title="Account" icon={<Cog size="20" />} />
 			<SidebarItem title="Favorites" icon={<Bookmark size="20" title="Check course material" />} />

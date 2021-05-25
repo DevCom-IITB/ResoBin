@@ -6,14 +6,13 @@ import CurrentTerm from '@app/components/navbar/CurrentTerm'
 const Container = styled.div`
 	display: flex;
 	align-items: center;
-	/* justify-content: space-between; */
-	
 	position: fixed;
 	width: 100%;
 	height: 4rem;
 	left: 0px;
 	top: 0px;
 	background: ${({ theme }) => theme.darksecondary};
+	z-index: 9; /* To put searchbar at the bottom */
 `
 
 const LeftContainer = styled.div`
