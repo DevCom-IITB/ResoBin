@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import ProfileImg from '@components/Sidebar/ProfileImg'
+import ProfileImg from '@app/components/sidebar/ProfileImg'
 
 const Container = styled.div`
 	min-height: 3.5rem;

@@ -14,7 +14,9 @@ const globalTheme = {
 export const lightTheme = {
 	primary: '#FFF',
 	secondary: '#F8F8F8',
+	darksecondary: '#2C2839',
 	textColor: '#585280',
+	textColorInactive: '#AAA5A5',
 	header: '#585280',
 	headerNumber: '#FFF',
 	activeMenu: '#585280',
@@ -24,7 +26,9 @@ export const lightTheme = {
 export const darkTheme = {
 	primary: '#302C40',
 	secondary: '#2C2839',
+	darksecondary: '#1b1728',
 	textColor: '#FFF',
+	textColorInactive: '#AAA5A5',
 	header: '#FFF',
 	headerNumber: '#585280',
 	activeMenu: '#FFF',
