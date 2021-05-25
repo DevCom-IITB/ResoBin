@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const DividerElement = styled.div`
+const Divider = styled.div`
 	background: white;
 	opacity: 0.08;
 	width: 100%;
@@ -8,4 +8,4 @@ const DividerElement = styled.div`
 	margin: 1.25rem 0px;
 `
 
-export default DividerElement
+export default Divider

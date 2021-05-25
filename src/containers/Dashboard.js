@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Sidebar from '@app/components/sidebar/Sidebar'
-// import Main from '@app/components/main/Main'
+import Main from '@app/components/main/Main'
 import Navbar from '@app/components/navbar/Navbar'
 
 const Container = styled.div`
@@ -12,7 +12,7 @@ const Dashboard = () => {
 		<Container>
 			<Navbar />
 			<Sidebar />
-			{/* <Main /> */}
+			<Main />
 		</Container>
 	)
 }
