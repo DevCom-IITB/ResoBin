@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import SidebarItem from '@app/components/sidebar/SidebarItem'
-import ProfileImage from '@images/ProfileImg.jpg'
+import ProfileImage from '@app/assets/images/ProfileImg.jpg'
 import ProfileImgItem from '@app/components/sidebar/ProfileImgItem'
-import { BookOpen, Bookmark, ChartPie, CloudUpload, Cog, Logout } from '@styled-icons/heroicons-outline'
 import Divider from '@app/components/common/Divider'
+import { BookOpen, Bookmark, ChartPie, CloudUpload, Cog, Logout } from '@styled-icons/heroicons-outline'
 
 const Container = styled.div`
 	background: ${({ theme }) => theme.secondary};
