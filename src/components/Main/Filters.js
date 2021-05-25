@@ -1,11 +1,15 @@
-import React from 'react'
+import styled from 'styled-components'
+
+const Container = styled.div`
+
+`
 
 const Filters = () => {
-    return (
-        <div>
-            <h1>Filter</h1>
-        </div>
-    )
+	return (
+		<Container>
+			<h1>Filter</h1>
+		</Container>
+	)
 }
 
 export default Filters

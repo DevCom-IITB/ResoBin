@@ -10,7 +10,7 @@ const Container = styled.div`
 	flex-direction: row;
 	cursor: pointer;
 
-	color: ${(props) => (props.active ? props.theme.textColor : '#AAA5A5')};
+	color: ${(props) => (props.active ? props.theme.textColor : props.theme.textColorInactive)};
 	background-color: ${(props) => (props.active ? props.theme.headerNumber : props.theme.secondary)};
 	border-left: 3px solid ${(props) => (props.active ? props.theme.activeMenu : 'transparent')};
 
@@ -38,6 +38,7 @@ const Title = styled.h4`
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
+	letter-spacing: 1.5px;
 
 	display: flex;
 	align-items: center;

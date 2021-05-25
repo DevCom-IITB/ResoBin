@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import ProfileImg from '@components/Sidebar/ProfileImg'
+import ProfileImg from '@app/components/sidebar/ProfileImg'
 
 const Container = styled.div`
 	min-height: 3.5rem;
@@ -26,9 +26,10 @@ const Title = styled.h4`
 	font-weight: 200;
 	color: ${({ theme }) => theme.textColor};
 	width: 70%;
-	
+
 	text-overflow: ellipsis;
 	overflow: hidden;
+	letter-spacing: 1.5px;
 	white-space: nowrap;
 `
 

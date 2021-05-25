@@ -1,10 +1,14 @@
-import React from 'react'
+import styled from 'styled-components'
+
+const Container = styled.div`
+	position: relative;
+`
 
 const Main = () => {
 	return (
-		<div>
-			{/* <h1>Main</h1> */}
-		</div>
+		<Container>
+			<h1>Main</h1>
+		</Container>
 	)
 }
 
