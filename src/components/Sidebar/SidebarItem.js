@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
-	min-height: 3.5rem;
+	min-height: 4rem;
 	width: 100%;
 	padding: 0px 0.75rem;
 

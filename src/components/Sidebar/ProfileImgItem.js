@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import ProfileImg from '@app/components/sidebar/ProfileImg'
 
 const Container = styled.div`
-	min-height: 3.5rem;
+	min-height: 4rem;
 	width: 100%;
 	padding: 0px 0.75rem;
 

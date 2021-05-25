@@ -9,18 +9,19 @@ const Container = styled.div`
     position: sticky;
     top: 4rem;
     background: transparent;
+	padding-bottom: 1.5rem;
 `
 
 const SearchBox = styled.input`
 	font-size: 1.5rem;
 	font-family: 'Montserrat';
-	background: #fff;
+	background: #f5f6f7;
 	width: 100%;
-	border-radius: 8px;
-	border: solid #707aff;
+	border-radius: 1.5rem;
+	border: solid #d2d5d9;
 	box-sizing: border-box;
 	padding: 20px;
-	box-shadow: 0px 10px 18px 2px rgba(0, 0, 0, 0.58);
+	box-shadow: 0px 10px 18px 2px rgba(0, 0, 0, 0.2);
 `
 
 const Searchbar = () => {

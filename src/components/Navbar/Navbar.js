@@ -6,7 +6,7 @@ import CurrentTerm from '@app/components/navbar/CurrentTerm'
 const Container = styled.div`
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 	
 	position: fixed;
 	width: 100%;
@@ -16,7 +16,7 @@ const Container = styled.div`
 	background: ${({ theme }) => theme.darksecondary};
 `
 
-const LogoContainer = styled.div`
+const LeftContainer = styled.div`
 	min-width: 11.5rem;
 	min-height: 100%;
 	display: flex;
@@ -24,15 +24,32 @@ const LogoContainer = styled.div`
 	justify-content: center;
 `
 
+const RightContainer = styled.div`
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	width: 19rem;
+	height: 100%
+`
+
+const MiddleContainer = styled.div`
+	width: calc(100% - 11.5rem - 19rem);
+`
 
 const Navbar = () => {
     return (
 		<Container>
-			<LogoContainer>
+			<LeftContainer>
 				<ResoBinLogo />
-			</LogoContainer>
-			<CurrentTerm text="AY 2021-22 | SPRING" />
-			<DarkModeCheckbox />
+			</LeftContainer>
+
+			<MiddleContainer>
+				<CurrentTerm text="AY 2021/22 | AUTUMN" />
+			</MiddleContainer>
+
+			<RightContainer>
+				<DarkModeCheckbox />
+			</RightContainer>
 		</Container>
 	)
 }

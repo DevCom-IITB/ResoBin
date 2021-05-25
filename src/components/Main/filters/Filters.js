@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
 const Container = styled.div`
-	background: black;
-	opacity: 60%;
+	background: ${({ theme }) => theme.secondary};
 	position: fixed;
 	top: 4rem;
 	right: 0px;
-	width: 20vw;
-	height: 100%
+	width: 19rem;
+	height: 100%;
+	padding: 2rem;
 `
 
 const Filters = () => {
