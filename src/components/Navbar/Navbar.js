@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import ResoBinLogo from '@app/components/navbar/ResoBinLogo'
-import Leftside from '@app/components/navbar/leftside/Leftside'
+import DarkModeCheckbox from '@app/components/navbar/DarkModeCheckbox'
+import CurrentTerm from '@app/components/navbar/CurrentTerm'
 
 const Container = styled.div`
 	display: flex;
@@ -16,7 +17,7 @@ const Container = styled.div`
 `
 
 const LogoContainer = styled.div`
-	width: 11.5rem;
+	min-width: 11.5rem;
 	min-height: 100%;
 	display: flex;
 	align-items: center;
@@ -26,13 +27,14 @@ const LogoContainer = styled.div`
 
 const Navbar = () => {
     return (
-        <Container>
-			<LogoContainer>
-	            <ResoBinLogo />
-			</LogoContainer>
-			<Leftside />
-        </Container>
-    )
+			<Container>
+				<LogoContainer>
+					<ResoBinLogo />
+				</LogoContainer>
+				<CurrentTerm text="AY 2021-22 | SPRING" />
+				<DarkModeCheckbox />
+			</Container>
+		)
 }
 
 export default Navbar

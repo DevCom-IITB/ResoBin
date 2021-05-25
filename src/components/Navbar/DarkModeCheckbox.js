@@ -6,9 +6,8 @@ const CheckboxContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-
+	padding: 0 1rem;
 	height: 100%;
-	opacity: 90%;
 `
 
 const Title = styled.h4`
@@ -17,6 +16,7 @@ const Title = styled.h4`
 	line-height: 80%;
 	padding-top: 0.5rem;
 	color: ${({ theme }) => theme.textColor};
+	opacity: 80%;
 	white-space: nowrap;
 `
 

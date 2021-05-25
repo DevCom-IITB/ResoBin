@@ -38,6 +38,7 @@ const Title = styled.h4`
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
+	letter-spacing: 1.5px;
 
 	display: flex;
 	align-items: center;

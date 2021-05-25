@@ -25,7 +25,7 @@ const Sidebar = () => {
 			<SidebarItem title="Contribute" icon={<CloudUpload size="20" />} />
 			<SidebarItem title="Stats" icon={<ChartPie size="20" />} />
 			<Divider />
-			<ProfileImgItem title="Laxman Desai" src={ProfileImage} />
+			<ProfileImgItem title="Laxman D." src={ProfileImage} />
 			<SidebarItem title="Account" icon={<Cog size="20" />} />
 			<SidebarItem title="Favorites" icon={<Bookmark size="20" title="Check course material" />} />
 			<SidebarItem title="Sign out" icon={<Logout size="20" />} />
