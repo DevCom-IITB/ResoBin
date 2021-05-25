@@ -8,24 +8,6 @@
         "paths": {
             "@app/*": [
                 "./*"
-            ],
-            "@components/*": [
-                "components/*"
-            ],
-            "@containers/*": [
-                "containers/*"
-            ],
-            "@assets/*": [
-                "assets/*"
-            ],
-            "@images/*": [
-                "assets/images/*"
-            ],
-            "@svgs/*": [
-                "assets/svgs/*"
-            ],
-            "@styles/*": [
-                "styles/*"
             ]
         }
     },

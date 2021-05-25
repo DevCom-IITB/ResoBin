@@ -1,5 +1,5 @@
-import Divider from '@app/components/common/Divider'
 import styled from 'styled-components'
+import Divider from '@app/components/common/Divider'
 
 const Container = styled.div`
 	background: ${({ theme }) => theme.secondary};
@@ -21,7 +21,6 @@ const Title = styled.h4`
 	line-height: 30px;
 	letter-spacing: 1.5px;
 	margin-bottom: 1rem;
-	/* padding: 2.5rem 2.5rem 1rem; */
 	color: #fff;
 `
 
