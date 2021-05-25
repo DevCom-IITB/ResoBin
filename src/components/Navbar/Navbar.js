@@ -27,14 +27,14 @@ const LogoContainer = styled.div`
 
 const Navbar = () => {
     return (
-			<Container>
-				<LogoContainer>
-					<ResoBinLogo />
-				</LogoContainer>
-				<CurrentTerm text="AY 2021-22 | SPRING" />
-				<DarkModeCheckbox />
-			</Container>
-		)
+		<Container>
+			<LogoContainer>
+				<ResoBinLogo />
+			</LogoContainer>
+			<CurrentTerm text="AY 2021-22 | SPRING" />
+			<DarkModeCheckbox />
+		</Container>
+	)
 }
 
 export default Navbar
