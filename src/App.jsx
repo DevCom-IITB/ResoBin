@@ -4,7 +4,7 @@ import { GlobalStyles } from '@app/styles/global'
 import { darkTheme } from '@app/styles/theme'
 
 const App = () => {
-  return (
+	return (
 		<ThemeProvider theme={darkTheme}>
 			<GlobalStyles />
 			<Dashboard />
