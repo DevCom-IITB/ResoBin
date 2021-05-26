@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -8,7 +7,7 @@ const Container = styled.div`
 	cursor: pointer;
 	&:hover {
 		transform: scale(1.03);
-		transition-duration: 300ms;
+		transition-duration: 200ms;
 	}
 `
 
@@ -18,20 +17,20 @@ const Text = styled.div`
 	font-weight: 600;
 	font-size: 36px;
 	line-height: 110%;
-	color: #707aff;
+	color: ${({ theme }) => theme.logo};
 `
 
 const Underline = styled.div`
 	width: 148px;
 	height: 4.5px;
 	margin-bottom: 7px;
-	background: #707aff;
+	background: ${({ theme }) => theme.logo};
 `
 
 const ResoBinLogo = () => {
     return (
         <Container>
-            <Text>ResoBin</Text>
+            <Text> ResoBin </Text>
             <Underline/>
         </Container>
     )
