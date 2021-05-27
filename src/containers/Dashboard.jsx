@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import Sidebar from '@app/components/sidebar/Sidebar'
-import Main from '@app/components/main/Main'
-import Navbar from '@app/components/navbar/Navbar'
+import Sidebar from '@app/components/sidebar'
+import Navbar from '@app/components/navbar'
+import { Courses } from '@app/pages'
 
 const Container = styled.div`
 	/* display: flex; */
@@ -9,12 +9,12 @@ const Container = styled.div`
 
 const Dashboard = () => {
 	return (
-		<Container>
-			<Navbar />
-			<Sidebar />
-			<Main />
-		</Container>
-	)
+    <Container>
+      <Navbar />
+      <Sidebar />
+      <Courses />
+    </Container>
+  )
 }
 
 export default Dashboard

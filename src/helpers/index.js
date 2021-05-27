@@ -1,0 +1,1 @@
+export { default as HEX2RGBA } from './HEX2RGBA'
