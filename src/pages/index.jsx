@@ -1,0 +1,1 @@
+export { default as Courses } from '@app/pages/Courses'
