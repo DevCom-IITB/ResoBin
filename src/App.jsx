@@ -1,11 +1,10 @@
 import { ThemeProvider } from 'styled-components'
 import Dashboard from '@app/containers/Dashboard'
-import { GlobalStyles } from '@app/styles/global'
-import { darkTheme } from '@app/styles/theme'
+import { GlobalStyles, DarkTheme } from '@app/styles'
 
 const App = () => {
 	return (
-		<ThemeProvider theme={darkTheme}>
+		<ThemeProvider theme={DarkTheme}>
 			<GlobalStyles />
 			<Dashboard />
 		</ThemeProvider>
