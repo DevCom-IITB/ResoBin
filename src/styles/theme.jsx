@@ -11,7 +11,7 @@ const globalTheme = {
 	colorGray: '#adadad',
 }
 
-export const lightTheme = {
+export const LightTheme = {
 	primary: '#FFF',
 	secondary: '#F8F8F8',
 	darksecondary: '#2C2839',
@@ -25,7 +25,7 @@ export const lightTheme = {
 	...globalTheme,
 }
 
-export const darkTheme = {
+export const DarkTheme = {
 	primary: '#FEDFED',
 	// primary: '#302C40',
 	secondary: '#2C2839',
