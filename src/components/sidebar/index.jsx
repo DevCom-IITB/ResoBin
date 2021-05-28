@@ -1,3 +1,4 @@
+// import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import SidebarItem from '@app/components/sidebar/SidebarItem'
 import ProfileImage from '@app/assets/images/ProfileImg.jpg'
@@ -16,23 +17,28 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 8; /* To put searchbar at the bottom */
+  z-index: 8; /* For shadow effects */
   box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.5);
 `
 
 const Sidebar = () => {
 	return (
-		<Container>
-			<SidebarItem title="Courses" icon={<BookOpen size="20" />} active />
-			<SidebarItem title="Contribute" icon={<CloudUpload size="20" />} />
-			<SidebarItem title="Stats" icon={<ChartPie size="20" />} />
-			<Divider margin="1.5rem 0" />
-			<ProfileImgItem title="Laxman D." src={ProfileImage} />
-			<SidebarItem title="Account" icon={<Cog size="20" />} />
-			<SidebarItem title="Favorites" icon={<Bookmark size="20" title="Check course material" />} />
-			<SidebarItem title="Sign out" icon={<Logout size="20" />} />
-		</Container>
-	)
+    <Container>
+      {/* <Link to="/courses" style={{ textDecoration: 'none' }}> */}
+      <SidebarItem title="Courses" icon={<BookOpen size="20" />} active />
+      {/* </Link> */}
+      <SidebarItem title="Contribute" icon={<CloudUpload size="20" />} />
+      <SidebarItem title="Stats" icon={<ChartPie size="20" />} />
+      <Divider margin="1.5rem 0" />
+      <ProfileImgItem title="Laxman D." src={ProfileImage} />
+      <SidebarItem title="Account" icon={<Cog size="20" />} />
+      <SidebarItem
+        title="Favorites"
+        icon={<Bookmark size="20" title="Check course material" />}
+      />
+      <SidebarItem title="Sign out" icon={<Logout size="20" />} />
+    </Container>
+  )
 }
 
 export default Sidebar
