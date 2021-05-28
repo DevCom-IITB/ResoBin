@@ -4,12 +4,7 @@
         "checkJs": true,
         "jsx": "react",
         "allowSyntheticDefaultImports": true,
-        "baseUrl": "./src",
-        "paths": {
-            "@app/*": [
-                "./*"
-            ]
-        }
+        "baseUrl": "./src"
     },
     "exclude": [
         "node_modules",

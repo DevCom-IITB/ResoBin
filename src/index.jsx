@@ -1,11 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import '@app/index.css'
-import App from '@app/App'
+import './index.css'
+import App from './App'
+import { ThemeContextProvider } from 'context/ThemeContext'
 
-ReactDOM.render(
+const StrictApp = () => (
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <ThemeContextProvider>
+      <App />
+    </ThemeContextProvider>
+  </React.StrictMode>
 )
+
+const rootElement = document.getElementById('root')
+
+if (rootElement.hasChildNodes()) ReactDOM.hydrate(<StrictApp />, rootElement)
+else ReactDOM.render(<StrictApp />, rootElement)

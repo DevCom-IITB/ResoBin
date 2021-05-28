@@ -6,23 +6,23 @@ const Image = styled.img`
 	left: 50%;
 	transform: translate(-50%, -50%);
 
-	width: 29px;
+	width: 28px;
 	pointer-events: none;
 	border-radius: 50%;
 `
 
 const Border = styled.svg`
-	position: absolute;
-	width: 32px;
-	height: 32px;
-	border-radius: 50%;
-	border: 1px solid #dfe0eb;
+  position: absolute;
+  width: 34px;
+  height: 33.5px;
+  border-radius: 50%;
+  border: 1px solid ${({ theme }) => theme.textColor};
 `
 
 const Container = styled.div`
 	position: relative;
-	width: 32px;
-	height: 32px;
+	width: 34px;
+	height: 34px;
 	text-align: initial;
 `
 

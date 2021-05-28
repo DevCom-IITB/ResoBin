@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import ProfileImg from '@app/components/sidebar/ProfileImg'
+import ProfileImg from 'components/sidebar/ProfileImg'
 
 const Container = styled.div`
 	min-height: 4rem;
