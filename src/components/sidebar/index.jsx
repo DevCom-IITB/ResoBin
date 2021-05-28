@@ -1,10 +1,16 @@
-// import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import SidebarItem from '@app/components/sidebar/SidebarItem'
 import ProfileImage from '@app/assets/images/ProfileImg.jpg'
 import ProfileImgItem from '@app/components/sidebar/ProfileImgItem'
 import Divider from '@app/components/shared/Divider'
-import { BookOpen, Bookmark, ChartPie, CloudUpload, Cog, Logout } from '@styled-icons/heroicons-outline'
+import {
+  BookOpen,
+  Bookmark,
+  ChartPie,
+  CloudUpload,
+  Cog,
+  Logout,
+} from '@styled-icons/heroicons-outline'
 
 const Container = styled.div`
   background: ${({ theme }) => theme.secondary};
@@ -22,7 +28,7 @@ const Container = styled.div`
 `
 
 const Sidebar = () => {
-	return (
+  return (
     <Container>
       <SidebarItem
         title="Courses"
@@ -44,7 +50,7 @@ const Sidebar = () => {
       <SidebarItem
         title="Favorites"
         icon={<Bookmark size="20" title="Check course material" />}
-        to="/account"
+        to="/favourites"
       />
       <SidebarItem title="Sign out" icon={<Logout size="20" />} to="/signout" />
     </Container>

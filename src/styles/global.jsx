@@ -6,13 +6,9 @@ export const GlobalStyles = createGlobalStyle`
     *::before {
 	    margin: 0;
         padding: 0;
-
         font-family: 'Mulish', sans-serif;
       	font-size: 16px;
-
-        transition: all 0ms linear;
         box-sizing: border-box;
-
     	-webkit-font-smoothing: antialiased;
     	-moz-osx-font-smoothing: grayscale;
     }

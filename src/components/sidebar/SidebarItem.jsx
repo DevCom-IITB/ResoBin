@@ -5,24 +5,27 @@ const Container = styled(NavLink)`
   min-height: 4rem;
   width: 100%;
   padding: 0px 0.75rem;
-	text-decoration: none;
-	
+  text-decoration: none;
+
   display: flex;
   flex-direction: row;
   cursor: pointer;
 
-  color: ${({ active, theme }) =>
-    active ? theme.textColor : theme.textColorInactive};
-  background-color: ${({ active, theme }) =>
-    active ? theme.headerNumber : theme.secondary};
-  border-left: 3px solid
-    ${({ active, theme }) => (active ? theme.activeMenu : 'transparent')};
+  color: ${({ theme }) => theme.textColorInactive};
+  background-color: ${({ theme }) => theme.secondary};
+  border-left: 3px solid transparent;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
     text-decoration: underline;
-    text-underline-offset: 1px;
+    text-underline-offset: 1.5px;
+    text-decoration-thickness: 2px;
     box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.24);
+  }
+  &.active {
+    color: ${({ theme }) => theme.textColor};
+    background-color: ${({ theme }) => theme.headerNumber};
+    border-left: 3px solid ${({ theme }) => theme.activeMenu};
   }
 `
 
@@ -48,11 +51,11 @@ const Title = styled.h4`
   align-items: center;
 `
 
-const SidebarItem = ({ title, icon, active, to }) => {
+const SidebarItem = ({ title, icon, to }) => {
   return (
-    <Container to={to} activeStyle active={active}>
+    <Container to={to}>
       <IconContainer>{icon}</IconContainer>
-      <Title active={active}>{title}</Title>
+      <Title>{title}</Title>
     </Container>
   )
 }

@@ -14,23 +14,23 @@ const Container = styled.div`
 `
 
 const Title = styled.h4`
-	font-family: Mulish;
-	font-style: normal;
-	font-weight: bold;
-	font-size: 1.5rem;
-	line-height: 30px;
-	letter-spacing: 1.5px;
-	margin-bottom: 1rem;
-	color: ${({ theme }) => theme.textColor};
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 1.5rem;
+  line-height: 30px;
+  letter-spacing: 1.5px;
+  margin-bottom: 1rem;
+  color: ${({ theme }) => theme.textColor};
 `
 
 const Filters = () => {
-	return (
-		<Container>
-			<Title> Filter </Title>
-			<Divider />
-		</Container>
-	)
+  return (
+    <Container>
+      <Title> Filter </Title>
+      <Divider />
+    </Container>
+  )
 }
 
 export default Filters
