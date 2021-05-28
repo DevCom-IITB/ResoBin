@@ -12,7 +12,7 @@ const CheckboxLabel = styled.label`
   width: 42px;
   height: 26px;
   border-radius: 15px;
-  background: #bebebe;
+  background: ${({ theme }) => theme.logo};
 
   &::after {
     content: '';
@@ -28,37 +28,30 @@ const CheckboxLabel = styled.label`
 `
 
 const CheckboxInput = styled.input`
-	cursor: pointer;
-	opacity: 0;
-	z-index: 1;
-	border-radius: 15px;
-	width: 42px;
-	height: 26px;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 1;
+  border-radius: 15px;
+  width: 42px;
+  height: 26px;
 
-	&:checked + ${CheckboxLabel} {
-		background: #707AFF;
-		
-		&::after {
-			content: "";
-			display: block;
-			border-radius: 50%;
-			width: 1rem;
-			height: 1rem;
-			margin-left: 21px;
-			transition: 200ms;
-		}
-	}
+  &:checked + ${CheckboxLabel} {
+    &::after {
+      content: '';
+      display: block;
+      border-radius: 50%;
+      width: 1rem;
+      height: 1rem;
+      margin-left: 21px;
+      transition: 200ms;
+    }
+  }
 `
 
 const Checkbox = ({ onClick }) => {
 	return (
     <Container>
-      <CheckboxInput
-        id="checkbox"
-        type="checkbox"
-        defaultChecked="true"
-        onClick={onClick}
-      />
+      <CheckboxInput type="checkbox" defaultChecked="true" onClick={onClick} />
       <CheckboxLabel htmlFor="checkbox" />
     </Container>
   )

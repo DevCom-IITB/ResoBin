@@ -6,17 +6,18 @@ import Divider from '@app/components/shared/Divider'
 import { BookOpen, Bookmark, ChartPie, CloudUpload, Cog, Logout } from '@styled-icons/heroicons-outline'
 
 const Container = styled.div`
-	background: ${({ theme }) => theme.secondary};
-	left: 0rem;
-	top: 0rem;
-	bottom: 0rem;
-	width: 11.5rem; /* width: 184 px */
-	position: fixed;
-	margin-top: 4rem;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	z-index: 9; /* To put searchbar at the bottom */
+  background: ${({ theme }) => theme.secondary};
+  left: 0rem;
+  top: 0rem;
+  bottom: 0rem;
+  width: 11.5rem; /* width: 184 px */
+  position: fixed;
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 8; /* To put searchbar at the bottom */
+  box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.5);
 `
 
 const Sidebar = () => {

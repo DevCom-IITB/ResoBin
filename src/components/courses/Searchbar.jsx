@@ -19,31 +19,31 @@ const Container = styled.div`
 `
 
 const SearchBox = styled.input`
-	background: ${({ theme }) => theme.textColor};
+  background: ${({ theme }) => theme.colorWhite};
 
-	/* font-family: 'Montserrat'; */
-	font-family: Mulish;
-	font-size: 1.25rem;
-	letter-spacing: 1.5px;
+  /* font-family: 'Montserrat'; */
+  font-family: Mulish;
+  font-size: 1.25rem;
+  letter-spacing: 1.5px;
 
-	width: 100%;
-	height: 2.5rem;
-	padding: 0 2rem;
+  width: 100%;
+  height: 2.5rem;
+  padding: 0 2rem;
 
-	border-radius: 1.5rem;
-	border: solid ${({ theme }) => theme.textColorInactive};
-	box-shadow: 0px 2px 1rem rgba(0, 0, 0, 0.3);
-	cursor: pointer;
-	
-	&:hover {
-		background: #eee;
-	}
-	
-	&:focus {
-		background: #eee;
-		outline: none;
-		cursor: auto;
-	}
+  border-radius: 1.5rem;
+  border: solid #ccc;
+  box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme }) => theme.searchColor};
+  }
+
+  &:focus {
+    background: ${({ theme }) => theme.searchColor};
+    outline: none;
+    cursor: auto;
+  }
 `
 
 const Searchbar = () => {
