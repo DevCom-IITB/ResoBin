@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import Checkbox from '@app/components/shared/Checkbox'
-import { useThemeContext } from '@app/context/ThemeContext'
+import Checkbox from 'components/shared/Checkbox'
+import { useThemeContext } from 'context/ThemeContext'
 
 const CheckboxContainer = styled.div`
   display: flex;

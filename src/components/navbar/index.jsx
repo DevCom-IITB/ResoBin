@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import ResoBinLogo from '@app/components/navbar/ResoBinLogo'
-import DarkModeCheckbox from '@app/components/navbar/DarkModeCheckbox'
-import CurrentTerm from '@app/components/navbar/CurrentTerm'
+import ResoBinLogo from 'components/navbar/ResoBinLogo'
+import DarkModeCheckbox from 'components/navbar/DarkModeCheckbox'
+import CurrentTerm from 'components/navbar/CurrentTerm'
 
 const Container = styled.div`
   display: flex;

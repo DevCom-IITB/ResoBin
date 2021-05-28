@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import SidebarItem from '@app/components/sidebar/SidebarItem'
-import ProfileImage from '@app/assets/images/ProfileImg.jpg'
-import ProfileImgItem from '@app/components/sidebar/ProfileImgItem'
-import Divider from '@app/components/shared/Divider'
+import SidebarItem from 'components/sidebar/SidebarItem'
+import ProfileImage from 'assets/images/ProfileImg.jpg'
+import ProfileImgItem from 'components/sidebar/ProfileImgItem'
+import Divider from 'components/shared/Divider'
 import {
   BookOpen,
   Bookmark,

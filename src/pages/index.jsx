@@ -1,1 +1,1 @@
-export { default as Courses } from '@app/pages/Courses'
+export { default as Courses } from 'pages/Courses'

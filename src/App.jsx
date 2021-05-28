@@ -6,14 +6,14 @@ import {
   Redirect,
 } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
-import { GlobalStyles, DarkTheme, LightTheme } from '@app/styles'
-import { ThemeContext } from '@app/context/ThemeContext'
-import Dashboard from '@app/layout/Dashboard'
+import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
+import { ThemeContext } from 'context/ThemeContext'
+import Dashboard from 'layout/Dashboard'
 
 // Lazy load the pages when called
-const Courses = lazy(() => import('@app/pages/Courses'))
-const Contribute = lazy(() => import('@app/pages/Contribute'))
-const NotFound = lazy(() => import('@app/pages/NotFound'))
+const Courses = lazy(() => import('pages/Courses'))
+const Contribute = lazy(() => import('pages/Contribute'))
+const NotFound = lazy(() => import('pages/NotFound'))
 
 const App = () => {
   const { theme } = useContext(ThemeContext)

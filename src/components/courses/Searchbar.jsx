@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 // import { Search } from '@styled-icons/heroicons-outline'
-import HEX2RGBA from '@app/helpers/HEX2RGBA'
+import HEX2RGBA from 'helpers/HEX2RGBA'
 
 const Container = styled.div`
 	background: linear-gradient(

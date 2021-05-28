@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import '@app/index.css'
-import App from '@app/App'
-import { ThemeContextProvider } from '@app/context/ThemeContext'
+import './index.css'
+import App from './App'
+import { ThemeContextProvider } from 'context/ThemeContext'
 
 const StrictApp = () => (
   <React.StrictMode>

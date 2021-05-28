@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { CourseList, Filters, PageNo, Searchbar } from '@app/components/courses'
+import { CourseList, Filters, PageNo, Searchbar } from 'components/courses'
 
 const Container = styled.div`
   margin: 4rem 0 0 11.5rem;

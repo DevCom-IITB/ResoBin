@@ -1,4 +1,4 @@
-export { default as CourseList } from './CourseList'
-export { default as Filters } from './Filters'
-export { default as PageNo } from './PageNo'
-export { default as Searchbar } from './Searchbar'
+export { default as CourseList } from 'components/courses/CourseList'
+export { default as Filters } from 'components/courses/Filters'
+export { default as PageNo } from 'components/courses/PageNo'
+export { default as Searchbar } from 'components/courses/Searchbar'

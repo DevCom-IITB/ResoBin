@@ -1,2 +1,2 @@
-export { GlobalStyles } from '@app/styles/Global'
-export { LightTheme, DarkTheme } from '@app/styles/Theme'
+export { GlobalStyles } from 'styles/Global'
+export { LightTheme, DarkTheme } from 'styles/Theme'
