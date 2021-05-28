@@ -4,7 +4,17 @@ export const GlobalStyles = createGlobalStyle`
     *,
     *::after,
     *::before {
+	    margin: 0;
+        padding: 0;
+
+        font-family: 'Mulish', sans-serif;
+      	font-size: 16px;
+
+        transition: all 0ms linear;
         box-sizing: border-box;
+
+    	-webkit-font-smoothing: antialiased;
+    	-moz-osx-font-smoothing: grayscale;
     }
     
     body {
@@ -14,6 +24,9 @@ export const GlobalStyles = createGlobalStyle`
         height: 100vh;
         margin: 0;
         padding: 0;
-        transition: all 0.25 linear;
+    }
+    
+    code {
+        font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
     }
 `

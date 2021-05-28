@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+// import Dashboard from 'layout/Dashboard'
 import { CourseList, Filters, PageNo, Searchbar } from '@app/components/courses'
 
 const Container = styled.div`
@@ -13,14 +14,17 @@ const MiddleContainer = styled.div`
 
 const Courses = () => {
   return (
-    <Container>
-      <MiddleContainer>
-        <Searchbar />
-        <CourseList />
-        <PageNo />
-      </MiddleContainer>
-      <Filters />
-    </Container>
+    // <>
+      // <Dashboard />
+      <Container>
+        <MiddleContainer>
+          <Searchbar />
+          <CourseList />
+          <PageNo />
+        </MiddleContainer>
+        <Filters />
+      </Container>
+    // </>
   )
 }
 

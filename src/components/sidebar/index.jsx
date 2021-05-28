@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import SidebarItem from '@app/components/sidebar/SidebarItem'
 import ProfileImage from '@app/assets/images/ProfileImg.jpg'
 import ProfileImgItem from '@app/components/sidebar/ProfileImgItem'
-import Divider from '@app/components/common/Divider'
+import Divider from '@app/components/shared/Divider'
 import { BookOpen, Bookmark, ChartPie, CloudUpload, Cog, Logout } from '@styled-icons/heroicons-outline'
 
 const Container = styled.div`

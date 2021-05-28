@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Divider from '@app/components/common/Divider'
+import Divider from '@app/components/shared/Divider'
 
 const Container = styled.div`
 	background-color: #1b1728;
