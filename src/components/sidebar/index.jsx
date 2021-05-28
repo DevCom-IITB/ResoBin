@@ -24,19 +24,29 @@ const Container = styled.div`
 const Sidebar = () => {
 	return (
     <Container>
-      {/* <Link to="/courses" style={{ textDecoration: 'none' }}> */}
-      <SidebarItem title="Courses" icon={<BookOpen size="20" />} active />
-      {/* </Link> */}
-      <SidebarItem title="Contribute" icon={<CloudUpload size="20" />} />
-      <SidebarItem title="Stats" icon={<ChartPie size="20" />} />
+      <SidebarItem
+        title="Courses"
+        icon={<BookOpen size="20" />}
+        to="/courses"
+        active
+      />
+      <SidebarItem
+        title="Contribute"
+        icon={<CloudUpload size="20" />}
+        to="/contribute"
+      />
+      <SidebarItem title="Stats" icon={<ChartPie size="20" />} to="/stats" />
+
       <Divider margin="1.5rem 0" />
       <ProfileImgItem title="Laxman D." src={ProfileImage} />
-      <SidebarItem title="Account" icon={<Cog size="20" />} />
+
+      <SidebarItem title="Account" icon={<Cog size="20" />} to="/account" />
       <SidebarItem
         title="Favorites"
         icon={<Bookmark size="20" title="Check course material" />}
+        to="/account"
       />
-      <SidebarItem title="Sign out" icon={<Logout size="20" />} />
+      <SidebarItem title="Sign out" icon={<Logout size="20" />} to="/signout" />
     </Container>
   )
 }

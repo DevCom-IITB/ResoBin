@@ -11,6 +11,7 @@ const Container = styled.div`
 	);
 	display: flex;
 	align-items: center;
+  justify-content: center;
 	height: 4rem;
 	position: sticky;
 	top: 4rem;
@@ -31,17 +32,19 @@ const SearchBox = styled.input`
   padding: 0 2rem;
 
   border-radius: 1.5rem;
-  border: solid #ccc;
+  border: 2px solid #bbb;
   box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.3);
   cursor: pointer;
 
   &:hover {
     background: ${({ theme }) => theme.searchColor};
+    border: 2px solid ${({ theme }) => HEX2RGBA(theme.logo, 60)};
   }
 
   &:focus {
     background: ${({ theme }) => theme.searchColor};
     outline: none;
+    border: 2px solid ${({ theme }) => theme.logo};
     cursor: auto;
   }
 `

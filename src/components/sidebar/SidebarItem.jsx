@@ -1,10 +1,12 @@
+import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
-const Container = styled.div`
+const Container = styled(NavLink)`
   min-height: 4rem;
   width: 100%;
   padding: 0px 0.75rem;
-
+	text-decoration: none;
+	
   display: flex;
   flex-direction: row;
   cursor: pointer;
@@ -25,34 +27,34 @@ const Container = styled.div`
 `
 
 const IconContainer = styled.div`
-	width: 30%; /* width: 60px */
-	padding-left: 6px;
-	min-height: 100%;
-	display: flex;
-	align-items: center;
+  width: 30%; /* width: 60px */
+  padding-left: 6px;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
 `
 
 const Title = styled.h4`
-	font-weight: 400;
-	min-height: 100%;
-	width: 70%;
+  font-weight: 400;
+  min-height: 100%;
+  width: 70%;
 
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-	letter-spacing: 1.5px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  letter-spacing: 1.5px;
 
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 `
 
-const SidebarItem = ({ title, icon, active }) => {
-	return (
-		<Container active={active}>
-			<IconContainer>{icon}</IconContainer>
-			<Title active={active}>{title}</Title>
-		</Container>
-	)
+const SidebarItem = ({ title, icon, active, to }) => {
+  return (
+    <Container to={to} activeStyle active={active}>
+      <IconContainer>{icon}</IconContainer>
+      <Title active={active}>{title}</Title>
+    </Container>
+  )
 }
 
 export default SidebarItem
