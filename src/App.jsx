@@ -15,6 +15,7 @@ const Courses = lazy(() => import('pages/Courses'))
 const Contribute = lazy(() => import('pages/Contribute'))
 const Contact = lazy(() => import('pages/Contact'))
 const NotFound = lazy(() => import('pages/NotFound'))
+const Login = lazy(() => import('pages/Login'))
 
 const App = () => {
   const { theme } = useContext(ThemeContext)
@@ -30,6 +31,7 @@ const App = () => {
             <Route exact path="/courses" component={Courses} />
             <Route exact path="/contribute" component={Contribute} />
             <Route exact path="/contact" component={Contact} />
+            <Route exact path="/login" component={Login} />
             <Route component={NotFound} status={404} />
             <Redirect to="/404" />
           </Switch>

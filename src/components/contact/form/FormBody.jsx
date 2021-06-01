@@ -4,7 +4,7 @@ import {
   StyledInput,
   StyledTextArea,
   StyledButton,
-} from 'components/contact/form/FormElements'
+} from 'components/shared/FormElements'
 
 const initalState = {
   name: '',
