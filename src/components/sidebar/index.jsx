@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import SidebarItem from 'components/sidebar/SidebarItem'
-import ProfileImage from 'assets/images/ProfileImg.jpg'
 import ProfileImgItem from 'components/sidebar/ProfileImgItem'
 import Divider from 'components/shared/Divider'
+import ProfileImage from 'assets/images/ProfileImg_Laxman.jpg'
 import {
   BookOpen,
   Bookmark,
@@ -11,6 +11,7 @@ import {
   Cog,
   Logout,
 } from '@styled-icons/heroicons-outline'
+import { ContactSupport } from '@styled-icons/material-outlined'
 
 const Container = styled.div`
   background: ${({ theme }) => theme.secondary};
@@ -45,14 +46,21 @@ const Sidebar = () => {
 
       <Divider margin="1.5rem 0" />
       <ProfileImgItem title="Laxman D." src={ProfileImage} />
-
-      <SidebarItem title="Account" icon={<Cog size="20" />} to="/account" />
+      
       <SidebarItem
         title="Favorites"
         icon={<Bookmark size="20" title="Check course material" />}
         to="/favourites"
       />
+      <SidebarItem title="Account" icon={<Cog size="20" />} to="/account" />
       <SidebarItem title="Sign out" icon={<Logout size="20" />} to="/signout" />
+
+      <Divider margin="1.5rem 0" />
+      <SidebarItem
+        title="Get help"
+        icon={<ContactSupport size="20" />}
+        to="/contact"
+      />
     </Container>
   )
 }

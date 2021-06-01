@@ -9,21 +9,21 @@ const CheckboxContainer = styled.div`
   padding: 0 1rem;
 `
 
-const Title = styled.h4`
-  font-weight: 300;
-  font-size: 0.8rem;
-  line-height: 80%;
-  padding-top: 0.5rem;
-  color: ${({ theme }) => theme.textColor};
-  white-space: nowrap;
-`
+// const Title = styled.h4`
+//   font-weight: 300;
+//   font-size: 0.8rem;
+//   line-height: 80%;
+//   padding-top: 0.5rem;
+//   color: ${({ theme }) => theme.textColor};
+//   white-space: nowrap;
+// `
 
 const DarkModeCheckbox = () => {
   const { toggleTheme } = useThemeContext()
   return (
     <CheckboxContainer>
       <Checkbox onClick={toggleTheme} />
-      <Title>Dark mode</Title>
+      {/* <Title>Dark mode</Title> */}
     </CheckboxContainer>
   )
 }
