@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Divider from 'components/shared/Divider'
-import Developer from 'components/contact/Developer'
+import { Developer } from 'components/contact'
 import ImgLaxman from 'assets/images/ProfileImg_Laxman.jpg'
 
 const Container = styled.div`
@@ -33,7 +33,7 @@ const DeveloperList = () => {
       <Divider margin="1rem 0 1.5rem 0" />
 
       <Developer
-        name="Laxman Desai"
+        name="John Doeee"
         img={ImgLaxman}
         href="https://github.com/relaxxpls"
         switchOrder

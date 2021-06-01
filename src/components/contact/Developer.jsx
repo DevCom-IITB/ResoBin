@@ -4,16 +4,16 @@ import ProfileImg from 'components/shared/ProfileImg'
 const Container = styled.a`
   height: 6rem;
   width: 100%;
-  padding: 0px 0.75rem;
-  text-decoration: none;
+  margin: 0.5rem 0;
+  padding: 1rem 0.5rem;
 
   display: flex;
   flex-direction: row;
   cursor: pointer;
 
   color: ${({ theme }) => theme.textColorInactive};
+  text-decoration: none;
   background-color: ${({ theme }) => theme.secondary};
-  border-left: 3px solid transparent;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
@@ -21,30 +21,31 @@ const Container = styled.a`
     text-underline-offset: 1.5px;
     text-decoration-thickness: 2px;
     box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.24);
-		transform: scale(1.05);
-		transition: 100ms ease-out;
+    /* transform: scale(1.05); */
+    transition: 100ms ease-out;
   }
 `
 
 const IconContainer = styled.div`
   width: 30%; /* 60px */
-  margin: 1rem 0;
   display: flex;
   align-items: center;
 `
 
-const Title = styled.h4`
-	margin: 1rem 0.25rem 1rem 1rem;
+const TitleContainer = styled.div`
+  margin: 0 0 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 70%;
-  text-overflow: clip;
+`
 
-  font-weight: 500;
-	font-size: 1.5rem;
+const Title = styled.h4`
+  font-weight: 400;
+  font-size: 1.25rem;
   color: ${({ theme }) => theme.textColor};
-	text-align: center;
-
   overflow: hidden;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
 `
 
 const Developer = ({ name, img, href, switchOrder }) => {
@@ -53,7 +54,9 @@ const Developer = ({ name, img, href, switchOrder }) => {
       <IconContainer>
         <ProfileImg src={img} size="60px" />
       </IconContainer>
-      <Title>{name}</Title>
+      <TitleContainer>
+        <Title>{name}</Title>
+      </TitleContainer>
     </Container>
   )
 }
