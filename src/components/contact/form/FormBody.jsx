@@ -4,7 +4,7 @@ import {
   StyledInput,
   StyledTextArea,
   StyledButton,
-} from 'components/contact/form/Input'
+} from 'components/contact/form/FormElements'
 
 const initalState = {
   name: '',
@@ -15,10 +15,7 @@ const initalState = {
 
 const ContainerForm = styled.form`
   margin: 2rem;
-`
-
-const Label = styled.div`
-  
+  appearance: none;
 `
 
 const FormBody = () => {
@@ -34,16 +31,15 @@ const FormBody = () => {
     <ContainerForm>
       <StyledInput placeholder="Name" type="text" />
       <StyledInput placeholder="Email" type="email" />
-      <StyledInput placeholder="Subject" type="text" />
-      
-      <Label htmlFor="message">Message</Label>
+      <StyledInput placeholder="Subject" type="text" height="2rem" />
+
       <StyledTextArea
-        name="message"
+        placeholder="Message"
         value={state.message}
         onChange={handleInput}
       />
 
-      <StyledButton type="submit" disabled="true">
+      <StyledButton type="submit">
         Send Message
       </StyledButton>
     </ContainerForm>
