@@ -5,7 +5,7 @@ const Container = styled.a`
   height: 6rem;
   width: 100%;
   margin: 0.5rem 0;
-  padding: 1rem 0.5rem;
+  padding: 1rem 1.5rem;
 
   display: flex;
   flex-direction: row;
@@ -41,8 +41,8 @@ const TitleContainer = styled.div`
 `
 
 const Title = styled.h4`
-  font-weight: 400;
-  font-size: 1.25rem;
+  font-weight: 300;
+  font-size: 1rem;
   color: ${({ theme }) => theme.textColor};
   overflow: hidden;
   letter-spacing: 1px;
@@ -52,7 +52,7 @@ const Developer = ({ name, img, href, switchOrder }) => {
   return (
     <Container href={href}>
       <IconContainer>
-        <ProfileImg src={img} size="60px" />
+        <ProfileImg src={img} size="3rem" />
       </IconContainer>
       <TitleContainer>
         <Title>{name}</Title>

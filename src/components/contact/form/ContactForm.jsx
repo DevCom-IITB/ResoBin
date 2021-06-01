@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Divider from 'components/shared/Divider'
-import { FormBody } from 'components/contact'
+import FormBody from 'components/contact/form/FormBody'
 
 const Container = styled.div`
   display: flex;
