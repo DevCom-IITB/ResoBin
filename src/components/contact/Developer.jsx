@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import ProfileImg from 'components/shared/ProfileImg'
 
 const Container = styled.a`
-  height: 6rem;
+  height: 4rem;
   width: 100%;
   margin: 0.5rem 0;
   padding: 1rem 1.5rem;
@@ -21,7 +21,6 @@ const Container = styled.a`
     text-underline-offset: 1.5px;
     text-decoration-thickness: 2px;
     box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.24);
-    /* transform: scale(1.05); */
     transition: 100ms ease-out;
   }
 `
