@@ -1,10 +1,12 @@
 import styled from 'styled-components'
 import Divider from 'components/shared/Divider'
+import { FormBody } from 'components/contact'
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   background: ${({ theme }) => theme.darksecondary};
   margin: 6rem 21rem 2rem 2rem;
-  height: 500px;
   border-radius: 8px;
   box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.5);
 `
@@ -17,7 +19,7 @@ const Title = styled.h4`
   line-height: 30px;
   letter-spacing: 1.5px;
   padding: 2.5rem 2.5rem 1rem;
-  color: #fff;
+  color: ${({ theme }) => theme.textColor};
 `
 
 const ContactForm = () => {
@@ -25,6 +27,7 @@ const ContactForm = () => {
     <Container>
       <Title> Contact us </Title>
       <Divider />
+      <FormBody />
     </Container>
   )
 }
