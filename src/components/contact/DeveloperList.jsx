@@ -33,15 +33,15 @@ const DeveloperList = () => {
       <Divider margin="1rem 0 1.5rem 0" />
 
       <Developer
+        name="Laxman Desai"
+        img={ImgLaxman}
+        href="https://github.com/relaxxpls"
+      />
+      <Developer
         name="John Doe"
         img={ImgLaxman}
         href="https://github.com/relaxxpls"
         switchOrder
-      />
-      <Developer
-        name="Laxman Desai"
-        img={ImgLaxman}
-        href="https://github.com/relaxxpls"
       />
     </Container>
   )

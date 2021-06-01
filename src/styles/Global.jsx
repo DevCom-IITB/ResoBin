@@ -16,10 +16,6 @@ export const GlobalStyles = createGlobalStyle`
 	body {
 		background: ${({ theme }) => theme.primary};
 		color: ${({ theme }) => theme.textColor};
-		font-family: 'Mulish', sans-serif;
-		height: 100vh;
-		margin: 0;
-		padding: 0;
 	}
 	
 	code {
