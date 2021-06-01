@@ -19,7 +19,7 @@ const Title = styled.h4`
   font-family: Mulish;
   font-style: normal;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   line-height: 30px;
   letter-spacing: 1.5px;
   margin-bottom: 1rem;
@@ -33,7 +33,7 @@ const DeveloperList = () => {
       <Divider margin="1rem 0 1.5rem 0" />
 
       <Developer
-        name="John Doeee"
+        name="John Doe"
         img={ImgLaxman}
         href="https://github.com/relaxxpls"
         switchOrder

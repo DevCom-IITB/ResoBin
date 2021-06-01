@@ -17,7 +17,7 @@ const Title = styled.h4`
   line-height: 30px;
   letter-spacing: 1.5px;
   padding: 2.5rem 2.5rem 1rem;
-  color: #fff;
+  color: ${({ theme }) => theme.textColor};
 `
 
 const FileDetails = () => {
