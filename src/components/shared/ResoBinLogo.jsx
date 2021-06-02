@@ -27,7 +27,7 @@ const Underline = styled.div`
   background: ${({ theme }) => theme.logo};
 `
 
-const ResoBinLogo = () => {
+const ResoBinLogo = ({ size }) => {
   return (
     <Container>
       <Text> ResoBin </Text>

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import HEX2RGBA from 'helpers/HEX2RGBA'
-import InputRound from 'components/shared/InputRounded'
+import { HEX2RGBA } from 'helpers'
+import { InputRounded } from 'components/shared'
 import { Search } from '@styled-icons/heroicons-outline'
 
 const Container = styled.div`
@@ -23,7 +23,7 @@ const Container = styled.div`
 const CourseSearchbar = () => {
   return (
     <Container>
-      <InputRound type="text" placeholder="Search" icon={Search} />
+      <InputRounded type="text" placeholder="Search" icon={Search} />
     </Container>
   )
 }

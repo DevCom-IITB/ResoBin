@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import HEX2RGBA from 'helpers/HEX2RGBA'
+import { HEX2RGBA } from 'helpers'
 
 const sharedStyles = css`
   display: block;

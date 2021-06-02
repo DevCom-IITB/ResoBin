@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Divider from 'components/shared/Divider'
+import { Divider } from 'components/shared'
 
 const Container = styled.div`
   background: ${({ theme }) => theme.darksecondary};

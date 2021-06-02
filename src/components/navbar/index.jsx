@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import ResoBinLogo from 'components/shared/ResoBinLogo'
-import DarkModeCheckbox from 'components/navbar/DarkModeCheckbox'
+import { ResoBinLogo } from 'components/shared'
+import DarkmodeToggle from 'components/navbar/DarkmodeToggle'
 import CurrentTerm from 'components/navbar/CurrentTerm'
 
 const Container = styled.div`
@@ -51,7 +51,7 @@ const Navbar = () => {
       </MiddleContainer>
 
       <RightContainer>
-        <DarkModeCheckbox />
+        <DarkmodeToggle />
       </RightContainer>
     </Container>
   )

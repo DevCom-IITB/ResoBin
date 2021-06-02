@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import HEX2RGBA from 'helpers/HEX2RGBA'
+import { HEX2RGBA } from 'helpers'
 
 const ButtonSquare = styled.button`
   display: block;

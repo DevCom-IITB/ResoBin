@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Checkbox from 'components/shared/Checkbox'
+import { Toggle } from 'components/shared'
 import { useThemeContext } from 'context/ThemeContext'
 
 const CheckboxContainer = styled.div`
@@ -18,14 +18,14 @@ const CheckboxContainer = styled.div`
 //   white-space: nowrap;
 // `
 
-const DarkModeCheckbox = () => {
+const DarkmodeToggle = () => {
   const { toggleTheme } = useThemeContext()
   return (
     <CheckboxContainer>
-      <Checkbox onClick={toggleTheme} />
+      <Toggle onClick={toggleTheme} />
       {/* <Title>Dark mode</Title> */}
     </CheckboxContainer>
   )
 }
 
-export default DarkModeCheckbox
+export default DarkmodeToggle

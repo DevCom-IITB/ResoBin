@@ -42,7 +42,7 @@ const Title = styled.h4`
   align-items: center;
   min-height: 100%;
   width: 70%;
-  
+
   font-weight: 400;
   letter-spacing: 1.5px;
   white-space: nowrap;

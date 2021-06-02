@@ -1,7 +1,7 @@
 import styled from 'styled-components'
+import { Divider } from 'components/shared'
 import SidebarItem from 'components/sidebar/SidebarItem'
 import ProfileImgItem from 'components/sidebar/ProfileImgItem'
-import Divider from 'components/shared/Divider'
 import ProfileImage from 'assets/images/ProfileImg_Laxman.jpg'
 import {
   BookOpen,
@@ -46,7 +46,7 @@ const Sidebar = () => {
 
       <Divider margin="1.5rem 0" />
       <ProfileImgItem title="Laxman D." src={ProfileImage} />
-      
+
       <SidebarItem
         title="Favorites"
         icon={<Bookmark size="20" title="Check course material" />}

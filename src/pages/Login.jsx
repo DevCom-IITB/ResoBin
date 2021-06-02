@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import Divider from 'components/shared/Divider'
 import { HEX2RGBA } from 'helpers'
+import { Divider, ResoBinLogo } from 'components/shared'
 import { LoginHeader, LoginBody } from 'components/login'
 
 const Container = styled.div`

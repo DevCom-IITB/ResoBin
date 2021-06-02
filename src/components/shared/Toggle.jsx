@@ -48,7 +48,7 @@ const CheckboxInput = styled.input`
   }
 `
 
-const Checkbox = ({ onClick }) => {
+const Toggle = ({ onClick }) => {
 	return (
     <Container>
       <CheckboxInput type="checkbox" defaultChecked="true" onClick={onClick} />
@@ -57,4 +57,4 @@ const Checkbox = ({ onClick }) => {
   )
 }
 
-export default Checkbox
+export default Toggle
