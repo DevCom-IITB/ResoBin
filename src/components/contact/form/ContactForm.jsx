@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Divider from 'components/shared/Divider'
+import { Divider } from 'components/shared'
 import FormBody from 'components/contact/form/FormBody'
 
 const Container = styled.div`

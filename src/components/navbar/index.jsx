@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import ResoBinLogo from 'components/navbar/ResoBinLogo'
+import ResoBinLogo from 'components/shared/ResoBinLogo'
 import DarkModeCheckbox from 'components/navbar/DarkModeCheckbox'
 import CurrentTerm from 'components/navbar/CurrentTerm'
 

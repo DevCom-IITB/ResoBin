@@ -12,28 +12,28 @@ const Container = styled.div`
 `
 
 const Text = styled.div`
-	font-family: Montserrat;
-	font-style: normal;
-	font-weight: 600;
-	font-size: 1.75rem;
-	line-height: 110%;
-	color: ${({ theme }) => theme.logo};
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.75rem;
+  line-height: 110%;
+  color: ${({ theme }) => theme.logo};
 `
 
 const Underline = styled.div`
-	width: 96%;
-	height: 0.20rem;
-	margin-bottom: 7px;
-	background: ${({ theme }) => theme.logo};
+  width: 96%;
+  height: 0.2rem;
+  margin-bottom: 7px;
+  background: ${({ theme }) => theme.logo};
 `
 
 const ResoBinLogo = () => {
-    return (
-        <Container>
-            <Text> ResoBin </Text>
-            <Underline/>
-        </Container>
-    )
+  return (
+    <Container>
+      <Text> ResoBin </Text>
+      <Underline />
+    </Container>
+  )
 }
 
 export default ResoBinLogo

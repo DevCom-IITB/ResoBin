@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import HEX2RGBA from 'helpers/HEX2RGBA'
-import InputRound from 'components/shared/InputRound'
+import InputRound from 'components/shared/InputRounded'
 import { Search } from '@styled-icons/heroicons-outline'
 
 const Container = styled.div`

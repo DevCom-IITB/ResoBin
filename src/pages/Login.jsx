@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Divider from 'components/shared/Divider'
 import { HEX2RGBA } from 'helpers'
-import { FormTitle, FormBody } from 'components/login'
+import { LoginHeader, LoginBody } from 'components/login'
 
 const Container = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ const Container = styled.div`
   height: 100%;
   z-index: 9999;
   position: fixed;
-  background-color: ${({ theme }) => theme.logo};
+  background-color: ${({ theme }) => theme.secondary};
 `
 
 const FormBox = styled.div`
@@ -31,9 +31,9 @@ const Login = () => {
   return (
     <Container>
       <FormBox>
-        <FormTitle />
+        <LoginHeader />
         <Divider />
-        <FormBody />
+        <LoginBody />
         <Divider margin="0.5rem 0" />
       </FormBox>
     </Container>

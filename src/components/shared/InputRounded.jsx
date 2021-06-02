@@ -30,7 +30,7 @@ const Input = styled.input`
   }
 `
 
-const InputRound = ({ type, placeholder, icon }) => {
+const InputRounded = ({ type, placeholder, icon }) => {
   const Icon = styled(icon)`
     color: #807da0;
     width: 1.75rem;
@@ -45,4 +45,4 @@ const InputRound = ({ type, placeholder, icon }) => {
   )
 }
 
-export default InputRound
+export default InputRounded

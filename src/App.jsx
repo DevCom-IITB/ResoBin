@@ -9,13 +9,12 @@ import { ThemeProvider } from 'styled-components'
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
 import { ThemeContext } from 'context/ThemeContext'
 import Dashboard from 'layout/Dashboard'
+import { Login, NotFound } from 'pages'
 
 // Lazy load the pages when called
 const Courses = lazy(() => import('pages/Courses'))
 const Contribute = lazy(() => import('pages/Contribute'))
 const Contact = lazy(() => import('pages/Contact'))
-const NotFound = lazy(() => import('pages/NotFound'))
-const Login = lazy(() => import('pages/Login'))
 
 const App = () => {
   const { theme } = useContext(ThemeContext)

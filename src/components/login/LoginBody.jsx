@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import InputRound from 'components/shared/InputRound'
-import { StyledButton } from 'components/shared/FormElements'
+import { InputRounded, ButtonSquare } from 'components/shared'
 import { Email } from '@styled-icons/material-outlined'
 import { LockPassword } from '@styled-icons/remix-line'
 
@@ -18,11 +17,16 @@ const Container = styled.div`
 const FormBody = () => {
   return (
     <Container>
-      <InputRound type="text" placeholder="Email" icon={Email} />
-      <InputRound type="password" placeholder="Password" icon={LockPassword} />
-      <StyledButton type="submit" style={{ 'font-size': '1.25rem' }}>
+      <InputRounded type="text" placeholder="Email" icon={Email} />
+      <InputRounded
+        type="password"
+        placeholder="Password"
+        icon={LockPassword}
+      />
+      
+      <ButtonSquare type="submit" style={{ 'font-size': '1.25rem' }}>
         Login
-      </StyledButton>
+      </ButtonSquare>
     </Container>
   )
 }
