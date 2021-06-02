@@ -1,10 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import {
-  StyledInput,
-  StyledTextArea,
-  StyledButton,
-} from 'components/contact/form/FormElements'
+import { InputSquared, TextAreaSquared, ButtonSquare } from 'components/shared'
 
 const initalState = {
   name: '',
@@ -20,7 +16,7 @@ const ContainerForm = styled.form`
 
 const FormBody = () => {
   const [state, setState] = useState(initalState)
-  
+
   const handleInput = (e) => {
     const inputName = e.currentTarget.name
     const value = e.currentTarget.value
@@ -29,19 +25,17 @@ const FormBody = () => {
 
   return (
     <ContainerForm>
-      <StyledInput placeholder="Name" type="text" />
-      <StyledInput placeholder="Email" type="email" />
-      <StyledInput placeholder="Subject" type="text" height="2rem" />
+      <InputSquared placeholder="Name" type="text" />
+      <InputSquared placeholder="Email" type="email" />
+      <InputSquared placeholder="Subject" type="text" height="2rem" />
 
-      <StyledTextArea
+      <TextAreaSquared
         placeholder="Message"
         value={state.message}
         onChange={handleInput}
       />
 
-      <StyledButton type="submit">
-        Send Message
-      </StyledButton>
+      <ButtonSquare type="submit">Send Message</ButtonSquare>
     </ContainerForm>
   )
 }

@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import ProfileImg from 'components/shared/ProfileImg'
+import { ProfileImg } from 'components/shared'
 
 const Container = styled.div`
   background: blue;
-	min-height: 4rem;
+  min-height: 4rem;
   width: 100%;
   padding: 0px 0.75rem;
 

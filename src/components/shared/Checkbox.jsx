@@ -1,58 +1,56 @@
 import styled from 'styled-components'
 
 const Container = styled.div`
-	display: flex;
-	position: relative;
+	display: block;
 `
 
-const CheckboxLabel = styled.label`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 42px;
-  height: 26px;
-  border-radius: 15px;
-  background: ${({ theme }) => theme.logo};
-
-  &::after {
-    content: '';
-    display: block;
-    border-radius: 50%;
-    width: 1rem;
-    height: 1rem;
-    margin: 5px;
-    background: rgba(255, 255, 255, 0.8);
-    box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.1);
-    transition: 200ms;
-  }
-`
-
-const CheckboxInput = styled.input`
+const InputCheckbox = styled.input`
   cursor: pointer;
-  opacity: 0;
-  z-index: 1;
-  border-radius: 15px;
-  width: 42px;
-  height: 26px;
+  display: none;
+`
 
-  &:checked + ${CheckboxLabel} {
-    &::after {
-      content: '';
-      display: block;
-      border-radius: 50%;
-      width: 1rem;
-      height: 1rem;
-      margin-left: 21px;
-      transition: 200ms;
-    }
+const InputLabel = styled.label`
+  margin-left: 0.25rem;
+  position: relative;
+  color: ${({ theme }) => theme.textColor};
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+
+  &:before {
+    content: '';
+    appearance: none;
+    border: 2px solid ${({ theme }) => theme.textColor};
+
+    padding: 0.35rem;
+    display: inline-block;
+    top: 2px;
+    left: 0.275rem;
+    position: relative;
+    margin-right: 1rem;
+  }
+
+  ${InputCheckbox}:checked + &:after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    width: 4px;
+    height: 9px;
+    border: solid ${({ theme }) => theme.textColor};
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
   }
 `
 
-const Checkbox = ({ onClick }) => {
+const Checkbox = ({ label }) => {
 	return (
     <Container>
-      <CheckboxInput type="checkbox" defaultChecked="true" onClick={onClick} />
-      <CheckboxLabel htmlFor="checkbox" />
+      <InputCheckbox type="checkbox" id="checkbox" />
+      <InputLabel for="checkbox">{label}</InputLabel>
     </Container>
   )
 }

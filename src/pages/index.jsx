@@ -1,1 +1,5 @@
 export { default as Courses } from 'pages/Courses'
+export { default as NotFound } from 'pages/NotFound'
+export { default as Contribute } from 'pages/Contribute'
+export { default as Contact } from 'pages/Contact'
+export { default as Login } from 'pages/Login'

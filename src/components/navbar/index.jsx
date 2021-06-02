@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import ResoBinLogo from 'components/navbar/ResoBinLogo'
-import DarkModeCheckbox from 'components/navbar/DarkModeCheckbox'
+import { ResoBinLogo } from 'components/shared'
+import DarkmodeToggle from 'components/navbar/DarkmodeToggle'
 import CurrentTerm from 'components/navbar/CurrentTerm'
 
 const Container = styled.div`
@@ -14,7 +14,7 @@ const Container = styled.div`
   top: 0px;
   background: ${({ theme }) => theme.darksecondary};
   box-shadow: 11.5rem 0px 0.5rem rgba(0, 0, 0, 0.5);
-  z-index: 9; /* To put searchbar at the bottom */
+  z-index: 9; /* To put navbar at the top */
 `
 
 const LeftContainer = styled.div`
@@ -42,7 +42,7 @@ const Navbar = () => {
     <Container>
       <LeftContainer>
         <Link to="/" style={{ textDecoration: 'none' }}>
-          <ResoBinLogo />
+          <ResoBinLogo size="1.75rem" />
         </Link>
       </LeftContainer>
 
@@ -51,7 +51,7 @@ const Navbar = () => {
       </MiddleContainer>
 
       <RightContainer>
-        <DarkModeCheckbox />
+        <DarkmodeToggle />
       </RightContainer>
     </Container>
   )
