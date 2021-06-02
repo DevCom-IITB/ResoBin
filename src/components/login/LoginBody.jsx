@@ -1,7 +1,9 @@
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
-import { InputRounded, ButtonSquare, Divider } from 'components/shared'
-import { LoginUtils } from 'components/login'
+// Components:
+import { InputRounded as Input, ButtonSquare, Divider } from 'components/shared'
+import { Checkbox } from 'components/shared'
+// Icons:
 import { Email } from '@styled-icons/material-outlined'
 import { LockPassword } from '@styled-icons/remix-line'
 import Google from 'assets/images/Google Signin/btn_google_signin_dark_normal_web@2x.png'
@@ -17,7 +19,23 @@ const Container = styled.div`
   }
 `
 
-const OrDivider = styled.div`
+const ContainerSpaceBetween = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+`
+
+const ForgetPass = styled(NavLink)`
+  color: ${({ theme }) => theme.textColor};
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-decoration: none;
+  user-select: none;
+`
+
+const ContainerOr = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -37,26 +55,22 @@ const GoogleSignIn = styled.img`
 const FormBody = () => {
   return (
     <Container>
-      <InputRounded type="text" placeholder="Email" icon={Email} />
-      <InputRounded
-        type="password"
-        placeholder="Password"
-        icon={LockPassword}
-      />
-      <LoginUtils />
+      <Input type="text" placeholder="Email" icon={Email} />
+      <Input type="password" placeholder="Password" icon={LockPassword} />
+      <ContainerSpaceBetween>
+        <Checkbox label="Remember me" />
+        <ForgetPass to="reset">Forgot password?</ForgetPass>
+      </ContainerSpaceBetween>
 
-      <ButtonSquare
-        type="submit"
-        style={{ 'margin-top': '0.5rem', 'font-size': '1.25rem' }}
-      >
+      <ButtonSquare type="submit" style={{ 'font-size': '1.25rem' }}>
         Login
       </ButtonSquare>
 
-      <OrDivider>
+      <ContainerOr>
         <Divider style={{ width: '42%' }} />
         OR
         <Divider style={{ width: '42%' }} />
-      </OrDivider>
+      </ContainerOr>
 
       <GoogleSignIn src={Google} />
     </Container>
