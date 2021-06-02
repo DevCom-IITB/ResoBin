@@ -1,5 +1,10 @@
 import styled from 'styled-components'
-import { CourseList, Filters, PageNo, Searchbar } from 'components/courses'
+import {
+  CourseList,
+  Filters,
+  PageNo,
+  CourseSearchbar,
+} from 'components/courses'
 
 const Container = styled.div`
   margin: 4rem 0 0 11.5rem;
@@ -15,7 +20,7 @@ const Courses = () => {
   return (
     <Container>
       <MiddleContainer>
-        <Searchbar />
+        <CourseSearchbar />
         <CourseList />
         <PageNo />
       </MiddleContainer>

@@ -38,17 +38,16 @@ const IconContainer = styled.div`
 `
 
 const Title = styled.h4`
-  font-weight: 400;
-  min-height: 100%;
-  width: 70%;
-
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  letter-spacing: 1.5px;
-
   display: flex;
   align-items: center;
+  min-height: 100%;
+  width: 70%;
+  
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const SidebarItem = ({ title, icon, to }) => {

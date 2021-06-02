@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components'
 import HEX2RGBA from 'helpers/HEX2RGBA'
 
 const sharedStyles = css`
@@ -14,9 +14,9 @@ const sharedStyles = css`
   box-sizing: border-box;
 
   color: ${({ theme }) => theme.activeMenu};
-  font-size: 1rem;
-  font-weight: 300;
-  transition-duration: 0.25s;
+  font-size: 1.25rem;
+  font-weight: 500;
+  transition-duration: 100ms;
   opacity: 80%;
 
   &:hover {
@@ -26,7 +26,7 @@ const sharedStyles = css`
   &:focus {
     background-color: white;
     opacity: 100%;
-    color: ${({ theme }) => theme.logo};
+    color: #1f1c2e;
   }
 `
 
@@ -42,24 +42,28 @@ const StyledTextArea = styled.textarea`
 
 const StyledButton = styled.button`
   display: block;
+  height: 2.5rem;
+  padding: 0 20px;
+  margin: 0 0 1.5rem;
+
+  cursor: pointer;
   background-color: ${({ theme }) => theme.logo};
+  opacity: 80%;
   color: #fff;
   font-size: 0.9rem;
+
   border: 0;
   border-radius: 0.25rem;
-  height: 40px;
-  padding: 0 20px;
-  cursor: pointer;
   box-sizing: border-box;
-  opacity: 80%;
 
   &:hover {
     opacity: 100%;
   }
-  
+
   &:active {
     opacity: 100%;
-    box-shadow: inset 0 0 5px ${HEX2RGBA("#000", 40)};
+    box-shadow: inset 0 0 5px ${HEX2RGBA('#000', 40)};
   }
 `
+
 export { StyledInput, StyledTextArea, StyledButton }

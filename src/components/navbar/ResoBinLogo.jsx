@@ -21,8 +21,8 @@ const Text = styled.div`
 `
 
 const Underline = styled.div`
-	width: 7.25rem;
-	height: 0.25rem;
+	width: 96%;
+	height: 0.20rem;
 	margin-bottom: 7px;
 	background: ${({ theme }) => theme.logo};
 `
