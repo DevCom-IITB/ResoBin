@@ -21,7 +21,7 @@ const Title = () => {
   return (
     <TitleContainer>
       <User size="4rem" />
-      <TitleHeader>Login</TitleHeader>
+      <TitleHeader>Welcome</TitleHeader>
     </TitleContainer>
   )
 }

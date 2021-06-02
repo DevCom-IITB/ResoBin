@@ -20,7 +20,7 @@ const ContainerForm = styled.form`
 
 const FormBody = () => {
   const [state, setState] = useState(initalState)
-  
+
   const handleInput = (e) => {
     const inputName = e.currentTarget.name
     const value = e.currentTarget.value
@@ -39,9 +39,7 @@ const FormBody = () => {
         onChange={handleInput}
       />
 
-      <StyledButton type="submit">
-        Send Message
-      </StyledButton>
+      <StyledButton type="submit">Send Message</StyledButton>
     </ContainerForm>
   )
 }

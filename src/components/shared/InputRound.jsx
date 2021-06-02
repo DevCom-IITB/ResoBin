@@ -30,16 +30,16 @@ const Input = styled.input`
   }
 `
 
-const InputRound = ({ icon, placeholder }) => {
+const InputRound = ({ type, placeholder, icon }) => {
   const Icon = styled(icon)`
     color: #807da0;
-    width: 3.5rem;
-    padding: 0 1.25rem 0 0.75rem;
+    width: 1.75rem;
+    margin: 0 1.25rem 0 0.75rem;
   `
 
   return (
     <Container>
-      <Input type="text" placeholder={placeholder} />
+      <Input type={type} placeholder={placeholder} />
       <Icon />
     </Container>
   )

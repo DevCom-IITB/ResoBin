@@ -34,6 +34,7 @@ const Login = () => {
         <FormTitle />
         <Divider />
         <FormBody />
+        <Divider margin="0.5rem 0" />
       </FormBox>
     </Container>
   )
