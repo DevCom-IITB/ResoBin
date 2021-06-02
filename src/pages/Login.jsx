@@ -17,7 +17,7 @@ const Container = styled.div`
 const FormBox = styled.div`
   width: 480px;
   background-color: ${({ theme }) => HEX2RGBA(theme.darksecondary, 90)};
-  padding: 2rem 0 1rem 0;
+  padding: 2rem 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

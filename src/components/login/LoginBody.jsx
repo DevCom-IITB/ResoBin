@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { InputRounded, ButtonSquare, Divider } from 'components/shared'
 import { LoginUtils } from 'components/login'
@@ -16,10 +17,21 @@ const Container = styled.div`
   }
 `
 
+const OrDivider = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 4px;
+  margin-bottom: 1rem;
+`
+
 const GoogleSignIn = styled.img`
   cursor: pointer;
-  /* height: 2rem; */
-  /* width: 10rem; */
+  width: 13rem;
+  margin: 0 auto;
+  user-select: none;
 `
 
 const FormBody = () => {
@@ -32,7 +44,7 @@ const FormBody = () => {
         icon={LockPassword}
       />
       <LoginUtils />
-      
+
       <ButtonSquare
         type="submit"
         style={{ 'margin-top': '0.5rem', 'font-size': '1.25rem' }}
@@ -40,8 +52,13 @@ const FormBody = () => {
         Login
       </ButtonSquare>
 
-      <Divider />
-      {/* <GoogleSignIn src={Google} /> */}
+      <OrDivider>
+        <Divider style={{ width: '42%' }} />
+        OR
+        <Divider style={{ width: '42%' }} />
+      </OrDivider>
+
+      <GoogleSignIn src={Google} />
     </Container>
   )
 }

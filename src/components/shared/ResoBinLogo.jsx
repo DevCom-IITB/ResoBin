@@ -5,6 +5,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   transition: 100ms;
+  user-select: none;
+  
   &:hover {
     transform: scale(1.03);
     transition: 100ms;
@@ -12,12 +14,12 @@ const Container = styled.div`
 `
 
 const Title = styled.div`
+  color: ${({ theme }) => theme.logo};
   font-family: Montserrat;
   font-style: normal;
   font-weight: 600;
   font-size: ${({ size }) => size};
   line-height: 110%;
-  color: ${({ theme }) => theme.logo};
 `
 
 const Underline = styled.div`
