@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import { HEX2RGBA } from 'helpers'
-import { Divider, ResoBinLogo } from 'components/shared'
 import { LoginHeader, LoginBody } from 'components/login'
 
 const Container = styled.div`
@@ -16,10 +15,9 @@ const Container = styled.div`
 `
 
 const FormBox = styled.div`
-  width: 400px;
-  height: 80%;
+  width: 480px;
   background-color: ${({ theme }) => HEX2RGBA(theme.darksecondary, 90)};
-  padding: 2rem;
+  padding: 2rem 0 1rem 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -32,9 +30,7 @@ const Login = () => {
     <Container>
       <FormBox>
         <LoginHeader />
-        <Divider />
         <LoginBody />
-        <Divider margin="0.5rem 0" />
       </FormBox>
     </Container>
   )

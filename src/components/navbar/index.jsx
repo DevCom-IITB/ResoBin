@@ -14,7 +14,7 @@ const Container = styled.div`
   top: 0px;
   background: ${({ theme }) => theme.darksecondary};
   box-shadow: 11.5rem 0px 0.5rem rgba(0, 0, 0, 0.5);
-  z-index: 9; /* To put searchbar at the bottom */
+  z-index: 9; /* To put navbar at the top */
 `
 
 const LeftContainer = styled.div`
@@ -42,7 +42,7 @@ const Navbar = () => {
     <Container>
       <LeftContainer>
         <Link to="/" style={{ textDecoration: 'none' }}>
-          <ResoBinLogo />
+          <ResoBinLogo size="1.75rem" />
         </Link>
       </LeftContainer>
 
