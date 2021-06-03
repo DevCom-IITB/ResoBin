@@ -7,25 +7,41 @@
 
 ## Setup
 
-In the project directory, you can run:
+### Frontend
 
-### Install modules
+* In the project directory, you can run
 
-```powershell
-yarn install
-pip install backend/requirements.txt
-```
+    ```powershell
+    yarn install
+    yarn start
+    ```
 
-Installs all the required node modules for the frontend & backend.
+* This will install all required frontend dependencies and start the app
+* Frontend server runs at [`http://localhost:3000`](http://localhost:3000)
 
-### Start app
+### Backend
 
-```powershell
-> yarn start
-> pg_ctl -D "C:\Program Files\PostgreSQL\13\data" start
-> python backend/migrations.py runserver
-```
+* First, enter the `backend` directory
 
-Frontend server runs at [`http://localhost:3000`](http://localhost:3000)  
-Database server runs at [`http://localhost:5432`](http://localhost:5432)  
-Backend server runs at [`http://localhost:8000`](http://localhost:8000)  
+    ```powershell
+    cd backend/
+    ```
+
+* Then you can run:
+
+    ```powershell
+    python -m venv env
+    env/Scripts/activate
+    pip3 install -r requirements.txt
+    ```
+
+* This will create a Python virtual enviroment `env`, and install the required backend packages.
+* Next, start the `PostgreSQL` database server and the `Django` backend server
+
+    ```powershell
+    pg_ctl -D "C:/Program Files/PostgreSQL/13/data" start
+    python3 "backend/migrations.py" runserver
+    ```
+
+* Backend server runs at [`http://localhost:8000`](http://localhost:8000)
+* Database server runs at [`http://localhost:5432`](http://localhost:5432)
