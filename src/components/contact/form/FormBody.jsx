@@ -10,7 +10,7 @@ const initalState = {
 }
 
 const ContainerForm = styled.form`
-  margin: 2rem;
+  margin: 2rem 2rem 0.5rem;
   appearance: none;
 `
 
@@ -31,8 +31,8 @@ const FormBody = () => {
 
       <TextAreaSquared
         placeholder="Message"
-        value={state.message}
-        onChange={handleInput}
+        // value={state.message}
+        // onChange={handleInput}
       />
 
       <ButtonSquare type="submit">Send Message</ButtonSquare>

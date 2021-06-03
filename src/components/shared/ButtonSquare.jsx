@@ -9,7 +9,7 @@ const ButtonSquare = styled.button`
 
   cursor: pointer;
   background-color: ${({ theme }) => theme.logo};
-  opacity: 80%;
+  opacity: 100%;
   color: #fff;
   font-size: 0.9rem;
 
@@ -18,11 +18,11 @@ const ButtonSquare = styled.button`
   box-sizing: border-box;
 
   &:hover {
-    opacity: 100%;
+    opacity: 90%;
   }
 
   &:active {
-    opacity: 100%;
+    opacity: 90%;
     box-shadow: inset 0 0 5px ${HEX2RGBA('#000', 40)};
   }
 `

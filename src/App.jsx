@@ -26,7 +26,7 @@ const App = () => {
         <Dashboard />
         <Suspense fallback={<div>Loading...</div>}>
           <Switch>
-            <Route exact path="/" component={Courses} />
+            <Route exact path="/" component={Login} />
             <Route exact path="/courses" component={Courses} />
             <Route exact path="/contribute" component={Contribute} />
             <Route exact path="/contact" component={Contact} />

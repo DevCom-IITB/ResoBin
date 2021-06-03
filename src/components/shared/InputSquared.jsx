@@ -4,8 +4,8 @@ import { HEX2RGBA } from 'helpers'
 const sharedStyles = css`
   display: block;
   width: 100%;
-  padding: 0.75rem 1.25rem;
-  margin: 0 auto 1.5rem auto;
+  padding: 0.5rem 1.25rem;
+  margin: 0 auto 1.25rem auto;
 
   outline: 0;
   border: 1px solid ${({ theme }) => HEX2RGBA(theme.textColor, 40)};
@@ -15,7 +15,7 @@ const sharedStyles = css`
 
   color: ${({ theme }) => theme.activeMenu};
   font-size: 1.25rem;
-  font-weight: 500;
+  font-weight: 600;
   transition-duration: 100ms;
   opacity: 80%;
 
@@ -35,7 +35,7 @@ const InputSquared = styled.input`
 `
 
 const TextAreaSquared = styled.textarea`
-  min-height: 200px;
+  height: 15rem;
   resize: none;
   ${sharedStyles}
 `

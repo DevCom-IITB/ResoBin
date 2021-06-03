@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 // Components:
 import { InputRounded as Input, ButtonSquare, Divider } from 'components/shared'
@@ -26,7 +26,7 @@ const ContainerSpaceBetween = styled.div`
   margin-bottom: 2rem;
 `
 
-const ForgetPass = styled(NavLink)`
+const ForgetPass = styled(Link)`
   color: ${({ theme }) => theme.textColor};
   font-size: 1rem;
   font-weight: 300;
@@ -62,9 +62,14 @@ const FormBody = () => {
         <ForgetPass to="reset">Forgot password?</ForgetPass>
       </ContainerSpaceBetween>
 
-      <ButtonSquare type="submit" style={{ 'font-size': '1.25rem' }}>
-        Login
-      </ButtonSquare>
+      <Link style={{ all: 'initial' }} to="/courses">
+        <ButtonSquare
+          type="submit"
+          style={{ 'font-size': '1.25rem', width: '100%' }}
+        >
+          Login
+        </ButtonSquare>
+      </Link>
 
       <ContainerOr>
         <Divider style={{ width: '42%' }} />
