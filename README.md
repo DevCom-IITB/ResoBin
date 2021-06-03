@@ -38,7 +38,7 @@
     python -m venv env
     env/Scripts/activate
     pip install -r requirements.txt
-    python migrations.py runserver
+    python manage.py runserver
     ```
 
 * Backend server runs at [`http://localhost:8000`](http://localhost:8000)

@@ -1,7 +1,7 @@
 from pathlib import Path
 from decouple import config
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 INSTALLED_APPS = [
@@ -27,7 +27,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware', # ? Listen in on responses
+    'corsheaders.middleware.CorsMiddleware',  # ? Listen in on responses
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -77,19 +77,14 @@ REST_FRAMEWORK = {
     ]
 }
 
-# Auth
+# Auth (Rishikesh)
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
-# SITE_ID = 1
-# LOGIN_REDIRECT_URL = '/'
-
-# -- Rishikesh
-# SITE_ID = 2
-# LOGIN_REDIRECT_URL = '/'
-# LOGOUT_REDIRECT_URL = '/'
-
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 # SOCIALACCOUNT_PROVIDERS = {
 #     'google': {
 #         'SCOPE': [
@@ -102,5 +97,5 @@ AUTHENTICATION_BACKENDS = (
 #     }
 # }
 
-#659781035908-8p9rlip35m2h6ereq462q0pbi7kuni47.apps.googleusercontent.com
-#63vL3gubCtwWnXmaKGSBUDC_
+# 659781035908-8p9rlip35m2h6ereq462q0pbi7kuni47.apps.googleusercontent.com
+# 63vL3gubCtwWnXmaKGSBUDC_
