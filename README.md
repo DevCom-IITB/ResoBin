@@ -1,47 +1,51 @@
-# [`ResoBin`](https://resobin.netlify.app/) - Easily Share Course Material  
+# [`ResoBin`](https://resobin.netlify.app/) - Easily Share Course Material
 
-## Tools used
+## Requirements
 
-**Frontend:** React + Redux, Styled Components  
-**Backend:** Django Rest Framework, PostgreSQL
+* **Frontend:** React + Redux, Styled Components  
+* **Backend:** Python 3.6+, Django Rest Framework, PostgreSQL
 
-## Setup
+## Getting started
 
 ### Frontend
 
-* In the project directory, you can run
+* From the project dir, enter the `frontend` directory
+
+    ```powershell
+    cd frontend/
+    ```
+
+* To install all node modules and start the frontend React app, run:
 
     ```powershell
     yarn install
     yarn start
     ```
 
-* This will install all required frontend dependencies and start the app
 * Frontend server runs at [`http://localhost:3000`](http://localhost:3000)
 
 ### Backend
 
-* First, enter the `backend` directory
+* From the project dir, enter the `backend` directory
 
     ```powershell
     cd backend/
     ```
 
-* Then you can run:
+* To create the virtual enviroment `env`, install all the required Python packages and start the Django backend, run:
 
     ```powershell
     python -m venv env
     env/Scripts/activate
-    pip3 install -r requirements.txt
+    pip install -r requirements.txt
+    python migrations.py runserver
     ```
 
-* This will create a Python virtual enviroment `env`, and install the required backend packages.
+* Backend server runs at [`http://localhost:8000`](http://localhost:8000)
 * Next, start the `PostgreSQL` database server and the `Django` backend server
 
     ```powershell
     pg_ctl -D "C:/Program Files/PostgreSQL/13/data" start
-    python3 "backend/migrations.py" runserver
     ```
 
-* Backend server runs at [`http://localhost:8000`](http://localhost:8000)
 * Database server runs at [`http://localhost:5432`](http://localhost:5432)
