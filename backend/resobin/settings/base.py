@@ -84,3 +84,23 @@ AUTHENTICATION_BACKENDS = (
 )
 # SITE_ID = 1
 # LOGIN_REDIRECT_URL = '/'
+
+# -- Rishikesh
+# SITE_ID = 2
+# LOGIN_REDIRECT_URL = '/'
+# LOGOUT_REDIRECT_URL = '/'
+
+# SOCIALACCOUNT_PROVIDERS = {
+#     'google': {
+#         'SCOPE': [
+#             'profile',
+#             'email',
+#         ],
+#         'AUTH_PARAMS': {
+#             'access_type': 'online',
+#         }
+#     }
+# }
+
+#659781035908-8p9rlip35m2h6ereq462q0pbi7kuni47.apps.googleusercontent.com
+#63vL3gubCtwWnXmaKGSBUDC_
