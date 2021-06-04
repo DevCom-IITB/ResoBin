@@ -2,6 +2,7 @@
 *.temp
 *.old
 .env
+.env.md
 
 # Local Netlify folder
 .netlify

@@ -21,7 +21,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     # Local Apps (Your project's apps):
-    # 'contact',
+
 ]
 
 MIDDLEWARE = [
@@ -53,6 +53,11 @@ TEMPLATES = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
 WSGI_APPLICATION = 'resobin.wsgi.application'
 
 LANGUAGE_CODE = 'en-us'
@@ -68,7 +73,6 @@ STATICFILES_DIRS = [Path(BASE_DIR / 'build' / 'static')]
 STATIC_ROOT = Path(BASE_DIR / 'build')
 MEDIA_ROOT = Path(BASE_DIR / 'media')
 
-# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
@@ -77,27 +81,18 @@ REST_FRAMEWORK = {
     ]
 }
 
-# Auth (Rishikesh)
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
-
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# SOCIALACCOUNT_PROVIDERS = {
-#     'google': {
-#         'SCOPE': [
-#             'profile',
-#             'email',
-#         ],
-#         'AUTH_PARAMS': {
-#             'access_type': 'online',
-#         }
-#     }
-# }
-
-# 659781035908-8p9rlip35m2h6ereq462q0pbi7kuni47.apps.googleusercontent.com
-# 63vL3gubCtwWnXmaKGSBUDC_
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
