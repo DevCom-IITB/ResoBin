@@ -1,18 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-// import { Provider } from 'react-redux'
+import { Provider } from 'react-redux'
 import './index.css'
 import App from './App'
 import { ThemeContextProvider } from 'context/ThemeContext'
-// import store from './store'
+import store from 'store'
 
 const StrictApp = () => (
   <React.StrictMode>
-    {/* <Provider store={store}> */}
-    <ThemeContextProvider>
-      <App />
-    </ThemeContextProvider>
-    {/* </Provider> */}
+    <Provider store={store}>
+      <ThemeContextProvider>
+        <App />
+      </ThemeContextProvider>
+    </Provider>
   </React.StrictMode>
 )
 
