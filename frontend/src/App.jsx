@@ -8,7 +8,7 @@ import {
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
 import { ThemeContext } from 'context/ThemeContext'
-import Dashboard from 'layout/Dashboard'
+import { Dashboard } from 'hocs'
 import { Login, NotFound } from 'pages'
 
 // Lazy load the pages when called
@@ -21,19 +21,20 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
+      <GlobalStyles />
       <Router basename={process.env.PUBLIC_URL}>
-        <GlobalStyles />
-        <Dashboard />
         <Suspense fallback={<div>Loading...</div>}>
-          <Switch>
-            <Route exact path="/" component={Login} />
-            <Route exact path="/courses" component={Courses} />
-            <Route exact path="/contribute" component={Contribute} />
-            <Route exact path="/contact" component={Contact} />
-            <Route exact path="/login" component={Login} />
-            <Route component={NotFound} status={404} />
-            <Redirect to="/404" />
-          </Switch>
+          <Dashboard>
+            <Switch>
+              <Route exact path="/" component={Login} />
+              <Route exact path="/courses" component={Courses} />
+              <Route exact path="/contribute" component={Contribute} />
+              <Route exact path="/contact" component={Contact} />
+              <Route exact path="/login" component={Login} />
+              <Route component={NotFound} status={404} />
+              <Redirect to="/404" />
+            </Switch>
+          </Dashboard>
         </Suspense>
       </Router>
     </ThemeProvider>

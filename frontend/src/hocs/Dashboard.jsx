@@ -1,11 +1,12 @@
 import Sidebar from 'components/sidebar'
 import Navbar from 'components/navbar'
 
-const Dashboard = () => {
-	return (
+const Dashboard = (props) => {
+  return (
     <>
       <Navbar />
       <Sidebar />
+      {props.children}
     </>
   )
 }
