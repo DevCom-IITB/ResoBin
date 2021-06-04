@@ -7,5 +7,5 @@
 	"editor.formatOnSave": true,
 	"python.linting.enabled": true,
 	"python.linting.flake8Enabled": true,
-	"python.linting.flake8Args": ["--max-line-length=120", "--ignore=F403,F405"]
+	"python.linting.flake8Args": ["--max-line-length=120", "--ignore=F401,F403,F405"]
 }
