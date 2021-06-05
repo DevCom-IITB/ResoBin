@@ -8,7 +8,7 @@ import {
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
 import { ThemeContext } from 'context/ThemeContext'
-import { Dashboard } from 'hocs'
+import { Dashboard } from 'hoc'
 import { Login, NotFound } from 'pages'
 
 // Lazy load the pages when called

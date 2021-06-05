@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 import { ProfileImg } from 'components/shared'
 
 const Container = styled.div`
@@ -42,6 +43,11 @@ const ProfileImgItem = ({ title, src }) => {
       <Title>{title}</Title>
     </Container>
   )
+}
+
+ProfileImgItem.propTypes = {
+  title: PropTypes.string.isRequired,
+  src: PropTypes.string.isRequired,
 }
 
 export default ProfileImgItem

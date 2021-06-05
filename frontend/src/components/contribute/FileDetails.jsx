@@ -4,7 +4,7 @@ import Divider from 'components/shared/Divider'
 const Container = styled.div`
   background: ${({ theme }) => theme.darksecondary};
   margin: 6rem 21rem 2rem 2rem;
-  height: 500px;
+  height: 5000px;
   border-radius: 8px;
   box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.5);
 `

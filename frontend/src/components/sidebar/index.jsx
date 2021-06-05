@@ -52,7 +52,12 @@ const Sidebar = () => {
         icon={<Bookmark size="20" title="Check course material" />}
         to="/favourites"
       />
-      <SidebarItem title="Account" icon={<Cog size="20" />} exact to="/account" />
+      <SidebarItem
+        title="Account"
+        icon={<Cog size="20" />}
+        exact
+        to="/account"
+      />
       <SidebarItem title="Sign out" icon={<Logout size="20" />} to="/login" />
 
       <Divider margin="1.5rem 0" />
