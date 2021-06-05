@@ -24,7 +24,7 @@ const authReducer = (state = initialState, action) => {
       }
 
     case LOGIN_SUCCESS:
-      localStorage.setItem('token', payload.access) // make it accessToken later
+      localStorage.setItem('token', payload.access) // ! Rename to accessToken
       return {
         ...state,
         token: payload.access,
