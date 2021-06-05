@@ -1,13 +1,19 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import styled from 'styled-components'
 import { InputSquared, TextAreaSquared, ButtonSquare } from 'components/shared'
+// import { Fragment } from 'react'
+// import { Link, NavLink } from 'react-router-dom'
+// import { connect } from 'react-redux'
+// import { logout } from 'store/actions/auth'
+// import Alert from ''
+// import PropTypes from 'prop-types'
 
-const initalState = {
-  name: '',
-  email: '',
-  subject: '',
-  message: '',
-}
+// const initalState = {
+//   name: '',
+//   email: '',
+//   subject: '',
+//   message: '',
+// }
 
 const ContainerForm = styled.form`
   margin: 2rem 2rem 0.5rem;
@@ -15,13 +21,13 @@ const ContainerForm = styled.form`
 `
 
 const FormBody = () => {
-  const [state, setState] = useState(initalState)
+  // const [state, setState] = useState(initalState)
 
-  const handleInput = (e) => {
-    const inputName = e.currentTarget.name
-    const value = e.currentTarget.value
-    setState((prev) => ({ ...prev, [inputName]: value }))
-  }
+  // const handleInput = (e) => {
+  //   const inputName = e.currentTarget.name
+  //   const value = e.currentTarget.value
+  //   setState((prev) => ({ ...prev, [inputName]: value }))
+  // }
 
   return (
     <ContainerForm>

@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
 import { ThemeContext } from 'context/ThemeContext'
-import { AdminView } from 'pages'
+import { AppView } from 'pages'
 
 const App = () => {
   const { theme } = useContext(ThemeContext)
@@ -13,7 +13,7 @@ const App = () => {
       <GlobalStyles />
       <Router basename={process.env.PUBLIC_URL}>
         <Suspense fallback={<div>Loading...</div>}>
-          <AdminView />
+          <AppView />
         </Suspense>
       </Router>
     </ThemeProvider>

@@ -1,7 +1,12 @@
 {
   "name": "resobin",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/relaxxpls/resobin.git"
+  },
+  "license": "MIT",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
