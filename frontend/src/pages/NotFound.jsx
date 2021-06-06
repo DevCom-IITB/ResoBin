@@ -1,39 +1,50 @@
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 const Container = styled.div`
-  margin: 12rem 0 0 11.5rem;
-  text-align: center;
-  color: black;
-  opacity: 0.7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.textColor};
 `
 
 const Title = styled.h1`
   font-size: 6.2rem;
-  font-weight: 200;
-  margin-bottom: 4rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
 `
 
 const Subtitle = styled.p`
-  font-size: 2.3rem;
+  font-size: 2.4rem;
+  font-weight: 200;
   margin-bottom: 1rem;
 `
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+
   font-size: 2.3rem;
+  font-weight: 200;
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: 2px;
   text-decoration-thickness: 2px;
-  margin-bottom: 4rem;
-  color: black;
+  color: ${({ theme }) => theme.textColor};
+  margin-bottom: 1rem;
 `
 
 const NotFound = () => {
+  let history = useHistory()
   return (
     <Container>
       <Title>404 Not Found</Title>
       <Subtitle>The link you requested does not exist.</Subtitle>
-      <StyledLink to="/">Take me home!</StyledLink>
+      <StyledLink onClick={history.goBack}>Go back</StyledLink>
     </Container>
   )
 }

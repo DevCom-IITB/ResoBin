@@ -34,15 +34,18 @@ const Sidebar = () => {
       <SidebarItem
         title="Courses"
         icon={<BookOpen size="20" />}
-        to="/courses"
-        active
+        to="/dashboard/courses"
       />
       <SidebarItem
         title="Contribute"
         icon={<CloudUpload size="20" />}
-        to="/contribute"
+        to="/dashboard/contribute"
       />
-      <SidebarItem title="Stats" icon={<ChartPie size="20" />} to="/stats" />
+      <SidebarItem
+        title="Stats"
+        icon={<ChartPie size="20" />}
+        to="/dashboard/stats"
+      />
 
       <Divider margin="1.5rem 0" />
       <ProfileImgItem title="Laxman D." src={ProfileImage} />
@@ -50,13 +53,13 @@ const Sidebar = () => {
       <SidebarItem
         title="Favorites"
         icon={<Bookmark size="20" title="Check course material" />}
-        to="/favourites"
+        to="/dashboard/favourites"
       />
       <SidebarItem
         title="Account"
         icon={<Cog size="20" />}
         exact
-        to="/account"
+        to="/dashboard/account"
       />
       <SidebarItem title="Sign out" icon={<Logout size="20" />} to="/login" />
 
@@ -64,7 +67,7 @@ const Sidebar = () => {
       <SidebarItem
         title="Get help"
         icon={<ContactSupport size="20" />}
-        to="/contact"
+        to="/dashboard/contact"
       />
     </Container>
   )

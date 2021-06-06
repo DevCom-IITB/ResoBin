@@ -1,10 +1,16 @@
 import { Suspense, useContext } from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
-import Loadable from 'react-loadable'
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
+} from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
 import { ThemeContext } from 'context/ThemeContext'
-import { Loader } from 'hoc'
+import { AdminView, NotFound } from 'pages'
+import { Loader, PrivateRoute } from 'hoc'
+import { Login } from 'pages'
 
 const AdminView = Loadable({
   loader: () => import('pages/AdminView'),
@@ -17,9 +23,16 @@ const App = () => {
   return (
     <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
       <GlobalStyles />
-      <Router basename={process.env.PUBLIC_URL}>
+      <Router>
         <Suspense fallback={<Loader />}>
-          <AdminView />
+          <Switch>
+            {/* <PrivateRoute exact path="/app" component={AdminView} /> */}
+            {/* <PrivateRoute path="/" component={AdminView} /> */}
+            <Route path="/dashboard" component={AdminView} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/404" component={NotFound} />
+            <Redirect from="*" to="/login" />
+          </Switch>
         </Suspense>
       </Router>
     </ThemeProvider>

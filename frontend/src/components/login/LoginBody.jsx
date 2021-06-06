@@ -62,7 +62,7 @@ const FormBody = () => {
         <ForgetPass to="reset">Forgot password?</ForgetPass>
       </ContainerSpaceBetween>
 
-      <Link style={{ all: 'initial' }} to="/courses">
+      <Link style={{ all: 'initial' }} to="/dashboard">
         <ButtonSquare
           type="submit"
           style={{ 'font-size': '1.25rem', width: '100%' }}
