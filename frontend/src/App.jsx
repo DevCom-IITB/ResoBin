@@ -3,7 +3,8 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
 import { ThemeContext } from 'context/ThemeContext'
-import { AppView } from 'pages'
+import { AdminView } from 'pages'
+import { Loader } from 'hoc'
 
 const App = () => {
   const { theme } = useContext(ThemeContext)
@@ -12,8 +13,8 @@ const App = () => {
     <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
       <GlobalStyles />
       <Router basename={process.env.PUBLIC_URL}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <AppView />
+        <Suspense fallback={<Loader />}>
+          <AdminView />
         </Suspense>
       </Router>
     </ThemeProvider>

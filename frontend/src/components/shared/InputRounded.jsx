@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 const Container = styled.div`
   display: flex;
@@ -30,17 +30,17 @@ const Input = styled.input`
   }
 `
 
-const InputRounded = ({ type, placeholder, icon }) => {
-  const Icon = styled(icon)`
-    color: #807da0;
-    width: 1.75rem;
-    margin: 0 1.25rem 0 0.75rem;
-  `
+const iconStyles = {
+  color: '#807da0',
+  width: '1.75rem',
+  margin: '0 1.25rem 0 0.75rem',
+}
 
+const InputRounded = ({ type, placeholder, icon: Icon }) => {
   return (
     <Container>
       <Input type={type} placeholder={placeholder} />
-      <Icon />
+      <Icon style={iconStyles} />
     </Container>
   )
 }

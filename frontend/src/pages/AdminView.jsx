@@ -17,8 +17,8 @@ const AdminView = () => {
         <Route exact path="/contribute" component={Contribute} />
         <Route exact path="/contact" component={Contact} />
         <Route exact path="/login" component={Login} />
-        <Route component={NotFound} status={404} />
-        <Redirect to="/404" />
+        <Route path="/404" component={NotFound} status={404} />
+        <Redirect from="*" to="/404" />
       </Switch>
     </Dashboard>
   )
