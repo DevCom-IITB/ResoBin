@@ -1,3 +1,4 @@
+// Node modules
 import { Suspense, useContext } from 'react'
 import {
   BrowserRouter as Router,
@@ -5,12 +6,17 @@ import {
   Redirect,
   Switch,
 } from 'react-router-dom'
+import Loadable from 'react-loadable'
 import { ThemeProvider } from 'styled-components'
+// Components, hooks and styles
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
 import { ThemeContext } from 'context/ThemeContext'
-import { AdminView, NotFound } from 'pages'
-import { Loader, PrivateRoute } from 'hoc'
-import { Login } from 'pages'
+import { Login, NotFound } from 'pages'
+import { Loader } from 'hoc'
+
+// Fake backend
+import { configureFakeBackend } from 'fake-backend'
+configureFakeBackend()
 
 const AdminView = Loadable({
   loader: () => import('pages/AdminView'),
