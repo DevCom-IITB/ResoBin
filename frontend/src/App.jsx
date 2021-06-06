@@ -13,7 +13,7 @@ import { ThemeProvider } from 'styled-components'
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
 import { ThemeContext } from 'context/ThemeContext'
 import { Login, NotFound, SignUp } from 'pages'
-import { Loader, PrivateRoute } from 'hoc'
+import { Loader } from 'hoc'
 
 // Fake backend
 import { configureFakeBackend } from 'fake-backend'
@@ -36,6 +36,7 @@ const App = () => {
             <Route path="/dashboard" component={AdminView} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={SignUp} />
+            <Route exact path="/forgot-password" component={NotFound} />
             <Route exact path="/404" component={NotFound} />
             <Redirect from="*" to="/login" />
           </Switch>

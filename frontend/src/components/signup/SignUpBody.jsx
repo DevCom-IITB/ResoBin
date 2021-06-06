@@ -15,10 +15,20 @@ const Container = styled.div`
   }
 `
 
-const ForgetPass = styled(Link)`
+const SubTitle = styled.h4`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+
+  color: ${({ theme }) => theme.textColor};
+  font-weight: 300;
+  letter-spacing: 1px;
+`
+
+const StyledLink = styled(Link)`
   color: ${({ theme }) => theme.textColor};
   font-size: 1rem;
-  font-weight: 300;
+  font-weight: 600;
   letter-spacing: 1px;
   text-decoration: none;
   user-select: none;
@@ -31,7 +41,7 @@ const ForgetPass = styled(Link)`
 `
 
 const SignUpBody = () => {
-  const buttonStyle = { marginTop: '1rem', fontSize: '1.25rem', width: '100%' }
+  const buttonStyle = { fontSize: '1.25rem', width: '100%' }
   return (
     <Container>
       <Input type="text" placeholder="Full name" icon={Profile} />
@@ -43,13 +53,16 @@ const SignUpBody = () => {
         placeholder="Confirm password"
         icon={LockPassword}
       />
+      <SubTitle>
+        I agree to the&nbsp;<StyledLink>privacy policy</StyledLink>
+        &nbsp;and&nbsp;<StyledLink>terms of service</StyledLink>.
+      </SubTitle>
 
       <Link style={{ all: 'initial' }} to="/login">
         <ButtonSquare type="submit" style={buttonStyle}>
           Sign up
         </ButtonSquare>
       </Link>
-      <ForgetPass to="/login">Already have an account?</ForgetPass>
     </Container>
   )
 }

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { SignUpBody } from 'components/signup'
 import Navbar from 'components/navbar'
@@ -15,12 +16,12 @@ const Container = styled.div`
 `
 
 const FormBox = styled.div`
-  width: 480px;
-  background-color: ${({ theme }) => theme.darksecondary};
-  padding: 2rem 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  width: 480px;
+  padding: 2.5rem 0;
+  background-color: ${({ theme }) => theme.darksecondary};
   border-radius: 8px;
   box-shadow: 0px 0px 0.75rem rgba(0, 0, 0, 0.4);
 `
@@ -30,9 +31,23 @@ const TitleHeader = styled.h4`
   font-size: 1.5rem;
   line-height: 2rem;
   letter-spacing: 4px;
-  padding: 0.5rem 0px 0rem;
   text-align: center;
   color: ${({ theme }) => theme.textColor};
+`
+
+const StyledLink = styled(Link)`
+  color: ${({ theme }) => theme.textColor};
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-decoration: none;
+  user-select: none;
+  text-align: center;
+  &:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 1px;
+  }
 `
 
 const SignUp = () => {
@@ -44,8 +59,9 @@ const SignUp = () => {
         shadow="0 0 0.5rem rgba(0, 0, 0, 0.5)"
       />
       <FormBox>
-        <TitleHeader>Create an account</TitleHeader>
+        <TitleHeader>Create an Account</TitleHeader>
         <SignUpBody />
+        <StyledLink to="/login">Already have an account? Login!</StyledLink>
       </FormBox>
     </Container>
   )

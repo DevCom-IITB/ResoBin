@@ -1,12 +1,9 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-// Components:
-import { InputRounded as Input, ButtonSquare, Divider } from 'components/shared'
+import { InputRounded as Input, ButtonSquare } from 'components/shared'
 import { Checkbox } from 'components/shared'
-// Icons:
 import { Email } from '@styled-icons/material-outlined'
 import { LockPassword } from '@styled-icons/remix-line'
-import Google from 'assets/images/Google Signin/btn_google_signin_dark_normal_web@2x.png'
 
 const Container = styled.div`
   display: flex;
@@ -26,7 +23,7 @@ const ContainerSpaceBetween = styled.div`
   margin-bottom: 2rem;
 `
 
-const ForgetPass = styled(Link)`
+const StyledLink = styled(Link)`
   color: ${({ theme }) => theme.textColor};
   font-size: 1rem;
   font-weight: 300;
@@ -40,23 +37,6 @@ const ForgetPass = styled(Link)`
   }
 `
 
-const ContainerOr = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: 300;
-  letter-spacing: 4px;
-  margin-bottom: 1rem;
-`
-
-const GoogleSignIn = styled.img`
-  cursor: pointer;
-  width: 13rem;
-  margin: 0 auto;
-  user-select: none;
-`
-
 const LoginBody = () => {
   const buttonStyle = { fontSize: '1.25rem', width: '100%' }
   return (
@@ -65,7 +45,7 @@ const LoginBody = () => {
       <Input type="password" placeholder="Password" icon={LockPassword} />
       <ContainerSpaceBetween>
         <Checkbox label="Remember me" />
-        <ForgetPass to="/">Forgot password?</ForgetPass>
+        <StyledLink to="/forgot-password">Forgot password?</StyledLink>
       </ContainerSpaceBetween>
 
       <Link style={{ all: 'initial' }} to="/dashboard">
@@ -73,14 +53,6 @@ const LoginBody = () => {
           Login
         </ButtonSquare>
       </Link>
-
-      <ContainerOr>
-        <Divider style={{ width: '42%' }} />
-        OR
-        <Divider style={{ width: '42%' }} />
-      </ContainerOr>
-
-      <GoogleSignIn src={Google} />
     </Container>
   )
 }
