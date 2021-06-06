@@ -41,7 +41,7 @@ const Navbar = () => {
   return (
     <Container>
       <LeftContainer>
-        <Link to="/" style={{ textDecoration: 'none' }}>
+        <Link to="/dashboard" style={{ textDecoration: 'none' }}>
           <ResoBinLogo size="1.75rem" />
         </Link>
       </LeftContainer>
