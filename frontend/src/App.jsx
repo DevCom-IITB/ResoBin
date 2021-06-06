@@ -13,7 +13,7 @@ import { ThemeProvider } from 'styled-components'
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
 import { ThemeContext } from 'context/ThemeContext'
 import { Login, NotFound, SignUp } from 'pages'
-import { Loader } from 'hoc'
+import { Loader, PrivateRoute } from 'hoc'
 
 // Fake backend
 import { configureFakeBackend } from 'fake-backend'

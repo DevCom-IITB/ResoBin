@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { InputRounded as Input, ButtonSquare } from 'components/shared'
+// import { GoogleAuth } from 'components/login'
 import { Checkbox } from 'components/shared'
 import { Email } from '@styled-icons/material-outlined'
 import { LockPassword } from '@styled-icons/remix-line'
@@ -53,6 +54,7 @@ const LoginBody = () => {
           Login
         </ButtonSquare>
       </Link>
+      {/* <GoogleAuth /> */}
     </Container>
   )
 }

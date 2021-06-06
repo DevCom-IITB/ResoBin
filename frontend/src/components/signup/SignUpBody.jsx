@@ -54,8 +54,10 @@ const SignUpBody = () => {
         icon={LockPassword}
       />
       <SubTitle>
-        I agree to the&nbsp;<StyledLink>privacy policy</StyledLink>
-        &nbsp;and&nbsp;<StyledLink>terms of service</StyledLink>.
+        I agree to the&nbsp;
+        <StyledLink to="/404">privacy policy</StyledLink>
+        &nbsp;and&nbsp;
+        <StyledLink to="/404">terms of service</StyledLink>.
       </SubTitle>
 
       <Link style={{ all: 'initial' }} to="/login">
