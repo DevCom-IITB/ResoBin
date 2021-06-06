@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { ResoBinLogo } from 'components/shared'
 import DarkmodeToggle from 'components/navbar/DarkmodeToggle'
 import CurrentTerm from 'components/navbar/CurrentTerm'
+import { ButtonSquare } from 'components/shared'
 
 const Container = styled.div`
   display: flex;
@@ -13,7 +14,8 @@ const Container = styled.div`
   left: 0px;
   top: 0px;
   background: ${({ theme }) => theme.darksecondary};
-  box-shadow: 11.5rem 0px 0.5rem rgba(0, 0, 0, 0.5);
+  box-shadow: ${({ shadow }) =>
+    shadow || '11.5rem 0px 0.5rem rgba(0, 0, 0, 0.5)'};
   z-index: 9; /* To put navbar at the top */
 `
 
@@ -29,17 +31,36 @@ const RightContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 19rem;
+  width: 20rem;
   height: 100%;
 `
 
 const MiddleContainer = styled.div`
-  width: calc(100% - 11.5rem - 19rem);
+  margin-left: 2.5rem;
+  width: 100%;
 `
 
-const Navbar = () => {
+const SignUpButton = ({ button, buttonLink }) => {
+  const buttonStyle = {
+    margin: '0.875rem 1rem',
+    height: '2.25rem',
+    fontSize: '1rem',
+  }
+
   return (
-    <Container>
+    <Link style={{ all: 'initial', height: '100%' }} to={buttonLink}>
+      {button && (
+        <ButtonSquare type="submit" style={buttonStyle}>
+          {button}
+        </ButtonSquare>
+      )}
+    </Link>
+  )
+}
+
+const Navbar = ({ shadow, button, buttonLink }) => {
+  return (
+    <Container shadow={shadow}>
       <LeftContainer>
         <Link to="/dashboard" style={{ textDecoration: 'none' }}>
           <ResoBinLogo size="1.75rem" />
@@ -51,6 +72,7 @@ const Navbar = () => {
       </MiddleContainer>
 
       <RightContainer>
+        <SignUpButton button={button} buttonLink={buttonLink} />
         <DarkmodeToggle />
       </RightContainer>
     </Container>

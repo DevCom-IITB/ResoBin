@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import { User } from '@styled-icons/feather'
-import { ResoBinLogo, Divider } from 'components/shared'
 
 const TitleContainer = styled.div`
   display: flex;
@@ -21,8 +20,6 @@ const TitleHeader = styled.h4`
 const Title = () => {
   return (
     <TitleContainer>
-      <ResoBinLogo size="3rem" />
-      <Divider margin="2rem 0 1rem 0" style={{ opacity: '0. ' }} />
       <User size="4rem" />
       <TitleHeader>Welcome</TitleHeader>
     </TitleContainer>

@@ -52,7 +52,8 @@ const GoogleSignIn = styled.img`
   user-select: none;
 `
 
-const FormBody = () => {
+const LoginBody = () => {
+  const buttonStyle = { fontSize: '1.25rem', width: '100%' }
   return (
     <Container>
       <Input type="text" placeholder="Email" icon={Email} />
@@ -63,10 +64,7 @@ const FormBody = () => {
       </ContainerSpaceBetween>
 
       <Link style={{ all: 'initial' }} to="/dashboard">
-        <ButtonSquare
-          type="submit"
-          style={{ fontSize: '1.25rem', width: '100%' }}
-        >
+        <ButtonSquare type="submit" style={buttonStyle}>
           Login
         </ButtonSquare>
       </Link>
@@ -82,4 +80,4 @@ const FormBody = () => {
   )
 }
 
-export default FormBody
+export default LoginBody
