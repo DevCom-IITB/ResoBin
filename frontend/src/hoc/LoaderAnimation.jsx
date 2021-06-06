@@ -18,13 +18,13 @@ const LoaderTrack = styled.div`
   overflow: hidden;
 `
 
-const mbarAnimation = keyframes`
+const Anim1 = keyframes`
   0%   { left: -35%; right: 100%; }
   60%  { left: 100%; right: -90%; }
   100% { left: 100%; right: -35%; }
 `
 
-const msAnimation = keyframes`
+const Anim2 = keyframes`
   0%   { left: -200%; right: 100%; }
   60%  { left:  107%; right:  -8%; }
   100% { left:  107%; right:  -8%; }
@@ -34,7 +34,11 @@ const LoaderFill = styled.div`
   &:after,
   &:before {
     content: '';
-    background: linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%);
+    background: linear-gradient(
+      -135deg,
+      ${({ theme }) => theme.logo} 0%,
+      ${({ theme }) => theme.darksecondary} 100%
+    );
     position: absolute;
     top: 0;
     left: 0;
@@ -43,17 +47,16 @@ const LoaderFill = styled.div`
   }
 
   &:before {
-    animation: ${mbarAnimation} 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395)
-      infinite;
+    animation: ${Anim1} 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
   }
 
   &:after {
-    animation: ${msAnimation} 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+    animation: ${Anim2} 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
     animation-delay: 1.15s;
   }
 `
 
-const Loader = () => {
+const LoaderAnimation = () => {
   return (
     <Container>
       <LoaderTrack>
@@ -63,4 +66,4 @@ const Loader = () => {
   )
 }
 
-export default Loader
+export default LoaderAnimation

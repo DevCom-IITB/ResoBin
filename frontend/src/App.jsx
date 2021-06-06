@@ -8,20 +8,19 @@ import {
 } from 'react-router-dom'
 import Loadable from 'react-loadable'
 import { ThemeProvider } from 'styled-components'
-
 // Components, hooks and styles
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
 import { ThemeContext } from 'context/ThemeContext'
 import { Login, NotFound, SignUp } from 'pages'
-import { Loader, PrivateRoute } from 'hoc'
+import { LoaderAnimation } from 'hoc'
 
-// Fake backend
-import { configureFakeBackend } from 'fake-backend'
+// Setup fake backend
+import { configureFakeBackend } from 'FakeBackend'
 configureFakeBackend()
 
 const AdminView = Loadable({
   loader: () => import('pages/AdminView'),
-  loading: Loader,
+  loading: LoaderAnimation,
 })
 
 const App = () => {
@@ -31,7 +30,7 @@ const App = () => {
     <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
       <GlobalStyles />
       <Router>
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<LoaderAnimation />}>
           <Switch>
             <Route path="/dashboard" component={AdminView} />
             <Route exact path="/login" component={Login} />

@@ -72,7 +72,7 @@ const Navbar = ({ shadow, button, buttonLink }) => {
       </MiddleContainer>
 
       <RightContainer>
-        <SignUpButton button={button} buttonLink={buttonLink} />
+        {/* <SignUpButton button={button} buttonLink={buttonLink} /> */}
         <DarkmodeToggle />
       </RightContainer>
     </Container>
