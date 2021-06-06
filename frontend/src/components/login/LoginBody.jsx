@@ -33,6 +33,11 @@ const ForgetPass = styled(Link)`
   letter-spacing: 1px;
   text-decoration: none;
   user-select: none;
+  &:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 1px;
+  }
 `
 
 const ContainerOr = styled.div`
@@ -60,7 +65,7 @@ const LoginBody = () => {
       <Input type="password" placeholder="Password" icon={LockPassword} />
       <ContainerSpaceBetween>
         <Checkbox label="Remember me" />
-        <ForgetPass to="reset">Forgot password?</ForgetPass>
+        <ForgetPass to="/">Forgot password?</ForgetPass>
       </ContainerSpaceBetween>
 
       <Link style={{ all: 'initial' }} to="/dashboard">
