@@ -1,31 +1,51 @@
-# [`ResoBin`](https://resobin.netlify.app/) - Easily Share Course Material  
+# [`ResoBin`](https://resobin.netlify.app/) - Easily Share Course Material
 
-## Tools used
+## Requirements
 
-**Frontend:** React + Redux, Styled Components  
-**Backend:** Django Rest Framework, PostgreSQL
+* **Frontend:** React + Redux, Styled Components  
+* **Backend:** Python 3.6+, Django Rest Framework, PostgreSQL
 
-## Setup
+## Getting started
 
-In the project directory, you can run:
+### Frontend
 
-### Install modules
+* From the project dir, enter the `frontend` directory
 
-```powershell
-yarn install
-pip install backend/requirements.txt
-```
+    ```powershell
+    cd frontend/
+    ```
 
-Installs all the required node modules for the frontend & backend.
+* To install all node modules and start the frontend React app, run:
 
-### Start app
+    ```powershell
+    yarn install
+    yarn start
+    ```
 
-```powershell
-> yarn start
-> pg_ctl -D "C:\Program Files\PostgreSQL\13\data" start
-> python backend/migrations.py runserver
-```
+* Frontend server runs at [`http://localhost:3000`](http://localhost:3000)
 
-Frontend server runs at [`http://localhost:3000`](http://localhost:3000)  
-Database server runs at [`http://localhost:5432`](http://localhost:5432)  
-Backend server runs at [`http://localhost:8000`](http://localhost:8000)  
+### Backend
+
+* From the project dir, enter the `backend` directory
+
+    ```powershell
+    cd backend/
+    ```
+
+* To create the virtual enviroment `env`, install all the required Python packages and start the Django backend, run:
+
+    ```powershell
+    python -m venv env
+    env/Scripts/activate
+    pip install -r requirements.txt
+    python manage.py runserver
+    ```
+
+* Backend server runs at [`http://localhost:8000`](http://localhost:8000)
+* Next, start the `PostgreSQL` database server and the `Django` backend server
+
+    ```powershell
+    pg_ctl -D "C:/Program Files/PostgreSQL/13/data" start
+    ```
+
+* Database server runs at [`http://localhost:5432`](http://localhost:5432)

@@ -1,0 +1,11 @@
+{
+	"python.pythonPath": "${workspaceFolder}/backend/env/Scripts/python.exe",
+	"files.exclude": {
+		"**/__pycache__/**": true,
+		"**/node_modules/**": true
+	},
+	"editor.formatOnSave": true,
+	"python.linting.enabled": true,
+	"python.linting.flake8Enabled": true,
+	"python.linting.flake8Args": ["--max-line-length=120", "--ignore=F401,F403,F405"]
+}
