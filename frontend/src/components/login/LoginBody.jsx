@@ -65,7 +65,7 @@ const FormBody = () => {
       <Link style={{ all: 'initial' }} to="/dashboard">
         <ButtonSquare
           type="submit"
-          style={{ 'font-size': '1.25rem', width: '100%' }}
+          style={{ fontSize: '1.25rem', width: '100%' }}
         >
           Login
         </ButtonSquare>

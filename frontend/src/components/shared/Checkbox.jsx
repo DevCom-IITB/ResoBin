@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const Container = styled.div`
-	display: block;
+  display: block;
 `
 
 const InputCheckbox = styled.input`
@@ -47,10 +47,10 @@ const InputLabel = styled.label`
 `
 
 const Checkbox = ({ label }) => {
-	return (
+  return (
     <Container>
       <InputCheckbox type="checkbox" id="checkbox" />
-      <InputLabel for="checkbox">{label}</InputLabel>
+      <InputLabel htmlFor="checkbox">{label}</InputLabel>
     </Container>
   )
 }
