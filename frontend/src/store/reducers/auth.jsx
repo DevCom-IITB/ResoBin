@@ -1,51 +1,27 @@
-import {
-  SIGNUP_SUCCESS,
-  SIGNUP_FAIL,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
-  LOGOUT,
-} from 'store/actions/types'
+import { userTypes } from 'store/actions/types'
 
-const initialState = {
-  token: localStorage.getItem('token'),
-  isAuthenticated: null,
-  loading: false,
-}
+let user = JSON.parse(localStorage.getItem('user'))
+const initialState = user ? { loggedIn: true, user } : {}
 
-const authReducer = (state = initialState, action) => {
-  const { type, payload } = action
-
-  switch (type) {
-    case SIGNUP_SUCCESS:
+const auth = (state = initialState, action) => {
+  switch (action.type) {
+    case userTypes.LOGIN_REQUEST:
       return {
-        ...state,
-        isAuthenticated: false,
-        loading: true,
+        loggingIn: true,
+        user: action.user,
       }
-
-    case LOGIN_SUCCESS:
-      localStorage.setItem('token', payload.access) // ! Rename to accessToken
+    case userTypes.LOGIN_SUCCESS:
       return {
-        ...state,
-        token: payload.access,
-        isAuthenticated: true,
-        loading: false,
+        loggedIn: true,
+        user: action.user,
       }
-
-    case LOGIN_FAIL:
-    case SIGNUP_FAIL:
-    case LOGOUT:
-      localStorage.removeItem('token')
-      return {
-        ...state,
-        token: null,
-        isAuthenticated: false,
-        loading: false,
-      }
-
+    case userTypes.LOGIN_FAILURE:
+      return {}
+    case userTypes.LOGOUT:
+      return {}
     default:
       return state
   }
 }
 
-export default authReducer
+export default auth

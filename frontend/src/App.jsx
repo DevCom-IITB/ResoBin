@@ -12,7 +12,7 @@ import { ThemeProvider } from 'styled-components'
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
 import { ThemeContext } from 'context/ThemeContext'
 import { Login, NotFound, SignUp } from 'pages'
-import { LoaderAnimation } from 'hoc'
+import { LoaderAnimation, PrivateRoute } from 'hoc'
 
 // Setup fake backend
 import { configureFakeBackend } from 'FakeBackend'
@@ -32,7 +32,7 @@ const App = () => {
       <Router>
         <Suspense fallback={<LoaderAnimation />}>
           <Switch>
-            <Route path="/dashboard" component={AdminView} />
+            <PrivateRoute path="/dashboard" component={AdminView} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={SignUp} />
             <Route exact path="/forgot-password" component={NotFound} />

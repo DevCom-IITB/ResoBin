@@ -1,20 +1,22 @@
-import { SET_ALERT, REMOVE_ALERT } from 'store/actions/types'
+import { alertTypes } from 'store/actions/types'
 
-const initialState = []
-
-const alertReducer = (state = initialState, action) => {
-  const { type, payload } = action
-
-  switch (type) {
-    case SET_ALERT:
-      return [...state, payload]
-
-    case REMOVE_ALERT:
-      return state.filer((alert) => alert.id !== payload)
-
+const alert = (state = {}, action) => {
+  switch (action.type) {
+    case alertTypes.SUCCESS:
+      return {
+        type: 'alert-success',
+        message: action.message,
+      }
+    case alertTypes.ERROR:
+      return {
+        type: 'alert-danger',
+        message: action.message,
+      }
+    case alertTypes.CLEAR:
+      return {}
     default:
       return state
   }
 }
 
-export default alertReducer
+export default alert

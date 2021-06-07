@@ -6,7 +6,7 @@ const Container = styled.div`
   align-items: center;
   transition: 100ms;
   user-select: none;
-  
+
   &:hover {
     transform: scale(1.03);
     transition: 100ms;
