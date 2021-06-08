@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import { BrowserRouter as Router } from 'react-router-dom'
+
 import './index.css'
 import App from './App'
 import { ThemeContextProvider } from 'context/ThemeContext'
@@ -10,9 +12,11 @@ const StrictApp = () => {
   return (
     <React.StrictMode>
       <Provider store={store}>
-        <ThemeContextProvider>
-          <App />
-        </ThemeContextProvider>
+        <Router>
+          <ThemeContextProvider>
+            <App />
+          </ThemeContextProvider>
+        </Router>
       </Provider>
     </React.StrictMode>
   )

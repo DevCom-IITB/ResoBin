@@ -1,48 +1,45 @@
 // Node modules
-import { Suspense, useContext } from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  Switch,
-} from 'react-router-dom'
-import Loadable from 'react-loadable'
+import { Suspense, useContext, useEffect } from 'react'
+import { Route, Redirect, Switch, useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { ThemeProvider } from 'styled-components'
 // Components, hooks and styles
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
 import { ThemeContext } from 'context/ThemeContext'
-import { Login, NotFound, SignUp } from 'pages'
+import { AdminView, Login, NotFound, SignUp } from 'pages'
 import { LoaderAnimation, PrivateRoute } from 'hoc'
+import alertActions from 'store/actions/alertActions'
 
 // Setup fake backend
 import { configureFakeBackend } from 'FakeBackend'
 window.BACKEND_URL = 'http://localhost:4000'
 configureFakeBackend()
 
-const AdminView = Loadable({
-  loader: () => import('pages/AdminView'),
-  loading: LoaderAnimation,
-})
-
 const App = () => {
   const { theme } = useContext(ThemeContext)
-  // let id = `5`
-  // console.log(window.BACKEND_URL + '/users/' + id)
+
+  // const alert = useSelector((state) => state.alert)
+  const dispatch = useDispatch()
+  const history = useHistory()
+  useEffect(() => {
+    history.listen(() => {
+      dispatch(alertActions.clear())
+    })
+  }, [dispatch, history])
+
   return (
     <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
       <GlobalStyles />
-      <Router>
-        <Suspense fallback={<LoaderAnimation />}>
-          <Switch>
-            <PrivateRoute path="/dashboard" component={AdminView} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/signup" component={SignUp} />
-            <Route exact path="/forgot-password" component={NotFound} />
-            <Route exact path="/404" component={NotFound} />
-            <Redirect from="*" to="/login" />
-          </Switch>
-        </Suspense>
-      </Router>
+      <Suspense fallback={<LoaderAnimation />}>
+        <Switch>
+          <Route path="/dashboard" component={AdminView} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/forgot-password" component={NotFound} />
+          <Route exact path="/404" component={NotFound} />
+          <Redirect from="*" to="/login" />
+        </Switch>
+      </Suspense>
     </ThemeProvider>
   )
 }

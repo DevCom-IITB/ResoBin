@@ -56,7 +56,7 @@ const SignUpButton = ({ button, buttonLink }) => {
   )
 }
 
-const Navbar = ({ shadow, button, buttonLink }) => {
+const Navbar = ({ shadow, button, buttonLink = '' }) => {
   return (
     <Container shadow={shadow}>
       <LeftContainer>
