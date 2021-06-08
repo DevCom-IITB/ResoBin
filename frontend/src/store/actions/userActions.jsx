@@ -9,6 +9,7 @@ const login = (username, password, from) => {
   const success = (user) => ({ type: userTypes.LOGIN_SUCCESS, user })
   const failure = (error) => ({ type: userTypes.LOGIN_FAILURE, error })
   // let history = useHistory()
+  console.log(from)
 
   return (dispatch) => {
     dispatch(request({ username }))
@@ -19,7 +20,7 @@ const login = (username, password, from) => {
       },
       (error) => {
         dispatch(failure(error.toString()))
-        dispatch(alertActions.error(error.toString))
+        dispatch(alertActions.error(error.toString()))
       }
     )
   }

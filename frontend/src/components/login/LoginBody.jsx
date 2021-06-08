@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import userActions from 'store/actions/userActions'
 
-const FormContainer = styled.div`
+const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -47,6 +47,11 @@ const initialState = {
   password: '',
 }
 
+const nullCheck = (data) => {
+  for (const key in data) if (!data[key]) return false
+  return true
+}
+
 const LoginBody = () => {
   const buttonStyle = { fontSize: '1.25rem', width: '100%' }
 
@@ -66,12 +71,12 @@ const LoginBody = () => {
     setUser((inputs) => ({ ...inputs, [name]: value }))
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = (event) => {
+    event.preventDefault()
     setSubmitted(true)
-    if (user.email && user.password) {
-      // get return url from location state or default to home page
-      const { from } = location.state || { from: { pathname: '/' } }
+
+    if (nullCheck(user)) {
+      const { from } = location.state || { from: { pathname: '/dashboard' } }
       dispatch(userActions.login(user.email, user.password, from))
     }
   }
@@ -79,6 +84,7 @@ const LoginBody = () => {
   return (
     <FormContainer onSubmit={handleSubmit}>
       <Input
+        name="email"
         type="text"
         placeholder="Email"
         value={user.email}
@@ -86,6 +92,7 @@ const LoginBody = () => {
         Icon={Email}
       />
       <Input
+        name="password"
         type="password"
         placeholder="Password"
         value={user.password}
