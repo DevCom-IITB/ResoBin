@@ -1,21 +1,23 @@
 import { alertTypes } from 'store/actions/types'
-// import { toast } from 'react-toastify'
-// const notify = () =>
-//   toast.success('Sign up succesful!', {
-//     position: 'top-center',
-//     autoClose: 5000,
-//     hideProgressBar: false,
-//     closeOnClick: true,
-//     pauseOnHover: true,
-//     draggable: true,
-//     progress: '',
-//   })
+import { toast } from 'react-toastify'
+
+const toastStyles = {
+  position: 'top-center',
+  autoClose: 5000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: '',
+}
 
 const success = (message) => {
+  toast.success(message, toastStyles)
   return { type: alertTypes.SUCCESS, message }
 }
 
 const error = (message) => {
+  toast.error(message, toastStyles)
   return { type: alertTypes.ERROR, message }
 }
 

@@ -23,7 +23,7 @@ const Container = styled.div`
 const CourseSearchbar = () => {
   return (
     <Container>
-      <InputRounded type="text" placeholder="Search" icon={Search} />
+      <InputRounded type="text" placeholder="Search" Icon={Search} />
     </Container>
   )
 }

@@ -4,7 +4,11 @@ import { InputRounded as Input, ButtonSquare } from 'components/shared'
 import { Email } from '@styled-icons/material-outlined'
 import { LockPassword, Profile, User } from '@styled-icons/remix-line'
 
-const Container = styled.div`
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import userActions from 'store/actions/userActions'
+
+const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -40,20 +44,82 @@ const StyledLink = styled(Link)`
   }
 `
 
+const initialState = {
+  fullname: '',
+  username: '',
+  email: '',
+  password1: '',
+  password2: '',
+}
+
 const SignUpBody = () => {
   const buttonStyle = { fontSize: '1.25rem', width: '100%' }
 
+  const [user, setUser] = useState(initialState)
+  const [submitted, setSubmitted] = useState(false)
+  // const registering = useSelector((state) => state.registration.registering)
+  const dispatch = useDispatch()
+
+  // reset login status
+  useEffect(() => {
+    dispatch(userActions.logout())
+  }, [dispatch])
+
+  const handleChange = (event) => {
+    const { name, value } = event.target
+    setUser((user) => ({ ...user, [name]: value }))
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    setSubmitted(true)
+    // if (user.firstName && user.lastName && user.username && user.password) {
+    //   dispatch(userActions.register(user))
+    // }
+  }
+  console.log(user.fullname)
   return (
-    <Container>
-      <Input type="text" placeholder="Full name" icon={Profile} />
-      <Input type="text" placeholder="Username" icon={User} />
-      <Input type="text" placeholder="Email" icon={Email} />
-      <Input type="password" placeholder="Password" icon={LockPassword} />
+    <FormContainer onSubmit={handleSubmit}>
+      <Input
+        type="text"
+        placeholder="Full name"
+        value={user.fullname}
+        onChange={handleChange}
+        Icon={Profile}
+      />
+
+      <Input
+        type="text"
+        placeholder="Username"
+        value={user.username}
+        onChange={handleChange}
+        Icon={User}
+      />
+
+      <Input
+        type="email"
+        placeholder="Email"
+        value={user.email}
+        onChange={handleChange}
+        Icon={Email}
+      />
+
+      <Input
+        type="password"
+        placeholder="Password"
+        value={user.password1}
+        onChange={handleChange}
+        Icon={LockPassword}
+      />
+
       <Input
         type="password"
         placeholder="Confirm password"
-        icon={LockPassword}
+        value={user.password2}
+        onChange={handleChange}
+        Icon={LockPassword}
       />
+
       <SubTitle>
         I agree to the&nbsp;
         <StyledLink to="/404">privacy policy</StyledLink>
@@ -66,7 +132,7 @@ const SignUpBody = () => {
           Sign up
         </ButtonSquare>
       </Link>
-    </Container>
+    </FormContainer>
   )
 }
 

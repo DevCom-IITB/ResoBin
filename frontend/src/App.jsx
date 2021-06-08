@@ -30,17 +30,6 @@ const App = () => {
   return (
     <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
       <GlobalStyles />
-      <Suspense fallback={<LoaderAnimation />}>
-        <Switch>
-          <PrivateRoute path="/dashboard" component={AdminView} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/signup" component={SignUp} />
-          <Route exact path="/forgot-password" component={NotFound} />
-          <Route exact path="/404" component={NotFound} />
-          <Redirect from="*" to="/login" />
-        </Switch>
-      </Suspense>
-
       <ToastContainer
         position="bottom-center"
         autoClose={5000}
@@ -52,6 +41,17 @@ const App = () => {
         draggable
         pauseOnHover
       />
+
+      <Suspense fallback={<LoaderAnimation />}>
+        <Switch>
+          <Route path="/dashboard" component={AdminView} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/forgot-password" component={NotFound} />
+          <Route exact path="/404" component={NotFound} />
+          <Redirect from="*" to="/login" />
+        </Switch>
+      </Suspense>
     </ThemeProvider>
   )
 }

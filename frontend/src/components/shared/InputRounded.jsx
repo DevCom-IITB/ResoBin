@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -36,13 +37,26 @@ const iconStyles = {
   margin: '0 1.25rem 0 0.75rem',
 }
 
-const InputRounded = ({ type, placeholder, icon: Icon }) => {
+const InputRounded = ({ type, placeholder = '', value, onChange, Icon }) => {
   return (
     <Container>
-      <Input type={type} placeholder={placeholder} />
+      <Input
+        type={type}
+        placeholder={placeholder}
+        // value={value}
+        onChange={onChange}
+      />
       <Icon style={iconStyles} />
     </Container>
   )
 }
+
+// InputRounded.propTypes = {
+//   type: PropTypes.string.isRequired,
+//   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+//   onChange: PropTypes.func.isRequired,
+//   Icon: PropTypes.elementType,
+//   placeholder: PropTypes.string,
+// }
 
 export default InputRounded

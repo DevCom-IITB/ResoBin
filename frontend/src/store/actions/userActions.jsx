@@ -1,6 +1,6 @@
 // import { useHistory } from 'react-router-dom'
 import { userTypes } from 'store/actions/types'
-import { alertActions } from 'store/actions/alertActions'
+import alertActions from 'store/actions/alertActions'
 
 // --------------------- Login / logout
 
