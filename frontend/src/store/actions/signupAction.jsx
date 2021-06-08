@@ -1,21 +1,21 @@
-import { alertTypes } from 'store/actions/types'
+// import { alertTypes } from 'store/actions/types'
 
-const success = (message) => {
-  return { type: alertTypes.SUCCESS, message }
-}
+// const success = (message) => {
+//   return { type: alertTypes.SUCCESS, message }
+// }
 
-const error = (message) => {
-  return { type: alertTypes.ERROR, message }
-}
+// const error = (message) => {
+//   return { type: alertTypes.ERROR, message }
+// }
 
-const clear = () => {
-  return { type: alertTypes.CLEAR }
-}
+// const clear = () => {
+//   return { type: alertTypes.CLEAR }
+// }
 
-const signupActions = {
-  success,
-  error,
-  clear,
-}
+// const signupActions = {
+//   success,
+//   error,
+//   clear,
+// }
 
-export default signupActions
+// export default signupActions

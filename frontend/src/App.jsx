@@ -26,7 +26,8 @@ const AdminView = Loadable({
 
 const App = () => {
   const { theme } = useContext(ThemeContext)
-  console.log(window.BACKEND_URL + '/users/authenticate')
+  // let id = `5`
+  // console.log(window.BACKEND_URL + '/users/' + id)
   return (
     <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
       <GlobalStyles />
