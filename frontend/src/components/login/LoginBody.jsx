@@ -97,11 +97,11 @@ const LoginBody = () => {
         <StyledLink to="/forgot-password">Forgot password?</StyledLink>
       </ContainerSpaceBetween>
 
-      <Link style={{ all: 'initial' }} to="/dashboard">
-        <ButtonSquare type="submit" style={buttonStyle}>
-          Login
-        </ButtonSquare>
-      </Link>
+      {/* <Link style={{ all: 'initial' }} to="/dashboard"> */}
+      <ButtonSquare type="submit" style={buttonStyle}>
+        Login
+      </ButtonSquare>
+      {/* </Link> */}
       {/* <GoogleAuth /> */}
     </FormContainer>
   )

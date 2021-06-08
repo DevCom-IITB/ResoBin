@@ -52,6 +52,11 @@ const initialState = {
   password2: '',
 }
 
+const nullCheck = (data) => {
+  for (const key in data) if (!data[key]) return false
+  return true
+}
+
 const SignUpBody = () => {
   const buttonStyle = { fontSize: '1.25rem', width: '100%' }
 
@@ -73,14 +78,13 @@ const SignUpBody = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
     setSubmitted(true)
-    // if (user.firstName && user.lastName && user.username && user.password) {
-    //   dispatch(userActions.register(user))
-    // }
+    if (nullCheck(user)) dispatch(userActions.register(user))
   }
-  console.log(user.fullname)
+
   return (
     <FormContainer onSubmit={handleSubmit}>
       <Input
+        name="fullname"
         type="text"
         placeholder="Full name"
         value={user.fullname}
@@ -89,6 +93,7 @@ const SignUpBody = () => {
       />
 
       <Input
+        name="username"
         type="text"
         placeholder="Username"
         value={user.username}
@@ -97,6 +102,7 @@ const SignUpBody = () => {
       />
 
       <Input
+        name="email"
         type="email"
         placeholder="Email"
         value={user.email}
@@ -105,6 +111,7 @@ const SignUpBody = () => {
       />
 
       <Input
+        name="password1"
         type="password"
         placeholder="Password"
         value={user.password1}
@@ -113,6 +120,7 @@ const SignUpBody = () => {
       />
 
       <Input
+        name="password2"
         type="password"
         placeholder="Confirm password"
         value={user.password2}
@@ -127,11 +135,11 @@ const SignUpBody = () => {
         <StyledLink to="/404">terms of service</StyledLink>.
       </SubTitle>
 
-      <Link style={{ all: 'initial' }} to="/login">
-        <ButtonSquare type="submit" style={buttonStyle}>
-          Sign up
-        </ButtonSquare>
-      </Link>
+      {/* <Link style={{ all: 'initial' }} to="/login"> */}
+      <ButtonSquare type="submit" style={buttonStyle}>
+        Sign up
+      </ButtonSquare>
+      {/* </Link> */}
     </FormContainer>
   )
 }

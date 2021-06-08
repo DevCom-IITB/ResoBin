@@ -37,13 +37,21 @@ const iconStyles = {
   margin: '0 1.25rem 0 0.75rem',
 }
 
-const InputRounded = ({ type, placeholder = '', value, onChange, Icon }) => {
+const InputRounded = ({
+  name,
+  type,
+  placeholder = '',
+  value,
+  onChange,
+  Icon,
+}) => {
   return (
     <Container>
       <Input
+        name={name}
         type={type}
         placeholder={placeholder}
-        // value={value}
+        value={value}
         onChange={onChange}
       />
       <Icon style={iconStyles} />
@@ -51,12 +59,12 @@ const InputRounded = ({ type, placeholder = '', value, onChange, Icon }) => {
   )
 }
 
-// InputRounded.propTypes = {
-//   type: PropTypes.string.isRequired,
-//   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-//   onChange: PropTypes.func.isRequired,
-//   Icon: PropTypes.elementType,
-//   placeholder: PropTypes.string,
-// }
+InputRounded.propTypes = {
+  type: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  onChange: PropTypes.func.isRequired,
+  Icon: PropTypes.elementType,
+  placeholder: PropTypes.string,
+}
 
 export default InputRounded
