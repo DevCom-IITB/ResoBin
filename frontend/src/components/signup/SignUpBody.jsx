@@ -42,6 +42,7 @@ const StyledLink = styled(Link)`
 
 const SignUpBody = () => {
   const buttonStyle = { fontSize: '1.25rem', width: '100%' }
+
   return (
     <Container>
       <Input type="text" placeholder="Full name" icon={Profile} />

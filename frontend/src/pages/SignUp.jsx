@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { SignUpBody } from 'components/signup'
 import Navbar from 'components/navbar'
+import { useSelector } from 'react-redux'
 
 const Container = styled.div`
   margin: 2rem 0 0;
@@ -51,6 +52,8 @@ const StyledLink = styled(Link)`
 `
 
 const SignUp = () => {
+  const alert = useSelector((state) => state.alert)
+
   return (
     <Container>
       <Navbar

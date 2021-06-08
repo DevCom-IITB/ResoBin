@@ -2,7 +2,6 @@ import { createContext, useState, useContext } from 'react'
 
 export const ThemeContext = createContext({ theme: 'dark' })
 
-//Custom hook
 export const useThemeContext = () => {
   const context = useContext(ThemeContext)
   if (context === undefined)

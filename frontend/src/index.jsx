@@ -2,10 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
-
 import './index.css'
 import App from './App'
-import { ThemeContextProvider } from 'context/ThemeContext'
+import { ThemeContextProvider } from 'hoc'
 import store from 'store'
 
 const StrictApp = () => {
