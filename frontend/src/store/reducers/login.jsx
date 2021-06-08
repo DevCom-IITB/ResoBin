@@ -1,9 +1,14 @@
 import { userTypes } from 'store/actions/types'
 
 let user = JSON.parse(localStorage.getItem('user'))
-const initialState = user ? { loggedIn: true, user } : {}
+const initialState = user
+  ? {
+      loggedIn: true,
+      user,
+    }
+  : {}
 
-const auth = (state = initialState, action) => {
+const login = (state = initialState, action) => {
   switch (action.type) {
     case userTypes.LOGIN_REQUEST:
       return {
@@ -24,4 +29,4 @@ const auth = (state = initialState, action) => {
   }
 }
 
-export default auth
+export default login

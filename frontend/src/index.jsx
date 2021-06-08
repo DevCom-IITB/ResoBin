@@ -6,15 +6,17 @@ import App from './App'
 import { ThemeContextProvider } from 'context/ThemeContext'
 import store from 'store'
 
-const StrictApp = () => (
-  <React.StrictMode>
-    <Provider store={store}>
-      <ThemeContextProvider>
-        <App />
-      </ThemeContextProvider>
-    </Provider>
-  </React.StrictMode>
-)
+const StrictApp = () => {
+  return (
+    <React.StrictMode>
+      <Provider store={store}>
+        <ThemeContextProvider>
+          <App />
+        </ThemeContextProvider>
+      </Provider>
+    </React.StrictMode>
+  )
+}
 
 const rootElement = document.getElementById('root')
 

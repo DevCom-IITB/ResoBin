@@ -1,3 +1,4 @@
+/*
 // Alert
 export const SET_ALERT = 'SET_ALERT'
 export const REMOVE_ALERT = 'REMOVE_ALERT'
@@ -16,6 +17,7 @@ export const REMOVE_FAVOURITE = 'REMOVE_FAVOURITE'
 // Theme
 export const SET_DARK_MODE = 'SET_DARK_MODE'
 export const SET_LIGHT_MODE = 'SET_LIGHT_MODE'
+*/
 
 export const alertTypes = {
   SUCCESS: 'ALERT_SUCCESS',

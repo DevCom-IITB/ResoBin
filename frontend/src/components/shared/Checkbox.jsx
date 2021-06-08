@@ -40,7 +40,7 @@ const InputLabel = styled.label`
     left: 10px;
     width: 4px;
     height: 9px;
-    border: solid ${({ theme }) => theme.textColor};
+    border: solid;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
   }
