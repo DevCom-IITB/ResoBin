@@ -1,15 +1,10 @@
 import { combineReducers } from 'redux'
-
 import alert from 'store/reducers/alert'
-import login from 'store/reducers/login'
-import signup from 'store/reducers/signup'
-// import user from 'store/reducers/user'
+import auth from 'store/reducers/auth'
 
 const rootReducer = combineReducers({
   alert,
-  login,
-  signup,
-  // user,
+  auth,
 })
 
 export default rootReducer
