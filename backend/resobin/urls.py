@@ -9,7 +9,7 @@ urlpatterns = [
 
     # path('api-auth/', 'rest_framework.urls'),
     path('accounts/', 'accounts.urls'),
-    path('profile/', 'user_profile.urls'),
+    # path('profile/', 'user_profile.urls'),
 ]
 
 urlpatterns += [

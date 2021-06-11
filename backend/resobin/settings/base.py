@@ -22,7 +22,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     # Local Apps (Your project's apps):
     'accounts',
-    'user_profile'
+    # 'user_profile'
 ]
 
 MIDDLEWARE = [
