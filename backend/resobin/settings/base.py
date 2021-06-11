@@ -21,7 +21,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     # Local Apps (Your project's apps):
-
+    'accounts',
+    'user_profile'
 ]
 
 MIDDLEWARE = [
@@ -40,7 +41,7 @@ ROOT_URLCONF = 'resobin.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [Path(BASE_DIR / 'build')],
+        'DIRS': [BASE_DIR / 'build'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,10 +69,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'build' / 'static',
+]
 MEDIA_URL = '/media/'
-STATICFILES_DIRS = [Path(BASE_DIR / 'build' / 'static')]
-STATIC_ROOT = Path(BASE_DIR / 'build')
-MEDIA_ROOT = Path(BASE_DIR / 'media')
+STATIC_ROOT = BASE_DIR / 'build'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
