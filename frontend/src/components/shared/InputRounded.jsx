@@ -29,6 +29,12 @@ const Input = styled.input`
     color: #1f1c2e;
     opacity: 0.6;
   }
+
+  &:focus::placeholder {
+    color: transparent;
+    transition-duration: 0ms;
+    transition-delay: 0ms;
+  }
 `
 
 const iconStyles = {
@@ -37,23 +43,10 @@ const iconStyles = {
   margin: '0 1.25rem 0 0.75rem',
 }
 
-const InputRounded = ({
-  name,
-  type,
-  placeholder = '',
-  value,
-  onChange,
-  Icon,
-}) => {
+const InputRounded = ({ Icon, ...inputProps }) => {
   return (
     <Container>
-      <Input
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-      />
+      <Input {...inputProps} />
       <Icon style={iconStyles} />
     </Container>
   )
@@ -61,7 +54,7 @@ const InputRounded = ({
 
 InputRounded.propTypes = {
   type: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  value: PropTypes.node.isRequired,
   onChange: PropTypes.func.isRequired,
   Icon: PropTypes.elementType,
   placeholder: PropTypes.string,

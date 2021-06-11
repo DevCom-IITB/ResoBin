@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { InputRounded as Input, ButtonSquare } from 'components/shared'
 // import { GoogleAuth } from 'components/login'
@@ -57,17 +57,18 @@ const LoginBody = () => {
 
   const [user, setUser] = useState(initialState)
   const [submitted, setSubmitted] = useState(false)
-  // const loggingin = useSelector((state) => state.authentication.loggingIn)
+  // const loggingin = useSelector((state) => state.login.loggingIn)
   const dispatch = useDispatch()
-  const location = useLocation()
+  // const location = useLocation()
+  const history = useHistory()
 
   // reset login status
   useEffect(() => {
     dispatch(userActions.logout())
   }, [dispatch])
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
+  const handleChange = (event) => {
+    const { name, value } = event.target
     setUser((inputs) => ({ ...inputs, [name]: value }))
   }
 
@@ -76,8 +77,7 @@ const LoginBody = () => {
     setSubmitted(true)
 
     if (nullCheck(user)) {
-      const { from } = location.state || { from: { pathname: '/dashboard' } }
-      dispatch(userActions.login(user.email, user.password, from))
+      dispatch(userActions.login(user.email, user.password))
     }
   }
 
@@ -99,16 +99,15 @@ const LoginBody = () => {
         onChange={handleChange}
         Icon={LockPassword}
       />
+
       <ContainerSpaceBetween>
         <Checkbox label="Remember me" />
         <StyledLink to="/forgot-password">Forgot password?</StyledLink>
       </ContainerSpaceBetween>
 
-      {/* <Link style={{ all: 'initial' }} to="/dashboard"> */}
       <ButtonSquare type="submit" style={buttonStyle}>
         Login
       </ButtonSquare>
-      {/* </Link> */}
       {/* <GoogleAuth /> */}
     </FormContainer>
   )

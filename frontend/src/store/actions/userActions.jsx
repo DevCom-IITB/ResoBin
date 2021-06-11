@@ -1,15 +1,12 @@
-// import { useHistory } from 'react-router-dom'
 import { userTypes } from 'store/actions/types'
 import alertActions from 'store/actions/alertActions'
 
 // --------------------- Login / logout
 
-const login = (username, password, from) => {
+const login = (username, password) => {
   const request = (user) => ({ type: userTypes.LOGIN_REQUEST, user })
   const success = (user) => ({ type: userTypes.LOGIN_SUCCESS, user })
   const failure = (error) => ({ type: userTypes.LOGIN_FAILURE, error })
-  // let history = useHistory()
-  console.log(from)
 
   return (dispatch) => {
     dispatch(request({ username }))

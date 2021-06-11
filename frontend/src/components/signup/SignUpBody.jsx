@@ -62,7 +62,7 @@ const SignUpBody = () => {
 
   const [user, setUser] = useState(initialState)
   const [submitted, setSubmitted] = useState(false)
-  // const registering = useSelector((state) => state.registration.registering)
+  // const registering = useSelector((state) => state.signup.registering)
   const dispatch = useDispatch()
 
   // reset login status
@@ -135,11 +135,9 @@ const SignUpBody = () => {
         <StyledLink to="/404">terms of service</StyledLink>.
       </SubTitle>
 
-      {/* <Link style={{ all: 'initial' }} to="/login"> */}
       <ButtonSquare type="submit" style={buttonStyle}>
         Sign up
       </ButtonSquare>
-      {/* </Link> */}
     </FormContainer>
   )
 }
