@@ -7,25 +7,24 @@ import { ThemeProvider } from 'styled-components'
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
 import { AdminView, Login, NotFound, SignUp } from 'pages'
 import { LoaderAnimation, PrivateRoute, ThemeContext } from 'hoc'
-import alertActions from 'store/actions/alertActions'
+// import alertActions from 'store/actions/alertActions'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 // Setup fake backend
-import { configureFakeBackend } from 'FakeBackend'
-window.BACKEND_URL = 'http://localhost:4000'
-configureFakeBackend()
+// import { configureFakeBackend } from 'FakeBackend'
+// window.BACKEND_URL = 'http://localhost:4000'
+// configureFakeBackend()
 
 const App = () => {
   const { theme } = useContext(ThemeContext)
-
-  const dispatch = useDispatch()
-  const history = useHistory()
-  useEffect(() => {
-    history.listen(() => {
-      dispatch(alertActions.clear())
-    })
-  }, [dispatch, history])
+  // const dispatch = useDispatch()
+  // const history = useHistory()
+  // useEffect(() => {
+  //   history.listen(() => {
+  //     dispatch(alertActions.clear())
+  //   })
+  // }, [dispatch, history])
 
   return (
     <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>

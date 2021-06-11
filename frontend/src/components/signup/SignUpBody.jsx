@@ -6,7 +6,7 @@ import { LockPassword, Profile, User } from '@styled-icons/remix-line'
 
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import userActions from 'store/actions/userActions'
+// import userActions from 'store/actions/userActions'
 
 const FormContainer = styled.form`
   display: flex;
@@ -66,9 +66,9 @@ const SignUpBody = () => {
   const dispatch = useDispatch()
 
   // reset login status
-  useEffect(() => {
-    dispatch(userActions.logout())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(userActions.logout())
+  // }, [dispatch])
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -78,7 +78,9 @@ const SignUpBody = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
     setSubmitted(true)
-    if (nullCheck(user)) dispatch(userActions.register(user))
+    if (nullCheck(user)) {
+      // dispatch(userActions.register(user))
+    }
   }
 
   return (
