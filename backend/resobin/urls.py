@@ -7,9 +7,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('accounts/', include('allauth.urls')),
 
-    # path('api-auth/', 'rest_framework.urls'),
-    path('accounts/', 'accounts.urls'),
-    # path('profile/', 'user_profile.urls'),
+    path('api-auth/', include('rest_framework.urls')),
+    path('accounts/', include('accounts.urls')),
+    path('profile/', include('user_profile.urls')),
 ]
 
 urlpatterns += [

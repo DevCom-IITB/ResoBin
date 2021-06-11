@@ -22,7 +22,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     # Local Apps (Your project's apps):
     'accounts',
-    # 'user_profile'
+    'user_profile'
 ]
 
 MIDDLEWARE = [
@@ -80,7 +80,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
     ]
 }
 
