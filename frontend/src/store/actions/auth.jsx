@@ -9,7 +9,9 @@ import {
 // import { setAlert } from 'store/actions/alert'
 
 export const signupAction =
-  (username, password, passwordAgain) => async (dispatch) => {
+  ({ username, password, passwordAgain }) =>
+  async (dispatch) => {
+    console.log(username, password, passwordAgain)
     const config = {
       headers: {
         Accept: 'application/json',
