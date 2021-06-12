@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { InputRounded as Input, ButtonSquare } from 'components/shared'
 import { Email } from '@styled-icons/material-outlined'
 import { LockPassword, Profile, User } from '@styled-icons/remix-line'
+import { CSRFToken } from 'helpers'
 
 const FormContainer = styled.form`
   display: flex;
@@ -45,6 +46,7 @@ const SignupBody = ({ onChange, onSubmit, user }) => {
 
   return (
     <FormContainer onSubmit={onSubmit}>
+      <CSRFToken />
       <Input
         name="fullname"
         type="text"
@@ -54,7 +56,6 @@ const SignupBody = ({ onChange, onSubmit, user }) => {
         Icon={Profile}
         required
       />
-
       <Input
         name="username"
         type="text"
@@ -64,7 +65,6 @@ const SignupBody = ({ onChange, onSubmit, user }) => {
         Icon={User}
         required
       />
-
       <Input
         name="email"
         type="email"
@@ -74,7 +74,6 @@ const SignupBody = ({ onChange, onSubmit, user }) => {
         Icon={Email}
         required
       />
-
       <Input
         name="password"
         type="password"
@@ -85,7 +84,6 @@ const SignupBody = ({ onChange, onSubmit, user }) => {
         minLength="6"
         required
       />
-
       <Input
         name="passwordAgain"
         type="password"
@@ -95,14 +93,12 @@ const SignupBody = ({ onChange, onSubmit, user }) => {
         Icon={LockPassword}
         required
       />
-
       <SubTitle>
         I agree to the&nbsp;
         <StyledLink to="/404">privacy policy</StyledLink>
         &nbsp;and&nbsp;
         <StyledLink to="/404">terms of service</StyledLink>.
       </SubTitle>
-
       <ButtonSquare type="submit" style={buttonStyle}>
         Sign up
       </ButtonSquare>

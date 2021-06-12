@@ -37,16 +37,21 @@ const Input = styled.input`
   }
 `
 
-const iconStyles = {
-  color: '#807da0',
-  width: '1.75rem',
-  margin: '0 1.25rem 0 0.75rem',
-}
+const Label = styled.label`
+  color: ${({ theme }) => theme.text};
+`
 
-const InputRounded = ({ Icon, ...inputProps }) => {
+const InputRounded = ({ Icon, label, name, ...inputProps }) => {
+  const iconStyles = {
+    color: '#807da0',
+    width: '1.75rem',
+    margin: '0 1.25rem 0 0.75rem',
+  }
+
   return (
     <Container>
-      <Input {...inputProps} />
+      <Label htmlFor={name}>{label}</Label>
+      <Input name={name} {...inputProps} />
       <Icon style={iconStyles} />
     </Container>
   )
