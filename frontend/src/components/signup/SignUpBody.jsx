@@ -93,6 +93,7 @@ const SignupBody = ({ onChange, onSubmit, user }) => {
         Icon={LockPassword}
         required
       />
+
       <SubTitle>
         I agree to the&nbsp;
         <StyledLink to="/404">privacy policy</StyledLink>

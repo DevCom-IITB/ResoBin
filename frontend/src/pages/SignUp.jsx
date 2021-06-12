@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { connect, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { SignupBody } from 'components/signup'
@@ -68,8 +68,6 @@ const validCheck = (data) => {
 }
 
 const Signup = ({ signupAction, isAuthenticated }) => {
-  const alert = useSelector((state) => state.alert)
-
   const [user, setUser] = useState(initialState)
   const [submitted, setSubmitted] = useState(false)
 
@@ -98,13 +96,11 @@ const Signup = ({ signupAction, isAuthenticated }) => {
       />
       <FormBox>
         <TitleHeader>Create an Account</TitleHeader>
-
         <SignupBody
           onChange={handleChange}
           onSubmit={handleSubmit}
           user={user}
         />
-
         <StyledLink to="/login">Already have an account? Login!</StyledLink>
       </FormBox>
     </Container>

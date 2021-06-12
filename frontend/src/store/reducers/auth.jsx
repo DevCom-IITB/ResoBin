@@ -26,24 +26,24 @@ const authReducer = (state = initialState, action) => {
     case SIGNUP_FAIL:
       return state
 
-    // case LOGIN_SUCCESS:
-    //   localStorage.setItem('token', payload.access)
-    //   return {
-    //     ...state,
-    //     token: payload.access,
-    //     isAuthenticated: true,
-    //     loading: false,
-    //   }
+    case LOGIN_SUCCESS:
+      // localStorage.setItem('token', payload.access)
+      return {
+        ...state,
+        isAuthenticated: true,
+        // token: payload.access,
+        // loading: false,
+      }
 
-    // case LOGIN_FAIL:
-    // case LOGOUT:
-    //   localStorage.removeItem('token')
-    //   return {
-    //     ...state,
-    //     token: null,
-    //     isAuthenticated: false,
-    //     loading: false,
-    //   }
+    case LOGIN_FAIL:
+    case LOGOUT:
+      // localStorage.removeItem('token')
+      return {
+        ...state,
+        isAuthenticated: false,
+        // token: null,
+        // loading: false,
+      }
 
     default:
       return state

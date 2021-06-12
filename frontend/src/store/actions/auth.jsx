@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
 import {
   SIGNUP_SUCCESS,
   SIGNUP_FAIL,
@@ -15,7 +16,7 @@ export const signupAction =
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'X-CSRFToken': '',
+        'X-CSRFToken': Cookies.get('csrftoken'),
       },
     }
 
@@ -27,7 +28,7 @@ export const signupAction =
 
     try {
       const res = await axios.post(
-        process.env.REACT_APP_BACKEND_URL + '/accounts/signup/',
+        process.env.REACT_APP_BACKEND_URL + '/accounts/signup',
         body,
         config
       )
