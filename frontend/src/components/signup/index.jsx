@@ -1,1 +1,1 @@
-export { default as SignUpBody } from 'components/signup/SignUpBody'
+export { default as SignupBody } from 'components/signup/SignupBody'

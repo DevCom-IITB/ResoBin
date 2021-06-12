@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { ThemeProvider } from 'styled-components'
 // Components, hooks and styles
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
-import { AdminView, Login, NotFound, SignUp } from 'pages'
+import { AdminView, Login, NotFound, Signup } from 'pages'
 import { LoaderAnimation, PrivateRoute, ThemeContext } from 'hoc'
 // import alertActions from 'store/actions/alertActions'
 import { ToastContainer } from 'react-toastify'
@@ -45,7 +45,7 @@ const App = () => {
         <Switch>
           <PrivateRoute path="/dashboard" component={AdminView} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/signup" component={Signup} />
           <Route exact path="/forgot-password" component={NotFound} />
           <Route exact path="/404" component={NotFound} />
           <Redirect from="*" to="/login" />

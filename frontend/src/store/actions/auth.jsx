@@ -8,7 +8,7 @@ import {
 } from 'store/actions/types'
 // import { setAlert } from 'store/actions/alert'
 
-export const signup =
+export const signupAction =
   (username, password, passwordAgain) => async (dispatch) => {
     const config = {
       headers: {

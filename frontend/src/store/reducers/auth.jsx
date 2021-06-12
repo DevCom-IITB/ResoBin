@@ -7,9 +7,10 @@ import {
 } from 'store/actions/types'
 
 const initialState = {
-  token: localStorage.getItem('token'),
   isAuthenticated: null,
-  loading: false,
+  username: '',
+  full_name: '',
+  ldap: '',
 }
 
 const authReducer = (state = initialState, action) => {
@@ -20,28 +21,29 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthenticated: false,
-        loading: true,
       }
 
-    case LOGIN_SUCCESS:
-      localStorage.setItem('token', payload.access) // ! Rename to accessToken
-      return {
-        ...state,
-        token: payload.access,
-        isAuthenticated: true,
-        loading: false,
-      }
-
-    case LOGIN_FAIL:
     case SIGNUP_FAIL:
-    case LOGOUT:
-      localStorage.removeItem('token')
-      return {
-        ...state,
-        token: null,
-        isAuthenticated: false,
-        loading: false,
-      }
+      return state
+
+    // case LOGIN_SUCCESS:
+    //   localStorage.setItem('token', payload.access)
+    //   return {
+    //     ...state,
+    //     token: payload.access,
+    //     isAuthenticated: true,
+    //     loading: false,
+    //   }
+
+    // case LOGIN_FAIL:
+    // case LOGOUT:
+    //   localStorage.removeItem('token')
+    //   return {
+    //     ...state,
+    //     token: null,
+    //     isAuthenticated: false,
+    //     loading: false,
+    //   }
 
     default:
       return state

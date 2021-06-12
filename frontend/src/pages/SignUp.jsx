@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { SignUpBody } from 'components/signup'
+import { SignupBody } from 'components/signup'
 import Navbar from 'components/navbar'
 import { useSelector } from 'react-redux'
 
@@ -63,7 +63,7 @@ const SignUp = () => {
       />
       <FormBox>
         <TitleHeader>Create an Account</TitleHeader>
-        <SignUpBody />
+        <SignupBody />
         <StyledLink to="/login">Already have an account? Login!</StyledLink>
       </FormBox>
     </Container>

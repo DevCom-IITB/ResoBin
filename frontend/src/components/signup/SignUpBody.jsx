@@ -5,8 +5,8 @@ import { Email } from '@styled-icons/material-outlined'
 import { LockPassword, Profile, User } from '@styled-icons/remix-line'
 
 import { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-// import userActions from 'store/actions/userActions'
+import { connect, useDispatch, useSelector } from 'react-redux'
+import { signupAction } from 'store/actions/auth'
 
 const FormContainer = styled.form`
   display: flex;
@@ -45,11 +45,11 @@ const StyledLink = styled(Link)`
 `
 
 const initialState = {
-  fullname: '',
+  // fullname: '',
   username: '',
-  email: '',
-  password1: '',
-  password2: '',
+  // email: '',
+  password: '',
+  passwordAgain: '',
 }
 
 const nullCheck = (data) => {
