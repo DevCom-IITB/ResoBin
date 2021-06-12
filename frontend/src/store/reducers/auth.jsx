@@ -3,7 +3,8 @@ import {
   SIGNUP_FAIL,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  LOGOUT,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAIL,
 } from 'store/actions/types'
 
 const initialState = {
@@ -23,27 +24,24 @@ const authReducer = (state = initialState, action) => {
         isAuthenticated: false,
       }
 
-    case SIGNUP_FAIL:
-      return state
-
     case LOGIN_SUCCESS:
-      // localStorage.setItem('token', payload.access)
       return {
         ...state,
         isAuthenticated: true,
-        // token: payload.access,
         // loading: false,
       }
 
     case LOGIN_FAIL:
-    case LOGOUT:
-      // localStorage.removeItem('token')
+    case LOGOUT_SUCCESS:
       return {
         ...state,
         isAuthenticated: false,
-        // token: null,
         // loading: false,
       }
+
+    case SIGNUP_FAIL:
+    case LOGOUT_FAIL:
+      return state
 
     default:
       return state

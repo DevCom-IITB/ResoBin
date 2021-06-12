@@ -9,7 +9,7 @@ const CSRFToken = () => {
     const fetchData = async () => {
       try {
         await axios
-          .get('http://localhost:8000/accounts/csrf_token', {
+          .get(process.env.REACT_APP_BACKEND_URL + '/accounts/csrf_token', {
             withCredentials: true,
           })
           .then(null, (error) => console.log(error))

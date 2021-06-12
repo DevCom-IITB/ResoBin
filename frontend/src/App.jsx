@@ -1,20 +1,13 @@
-// Node modules
-import { Suspense, useContext, useEffect } from 'react'
-import { Route, Redirect, Switch, useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { Suspense, useContext } from 'react'
+import { Route, Redirect, Switch } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
-// Components, hooks and styles
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
+import { ToastContainerStyled } from 'components/toast'
 import { AdminView, Login, NotFound, Signup } from 'pages'
 import { LoaderAnimation, PrivateRoute, ThemeContext } from 'hoc'
-// import alertActions from 'store/actions/alertActions'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-
-// Setup fake backend
-// import { configureFakeBackend } from 'FakeBackend'
-// window.BACKEND_URL = 'http://localhost:4000'
-// configureFakeBackend()
+// import { useEffect } from 'react'
+// import { useHistory } from 'react-router-dom'
+// import { useDispatch } from 'react-redux'
 
 const App = () => {
   const { theme } = useContext(ThemeContext)
@@ -29,18 +22,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
       <GlobalStyles />
-      <ToastContainer
-        position="bottom-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-
+      <ToastContainerStyled />
       <Suspense fallback={<LoaderAnimation />}>
         <Switch>
           <PrivateRoute path="/dashboard" component={AdminView} />

@@ -46,8 +46,8 @@ class SignupView(APIView):
 
             user = User.objects.create_user(
                 username=username, password=password)
-            user = User.objects.get(id=user.id)
             UserProfile.objects.create(user=user, full_name='', ldap='')
+
             return Response({'success': 'User account created successfully'})
         except:
             return Response({'error': 'Something went wrong while signing up'})
