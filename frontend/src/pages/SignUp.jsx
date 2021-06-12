@@ -1,8 +1,11 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+// import { useSelector } from 'react-redux'
+import { connect } from 'react-redux'
+import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { SignupBody } from 'components/signup'
 import Navbar from 'components/navbar'
-// import { useSelector } from 'react-redux'
+import { signupAction } from 'store/actions/auth'
 
 const Container = styled.div`
   margin: 2rem 0 0;
@@ -51,8 +54,41 @@ const StyledLink = styled(Link)`
   }
 `
 
-const Signup = () => {
+const initialState = {
+  fullname: '',
+  username: '',
+  email: '',
+  password: '',
+  passwordAgain: '',
+}
+
+const validCheck = (data) => {
+  for (const key in data) if (!data[key]) return false
+  if (data.password !== data.passwordAgain) return false
+  return true
+}
+
+const Signup = ({ signupAction, isAuthenticated }) => {
   // const alert = useSelector((state) => state.alert)
+
+  const [user, setUser] = useState(initialState)
+  const [submitted, setSubmitted] = useState(false)
+
+  const handleChange = (event) => {
+    const { name, value } = event.target
+    setUser((user) => ({ ...user, [name]: value }))
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    if (validCheck(user)) {
+      signupAction(user)
+      setSubmitted(true)
+    }
+  }
+
+  if (isAuthenticated) return <Redirect to="/dashboard" />
+  else if (submitted) return <Redirect to="/login" />
 
   return (
     <Container>
@@ -63,11 +99,21 @@ const Signup = () => {
       />
       <FormBox>
         <TitleHeader>Create an Account</TitleHeader>
-        <SignupBody />
+
+        <SignupBody
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          user={user}
+        />
+
         <StyledLink to="/login">Already have an account? Login!</StyledLink>
       </FormBox>
     </Container>
   )
 }
 
-export default Signup
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+})
+
+export default connect(mapStateToProps, { signupAction })(Signup)

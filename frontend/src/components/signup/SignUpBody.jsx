@@ -1,9 +1,6 @@
-import { useState } from 'react'
-import { connect } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { InputRounded as Input, ButtonSquare } from 'components/shared'
-import { signupAction } from 'store/actions/auth'
 import { Email } from '@styled-icons/material-outlined'
 import { LockPassword, Profile, User } from '@styled-icons/remix-line'
 
@@ -43,53 +40,17 @@ const StyledLink = styled(Link)`
   }
 `
 
-const initialState = {
-  fullname: '',
-  username: '',
-  email: '',
-  password: '',
-  passwordAgain: '',
-}
-
-const validCheck = (data) => {
-  for (const key in data) if (!data[key]) return false
-  if (data.password !== data.passwordAgain) return false
-  return true
-}
-
-const SignupBody = ({ signupAction, isAuthenticated }) => {
+const SignupBody = ({ onChange, onSubmit, user }) => {
   const buttonStyle = { fontSize: '1.25rem', width: '100%' }
 
-  const [user, setUser] = useState(initialState)
-  const [submitted, setSubmitted] = useState(false)
-
-  const handleChange = (event) => {
-    const { name, value } = event.target
-    setUser((user) => ({ ...user, [name]: value }))
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    if (validCheck(user)) {
-      signupAction(user)
-      setSubmitted(true)
-    }
-  }
-
-  if (isAuthenticated) {
-    return <Redirect to="/dashboard" />
-  } else if (submitted) {
-    return <Redirect to="/login" />
-  }
-
   return (
-    <FormContainer onSubmit={handleSubmit}>
+    <FormContainer onSubmit={onSubmit}>
       <Input
         name="fullname"
         type="text"
         placeholder="Full name"
         value={user.fullname}
-        onChange={handleChange}
+        onChange={onChange}
         Icon={Profile}
         required
       />
@@ -99,7 +60,7 @@ const SignupBody = ({ signupAction, isAuthenticated }) => {
         type="text"
         placeholder="Username"
         value={user.username}
-        onChange={handleChange}
+        onChange={onChange}
         Icon={User}
         required
       />
@@ -109,7 +70,7 @@ const SignupBody = ({ signupAction, isAuthenticated }) => {
         type="email"
         placeholder="Email"
         value={user.email}
-        onChange={handleChange}
+        onChange={onChange}
         Icon={Email}
         required
       />
@@ -119,7 +80,7 @@ const SignupBody = ({ signupAction, isAuthenticated }) => {
         type="password"
         placeholder="Password"
         value={user.password}
-        onChange={handleChange}
+        onChange={onChange}
         Icon={LockPassword}
         minLength="6"
         required
@@ -130,7 +91,7 @@ const SignupBody = ({ signupAction, isAuthenticated }) => {
         type="password"
         placeholder="Confirm password"
         value={user.passwordAgain}
-        onChange={handleChange}
+        onChange={onChange}
         Icon={LockPassword}
         required
       />
@@ -149,8 +110,4 @@ const SignupBody = ({ signupAction, isAuthenticated }) => {
   )
 }
 
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-})
-
-export default connect(mapStateToProps, { signupAction })(SignupBody)
+export default SignupBody
