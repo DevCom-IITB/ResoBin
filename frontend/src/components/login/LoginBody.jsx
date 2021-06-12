@@ -1,14 +1,13 @@
-import { Link, useLocation, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { InputRounded as Input, ButtonSquare } from 'components/shared'
-// import { GoogleAuth } from 'components/login'
-import { Checkbox } from 'components/shared'
+import {
+  InputRounded as Input,
+  ButtonSquare,
+  Checkbox,
+} from 'components/shared'
 import { Email } from '@styled-icons/material-outlined'
-import { LockPassword } from '@styled-icons/remix-line'
-
-import { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-// import userActions from 'store/actions/userActions'
+import { LockPassword, User } from '@styled-icons/remix-line'
+// import { GoogleAuth } from 'components/login'
 
 const FormContainer = styled.form`
   display: flex;
@@ -42,61 +41,25 @@ const StyledLink = styled(Link)`
   }
 `
 
-const initialState = {
-  email: '',
-  password: '',
-}
-
-const nullCheck = (data) => {
-  for (const key in data) if (!data[key]) return false
-  return true
-}
-
-const LoginBody = () => {
+const LoginBody = ({ onChange, onSubmit, user }) => {
   const buttonStyle = { fontSize: '1.25rem', width: '100%' }
 
-  const [user, setUser] = useState(initialState)
-  const [submitted, setSubmitted] = useState(false)
-  // const loggingin = useSelector((state) => state.login.loggingIn)
-  const dispatch = useDispatch()
-  // const location = useLocation()
-  const history = useHistory()
-
-  // reset login status
-  // useEffect(() => {
-  //   dispatch(userActions.logout())
-  // }, [dispatch])
-
-  const handleChange = (event) => {
-    const { name, value } = event.target
-    setUser((inputs) => ({ ...inputs, [name]: value }))
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    setSubmitted(true)
-
-    if (nullCheck(user)) {
-      // dispatch(userActions.login(user.email, user.password))
-    }
-  }
-
   return (
-    <FormContainer onSubmit={handleSubmit}>
+    <FormContainer onSubmit={onSubmit}>
       <Input
-        name="email"
+        name="username"
         type="text"
-        placeholder="Email"
-        value={user.email}
-        onChange={handleChange}
-        Icon={Email}
+        placeholder="Username"
+        value={user.username}
+        onChange={onChange}
+        Icon={User}
       />
       <Input
         name="password"
         type="password"
         placeholder="Password"
         value={user.password}
-        onChange={handleChange}
+        onChange={onChange}
         Icon={LockPassword}
       />
 

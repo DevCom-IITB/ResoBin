@@ -94,6 +94,7 @@ const Signup = ({ signupAction, isAuthenticated }) => {
         buttonLink="/login"
         shadow="0 0 0.5rem rgba(0, 0, 0, 0.5)"
       />
+
       <FormBox>
         <TitleHeader>Create an Account</TitleHeader>
         <SignupBody
