@@ -8,16 +8,19 @@ const CSRFToken = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await axios.get(
-          process.env.REACT_APP_BACKEND_URL + '/accounts/csrf_token'
-        )
+        await axios
+          .get('http://localhost:8000/accounts/csrf_token', {
+            withCredentials: true,
+          })
+          .then(null, (error) => console.log(error))
+          .catch((error) => console.log(error))
       } catch {
         console.log('An error occurred while getting the CSRF Token')
       }
     }
 
     fetchData()
-    setCSRFToken(Cookies.get('csrftoken'))
+    setCSRFToken(Cookies.get('csrftoken') || '')
   }, [setCSRFToken])
 
   return <input type="hidden" name="csrfmiddlewaretoken" value={CSRFToken} />

@@ -13,6 +13,7 @@ export const signupAction =
   ({ username, password, passwordAgain }) =>
   async (dispatch) => {
     const config = {
+      withCredentials: true,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -27,11 +28,14 @@ export const signupAction =
     })
 
     try {
-      const res = await axios.post(
-        process.env.REACT_APP_BACKEND_URL + '/accounts/signup',
-        body,
-        config
-      )
+      const res = await axios
+        .post(
+          process.env.REACT_APP_BACKEND_URL + '/accounts/signup',
+          body,
+          config
+        )
+        .then(null, (error) => console.log(error))
+        .catch((error) => console.log(error))
 
       if (res.data.error) {
         dispatch({ type: SIGNUP_FAIL })

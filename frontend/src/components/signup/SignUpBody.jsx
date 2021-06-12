@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { InputRounded as Input, ButtonSquare } from 'components/shared'
+import { CSRFToken } from 'helpers'
 import { Email } from '@styled-icons/material-outlined'
 import { LockPassword, Profile, User } from '@styled-icons/remix-line'
-import { CSRFToken } from 'helpers'
 
 const FormContainer = styled.form`
   display: flex;
