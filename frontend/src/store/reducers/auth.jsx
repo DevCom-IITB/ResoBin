@@ -3,13 +3,15 @@ import {
   SIGNUP_FAIL,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  LOGOUT,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAIL,
 } from 'store/actions/types'
 
 const initialState = {
-  token: localStorage.getItem('token'),
   isAuthenticated: null,
-  loading: false,
+  username: '',
+  full_name: '',
+  ldap: '',
 }
 
 const authReducer = (state = initialState, action) => {
@@ -20,28 +22,26 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthenticated: false,
-        loading: true,
       }
 
     case LOGIN_SUCCESS:
-      localStorage.setItem('token', payload.access) // ! Rename to accessToken
       return {
         ...state,
-        token: payload.access,
         isAuthenticated: true,
-        loading: false,
+        // loading: false,
       }
 
     case LOGIN_FAIL:
-    case SIGNUP_FAIL:
-    case LOGOUT:
-      localStorage.removeItem('token')
+    case LOGOUT_SUCCESS:
       return {
         ...state,
-        token: null,
         isAuthenticated: false,
-        loading: false,
+        // loading: false,
       }
+
+    case SIGNUP_FAIL:
+    case LOGOUT_FAIL:
+      return state
 
     default:
       return state

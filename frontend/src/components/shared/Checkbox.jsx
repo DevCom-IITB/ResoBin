@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const Container = styled.div`
-	display: block;
+  display: block;
 `
 
 const InputCheckbox = styled.input`
@@ -40,17 +40,17 @@ const InputLabel = styled.label`
     left: 10px;
     width: 4px;
     height: 9px;
-    border: solid ${({ theme }) => theme.textColor};
+    border: solid;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
   }
 `
 
 const Checkbox = ({ label }) => {
-	return (
+  return (
     <Container>
       <InputCheckbox type="checkbox" id="checkbox" />
-      <InputLabel for="checkbox">{label}</InputLabel>
+      <InputLabel htmlFor="checkbox">{label}</InputLabel>
     </Container>
   )
 }

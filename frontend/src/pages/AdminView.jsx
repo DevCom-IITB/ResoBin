@@ -4,10 +4,11 @@ import Routes from 'RoutesConfig'
 
 const menu = (url) =>
   Routes.map(
-    (route) =>
+    (route, index) =>
       route.component && (
         <Route
           exact
+          key={index}
           path={url + route.slug}
           render={(props) => <route.component {...props} />}
         />

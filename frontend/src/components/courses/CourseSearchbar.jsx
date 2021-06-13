@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { HEX2RGBA } from 'helpers'
 import { InputRounded } from 'components/shared'
 import { Search } from '@styled-icons/heroicons-outline'
+import { useState } from 'react'
 
 const Container = styled.div`
   background: linear-gradient(
@@ -21,9 +22,19 @@ const Container = styled.div`
 `
 
 const CourseSearchbar = () => {
+  const [search, setSearch] = useState('')
+  const handleChange = (event) => setSearch((search) => event.target.value)
+
   return (
     <Container>
-      <InputRounded type="text" placeholder="Search" icon={Search} />
+      <InputRounded
+        name="courseSearch"
+        type="text"
+        placeholder="Search"
+        value={search}
+        onChange={handleChange}
+        Icon={Search}
+      />
     </Container>
   )
 }

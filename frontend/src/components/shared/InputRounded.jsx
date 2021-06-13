@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -28,21 +29,40 @@ const Input = styled.input`
     color: #1f1c2e;
     opacity: 0.6;
   }
+
+  &:focus::placeholder {
+    color: transparent;
+    transition-duration: 0ms;
+    transition-delay: 0ms;
+  }
 `
 
-const iconStyles = {
-  color: '#807da0',
-  width: '1.75rem',
-  margin: '0 1.25rem 0 0.75rem',
-}
+const Label = styled.label`
+  color: ${({ theme }) => theme.text};
+`
 
-const InputRounded = ({ type, placeholder, icon: Icon }) => {
+const InputRounded = ({ Icon, label, name, ...inputProps }) => {
+  const iconStyles = {
+    color: '#807da0',
+    width: '1.75rem',
+    margin: '0 1.25rem 0 0.75rem',
+  }
+
   return (
     <Container>
-      <Input type={type} placeholder={placeholder} />
+      <Label htmlFor={name}>{label}</Label>
+      <Input name={name} {...inputProps} />
       <Icon style={iconStyles} />
     </Container>
   )
+}
+
+InputRounded.propTypes = {
+  type: PropTypes.string.isRequired,
+  value: PropTypes.node.isRequired,
+  onChange: PropTypes.func.isRequired,
+  Icon: PropTypes.elementType,
+  placeholder: PropTypes.string,
 }
 
 export default InputRounded

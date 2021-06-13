@@ -49,3 +49,7 @@
     ```
 
 * Database server runs at [`http://localhost:5432`](http://localhost:5432)
+
+## Note
+
+* **Dont use `127.0.0.1` instead of `localhost`.** although they are identical, browser cookie management issues will occur.

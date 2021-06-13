@@ -1,6 +1,5 @@
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 
 const Container = styled.div`
   display: flex;

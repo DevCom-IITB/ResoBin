@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
-import { LoginBody } from 'components/login'
+import { SignupBody } from 'components/signup'
 import Navbar from 'components/navbar'
-import { loginAction } from 'store/actions/auth'
+import { signupAction } from 'store/actions/auth'
 
 const Container = styled.div`
   margin: 2rem 0 0;
@@ -54,52 +54,55 @@ const StyledLink = styled(Link)`
 `
 
 const initialState = {
+  fullname: '',
   username: '',
+  email: '',
   password: '',
+  passwordAgain: '',
 }
 
 const validCheck = (data) => {
   for (const key in data) if (!data[key]) return false
+  if (data.password !== data.passwordAgain) return false
   return true
 }
 
-const Login = ({ loginAction, isAuthenticated }) => {
+const Signup = ({ signupAction, isAuthenticated }) => {
   const [user, setUser] = useState(initialState)
-  const [, setSubmitted] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    setUser((inputs) => ({ ...inputs, [name]: value }))
+    setUser((user) => ({ ...user, [name]: value }))
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    setSubmitted(true)
-
     if (validCheck(user)) {
-      loginAction(user)
+      signupAction(user)
       setSubmitted(true)
     }
   }
 
   if (isAuthenticated) return <Redirect to="/dashboard" />
+  else if (submitted) return <Redirect to="/login" />
 
   return (
     <Container>
       <Navbar
-        button="Sign up"
-        buttonLink="/signup"
+        button="Login"
+        buttonLink="/login"
         shadow="0 0 0.5rem rgba(0, 0, 0, 0.5)"
       />
 
       <FormBox>
-        <TitleHeader>Login to Your Account</TitleHeader>
-        <LoginBody
+        <TitleHeader>Create an Account</TitleHeader>
+        <SignupBody
           onChange={handleChange}
           onSubmit={handleSubmit}
           user={user}
         />
-        <StyledLink to="/signup">Don't have an account? Sign up!</StyledLink>
+        <StyledLink to="/login">Already have an account? Login!</StyledLink>
       </FormBox>
     </Container>
   )
@@ -109,4 +112,4 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
 })
 
-export default connect(mapStateToProps, { loginAction })(Login)
+export default connect(mapStateToProps, { signupAction })(Signup)
