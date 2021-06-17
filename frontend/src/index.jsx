@@ -4,18 +4,18 @@ import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 import './index.css'
 import App from './App'
-import { ThemeContextProvider } from 'hoc'
+import { ContextProvider } from 'hoc'
 import store from 'store'
 
 const StrictApp = () => {
   return (
     <React.StrictMode>
       <Provider store={store}>
-        <Router>
-          <ThemeContextProvider>
+        <ContextProvider>
+          <Router>
             <App />
-          </ThemeContextProvider>
-        </Router>
+          </Router>
+        </ContextProvider>
       </Provider>
     </React.StrictMode>
   )

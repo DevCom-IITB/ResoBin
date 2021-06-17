@@ -1,6 +1,7 @@
+import { useContext } from 'react'
 import styled from 'styled-components'
 import { Toggle } from 'components/shared'
-import { useThemeContext } from 'hoc'
+import { ThemeContext } from 'hoc'
 
 const CheckboxContainer = styled.div`
   display: flex;
@@ -19,10 +20,10 @@ const CheckboxContainer = styled.div`
 // `
 
 const DarkmodeToggle = () => {
-  const { toggleTheme } = useThemeContext()
+  const { theme, toggleTheme } = useContext(ThemeContext)
   return (
     <CheckboxContainer>
-      <Toggle onClick={toggleTheme} />
+      <Toggle onClick={toggleTheme} defaultChecked={theme === 'dark'} />
       {/* <Title>Dark mode</Title> */}
     </CheckboxContainer>
   )
