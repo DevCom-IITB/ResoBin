@@ -2,20 +2,20 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
-import './index.css'
+import 'index.css'
 import App from './App'
-import { ContextProvider } from 'hoc'
+import { ContextProvider } from 'context'
 import store from 'store'
 
 const StrictApp = () => {
   return (
     <React.StrictMode>
       <Provider store={store}>
-        <ContextProvider>
-          <Router>
+        <Router>
+          <ContextProvider>
             <App />
-          </Router>
-        </ContextProvider>
+          </ContextProvider>
+        </Router>
       </Provider>
     </React.StrictMode>
   )

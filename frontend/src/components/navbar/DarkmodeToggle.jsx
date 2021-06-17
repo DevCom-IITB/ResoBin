@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import styled from 'styled-components'
 import { Toggle } from 'components/shared'
-import { ThemeContext } from 'hoc'
+import { ThemeContext } from 'context'
 
 const CheckboxContainer = styled.div`
   display: flex;
