@@ -16,7 +16,7 @@ const App = () => {
       <ToastContainerStyled />
       <Suspense fallback={<LoaderAnimation />}>
         <Switch>
-          <PrivateRoute path="/dashboard" component={AdminView} />
+          <Route path="/dashboard" component={AdminView} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/forgot-password" component={NotFound} />

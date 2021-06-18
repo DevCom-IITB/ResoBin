@@ -7,7 +7,7 @@ import {
 } from 'components/shared'
 import { Email } from '@styled-icons/material-outlined'
 import { LockPassword, User } from '@styled-icons/remix-line'
-// import { GoogleAuth } from 'components/login'
+import { GoogleAuth } from 'components/login'
 
 const FormContainer = styled.form`
   display: flex;
@@ -46,6 +46,7 @@ const LoginBody = ({ onChange, onSubmit, user }) => {
 
   return (
     <FormContainer onSubmit={onSubmit}>
+      <GoogleAuth />
       <Input
         name="username"
         type="text"
@@ -71,7 +72,6 @@ const LoginBody = ({ onChange, onSubmit, user }) => {
       <ButtonSquare type="submit" style={buttonStyle}>
         Login
       </ButtonSquare>
-      {/* <GoogleAuth /> */}
     </FormContainer>
   )
 }
