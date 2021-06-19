@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Divider } from 'components/shared'
 import { HEX2RGBA } from 'helpers'
+import Google from 'assets/svgs/g-normal.svg'
 
 const Container = styled.div``
 
@@ -32,8 +33,8 @@ const GoogleContainer = styled.button`
 `
 
 const GoogleIcon = styled.img`
-  width: 2.25rem;
-  margin: 0 0.25rem;
+  width: 1.25rem;
+  margin: 0 0.5rem;
 `
 
 const Title = styled.h4`
@@ -58,7 +59,7 @@ const GoogleAuth = () => {
   return (
     <Container>
       <GoogleContainer type="button">
-        <GoogleIcon src="https://developers.google.com/identity/sign-in/g-normal.png" />
+        <GoogleIcon src={Google} alt="logo" />
         <Title>Sign in with Google</Title>
       </GoogleContainer>
       <ContainerOr>

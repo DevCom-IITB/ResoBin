@@ -18,7 +18,7 @@ const Container = styled.div`
   position: sticky;
   top: 4rem;
   padding: 0 2rem;
-  z-index: 0;
+  z-index: 7;
 `
 
 const CourseSearchbar = () => {

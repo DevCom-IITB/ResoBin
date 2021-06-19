@@ -7,7 +7,6 @@ import courseData from './courseData.json'
 const Container = styled.div`
   background: ${({ theme }) => theme.darksecondary};
   margin: 1rem 2rem 2rem;
-  height: 1500px; /* Test height */
   border-radius: 8px;
   box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.4);
 `
