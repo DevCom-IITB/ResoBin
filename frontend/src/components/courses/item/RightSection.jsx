@@ -21,6 +21,7 @@ const Pil = styled.div`
   width: 5.25rem;
   height: 2rem;
   border-radius: 100px;
+  color: white;
   opacity: ${({ active }) => (active ? '100%' : '20%')};
 `
 

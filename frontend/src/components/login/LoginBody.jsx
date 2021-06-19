@@ -40,9 +40,12 @@ const StyledLink = styled(Link)`
   }
 `
 
-const LoginBody = ({ onChange, onSubmit, user }) => {
-  const buttonStyle = { fontSize: '1.25rem', width: '100%' }
+const buttonStyle = {
+  fontSize: '1.25rem',
+  width: '100%',
+}
 
+const LoginBody = ({ onChange, onSubmit, user }) => {
   return (
     <FormContainer onSubmit={onSubmit}>
       <GoogleAuth />
