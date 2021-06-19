@@ -1,15 +1,15 @@
 import styled from 'styled-components'
+import { ButtonSquare } from 'components/shared'
 
 const Container = styled.div`
   width: 20%;
-  /* padding: 2.5rem 2.5rem 1rem; */
+  text-align: center;
   /* background: gray; */
 `
 
 const Semester = styled.div`
   width: 100%;
   display: flex;
-  /* padding: 2.5rem 2.5rem 1rem; */
   justify-content: space-between;
 `
 
@@ -22,15 +22,22 @@ const Pil = styled.div`
   height: 2rem;
   border-radius: 100px;
   opacity: ${({ active }) => (active ? '100%' : '20%')};
-  z-index: 2;
 `
 
-const Autumn = {
-  backgroundColor: '#FEC400',
-}
+const Title = styled.h1`
+  margin: 2.75rem 0 1.5rem;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 20px;
+  letter-spacing: 1.5px;
+  color: ${({ theme }) => theme.textColor};
+`
 
-const Spring = {
-  backgroundColor: '#29cc97',
+const Autumn = { backgroundColor: '#FEC400' }
+const Spring = { backgroundColor: '#29cc97' }
+const buttonStyle = {
+  fontSize: '1rem',
+  width: '100%',
 }
 
 const CourseItem = ({ data }) => {
@@ -44,6 +51,17 @@ const CourseItem = ({ data }) => {
           Spring
         </Pil>
       </Semester>
+      <Title>Study material</Title>
+
+      <ButtonSquare type="button" style={buttonStyle}>
+        Textbook
+      </ButtonSquare>
+      <ButtonSquare type="button" style={buttonStyle}>
+        Notes
+      </ButtonSquare>
+      <ButtonSquare type="button" style={buttonStyle}>
+        Question Papers
+      </ButtonSquare>
     </Container>
   )
 }

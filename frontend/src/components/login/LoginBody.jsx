@@ -5,7 +5,6 @@ import {
   ButtonSquare,
   Checkbox,
 } from 'components/shared'
-import { Email } from '@styled-icons/material-outlined'
 import { LockPassword, User } from '@styled-icons/remix-line'
 import { GoogleAuth } from 'components/login'
 
