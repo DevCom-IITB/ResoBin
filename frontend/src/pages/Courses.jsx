@@ -18,7 +18,8 @@ const Container = styled.div`
 const MiddleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-right: 19rem;
+  margin-right: ${({ showFilters }) => (showFilters ? '19rem' : '0rem')};
+  /* transition: 300ms ease-in; */
 `
 
 const RightContainer = styled.div`
@@ -30,8 +31,9 @@ const RightContainer = styled.div`
   padding: 1.25rem 2rem;
   z-index: 7; /* To put searchbar at the bottom */
   box-shadow: inset 2px 0px 5px rgba(0, 0, 0, 0.3);
-  /* right: ${({ sidebar }) => (sidebar ? '0' : '-100%')}; */
-  right: 0;
+  right: ${({ showFilters }) => (showFilters ? '0' : '-100%')};
+  /* right: 0; */
+  /* transition: 300ms ease-in; */
 `
 
 const Title = styled.h4`
@@ -47,15 +49,23 @@ const Header = styled.div`
   margin-bottom: 1rem;
 `
 
-const StyledFilter = styled(Filter)`
+const IconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
-  top: 3rem;
-  right: 0;
-  width: 1.75rem;
-  margin: 1.25rem 2rem;
-  /* z-index: 99; */
-  /* right: ${({ sidebar }) => (sidebar ? '-100%' : '0')}; */
+  top: 4.6rem;
+  right: 2rem;
+
+  width: 3rem;
+  height: 3rem;
+  color: #807da0;
+  background: white;
+  box-shadow: 0px 0px 0.7rem rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
   cursor: pointer;
+  z-index: 10;
+  right: ${({ showFilters }) => (showFilters ? '-100%' : '2rem')};
 `
 
 const XStyle = {
@@ -64,31 +74,31 @@ const XStyle = {
 }
 
 const Courses = () => {
-  const [showSidebar, setShowSidebar] = useState(true)
+  const [showFilters, setShowFilters] = useState(true)
   const handleClick = () => {
-    setShowSidebar(!showSidebar)
+    setShowFilters(!showFilters)
   }
 
   return (
     <Container>
-      <MiddleContainer>
+      <MiddleContainer showFilters={showFilters}>
         <CourseSearchbar />
         <CourseList />
         <PageNo />
       </MiddleContainer>
 
-      {showSidebar ? (
-        <RightContainer>
-          <Header>
-            <Title>Filter</Title>
-            <X style={XStyle} onClick={handleClick} />
-          </Header>
-          <Divider />
-          <FiltersBody />
-        </RightContainer>
-      ) : (
-        <StyledFilter size="4rem" onClick={handleClick} />
-      )}
+      <RightContainer showFilters={showFilters}>
+        <Header>
+          <Title>Filter</Title>
+          <X style={XStyle} onClick={handleClick} />
+        </Header>
+        <Divider />
+        <FiltersBody />
+      </RightContainer>
+
+      <IconContainer>
+        <Filter showFilters={showFilters} size="1.5rem" onClick={handleClick} />
+      </IconContainer>
     </Container>
   )
 }

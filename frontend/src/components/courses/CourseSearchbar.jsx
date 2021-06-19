@@ -18,6 +18,7 @@ const Container = styled.div`
   position: sticky;
   top: 4rem;
   padding: 0 2rem;
+  margin-right: 5rem;
   z-index: 7;
 `
 

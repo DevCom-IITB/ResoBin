@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { ButtonSquare } from 'components/shared'
 
 const Container = styled.div`
-  width: 20%;
+  min-width: 11.5rem;
   text-align: center;
   /* background: gray; */
 `

@@ -7,9 +7,7 @@ import {
 } from '@styled-icons/zondicons'
 
 const Container = styled.div`
-  width: 80%;
-  padding-right: 2.5rem;
-  /* background: green; */
+  padding-right: 2rem;
 `
 
 const Header = styled.div`
