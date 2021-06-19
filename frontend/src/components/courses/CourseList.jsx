@@ -1,6 +1,8 @@
+import { Fragment } from 'react'
 import styled from 'styled-components'
 import { Divider } from 'components/shared'
-import { CourseInfo } from 'components/courses'
+import { CourseItem } from 'components/courses'
+import courseData from './courseData.json'
 
 const Container = styled.div`
   background: ${({ theme }) => theme.darksecondary};
@@ -31,18 +33,26 @@ const Results = styled.h4`
   letter-spacing: 1.5px;
   text-align: right;
   color: ${({ theme }) => theme.textColor};
-  opacity: 75%;
+  opacity: 80%;
 `
 
 const CourseList = () => {
+  const courseCount = courseData.length
+
   return (
     <Container>
       <Heading>
         <Title>Courses</Title>
-        <Results>321 courses found</Results>
+        <Results>{courseCount} courses found</Results>
       </Heading>
-      <Divider />
-      <CourseInfo />
+      <Divider margin="0 0 0.75rem 0" />
+
+      {courseData.map((data, index) => (
+        <Fragment key={index}>
+          <CourseItem data={data} />
+          <Divider margin="0.75rem 0" />
+        </Fragment>
+      ))}
     </Container>
   )
 }
