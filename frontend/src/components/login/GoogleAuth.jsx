@@ -9,19 +9,17 @@ const GoogleContainer = styled.button`
   justify-content: center;
   align-items: center;
   height: 2.75rem;
-  padding: 0 20px;
+  padding: 0 1rem;
   margin: 0 auto 1.5rem;
   background-color: #fff;
 
   cursor: pointer;
   opacity: 100%;
 
-  border: 2px solid ${HEX2RGBA('#000', 40)};
   border: 0;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   box-sizing: border-box;
   overflow: hidden;
-  box-shadow: 0 0 4px ${HEX2RGBA('#000', 20)};
 
   &:hover {
     opacity: 90%;
@@ -29,7 +27,7 @@ const GoogleContainer = styled.button`
 
   &:active {
     opacity: 90%;
-    box-shadow: inset 0 0 5px ${HEX2RGBA('#000', 40)};
+    box-shadow: inset 0 0 2px ${HEX2RGBA('#000', 40)};
   }
 `
 
@@ -43,7 +41,7 @@ const Title = styled.h4`
   color: #444;
   font-size: 1.25rem;
   font-family: 'Roboto';
-  font-weight: 500;
+  font-weight: 400;
 `
 
 const ContainerOr = styled.div`
@@ -52,7 +50,7 @@ const ContainerOr = styled.div`
   align-items: center;
   font-size: 1rem;
   font-weight: 300;
-  letter-spacing: 4px;
+  letter-spacing: 0.25rem;
   margin-bottom: 1rem;
 `
 
