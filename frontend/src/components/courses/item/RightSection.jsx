@@ -4,7 +4,6 @@ import { ButtonSquare } from 'components/shared'
 const Container = styled.div`
   min-width: 11.5rem;
   text-align: center;
-  /* background: gray; */
 `
 
 const Semester = styled.div`

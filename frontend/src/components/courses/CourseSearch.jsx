@@ -2,7 +2,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { InputRounded } from 'components/shared'
 import { HEX2RGBA } from 'helpers'
-import { Filter, Search } from '@styled-icons/heroicons-outline'
+import { Search } from '@styled-icons/heroicons-outline'
 
 const Container = styled.div`
   display: flex;
@@ -22,25 +22,7 @@ const Container = styled.div`
   z-index: 7;
 `
 
-const IconContainer = styled.div`
-  display: ${({ showFilters }) => (showFilters ? 'none' : 'flex')};
-  justify-content: center;
-  align-items: center;
-  margin-left: 2rem;
-
-  width: 3rem;
-  height: 3rem;
-
-  color: #807da0;
-  background: white;
-  box-shadow: 0px 0px 0.7rem rgba(0, 0, 0, 0.3);
-  border-radius: 50%;
-
-  cursor: pointer;
-  z-index: 10;
-`
-
-const CourseHeader = ({ showFilters, handleClick }) => {
+const CourseSearch = ({ showFilters, handleClick }) => {
   const [search, setSearch] = useState('')
   const handleChange = (event) => setSearch((search) => event.target.value)
 
@@ -54,12 +36,8 @@ const CourseHeader = ({ showFilters, handleClick }) => {
         onChange={handleChange}
         Icon={Search}
       />
-
-      <IconContainer showFilters={showFilters} onClick={handleClick}>
-        <Filter size="1.5rem" />
-      </IconContainer>
     </Container>
   )
 }
 
-export default CourseHeader
+export default CourseSearch
