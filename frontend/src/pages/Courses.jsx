@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 import { useLocalStorage } from 'hooks'
-import { CourseList, CourseSearch, FiltersBody } from 'components/courses'
-import { Divider } from 'components/shared'
-import { Filter, X } from '@styled-icons/heroicons-outline'
+import { CourseList, CourseSearch, Filters } from 'components/courses'
+import { Filter } from '@styled-icons/heroicons-outline'
 import { HEX2RGBA } from 'helpers'
 import { useState } from 'react'
 import { InputRounded } from 'components/shared'
@@ -20,7 +19,6 @@ const MiddleContainer = styled.div`
 
   height: calc(100vh - 4rem);
   overflow-y: scroll;
-  transition-duration: 200ms;
 
   &::-webkit-scrollbar {
     width: 0.75rem;
@@ -36,56 +34,6 @@ const MiddleContainer = styled.div`
     background-color: ${({ theme }) => theme.textColorInactive};
     border-radius: 2rem;
   }
-`
-
-const IconContainer = styled.div`
-  display: ${({ showFilters }) => (showFilters ? 'none' : 'flex')};
-  justify-content: center;
-  align-items: center;
-  margin-left: 2rem;
-
-  position: fixed;
-  top: 4.5rem;
-  right: 2rem;
-
-  width: 3rem;
-  height: 3rem;
-
-  color: #807da0;
-  background: white;
-  box-shadow: 0px 0px 0.7rem rgba(0, 0, 0, 0.3);
-  border-radius: 50%;
-
-  cursor: pointer;
-  z-index: 10;
-`
-
-const RightContainer = styled.div`
-  background: ${({ theme }) => theme.secondary};
-  position: fixed;
-  top: 4rem;
-  right: ${({ showFilters }) => (showFilters ? '0' : '-100%')};
-
-  width: 19rem;
-  height: 100%;
-  z-index: 7; /* To put searchbar at the bottom */
-  box-shadow: inset 2px 0px 5px rgba(0, 0, 0, 0.3);
-  transition-duration: 150ms;
-`
-
-const Title = styled.h4`
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-`
-
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 3rem;
-  margin-bottom: 1rem;
-  padding: 1.25rem 2rem 0;
 `
 
 const SearchContainer = styled.div`
@@ -107,6 +55,24 @@ const SearchContainer = styled.div`
   z-index: 7;
 `
 
+const IconContainer = styled.div`
+  display: ${({ showFilters }) => (showFilters ? 'none' : 'flex')};
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+
+  position: fixed;
+  /* top: 4.5rem; */
+  right: 2rem;
+  color: #807da0;
+  background: white;
+  box-shadow: 0px 0px 0.7rem rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+`
+
 const Courses = () => {
   const [showFilters, setShowFilters] = useLocalStorage('CourseFilter', true)
   const handleClick = () => {
@@ -118,38 +84,25 @@ const Courses = () => {
 
   return (
     <Container>
+      <SearchContainer showFilters={showFilters}>
+        <InputRounded
+          name="courseSearch"
+          type="text"
+          placeholder="Search"
+          value={search}
+          onChange={handleChange}
+          Icon={Search}
+        />
+        <IconContainer showFilters={showFilters} onClick={handleClick}>
+          <Filter size="1.5rem" />
+        </IconContainer>
+      </SearchContainer>
+
       <MiddleContainer showFilters={showFilters}>
-        <SearchContainer showFilters={showFilters}>
-          <InputRounded
-            name="courseSearch"
-            type="text"
-            placeholder="Search"
-            value={search}
-            onChange={handleChange}
-            Icon={Search}
-          />
-        </SearchContainer>
         <CourseList />
       </MiddleContainer>
 
-      <IconContainer showFilters={showFilters} onClick={handleClick}>
-        <Filter size="1.5rem" />
-      </IconContainer>
-
-      <RightContainer showFilters={showFilters}>
-        <Header>
-          <Title>Filter</Title>
-          <X
-            style={{
-              cursor: 'pointer',
-              width: '1.75rem',
-            }}
-            onClick={handleClick}
-          />
-        </Header>
-        <Divider style={{ margin: '0rem 2rem', width: 'auto' }} />
-        <FiltersBody />
-      </RightContainer>
+      <Filters handleClick={handleClick} showFilters={showFilters} />
     </Container>
   )
 }

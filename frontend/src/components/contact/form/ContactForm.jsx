@@ -6,7 +6,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   background: ${({ theme }) => theme.darksecondary};
-  margin: 6rem 21rem 1rem 2rem;
+  margin: 2rem 21rem 1rem 2rem;
   border-radius: 8px;
   box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.5);
 `
