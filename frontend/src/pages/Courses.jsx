@@ -1,25 +1,18 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import {
-  CourseList,
-  FiltersBody,
-  PageNo,
-  CourseSearchbar,
-} from 'components/courses'
+import { CourseList, FiltersBody, PageNo } from 'components/courses'
 import { Divider } from 'components/shared'
-import { Filter, X } from '@styled-icons/heroicons-outline'
+import { X } from '@styled-icons/heroicons-outline'
+import CourseHeader from 'components/courses/CourseHeader'
 
 const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
   margin: 4rem 0 0 11.5rem;
 `
 
 const MiddleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-right: ${({ showFilters }) => (showFilters ? '19rem' : '0rem')};
-  /* transition: 300ms ease-in; */
+  margin-right: ${({ showFilters }) => (showFilters ? '19rem' : '5rem')};
 `
 
 const RightContainer = styled.div`
@@ -32,8 +25,6 @@ const RightContainer = styled.div`
   z-index: 7; /* To put searchbar at the bottom */
   box-shadow: inset 2px 0px 5px rgba(0, 0, 0, 0.3);
   right: ${({ showFilters }) => (showFilters ? '0' : '-100%')};
-  /* right: 0; */
-  /* transition: 300ms ease-in; */
 `
 
 const Title = styled.h4`
@@ -49,25 +40,6 @@ const Header = styled.div`
   margin-bottom: 1rem;
 `
 
-const IconContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 4.6rem;
-  right: 2rem;
-
-  width: 3rem;
-  height: 3rem;
-  color: #807da0;
-  background: white;
-  box-shadow: 0px 0px 0.7rem rgba(0, 0, 0, 0.3);
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 10;
-  right: ${({ showFilters }) => (showFilters ? '-100%' : '2rem')};
-`
-
 const XStyle = {
   cursor: 'pointer',
   width: '1.75rem',
@@ -81,8 +53,8 @@ const Courses = () => {
 
   return (
     <Container>
+      <CourseHeader showFilters={showFilters} handleClick={handleClick} />
       <MiddleContainer showFilters={showFilters}>
-        <CourseSearchbar />
         <CourseList />
         <PageNo />
       </MiddleContainer>
@@ -95,10 +67,6 @@ const Courses = () => {
         <Divider />
         <FiltersBody />
       </RightContainer>
-
-      <IconContainer>
-        <Filter showFilters={showFilters} size="1.5rem" onClick={handleClick} />
-      </IconContainer>
     </Container>
   )
 }
