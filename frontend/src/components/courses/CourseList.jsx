@@ -6,7 +6,7 @@ import { courseData } from 'data/courses'
 
 const Container = styled.div`
   background: ${({ theme }) => theme.darksecondary};
-  margin: 0rem 0rem 2rem;
+  margin: 4rem 2rem 2rem;
   border-radius: 8px;
   box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.4);
   padding-bottom: 1rem;

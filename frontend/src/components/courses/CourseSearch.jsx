@@ -11,7 +11,7 @@ const Container = styled.div`
   height: 4rem;
   width: 100%;
   position: sticky;
-  top: 4rem;
+
   padding: 0 ${({ showFilters }) => (showFilters ? '21rem' : '2rem')} 0 2rem;
   background: linear-gradient(
     0deg,

@@ -4,22 +4,26 @@ import { CourseList, CourseSearch, FiltersBody } from 'components/courses'
 import { Divider } from 'components/shared'
 import { Filter, X } from '@styled-icons/heroicons-outline'
 import { HEX2RGBA } from 'helpers'
+import { useState } from 'react'
+import { InputRounded } from 'components/shared'
+import { Search } from '@styled-icons/heroicons-outline'
 
 const Container = styled.div`
   display: flex;
-  margin: 4rem 0 0 11.5rem;
+  margin: 0rem 0 0 11.5rem;
 `
 
 const MiddleContainer = styled.div`
-  margin-right: ${({ showFilters }) => (showFilters ? '19rem' : '5rem')};
-  transition-duration: 200ms;
+  display: relative;
+  margin-right: ${({ showFilters }) => (showFilters ? '19rem' : '0')};
+  padding-right: ${({ showFilters }) => (showFilters ? '0' : '4rem')};
 
-  /* height: calc(100% - 8.1rem); */
-  /* overflow-y: scroll; */
+  height: calc(100vh - 4rem);
+  overflow-y: scroll;
+  transition-duration: 200ms;
 
   &::-webkit-scrollbar {
     width: 0.75rem;
-    background-color: ${({ theme }) => theme.secondary};
   }
 
   &::-webkit-scrollbar-track {
@@ -84,9 +88,23 @@ const Header = styled.div`
   padding: 1.25rem 2rem 0;
 `
 
-const CourseBody = styled.div`
-  padding: 0rem 2rem;
-  /* background: grey; */
+const SearchContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 4rem;
+  width: ${({ showFilters }) => (showFilters ? '64.75rem' : '83.75rem')};
+  position: fixed;
+
+  padding: 0 ${({ showFilters }) => (showFilters ? '2rem' : '6rem')} 0 2rem;
+
+  background: linear-gradient(
+    0deg,
+    ${({ theme }) => HEX2RGBA(theme.primary, 0)} 0%,
+    ${({ theme }) => HEX2RGBA(theme.primary, 0)} 30%,
+    ${({ theme }) => HEX2RGBA(theme.primary, 100)} 50%
+  );
+  z-index: 7;
 `
 
 const Courses = () => {
@@ -95,13 +113,23 @@ const Courses = () => {
     setShowFilters(!showFilters)
   }
 
+  const [search, setSearch] = useState('')
+  const handleChange = (event) => setSearch((search) => event.target.value)
+
   return (
     <Container>
       <MiddleContainer showFilters={showFilters}>
-        <CourseSearch />
-        <CourseBody>
-          <CourseList />
-        </CourseBody>
+        <SearchContainer showFilters={showFilters}>
+          <InputRounded
+            name="courseSearch"
+            type="text"
+            placeholder="Search"
+            value={search}
+            onChange={handleChange}
+            Icon={Search}
+          />
+        </SearchContainer>
+        <CourseList />
       </MiddleContainer>
 
       <IconContainer showFilters={showFilters} onClick={handleClick}>

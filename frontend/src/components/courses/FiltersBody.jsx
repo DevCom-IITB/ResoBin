@@ -12,7 +12,6 @@ const Container = styled.div`
 
   &::-webkit-scrollbar {
     width: 0.75rem;
-    background-color: ${({ theme }) => theme.secondary};
   }
 
   &::-webkit-scrollbar-track {
@@ -35,7 +34,13 @@ const Title = styled.h1`
   margin: 2rem 0 1rem;
 `
 
+const initialState = {
+  offeredIn: null,
+}
+
 const FiltersBody = () => {
+  const [filters, setFilters] = useState(initialState)
+
   return (
     <Container>
       {filterData.map((data, index) => (
