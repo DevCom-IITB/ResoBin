@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react'
 import styled from 'styled-components'
-import { Divider, Checkbox } from 'components/shared'
+import { Checkbox } from 'components/shared'
 
 const Title = styled.h1`
   font-weight: 600;
@@ -10,25 +10,21 @@ const Title = styled.h1`
   margin: 2rem 0 1rem;
 `
 
-const Container = styled.div`
-  /* display: inline-block; */
-  /* display: grid;
-  grid-template-columns: repeat(12, 3rem); */
-  /* column-count: 3;
-  column-gap: 0.5rem; */
-  margin: 0.5rem 0.5rem 0.5rem 0;
+const FilterList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 `
 
 const FilterItem = ({ data, index }) => {
   return (
     <Fragment key={index}>
       <Title>{data.FilterTitle}</Title>
-      <Container>
+      <FilterList>
         {data.Options.map((data, index) => (
           <Checkbox key={index} label={data.Label} />
         ))}
-      </Container>
-      <Divider margin="0.75rem 0" />
+      </FilterList>
     </Fragment>
   )
 }

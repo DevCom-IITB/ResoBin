@@ -16,7 +16,7 @@ const Container = styled.div`
   height: 100%;
   z-index: 7; /* To put searchbar at the bottom */
   box-shadow: inset 2px 0px 5px rgba(0, 0, 0, 0.3);
-  transition-duration: 150ms;
+  /* transition-duration: 150ms; */
 `
 
 const Header = styled.div`
@@ -60,7 +60,7 @@ const initialState = {
   offeredIn: null,
 }
 
-const Filters = ({ showFilters, handleClick }) => {
+const Filters = ({ showFilters, onClick }) => {
   const [filters, setFilters] = useState(initialState)
 
   return (
@@ -72,7 +72,7 @@ const Filters = ({ showFilters, handleClick }) => {
             cursor: 'pointer',
             width: '1.75rem',
           }}
-          onClick={handleClick}
+          onClick={onClick}
         />
       </Header>
       <Divider style={{ margin: '0rem 2rem', width: 'auto' }} />

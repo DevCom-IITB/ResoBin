@@ -4,7 +4,7 @@ import { Divider } from 'components/shared'
 import { CourseItem, PageNo } from 'components/courses'
 import { courseData } from 'data/courses'
 
-const Container = styled.div`
+const List = styled.div`
   background: ${({ theme }) => theme.darksecondary};
   margin: 5rem 2rem 2rem;
   border-radius: 8px;
@@ -40,7 +40,7 @@ const CourseList = () => {
 
   return (
     <>
-      <Container>
+      <List>
         <Heading>
           <Title>Courses</Title>
           <Results>{courseCount} courses found</Results>
@@ -52,7 +52,7 @@ const CourseList = () => {
             <CourseItem data={data} />
           </Fragment>
         ))}
-      </Container>
+      </List>
       <PageNo />
     </>
   )
