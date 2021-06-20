@@ -32,8 +32,6 @@ const Input = styled.input`
 
   &:focus::placeholder {
     color: transparent;
-    transition-duration: 0ms;
-    transition-delay: 0ms;
   }
 `
 

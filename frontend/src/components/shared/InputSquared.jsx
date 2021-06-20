@@ -35,7 +35,7 @@ const InputSquared = styled.input`
 `
 
 const TextAreaSquared = styled.textarea`
-  height: 15rem;
+  height: 12rem;
   resize: none;
   ${sharedStyles}
 `

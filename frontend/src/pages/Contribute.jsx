@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { FileDetails, FileList } from 'components/contribute'
 
 const Container = styled.div`
-  margin: 4rem 0 0 11.5rem;
+  margin-left: 11.5rem;
 `
 
 const Contribute = () => {

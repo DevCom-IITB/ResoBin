@@ -20,6 +20,10 @@ const InputLabel = styled.label`
   cursor: pointer;
   user-select: none;
 
+  display: block;
+  padding-left: 2rem;
+  text-indent: -2rem;
+
   &:before {
     content: '';
     appearance: none;
