@@ -37,6 +37,7 @@ const LoaderFill = styled.div`
     background: linear-gradient(
       -135deg,
       ${({ theme }) => theme.logo} 0%,
+      ${({ theme }) => theme.logo} 30%,
       ${({ theme }) => theme.darksecondary} 100%
     );
     position: absolute;

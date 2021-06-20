@@ -7,14 +7,10 @@ import Navbar from 'components/navbar'
 import { loginAction } from 'store/actions/auth'
 
 const Container = styled.div`
-  margin: 2rem 0 0;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  width: 100%;
-  height: 100%;
-  position: fixed;
+  height: calc(100vh - 4rem);
   background-color: ${({ theme }) => theme.secondary};
 `
 
@@ -65,43 +61,44 @@ const validCheck = (data) => {
 
 const Login = ({ loginAction, isAuthenticated }) => {
   const [user, setUser] = useState(initialState)
-  const [, setSubmitted] = useState(false)
 
   const handleChange = (event) => {
     const { name, value } = event.target
     setUser((inputs) => ({ ...inputs, [name]: value }))
   }
 
+  const [temp, setTemp] = useState(false)
+  if (temp) return <Redirect to="/dashboard" />
+
   const handleSubmit = (event) => {
     event.preventDefault()
-    setSubmitted(true)
+    setTemp(true)
 
     if (validCheck(user)) {
       loginAction(user)
-      setSubmitted(true)
     }
   }
-
   if (isAuthenticated) return <Redirect to="/dashboard" />
 
   return (
-    <Container>
+    <>
       <Navbar
         button="Sign up"
         buttonLink="/signup"
         shadow="0 0 0.5rem rgba(0, 0, 0, 0.5)"
       />
-
-      <FormBox>
-        <TitleHeader>Login to Your Account</TitleHeader>
-        <LoginBody
-          onChange={handleChange}
-          onSubmit={handleSubmit}
-          user={user}
-        />
-        <StyledLink to="/signup">Don't have an account? Sign up!</StyledLink>
-      </FormBox>
-    </Container>
+      <Container>
+        <FormBox>
+          <TitleHeader>Login to Your Account</TitleHeader>
+          <LoginBody
+            onChange={handleChange}
+            onSubmit={handleSubmit}
+            user={user}
+          />
+          <StyledLink to="/signup">Don't have an account? Sign up!</StyledLink>
+        </FormBox>
+      </Container>
+    </>
   )
 }
 

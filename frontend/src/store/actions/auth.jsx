@@ -54,8 +54,8 @@ export const signupAction =
           toastError(response.data.error)
           dispatch({ type: SIGNUP_FAIL })
         })
-    } catch ({ response }) {
-      toastError(response.data.error)
+    } catch {
+      toastError('Signup failed. Please try again.')
       dispatch({ type: SIGNUP_FAIL })
     }
   }
@@ -99,8 +99,8 @@ export const loginAction =
           toastError(response.data.error)
           dispatch({ type: LOGIN_FAIL })
         })
-    } catch ({ response }) {
-      toastError(response.data.error)
+    } catch {
+      toastError('Login failed. Please try again.')
       dispatch({ type: LOGIN_FAIL })
     }
   }

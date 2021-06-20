@@ -7,14 +7,10 @@ import Navbar from 'components/navbar'
 import { signupAction } from 'store/actions/auth'
 
 const Container = styled.div`
-  margin: 2rem 0 0;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  width: 100%;
-  height: 100%;
-  position: fixed;
+  height: calc(100vh - 4rem);
   background-color: ${({ theme }) => theme.secondary};
 `
 
@@ -88,23 +84,24 @@ const Signup = ({ signupAction, isAuthenticated }) => {
   else if (submitted) return <Redirect to="/login" />
 
   return (
-    <Container>
+    <>
       <Navbar
         button="Login"
         buttonLink="/login"
         shadow="0 0 0.5rem rgba(0, 0, 0, 0.5)"
       />
-
-      <FormBox>
-        <TitleHeader>Create an Account</TitleHeader>
-        <SignupBody
-          onChange={handleChange}
-          onSubmit={handleSubmit}
-          user={user}
-        />
-        <StyledLink to="/login">Already have an account? Login!</StyledLink>
-      </FormBox>
-    </Container>
+      <Container>
+        <FormBox>
+          <TitleHeader>Create an Account</TitleHeader>
+          <SignupBody
+            onChange={handleChange}
+            onSubmit={handleSubmit}
+            user={user}
+          />
+          <StyledLink to="/login">Already have an account? Login!</StyledLink>
+        </FormBox>
+      </Container>
+    </>
   )
 }
 

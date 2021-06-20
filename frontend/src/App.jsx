@@ -1,4 +1,4 @@
-import { Suspense, useContext } from 'react'
+import { Suspense, useState, useContext } from 'react'
 import { Route, Redirect, Switch } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
@@ -9,11 +9,15 @@ import { ThemeContext } from 'context'
 
 const App = () => {
   const { theme } = useContext(ThemeContext)
+  const [loading, setLoading] = useState(false)
 
   return (
     <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
       <GlobalStyles />
+
+      {loading && <LoaderAnimation />}
       <ToastContainerStyled />
+
       <Suspense fallback={<LoaderAnimation />}>
         <Switch>
           {/* <PrivateRoute path="/dashboard" component={AdminView} /> */}
