@@ -5,9 +5,8 @@ import {
   ButtonSquare,
   Checkbox,
 } from 'components/shared'
-import { Email } from '@styled-icons/material-outlined'
 import { LockPassword, User } from '@styled-icons/remix-line'
-// import { GoogleAuth } from 'components/login'
+import { GoogleAuth } from 'components/login'
 
 const FormContainer = styled.form`
   display: flex;
@@ -41,11 +40,15 @@ const StyledLink = styled(Link)`
   }
 `
 
-const LoginBody = ({ onChange, onSubmit, user }) => {
-  const buttonStyle = { fontSize: '1.25rem', width: '100%' }
+const buttonStyle = {
+  fontSize: '1.25rem',
+  width: '100%',
+}
 
+const LoginBody = ({ onChange, onSubmit, user }) => {
   return (
     <FormContainer onSubmit={onSubmit}>
+      <GoogleAuth />
       <Input
         name="username"
         type="text"
@@ -71,7 +74,6 @@ const LoginBody = ({ onChange, onSubmit, user }) => {
       <ButtonSquare type="submit" style={buttonStyle}>
         Login
       </ButtonSquare>
-      {/* <GoogleAuth /> */}
     </FormContainer>
   )
 }

@@ -119,21 +119,28 @@ export const logout = () => async (dispatch) => {
   const body = JSON.stringify({})
 
   try {
-    const res = await axios
+    await axios
       .post(
         process.env.REACT_APP_BACKEND_URL + '/accounts/logout',
         body,
         config
       )
-      .then(null, (error) => console.log(error))
-      .catch((error) => console.log(error))
-
-    if (res.data.success) {
-      dispatch({ type: LOGOUT_SUCCESS })
-    } else {
-      dispatch({ type: LOGOUT_FAIL })
-    }
-  } catch (err) {
+      .then(
+        ({ response }) => {
+          toastSuccess('Login succesful')
+          dispatch({ type: LOGOUT_SUCCESS })
+        },
+        ({ response }) => {
+          toastError(response.data.error)
+          dispatch({ type: LOGOUT_FAIL })
+        }
+      )
+      .catch(({ response }) => {
+        toastError(response.data.error)
+        dispatch({ type: LOGOUT_FAIL })
+      })
+  } catch ({ response }) {
+    toastError(response.data.error)
     dispatch({ type: LOGOUT_FAIL })
   }
 }
@@ -151,29 +158,39 @@ export const checkAuthenticated = () => async (dispatch) => {
   const body = JSON.stringify({})
 
   try {
-    const res = await axios.get(
-      process.env.REACT_APP_BACKEND_URL + '/accounts/authenticated',
-      body,
-      config
-    )
-
-    if (res.data.error || res.data.isAuthenticated === 'error') {
-      dispatch({
-        type: AUTHENTICATED_FAIL,
-        payload: false,
+    await axios
+      .get(
+        process.env.REACT_APP_BACKEND_URL + '/accounts/authenticated',
+        body,
+        config
+      )
+      .then(
+        // if (res.data.error || res.data.isAuthenticated === 'error')
+        // else if (res.data.isAuthenticated === 'success')
+        ({ response }) => {
+          toastSuccess('Login succesful')
+          dispatch({
+            type: AUTHENTICATED_SUCCESS,
+            payload: true,
+          })
+        },
+        ({ response }) => {
+          toastError(response.data.error)
+          dispatch({
+            type: AUTHENTICATED_FAIL,
+            payload: false,
+          })
+        }
+      )
+      .catch(({ response }) => {
+        toastError(response.data.error)
+        dispatch({
+          type: AUTHENTICATED_FAIL,
+          payload: false,
+        })
       })
-    } else if (res.data.isAuthenticated === 'success') {
-      dispatch({
-        type: AUTHENTICATED_SUCCESS,
-        payload: true,
-      })
-    } else {
-      dispatch({
-        type: AUTHENTICATED_FAIL,
-        payload: false,
-      })
-    }
-  } catch (err) {
+  } catch ({ response }) {
+    toastError(response.data.error)
     dispatch({
       type: AUTHENTICATED_FAIL,
       payload: false,
@@ -192,27 +209,31 @@ export const delete_account = () => async (dispatch) => {
     },
   }
 
-  const body = JSON.stringify({
-    withCredentials: true,
-  })
+  const body = JSON.stringify({})
 
   try {
-    const res = await axios.delete(
-      `${process.env.REACT_APP_API_URL}/accounts/delete`,
-      config,
-      body
-    )
-
-    if (res.data.success) {
-      dispatch({
-        type: DELETE_USER_SUCCESS,
+    await axios
+      .delete(
+        process.env.REACT_APP_BACKEND_URL + '/accounts/delete',
+        body,
+        config
+      )
+      .then(
+        ({ response }) => {
+          toastSuccess('Login succesful')
+          dispatch({ type: DELETE_USER_SUCCESS })
+        },
+        ({ response }) => {
+          toastError(response.data.error)
+          dispatch({ type: DELETE_USER_FAIL })
+        }
+      )
+      .catch(({ response }) => {
+        toastError(response.data.error)
+        dispatch({ type: DELETE_USER_FAIL })
       })
-    } else {
-      dispatch({
-        type: DELETE_USER_FAIL,
-      })
-    }
-  } catch (err) {
+  } catch ({ response }) {
+    toastError(response.data.error)
     dispatch({
       type: DELETE_USER_FAIL,
     })

@@ -5,12 +5,12 @@ import ProfileImgItem from 'components/sidebar/ProfileImgItem'
 import ProfileImage from 'assets/images/ProfileImg_Laxman.jpg'
 import {
   BookOpen,
-  Bookmark,
   ChartPie,
   CloudUpload,
   Cog,
   Logout,
 } from '@styled-icons/heroicons-outline'
+import { BookmarkOutline } from '@styled-icons/zondicons'
 import { ContactSupport } from '@styled-icons/material-outlined'
 
 const Container = styled.div`
@@ -52,7 +52,7 @@ const Sidebar = () => {
 
       <SidebarItem
         title="Favorites"
-        icon={<Bookmark size="20" title="Check course material" />}
+        icon={<BookmarkOutline size="20" title="Check course material" />}
         to="/dashboard/favourites"
       />
       <SidebarItem

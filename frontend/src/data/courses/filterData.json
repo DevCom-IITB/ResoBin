@@ -1,0 +1,89 @@
+[
+  {
+    "FilterTitle": "Offered in",
+    "Options": [
+      {
+        "Label": "Spring Semester",
+        "Type": "Checkbox"
+      },
+      {
+        "Label": "Autumn Semester",
+        "Type": "Checkbox"
+      }
+    ]
+  },
+  {
+    "FilterTitle": "Credits",
+    "Options": [
+      {
+        "Label": "3",
+        "Type": "Checkbox"
+      },
+      {
+        "Label": "4",
+        "Type": "Checkbox"
+      },
+      {
+        "Label": "6",
+        "Type": "Checkbox"
+      },
+      {
+        "Label": "8",
+        "Type": "Checkbox"
+      }
+    ]
+  },
+  {
+    "FilterTitle": "Level",
+    "Options": [
+      {
+        "Label": "100",
+        "Type": "Checkbox"
+      },
+      {
+        "Label": "200",
+        "Type": "Checkbox"
+      },
+      {
+        "Label": "300",
+        "Type": "Checkbox"
+      },
+      {
+        "Label": "400",
+        "Type": "Checkbox"
+      },
+      {
+        "Label": "500",
+        "Type": "Checkbox"
+      },
+      {
+        "Label": "600",
+        "Type": "Checkbox"
+      },
+      {
+        "Label": "700",
+        "Type": "Checkbox"
+      },
+      {
+        "Label": "800",
+        "Type": "Checkbox"
+      }
+    ]
+  },
+  {
+    "FilterTitle": "Department",
+    "Type": "Checkbox",
+    "Options": [
+      { "Label": "AE | Aerospace Engineering" },
+      { "Label": "GP | Applied Geophysics" },
+      { "Label": "CL | Chemical Engineering" },
+      { "Label": "Applied Statistics and Informatics" },
+      { "Label": "Biosciences & Bioengineering" },
+      { "Label": "Chemical Engineering" },
+      { "Label": "Chemistry" },
+      { "Label": "Civil Engineering" },
+      { "Label": "Computer Science & Engineering" },
+      { "Label": "Chemical Engineering" }
+    ]
+  }
+]

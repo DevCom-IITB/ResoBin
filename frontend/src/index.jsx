@@ -2,9 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
-import './index.css'
+import 'index.css'
 import App from './App'
-import { ThemeContextProvider } from 'hoc'
+import { ContextProvider } from 'context'
 import store from 'store'
 
 const StrictApp = () => {
@@ -12,9 +12,9 @@ const StrictApp = () => {
     <React.StrictMode>
       <Provider store={store}>
         <Router>
-          <ThemeContextProvider>
+          <ContextProvider>
             <App />
-          </ThemeContextProvider>
+          </ContextProvider>
         </Router>
       </Provider>
     </React.StrictMode>

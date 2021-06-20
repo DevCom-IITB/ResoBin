@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
 const Container = styled.div`
-	display: flex;
-	position: relative;
+  display: flex;
+  position: relative;
 `
 
 const CheckboxLabel = styled.label`
@@ -48,10 +48,10 @@ const CheckboxInput = styled.input`
   }
 `
 
-const Toggle = ({ onClick }) => {
-	return (
+const Toggle = ({ ...inputProps }) => {
+  return (
     <Container>
-      <CheckboxInput type="checkbox" defaultChecked="true" onClick={onClick} />
+      <CheckboxInput type="checkbox" {...inputProps} />
       <CheckboxLabel htmlFor="checkbox" />
     </Container>
   )

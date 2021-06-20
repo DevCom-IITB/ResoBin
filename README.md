@@ -53,3 +53,4 @@
 ## Note
 
 * **Dont use `127.0.0.1` instead of `localhost`.** although they are identical, browser cookie management issues will occur.
+* References: [#1](https://dev.to/mdrhmn/deploying-react-django-app-using-heroku-2gfa)

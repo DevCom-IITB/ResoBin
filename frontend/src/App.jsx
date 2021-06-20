@@ -4,20 +4,11 @@ import { ThemeProvider } from 'styled-components'
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
 import { ToastContainerStyled } from 'components/toast'
 import { AdminView, Login, NotFound, Signup } from 'pages'
-import { LoaderAnimation, PrivateRoute, ThemeContext } from 'hoc'
-// import { useEffect } from 'react'
-// import { useHistory } from 'react-router-dom'
-// import { useDispatch } from 'react-redux'
+import { LoaderAnimation, PrivateRoute } from 'hoc'
+import { ThemeContext } from 'context'
 
 const App = () => {
   const { theme } = useContext(ThemeContext)
-  // const dispatch = useDispatch()
-  // const history = useHistory()
-  // useEffect(() => {
-  //   history.listen(() => {
-  //     dispatch(alertActions.clear())
-  //   })
-  // }, [dispatch, history])
 
   return (
     <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
@@ -25,7 +16,9 @@ const App = () => {
       <ToastContainerStyled />
       <Suspense fallback={<LoaderAnimation />}>
         <Switch>
-          <PrivateRoute path="/dashboard" component={AdminView} />
+          {/* <PrivateRoute path="/dashboard" component={AdminView} /> */}
+          {/* <PrivateRoute path="/courses/:id" component={NotFound} /> */}
+          <Route path="/dashboard" component={AdminView} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/forgot-password" component={NotFound} />
