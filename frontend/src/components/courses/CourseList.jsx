@@ -3,6 +3,31 @@ import styled from 'styled-components'
 import { Divider } from 'components/shared'
 import { CourseItem, PageNo } from 'components/courses'
 import { courseData } from 'data/courses'
+import { HEX2RGBA } from 'helpers'
+
+const Container = styled.div`
+  display: relative;
+  margin-right: ${({ showFilters }) => (showFilters ? '19rem' : '0')};
+  padding-right: ${({ showFilters }) => (showFilters ? '0' : '4rem')};
+
+  height: calc(100vh - 4rem);
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 0.75rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+    background-color: ${({ theme }) => HEX2RGBA(theme.textColor, 10)};
+    border-radius: 2rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => theme.textColorInactive};
+    border-radius: 2rem;
+  }
+`
 
 const List = styled.div`
   background: ${({ theme }) => theme.darksecondary};
@@ -35,11 +60,11 @@ const Results = styled.h4`
   opacity: 80%;
 `
 
-const CourseList = () => {
+const CourseList = ({ showFilters }) => {
   const courseCount = courseData.length
 
   return (
-    <>
+    <Container showFilters={showFilters}>
       <List>
         <Heading>
           <Title>Courses</Title>
@@ -54,7 +79,7 @@ const CourseList = () => {
         ))}
       </List>
       <PageNo />
-    </>
+    </Container>
   )
 }
 
