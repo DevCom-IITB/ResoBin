@@ -1,12 +1,12 @@
 import { Fragment } from 'react'
 import styled from 'styled-components'
 import { Divider } from 'components/shared'
-import { CourseItem } from 'components/courses'
-import courseData from './courseData.json'
+import { CourseItem, PageNo } from 'components/courses'
+import { courseData } from 'data/courses'
 
 const Container = styled.div`
   background: ${({ theme }) => theme.darksecondary};
-  margin: 1rem 2rem 2rem;
+  margin: 0rem 0rem 2rem;
   border-radius: 8px;
   box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.4);
   padding-bottom: 1rem;
@@ -39,19 +39,22 @@ const CourseList = () => {
   const courseCount = courseData.length
 
   return (
-    <Container>
-      <Heading>
-        <Title>Courses</Title>
-        <Results>{courseCount} courses found</Results>
-      </Heading>
+    <>
+      <Container>
+        <Heading>
+          <Title>Courses</Title>
+          <Results>{courseCount} courses found</Results>
+        </Heading>
 
-      {courseData.map((data, index) => (
-        <Fragment key={index}>
-          <Divider margin="0.75rem 0" />
-          <CourseItem data={data} />
-        </Fragment>
-      ))}
-    </Container>
+        {courseData.map((data, index) => (
+          <Fragment key={index}>
+            <Divider margin="0.75rem 0" />
+            <CourseItem data={data} />
+          </Fragment>
+        ))}
+      </Container>
+      <PageNo />
+    </>
   )
 }
 

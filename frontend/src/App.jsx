@@ -17,7 +17,7 @@ const App = () => {
       <Suspense fallback={<LoaderAnimation />}>
         <Switch>
           {/* <PrivateRoute path="/dashboard" component={AdminView} /> */}
-          {/* <PrivateRoute path="/courses" component={NotFound} /> */}
+          {/* <PrivateRoute path="/courses/:id" component={NotFound} /> */}
           <Route path="/dashboard" component={AdminView} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
