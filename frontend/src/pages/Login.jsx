@@ -67,13 +67,8 @@ const Login = ({ loginAction, isAuthenticated }) => {
     setUser((inputs) => ({ ...inputs, [name]: value }))
   }
 
-  const [temp, setTemp] = useState(false)
-  if (temp) return <Redirect to="/dashboard" />
-
   const handleSubmit = (event) => {
     event.preventDefault()
-    setTemp(true)
-
     if (validCheck(user)) {
       loginAction(user)
     }

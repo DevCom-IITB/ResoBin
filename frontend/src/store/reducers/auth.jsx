@@ -12,6 +12,7 @@ const initialState = {
   username: '',
   full_name: '',
   ldap: '',
+  loading: false,
 }
 
 const authReducer = (state = initialState, action) => {
@@ -28,7 +29,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthenticated: true,
-        // loading: false,
+        loading: false,
       }
 
     case LOGIN_FAIL:
@@ -36,7 +37,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthenticated: false,
-        // loading: false,
+        loading: false,
       }
 
     case SIGNUP_FAIL:

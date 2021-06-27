@@ -1,4 +1,4 @@
-import { Suspense, useState, useContext } from 'react'
+import { useState, useContext } from 'react'
 import { Route, Redirect, Switch } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
@@ -18,18 +18,16 @@ const App = () => {
       {loading && <LoaderAnimation />}
       <ToastContainerStyled />
 
-      <Suspense fallback={<LoaderAnimation />}>
-        <Switch>
-          {/* <PrivateRoute path="/dashboard" component={AdminView} /> */}
-          {/* <PrivateRoute path="/courses/:id" component={NotFound} /> */}
-          <Route path="/dashboard" component={AdminView} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/signup" component={Signup} />
-          <Route exact path="/forgot-password" component={NotFound} />
-          <Route exact path="/404" component={NotFound} />
-          <Redirect from="*" to="/login" />
-        </Switch>
-      </Suspense>
+      <Switch>
+        <PrivateRoute path="/dashboard" component={AdminView} />
+        {/* <PrivateRoute path="/courses/:id" component={NotFound} /> */}
+        {/* <Route path="/dashboard" component={AdminView} /> */}
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/signup" component={Signup} />
+        <Route exact path="/forgot-password" component={NotFound} />
+        <Route exact path="/404" component={NotFound} />
+        <Redirect from="*" to="/login" />
+      </Switch>
     </ThemeProvider>
   )
 }

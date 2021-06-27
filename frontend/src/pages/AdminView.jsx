@@ -1,5 +1,6 @@
+import { Suspense } from 'react'
 import { Route, Switch, Redirect, useRouteMatch } from 'react-router-dom'
-import { Dashboard } from 'hoc'
+import { Dashboard, LoaderAnimation } from 'hoc'
 import Routes from 'RoutesConfig'
 
 const menu = (url) =>
@@ -19,10 +20,12 @@ const AdminView = () => {
   let { url } = useRouteMatch()
   return (
     <Dashboard>
-      <Switch>
-        {menu(url)}
-        <Redirect from="*" to="/404" />
-      </Switch>
+      <Suspense fallback={<LoaderAnimation />}>
+        <Switch>
+          {menu(url)}
+          <Redirect from="*" to="/404" />
+        </Switch>
+      </Suspense>
     </Dashboard>
   )
 }
