@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { LoginBody } from 'components/login'
 import Navbar from 'components/navbar'
 import { loginAction } from 'store/actions/auth'
+import { setLoading } from 'features/loadingSlice'
 
 const Container = styled.div`
   display: flex;
@@ -61,6 +62,7 @@ const validCheck = (data) => {
 
 const Login = ({ loginAction, isAuthenticated }) => {
   const [user, setUser] = useState(initialState)
+  const dispatch = useDispatch()
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -69,7 +71,9 @@ const Login = ({ loginAction, isAuthenticated }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
+
     if (validCheck(user)) {
+      dispatch(setLoading(true))
       loginAction(user)
     }
   }

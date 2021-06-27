@@ -1,15 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 import alert from 'store/reducers/alert'
 import auth from 'store/reducers/auth'
-
-const initialState = {}
+import loadingReducer from 'features/loadingSlice'
 
 const store = configureStore({
   reducer: {
-    alert,
-    auth,
+    alert: alert,
+    auth: auth,
+    loading: loadingReducer,
   },
-  preloadedState: initialState,
+  preloadedState: {},
 })
 
 export default store

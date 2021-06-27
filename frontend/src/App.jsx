@@ -10,8 +10,8 @@ import { ThemeContext } from 'context'
 
 const App = () => {
   const { theme } = useContext(ThemeContext)
-  const { loading } = useSelector((state) => state)
-  console.log(loading)
+  const { loading } = useSelector((state) => state.loading)
+
   return (
     <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
       <GlobalStyles />

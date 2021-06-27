@@ -13,6 +13,7 @@ import {
   DELETE_USER_FAIL,
 } from 'store/actions/types'
 import { toastSuccess, toastError } from 'components/toast'
+import { setLoading } from 'features/loadingSlice'
 
 // Signup Action
 export const signupAction =
@@ -58,6 +59,7 @@ export const signupAction =
       toastError('Signup failed. Please try again.')
       dispatch({ type: SIGNUP_FAIL })
     }
+    dispatch(setLoading(false))
   }
 
 // Login Action
@@ -103,6 +105,7 @@ export const loginAction =
       toastError('Login failed. Please try again.')
       dispatch({ type: LOGIN_FAIL })
     }
+    dispatch(setLoading(false))
   }
 
 // Logout Action

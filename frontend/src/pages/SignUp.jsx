@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { connect } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { SignupBody } from 'components/signup'
 import Navbar from 'components/navbar'
 import { signupAction } from 'store/actions/auth'
+import { setLoading } from 'features/loadingSlice'
 
 const Container = styled.div`
   display: flex;
@@ -63,9 +64,11 @@ const validCheck = (data) => {
   return true
 }
 
-const Signup = ({ signupAction, isAuthenticated }) => {
+const Signup = () => {
   const [user, setUser] = useState(initialState)
-  const [submitted, setSubmitted] = useState(false)
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const { isAuthenticated } = useSelector((state) => state.auth)
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -74,14 +77,15 @@ const Signup = ({ signupAction, isAuthenticated }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
+
     if (validCheck(user)) {
-      signupAction(user)
-      setSubmitted(true)
+      dispatch(setLoading(true))
+      dispatch(signupAction(user))
+      history.push('/login')
     }
   }
 
   if (isAuthenticated) return <Redirect to="/dashboard" />
-  else if (submitted) return <Redirect to="/login" />
 
   return (
     <>
@@ -105,8 +109,4 @@ const Signup = ({ signupAction, isAuthenticated }) => {
   )
 }
 
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-})
-
-export default connect(mapStateToProps, { signupAction })(Signup)
+export default Signup
