@@ -1,4 +1,5 @@
-import { useState, useContext } from 'react'
+import { useContext } from 'react'
+import { useSelector } from 'react-redux'
 import { Route, Redirect, Switch } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
@@ -9,8 +10,8 @@ import { ThemeContext } from 'context'
 
 const App = () => {
   const { theme } = useContext(ThemeContext)
-  const [loading, setLoading] = useState(false)
-
+  const { loading } = useSelector((state) => state)
+  console.log(loading)
   return (
     <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
       <GlobalStyles />
