@@ -39,7 +39,7 @@ const sidebar = {
           icon: 'PROFILE_IMG',
         },
         {
-          id: 'favorites',
+          id: 'favourites',
           title: 'Favourites',
           type: 'item',
           url: '',

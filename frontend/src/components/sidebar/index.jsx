@@ -51,7 +51,7 @@ const Sidebar = () => {
       <ProfileImgItem title="Laxman D." src={ProfileImage} />
 
       <SidebarItem
-        title="Favorites"
+        title="Favourites"
         icon={<BookmarkOutline size="20" title="Check course material" />}
         to="/dashboard/favourites"
       />

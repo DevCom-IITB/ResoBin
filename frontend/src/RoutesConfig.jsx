@@ -4,6 +4,7 @@ import { lazy } from 'react'
 const Courses = lazy(() => import('pages/Courses'))
 const Contribute = lazy(() => import('pages/Contribute'))
 const Contact = lazy(() => import('pages/Contact'))
+const Favourites = lazy(() => import('pages/Favourites'))
 
 const routes = [
   {
@@ -23,6 +24,12 @@ const routes = [
     slug: '/contribute',
     exact: true,
     component: Contribute,
+  },
+  {
+    name: 'Favourites',
+    slug: '/favourites',
+    exact: true,
+    component: Favourites,
   },
   {
     name: 'Contact Us',

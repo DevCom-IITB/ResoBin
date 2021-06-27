@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { connect, useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { LoginBody } from 'components/login'
@@ -60,9 +60,10 @@ const validCheck = (data) => {
   return true
 }
 
-const Login = ({ loginAction, isAuthenticated }) => {
+const Login = () => {
   const [user, setUser] = useState(initialState)
   const dispatch = useDispatch()
+  const { isAuthenticated } = useSelector((state) => state.auth)
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -74,9 +75,10 @@ const Login = ({ loginAction, isAuthenticated }) => {
 
     if (validCheck(user)) {
       dispatch(setLoading(true))
-      loginAction(user)
+      dispatch(loginAction(user))
     }
   }
+
   if (isAuthenticated) return <Redirect to="/dashboard" />
 
   return (
@@ -101,8 +103,4 @@ const Login = ({ loginAction, isAuthenticated }) => {
   )
 }
 
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-})
-
-export default connect(mapStateToProps, { loginAction })(Login)
+export default Login
