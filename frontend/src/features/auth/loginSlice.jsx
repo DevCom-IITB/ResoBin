@@ -2,6 +2,10 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   loading: false,
+  // response: {
+  //   status:'',
+  //   message:'',
+  // }
 }
 
 export const loginSlice = createSlice({
