@@ -1,4 +1,5 @@
 from decouple import config, UndefinedValueError
+import django_heroku
 
 try:
     DEBUG = config('DEBUG', cast=bool)
@@ -9,3 +10,5 @@ if DEBUG:
     from .development import *
 else:
     from .production import *
+
+django_heroku.settings(locals())
