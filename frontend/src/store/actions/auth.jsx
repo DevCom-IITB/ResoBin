@@ -36,11 +36,7 @@ export const signupAction =
 
     try {
       await axios
-        .post(
-          process.env.REACT_APP_BACKEND_URL + '/accounts/signup',
-          body,
-          config
-        )
+        .post('/accounts/signup', body, config)
         .then(
           ({ response }) => {
             toastSuccess('Signup succesful')
@@ -82,11 +78,7 @@ export const loginAction =
 
     try {
       await axios
-        .post(
-          process.env.REACT_APP_BACKEND_URL + '/accounts/login',
-          body,
-          config
-        )
+        .post('/accounts/login', body, config)
         .then(
           ({ response }) => {
             toastSuccess('Login succesful')
@@ -123,11 +115,7 @@ export const logout = () => async (dispatch) => {
 
   try {
     await axios
-      .post(
-        process.env.REACT_APP_BACKEND_URL + '/accounts/logout',
-        body,
-        config
-      )
+      .post('/accounts/logout', body, config)
       .then(
         ({ response }) => {
           toastSuccess('Login succesful')
@@ -162,11 +150,7 @@ export const checkAuthenticated = () => async (dispatch) => {
 
   try {
     await axios
-      .get(
-        process.env.REACT_APP_BACKEND_URL + '/accounts/authenticated',
-        body,
-        config
-      )
+      .get('/accounts/authenticated', body, config)
       .then(
         // if (res.data.error || res.data.isAuthenticated === 'error')
         // else if (res.data.isAuthenticated === 'success')
@@ -216,11 +200,7 @@ export const delete_account = () => async (dispatch) => {
 
   try {
     await axios
-      .delete(
-        process.env.REACT_APP_BACKEND_URL + '/accounts/delete',
-        body,
-        config
-      )
+      .delete('/accounts/delete', body, config)
       .then(
         ({ response }) => {
           toastSuccess('Login succesful')

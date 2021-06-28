@@ -1,11 +1,12 @@
 {
   "name": "resobin",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/relaxxpls/resobin.git"
   },
+  "proxy": "http://localhost:8000",
   "license": "MIT",
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.0",
