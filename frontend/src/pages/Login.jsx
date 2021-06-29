@@ -4,8 +4,8 @@ import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { LoginBody } from 'components/login'
 import Navbar from 'components/navbar'
-import { loginAction } from 'store/actions/auth'
-// import { loginAction } from 'features/authSlice'
+import { loginAction } from 'features/authSlice'
+import { LoaderAnimation } from 'hoc'
 
 const Container = styled.div`
   display: flex;
@@ -63,8 +63,7 @@ const validCheck = (data) => {
 const Login = () => {
   const [user, setUser] = useState(initialState)
   const dispatch = useDispatch()
-  const { isAuthenticated } = useSelector((state) => state.auth)
-  console.log(typeof isAuthenticated)
+  const { isAuthenticated, loading } = useSelector((state) => state.auth)
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -73,16 +72,14 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-
-    if (validCheck(user)) {
-      dispatch(loginAction(user))
-    }
+    validCheck(user) && dispatch(loginAction(user))
   }
 
-  // if (isAuthenticated) return <Redirect to="/dashboard" />
+  if (isAuthenticated) return <Redirect to="/dashboard" />
 
   return (
     <>
+      {loading && <LoaderAnimation />}
       <Navbar
         button="Sign up"
         buttonLink="/signup"
