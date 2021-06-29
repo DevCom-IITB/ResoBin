@@ -4,8 +4,8 @@ import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { LoginBody } from 'components/login'
 import Navbar from 'components/navbar'
-import { loginAction } from 'store/authSlice'
 import { LoaderAnimation } from 'hoc'
+import { loginAction } from 'store/authSlice'
 
 const Container = styled.div`
   display: flex;
