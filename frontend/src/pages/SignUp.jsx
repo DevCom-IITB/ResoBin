@@ -4,7 +4,7 @@ import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { SignupBody } from 'components/signup'
 import Navbar from 'components/navbar'
-import { signupAction } from 'features/authSlice'
+import { signupAction } from 'store/authSlice'
 import { LoaderAnimation } from 'hoc'
 
 const Container = styled.div`
