@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Redirect, useHistory } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { SignupBody } from 'components/signup'
 import Navbar from 'components/navbar'
-import { signupAction } from 'store/actions/auth'
-import { setLoading } from 'features/loadingSlice'
+import { signupAction } from 'features/authSlice'
+import { LoaderAnimation } from 'hoc'
 
 const Container = styled.div`
   display: flex;
@@ -67,8 +67,7 @@ const validCheck = (data) => {
 const Signup = () => {
   const [user, setUser] = useState(initialState)
   const dispatch = useDispatch()
-  const history = useHistory()
-  const { isAuthenticated } = useSelector((state) => state.auth)
+  const { isAuthenticated, loading } = useSelector((state) => state.auth)
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -77,18 +76,14 @@ const Signup = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-
-    if (validCheck(user)) {
-      dispatch(setLoading(true))
-      dispatch(signupAction(user))
-      history.push('/login')
-    }
+    validCheck(user) && dispatch(signupAction(user))
   }
 
   if (isAuthenticated) return <Redirect to="/dashboard" />
 
   return (
     <>
+      {loading && <LoaderAnimation />}
       <Navbar
         button="Login"
         buttonLink="/login"
