@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { LoginBody } from 'components/login'
 import Navbar from 'components/navbar'
 import { loginAction } from 'store/actions/auth'
-import { setLoading } from 'features/loadingSlice'
+// import { loginAction } from 'features/authSlice'
 
 const Container = styled.div`
   display: flex;
@@ -64,6 +64,7 @@ const Login = () => {
   const [user, setUser] = useState(initialState)
   const dispatch = useDispatch()
   const { isAuthenticated } = useSelector((state) => state.auth)
+  console.log(typeof isAuthenticated)
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -74,12 +75,11 @@ const Login = () => {
     event.preventDefault()
 
     if (validCheck(user)) {
-      dispatch(setLoading(true))
       dispatch(loginAction(user))
     }
   }
 
-  if (isAuthenticated) return <Redirect to="/dashboard" />
+  // if (isAuthenticated) return <Redirect to="/dashboard" />
 
   return (
     <>

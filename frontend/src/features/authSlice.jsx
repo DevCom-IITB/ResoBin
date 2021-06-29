@@ -1,44 +1,38 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { toastSuccess, toastError } from 'components/toast'
+import { axiosAuth } from 'helpers/axiosAuth'
+// import { axios as axiosAuth } from 'axios'
 
 const initialState = {
   isAuthenticated: false,
   loading: false,
-  // response: {
-  //   status:'',
-  //   message:'',
-  // }
 }
 
-const login = createAsyncThunk('auth/login', async (task) => {
-  await axios.post('/accounts/login', task)
-  // const response =
-  // return response
-})
+export const loginAction = createAsyncThunk(
+  'auth/login',
+  async ({ rememberMe, ...data }) => {
+    await axiosAuth.post('/accounts/login', data)
+    // rememberMe
+    //   ? localStorage.setItem('TOKEN_KEY', 'token')
+    //   : sessionStorage.setItem('TOKEN_KEY', 'token')
+  }
+)
 
-export const authSlice = createSlice({
+const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {},
   extraReducers: {
-    [login.fulfilled]: (state, action) => {
-      toastSuccess('Login succesful')
+    [loginAction.fulfilled]: (state, action) => {
       state.isAuthenticated = true
       state.loading = false
     },
-    [login.pending]: (state, action) => {
-      toastError('Login pending')
+    [loginAction.pending]: (state, action) => {
       state.loading = true
     },
-    [login.rejected]: (state, action) => {
-      // toastError(response.data.error)
-      toastError(JSON.stringify(action.payload))
+    [loginAction.rejected]: (state, action) => {
       state.loading = false
     },
   },
 })
-
-export const { loginUser } = authSlice.actions
 
 export default authSlice.reducer
