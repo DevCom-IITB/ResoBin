@@ -8,8 +8,13 @@ const toastStyles = {
   closeOnClick: true,
   pauseOnHover: true,
   progress: '',
-  id: 'hello',
 }
 
-export const toastSuccess = (message) => toast.success(message, toastStyles)
-export const toastError = (message) => toast.error(message, toastStyles)
+export const toastSuccess = (message) => {
+  toast.dismiss()
+  toast.success(message, toastStyles)
+}
+export const toastError = (message) => {
+  toast.dismiss()
+  toast.error(message, toastStyles)
+}

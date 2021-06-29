@@ -7,18 +7,10 @@ const CSRFToken = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        await axios
-          .get('/accounts/csrf_token', {
-            withCredentials: true,
-          })
-          .then(null, (error) => console.log(error))
-          .catch((error) => console.log(error))
-      } catch {
-        console.log('An error occurred while getting the CSRF Token')
-      }
+      await axios
+        .get('/accounts/csrf_token')
+        .catch((error) => console.log(error))
     }
-
     fetchData()
     setCSRFToken(Cookies.get('csrftoken') || '')
   }, [setCSRFToken])

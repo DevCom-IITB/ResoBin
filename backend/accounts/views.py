@@ -47,7 +47,7 @@ class SignupView(APIView):
             user = User.objects.create_user(username=username, password=password)
             UserProfile.objects.create(user=user, full_name="", ldap="")
 
-            return Response({"success": "User account created successfully"})
+            return Response({"success": "Signup successful"})
         except:
             return Response({"error": "Something went wrong while signing up"})
 
@@ -77,7 +77,7 @@ class LogoutView(APIView):
     def post(self, request, format=None):
         try:
             auth.logout(request)
-            return Response({"success": "Logged out successfully"})
+            return Response({"success": "Logout successful"})
         except:
             return Response({"error": "Something went wrong while logging out"})
 
@@ -87,7 +87,7 @@ class DeleteUserView(APIView):
         user = self.request.user
         try:
             User.objects.filter(id=user.id).delete()
-            return Response({"success": "Account deleted successfully"})
+            return Response({"success": "Account deletion successful"})
         except:
             return Response(
                 {"error": "Something went wrong while deleting user account"}

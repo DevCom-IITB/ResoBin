@@ -6,7 +6,7 @@ import authReducer from 'features/authSlice'
 const store = configureStore({
   reducer: {
     auth: auth,
-    login: authReducer,
+    auth2: authReducer,
     loading: loadingReducer,
   },
   preloadedState: {},
