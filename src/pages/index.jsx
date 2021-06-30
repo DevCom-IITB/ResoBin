@@ -1,0 +1,8 @@
+export { default as AdminView } from 'pages/AdminView'
+export { default as Contact } from 'pages/Contact'
+export { default as Contribute } from 'pages/Contribute'
+export { default as Courses } from 'pages/Courses'
+export { default as Login } from 'pages/Login'
+export { default as Favourites } from 'pages/Favourites'
+export { default as NotFound } from 'pages/NotFound'
+export { default as Signup } from 'pages/Signup'
