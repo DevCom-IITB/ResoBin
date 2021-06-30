@@ -1,12 +1,12 @@
 import { useContext } from 'react'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import { Route, Redirect, Switch } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { ThemeProvider } from 'styled-components'
-import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
-import { AdminView, Login, NotFound, Signup } from 'pages'
-import { PrivateRoute } from 'hoc'
 import { ThemeContext } from 'context'
+import { PrivateRoute } from 'hoc'
+import { AdminView, Login, NotFound, Signup } from 'pages'
+import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
 
 const App = () => {
   const { theme } = useContext(ThemeContext)

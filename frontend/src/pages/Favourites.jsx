@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
 import { useLocalStorage } from 'hooks'
 import { CourseList, CourseSearch, Filters } from 'components/courses'
@@ -18,7 +18,7 @@ const Favourites = () => {
     <Container>
       <Helmet>
         <title>Favourites - ResoBin</title>
-        <meta name="description" content="Share your notes with others" />
+        <meta name="description" content="Your favourite courses" />
       </Helmet>
 
       <CourseSearch showFilters={showFilters} onClick={handleClick} />

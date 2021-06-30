@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { HelmetProvider } from 'react-helmet-async'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 import 'styles/index.css'
@@ -13,7 +14,9 @@ const StrictApp = () => {
       <Provider store={store}>
         <Router>
           <ContextProvider>
-            <App />
+            <HelmetProvider>
+              <App />
+            </HelmetProvider>
           </ContextProvider>
         </Router>
       </Provider>

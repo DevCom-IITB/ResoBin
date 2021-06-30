@@ -6,15 +6,12 @@ const initialState = {
   loading: false,
 }
 
-export const loginAction = createAsyncThunk(
-  'auth/login',
-  async ({ rememberMe, ...data }) => {
-    await axiosAuth.post('/accounts/login', data)
-    rememberMe
-      ? localStorage.setItem('TOKEN_KEY', 'token')
-      : sessionStorage.setItem('TOKEN_KEY', 'token')
-  }
-)
+export const loginAction = createAsyncThunk('auth/login', async (data) => {
+  await axiosAuth.post('/accounts/login', data)
+  // rememberMe
+  //   ? localStorage.setItem('TOKEN_KEY', 'token')
+  //   : sessionStorage.setItem('TOKEN_KEY', 'token')
+})
 
 export const signupAction = createAsyncThunk(
   'auth/signup',

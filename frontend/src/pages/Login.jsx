@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
@@ -51,26 +51,23 @@ const StyledLink = styled(Link)`
   }
 `
 
-const initialState = {
-  username: '',
-  password: '',
-}
-
 const validCheck = (data) => {
   for (const key in data) if (!data[key]) return false
   return true
 }
 
 const Login = () => {
-  const [user, setUser] = useState(initialState)
+  const [user, setUser] = useState({
+    username: '',
+    password: '',
+  })
+
   const dispatch = useDispatch()
   const { isAuthenticated, loading } = useSelector((state) => state.auth)
 
-  const handleChange = (event) => {
-    const { name, value } = event.target
-    setUser((inputs) => ({ ...inputs, [name]: value }))
+  const handleChange = ({ target }) => {
+    setUser((inputs) => ({ ...inputs, [target.id]: target.value }))
   }
-
   const handleSubmit = (event) => {
     event.preventDefault()
     validCheck(user) && dispatch(loginAction(user))
@@ -83,7 +80,7 @@ const Login = () => {
       {loading && <LoaderAnimation />}
       <Helmet>
         <title>Log In - ResoBin</title>
-        <meta name="description" content="Share your notes with others" />
+        <meta name="description" content="Login to continue" />
       </Helmet>
       <Navbar
         button="Sign up"

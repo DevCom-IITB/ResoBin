@@ -50,11 +50,11 @@ const InputLabel = styled.label`
   }
 `
 
-const Checkbox = ({ label }) => {
+const Checkbox = ({ label, id, ...inputProps }) => {
   return (
     <Container>
-      <InputCheckbox type="checkbox" id={label} />
-      <InputLabel htmlFor={label}>{label}</InputLabel>
+      <InputCheckbox type="checkbox" id={id} {...inputProps} />
+      <InputLabel htmlFor={id}>{label}</InputLabel>
     </Container>
   )
 }

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import {
@@ -46,11 +47,16 @@ const buttonStyle = {
 }
 
 const LoginBody = ({ onChange, onSubmit, user }) => {
+  const [rememberMe, setRememberMe] = useState(false)
+  const handleClick = ({ target }) => {
+    setRememberMe(target.checked)
+  }
+
   return (
     <FormContainer onSubmit={onSubmit}>
       <GoogleAuth />
       <Input
-        name="username"
+        id="username"
         type="text"
         placeholder="Username"
         value={user.username}
@@ -58,7 +64,7 @@ const LoginBody = ({ onChange, onSubmit, user }) => {
         Icon={User}
       />
       <Input
-        name="password"
+        id="password"
         type="password"
         placeholder="Password"
         value={user.password}
@@ -67,7 +73,12 @@ const LoginBody = ({ onChange, onSubmit, user }) => {
       />
 
       <ContainerSpaceBetween>
-        <Checkbox label="Remember me" />
+        <Checkbox
+          id="rememberMe"
+          value={rememberMe}
+          label="Remember me"
+          onClick={handleClick}
+        />
         <StyledLink to="/forgot-password">Forgot password?</StyledLink>
       </ContainerSpaceBetween>
 
