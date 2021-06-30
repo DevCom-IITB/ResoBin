@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import styled, { keyframes } from 'styled-components'
 
 const Container = styled.div`
@@ -60,6 +61,11 @@ const LoaderFill = styled.div`
 const LoaderAnimation = () => {
   return (
     <Container>
+      <Helmet>
+        <title>Loading...</title>
+        <meta name="description" content="Please wait, your page is loading" />
+      </Helmet>
+
       <LoaderTrack>
         <LoaderFill />
       </LoaderTrack>

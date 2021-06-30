@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -41,6 +42,14 @@ const NotFound = () => {
   let history = useHistory()
   return (
     <Container>
+      <Helmet>
+        <title>Page Not Found</title>
+        <meta
+          name="description"
+          content="The page you were searching for does not exist"
+        />
+      </Helmet>
+
       <Title>404 Not Found</Title>
       <Subtitle>The link you requested does not exist.</Subtitle>
       <StyledLink onClick={history.goBack}>Go back</StyledLink>

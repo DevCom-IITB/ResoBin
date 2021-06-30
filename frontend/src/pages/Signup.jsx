@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
@@ -84,11 +85,16 @@ const Signup = () => {
   return (
     <>
       {loading && <LoaderAnimation />}
+      <Helmet>
+        <title>Sign Up - ResoBin</title>
+        <meta name="description" content="Share your notes with others" />
+      </Helmet>
       <Navbar
         button="Login"
         buttonLink="/login"
         shadow="0 0 0.5rem rgba(0, 0, 0, 0.5)"
       />
+
       <Container>
         <FormBox>
           <TitleHeader>Create an Account</TitleHeader>

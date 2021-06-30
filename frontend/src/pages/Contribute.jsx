@@ -10,8 +10,8 @@ const Contribute = () => {
   return (
     <Container>
       <Helmet>
-        <title>Courses - ResoBin</title>
-        <meta name="description" content="Courses availabe at IIT Bombay" />
+        <title>Contribute - ResoBin</title>
+        <meta name="description" content="Upload and share your own notes" />
       </Helmet>
 
       <FileDetails />
