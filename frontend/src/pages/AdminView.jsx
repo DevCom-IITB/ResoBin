@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { Route, Switch, Redirect, useRouteMatch } from 'react-router-dom'
-import { Dashboard, LoaderAnimation } from 'hoc'
+import { Dashboard } from 'hoc'
+import { LoaderAnimation } from 'components/shared'
 import Routes from 'RoutesConfig'
 
 const menu = (url) =>

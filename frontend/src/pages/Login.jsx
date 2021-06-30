@@ -4,7 +4,7 @@ import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { LoginBody } from 'components/login'
 import Navbar from 'components/navbar'
-import { LoaderAnimation } from 'hoc'
+import { LoaderAnimation } from 'components/shared'
 import { loginAction } from 'store/authSlice'
 
 const Container = styled.div`

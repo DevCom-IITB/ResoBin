@@ -1,4 +1,5 @@
 import { useContext } from 'react'
+import { Helmet } from 'react-helmet'
 import { Route, Redirect, Switch } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { ThemeProvider } from 'styled-components'
@@ -13,6 +14,14 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
+      <Helmet>
+        <title>ResoBin</title>
+        <meta
+          name="description"
+          content="IIT Bombay's course resources sharing website"
+        />
+      </Helmet>
+
       <GlobalStyles />
       <Switch>
         <PrivateRoute path="/dashboard" component={AdminView} />

@@ -1,13 +1,11 @@
 import axios from 'axios'
-import Cookies from 'js-cookie'
 import { toastSuccess, toastError } from 'components/toast'
 
-export const axiosAuth = axios.create()
-
-// ? Add cookies before sending request to server
-axiosAuth.interceptors.request.use((config) => {
-  config.headers['X-CSRFToken'] = Cookies.get('csrftoken')
-  return config
+// ? Add csrf cookie to header
+const axiosAuth = axios.create({
+  xsrfHeaderName: 'X-CSRFToken',
+  xsrfCookieName: 'csrftoken',
+  withCredentials: true,
 })
 
 // ? Display toasts for server's responses
@@ -21,3 +19,5 @@ axiosAuth.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+export default axiosAuth
