@@ -4,6 +4,7 @@ import { X } from '@styled-icons/heroicons-outline'
 import { filterData } from 'data/courses'
 import { FilterItem } from 'components/courses'
 import { Divider } from 'components/shared'
+// import DropdownMulti from './DropdownMulti'
 import { scrollBar } from 'styles'
 
 const Container = styled.div`
@@ -32,10 +33,11 @@ const Title = styled.h4`
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: 1.5px;
+  color: ${({ theme }) => theme.textColor};
 `
 
 const FilterList = styled.div`
-  opacity: 90%;
+  opacity: 100%;
   padding: 0rem 2rem 2rem;
   height: calc(100% - 8rem);
   ${scrollBar}
@@ -63,6 +65,7 @@ const Filters = ({ showFilters, onClick }) => {
       <Divider style={{ margin: '0rem 2rem', width: 'auto' }} />
 
       <FilterList>
+        {/* <DropdownMulti /> */}
         {filterData.map((data, index) => (
           <FilterItem key={index} data={data} />
         ))}

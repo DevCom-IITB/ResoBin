@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { ProfileImg } from 'components/shared'
 
 const Container = styled.div`
-  background: blue;
   min-height: 4rem;
   width: 100%;
   padding: 0px 0.75rem;

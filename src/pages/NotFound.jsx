@@ -16,6 +16,7 @@ const Title = styled.h1`
   font-size: 6.2rem;
   font-weight: 400;
   margin-bottom: 2rem;
+  color: ${({ theme }) => theme.textColor};
 `
 
 const Subtitle = styled.p`

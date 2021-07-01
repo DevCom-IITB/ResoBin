@@ -43,6 +43,7 @@ const Title = styled.h4`
   min-height: 100%;
   width: 70%;
 
+  /* color: ${({ theme }) => theme.textColorInactive}; */
   font-weight: 400;
   letter-spacing: 1.5px;
   white-space: nowrap;
