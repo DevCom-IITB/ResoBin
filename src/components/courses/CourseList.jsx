@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Divider } from 'components/shared'
 import { CourseItem, PageNo } from 'components/courses'
 import { courseData } from 'data/courses'
-import { HEX2RGBA } from 'helpers'
+import { scrollBar } from 'styles'
 
 const Container = styled.div`
   display: relative;
@@ -11,22 +11,7 @@ const Container = styled.div`
   padding-right: ${({ showFilters }) => (showFilters ? '0' : '4rem')};
 
   height: calc(100vh - 4rem);
-  overflow-y: scroll;
-
-  &::-webkit-scrollbar {
-    width: 0.75rem;
-  }
-
-  &::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
-    background-color: ${({ theme }) => HEX2RGBA(theme.textColor, 10)};
-    border-radius: 2rem;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: ${({ theme }) => theme.textColorInactive};
-    border-radius: 2rem;
-  }
+  ${scrollBar}
 `
 
 const List = styled.div`

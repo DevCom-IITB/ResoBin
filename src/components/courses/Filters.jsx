@@ -1,10 +1,10 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import styled from 'styled-components'
+import { X } from '@styled-icons/heroicons-outline'
 import { filterData } from 'data/courses'
-import { HEX2RGBA } from 'helpers'
 import { FilterItem } from 'components/courses'
 import { Divider } from 'components/shared'
-import { X } from '@styled-icons/heroicons-outline'
+import { scrollBar } from 'styles'
 
 const Container = styled.div`
   background: ${({ theme }) => theme.secondary};
@@ -35,33 +35,18 @@ const Title = styled.h4`
 `
 
 const FilterList = styled.div`
-  opacity: 80%;
+  opacity: 90%;
   padding: 0rem 2rem 2rem;
   height: calc(100% - 8rem);
-  overflow-y: scroll;
-
-  &::-webkit-scrollbar {
-    width: 0.75rem;
-  }
-
-  &::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
-    background-color: ${({ theme }) => HEX2RGBA(theme.textColor, 10)};
-    border-radius: 2rem;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: ${({ theme }) => theme.textColorInactive};
-    border-radius: 2rem;
-  }
+  ${scrollBar}
 `
 
-const initialState = {
-  offeredIn: null,
-}
+// const initialState = {
+//   offeredIn: null,
+// }
 
 const Filters = ({ showFilters, onClick }) => {
-  const [filters, setFilters] = useState(initialState)
+  // const [filters, setFilters] = useState(initialState)
 
   return (
     <Container showFilters={showFilters}>
