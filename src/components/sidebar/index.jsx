@@ -15,12 +15,8 @@ import { ContactSupport } from '@styled-icons/material-outlined'
 
 const Container = styled.div`
   background: ${({ theme }) => theme.secondary};
-  left: 0rem;
-  top: 0rem;
-  bottom: 0rem;
-  width: 11.5rem; /* width: 184 px */
-  position: fixed;
-  margin-top: 4rem;
+  width: 11.5rem;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

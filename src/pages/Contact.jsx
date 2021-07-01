@@ -2,9 +2,7 @@ import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
 import { ContactForm, DeveloperList } from 'components/contact'
 
-const Container = styled.div`
-  margin-left: 11.5rem;
-`
+const Container = styled.div``
 
 const Contribute = () => {
   return (
