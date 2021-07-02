@@ -3,6 +3,9 @@ import Sidebar from 'components/sidebar'
 import Navbar from 'components/navbar'
 import { ScrollToTop } from 'hoc'
 
+import Topbar from 'components/sidebar/1200px/Topbar'
+import { useViewport } from ''
+
 const GridContainer = styled.div`
   display: grid;
   grid-template-rows: 4rem calc(100vh - 4rem);
@@ -38,9 +41,14 @@ const SidebarContainer = styled.div`
 const ContentContainer = styled.div`
   grid-area: content;
   overflow: auto;
+  position: sticky;
+  top: 0;
 `
 
 const DashboardLayout = (props) => {
+  const { width } = useViewport()
+  const breakpoint = 620
+
   return (
     <ScrollToTop>
       <GridContainer>
@@ -49,7 +57,7 @@ const DashboardLayout = (props) => {
         </NavbarContainer>
 
         <SidebarContainer>
-          <Sidebar />
+          {width < breakpoint ? <Sidebar /> : <Topbar />}
         </SidebarContainer>
 
         <ContentContainer>{props.children}</ContentContainer>
