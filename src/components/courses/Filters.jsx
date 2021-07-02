@@ -1,6 +1,5 @@
 // import { useState } from 'react'
 import styled from 'styled-components'
-import { X } from '@styled-icons/heroicons-outline'
 import { filterData } from 'data/courses'
 import { FilterItem } from 'components/courses'
 import { Divider } from 'components/shared'
@@ -9,7 +8,7 @@ import { scrollBar } from 'styles'
 
 const Container = styled.div`
   background: ${({ theme }) => theme.secondary};
-  /* position: fixed; */
+  position: fixed;
   /* top: 4rem; */
   right: ${({ showFilters }) => (showFilters ? '0' : '-100%')};
 
@@ -54,13 +53,6 @@ const Filters = ({ showFilters, onClick }) => {
     <Container showFilters={showFilters}>
       <Header>
         <Title>Filter</Title>
-        <X
-          style={{
-            cursor: 'pointer',
-            width: '1.75rem',
-          }}
-          onClick={onClick}
-        />
       </Header>
       <Divider style={{ margin: '0rem 2rem', width: 'auto' }} />
 

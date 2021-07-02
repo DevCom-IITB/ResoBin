@@ -1,14 +1,15 @@
 import { Fragment } from 'react'
 import styled from 'styled-components'
 import { Divider } from 'components/shared'
-import { CourseItem, PageNo } from 'components/courses'
+import { CourseItem, CourseSearch, PageNo } from 'components/courses'
 import { courseData } from 'data/courses'
 import { scrollBar } from 'styles'
 
 const Container = styled.div`
-  display: relative;
-  /* margin-right: ${({ showFilters }) => (showFilters ? '19rem' : '0')}; */
-  /* padding-right: ${({ showFilters }) => (showFilters ? '0' : '4rem')}; */
+  position: relative;
+  height: calc(100vh - 4rem);
+  overflow: auto;
+  ${scrollBar}
 `
 
 const List = styled.div`
@@ -43,11 +44,12 @@ const Results = styled.h4`
   opacity: 80%;
 `
 
-const CourseList = ({ showFilters }) => {
+const CourseList = ({ showFilters, onClick }) => {
   const courseCount = courseData.length
 
   return (
     <Container showFilters={showFilters}>
+      <CourseSearch showFilters={showFilters} />
       <List>
         <Heading>
           <Title>Courses</Title>
