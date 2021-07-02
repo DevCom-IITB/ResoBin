@@ -7,16 +7,14 @@ import { scrollBar } from 'styles'
 
 const Container = styled.div`
   display: relative;
-  margin-right: ${({ showFilters }) => (showFilters ? '19rem' : '0')};
-  padding-right: ${({ showFilters }) => (showFilters ? '0' : '4rem')};
-
-  height: calc(100vh - 4rem);
-  ${scrollBar}
+  /* margin-right: ${({ showFilters }) => (showFilters ? '19rem' : '0')}; */
+  /* padding-right: ${({ showFilters }) => (showFilters ? '0' : '4rem')}; */
 `
 
 const List = styled.div`
   background: ${({ theme }) => theme.darksecondary};
   margin: 5rem 2rem 2rem;
+  margin: 1rem 2rem 2rem;
   border-radius: 8px;
   box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.4);
   padding-bottom: 1rem;

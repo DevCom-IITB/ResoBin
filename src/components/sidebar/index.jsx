@@ -15,7 +15,7 @@ import { ContactSupport } from '@styled-icons/material-outlined'
 
 const Container = styled.div`
   background: ${({ theme }) => theme.secondary};
-  width: 11.5rem;
+  width: 12rem;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -29,17 +29,17 @@ const Sidebar = () => {
     <Container>
       <SidebarItem
         title="Courses"
-        icon={<BookOpen size="20" />}
+        icon={<BookOpen size="22" />}
         to="/dashboard/courses"
       />
       <SidebarItem
         title="Contribute"
-        icon={<CloudUpload size="20" />}
+        icon={<CloudUpload size="22" />}
         to="/dashboard/contribute"
       />
       <SidebarItem
         title="Stats"
-        icon={<ChartPie size="20" />}
+        icon={<ChartPie size="22" />}
         to="/dashboard/stats"
       />
 
@@ -48,21 +48,21 @@ const Sidebar = () => {
 
       <SidebarItem
         title="Favourites"
-        icon={<BookmarkOutline size="20" title="Check course material" />}
+        icon={<BookmarkOutline size="22" title="Check course material" />}
         to="/dashboard/favourites"
       />
       <SidebarItem
         title="Account"
-        icon={<Cog size="20" />}
+        icon={<Cog size="22" />}
         exact
         to="/dashboard/account"
       />
-      <SidebarItem title="Sign out" icon={<Logout size="20" />} to="/login" />
+      <SidebarItem title="Sign out" icon={<Logout size="22" />} to="/login" />
 
       <Divider margin="1.5rem 0" />
       <SidebarItem
         title="Get help"
-        icon={<ContactSupport size="20" />}
+        icon={<ContactSupport size="22" />}
         to="/dashboard/contact"
       />
     </Container>

@@ -9,8 +9,8 @@ import { scrollBar } from 'styles'
 
 const Container = styled.div`
   background: ${({ theme }) => theme.secondary};
-  position: fixed;
-  top: 4rem;
+  /* position: fixed; */
+  /* top: 4rem; */
   right: ${({ showFilters }) => (showFilters ? '0' : '-100%')};
 
   width: 19rem;

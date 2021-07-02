@@ -3,22 +3,42 @@ import Sidebar from 'components/sidebar'
 import Navbar from 'components/navbar'
 import { ScrollToTop } from 'hoc'
 
+// ? Media queries:
+// *  576px and up: Small devices (landscape phones)
+// *  768px and up: Medium devices (tablets)
+// *  992px and up: Large devices (desktops)
+// * 1200px and up: Extra large devices (large desktops)
+
 const GridContainer = styled.div`
   display: grid;
   grid-template-rows: 4rem calc(100vh - 4rem);
   grid-template-columns: auto 1fr;
   grid-template-areas:
-    'navbar navbar'
-    'sidebar content';
+    'header header'
+    'navigation content';
+
+  @media (max-width: 992px) {
+    grid-template-rows: 4rem 4rem calc(100vh - 8rem);
+    grid-template-columns: auto;
+
+    grid-template-areas:
+      'header'
+      'navigation'
+      'content';
+  }
 `
 
 const NavbarContainer = styled.div`
-  grid-area: navbar;
+  grid-area: header;
 `
 
 const SidebarContainer = styled.div`
-  grid-area: sidebar;
+  grid-area: navigation;
   overflow: auto;
+
+  @media (max-width: 992px) {
+    /* display: none; */
+  }
 `
 
 const ContentContainer = styled.div`

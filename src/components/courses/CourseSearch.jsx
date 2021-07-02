@@ -11,9 +11,6 @@ const SearchContainer = styled.div`
   justify-content: center;
   height: 4rem;
   padding: 0 ${({ showFilters }) => (showFilters ? 2 : 6)}rem 0 2rem;
-  position: fixed;
-  right: calc(0.75rem + ${({ showFilters }) => (showFilters ? 19 : 0)}rem);
-  left: 11.5rem;
   background: linear-gradient(
     0deg,
     ${({ theme }) => HEX2RGBA(theme.primary, 0)} 0%,
