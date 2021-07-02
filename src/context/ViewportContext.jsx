@@ -1,8 +1,10 @@
-import { useState, createContext, useContext, useEffect } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
-export const viewportContext = createContext({})
+export const ViewportContext = createContext()
 
-export const ViewportProvider = ({ children }) => {
+export const useViewportContext = () => useContext(ViewportContext)
+
+const ViewportContextProvider = ({ children }) => {
   const [width, setWidth] = useState(window.innerWidth)
   const [height, setHeight] = useState(window.innerHeight)
   const handleWindowResize = () => {
@@ -16,13 +18,10 @@ export const ViewportProvider = ({ children }) => {
   }, [])
 
   return (
-    <viewportContext.Provider value={{ width, height }}>
+    <ViewportContext.Provider value={{ width, height }}>
       {children}
-    </viewportContext.Provider>
+    </ViewportContext.Provider>
   )
 }
 
-export const useViewport = () => {
-  const { width, height } = useContext(viewportContext)
-  return { width, height }
-}
+export default ViewportContextProvider

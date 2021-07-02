@@ -1,9 +1,11 @@
-import { createContext, useContext } from 'react'
 import { useLocalStorage } from 'hooks'
+import { createContext, useContext } from 'react'
 
-export const ThemeContext = createContext({ theme: 'dark' })
+const ThemeContext = createContext()
 
-export const ThemeContextProvider = ({ children }) => {
+export const useThemeContext = () => useContext(ThemeContext)
+
+const ThemeContextProvider = ({ children }) => {
   const [theme, setTheme] = useLocalStorage('theme', 'dark')
   const toggleTheme = () => {
     if (theme === 'dark') setTheme('light')
@@ -17,7 +19,4 @@ export const ThemeContextProvider = ({ children }) => {
   )
 }
 
-export const useViewport = () => {
-  const { width, height } = useContext(ThemeContext)
-  return { width, height }
-}
+export default ThemeContextProvider

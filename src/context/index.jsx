@@ -1,33 +1,23 @@
-import { createContext } from 'react'
-import { useLocalStorage } from 'hooks'
+import ThemeContextProvider from 'context/ThemeContext'
+import ViewportContextProvider from 'context/ViewportContext'
 
-export const ThemeContext = createContext({ theme: 'dark' })
-
-export const ContextProvider = ({ children }) => {
-  const [theme, setTheme] = useLocalStorage('theme', 'dark')
-  const toggleTheme = () => {
-    if (theme === 'dark') setTheme('light')
-    else setTheme('dark')
-  }
-
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
+const CombineContexts = (...components) => {
+  return components.reduce(
+    (AccumulatedComponents, CurrentComponent) => {
+      return ({ children }) => {
+        return (
+          <AccumulatedComponents>
+            <CurrentComponent>{children}</CurrentComponent>
+          </AccumulatedComponents>
+        )
+      }
+    },
+    ({ children }) => <>{children}</>
   )
 }
 
-import { ThemeContextProvider } from 'context/combineReducers';
-import { ContextProvider2 } from '.../Context2';
-import { ContextProvider3 } from '.../Context3';
-import { ContextProvider4 } from '.../Context4';
-import { combineComponents } from 'context/CombineContexts;
+const providers = [ThemeContextProvider, ViewportContextProvider]
 
-const providers = [
-  ThemeContextProvider,
-  ContextProvider2,
-  ContextProvider3,
-  ContextProvider4
-]
+const ContextProvider = CombineContexts(...providers)
 
-export const ContextProvider = combineComponents(...providers);
+export default ContextProvider
