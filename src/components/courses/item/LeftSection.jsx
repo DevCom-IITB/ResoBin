@@ -1,13 +1,13 @@
+import {
+  Bookmark as BookmarkFill,
+  BookmarkOutline as Bookmark,
+} from '@styled-icons/zondicons'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import {
-  BookmarkOutline as Bookmark,
-  Bookmark as BookmarkFill,
-} from '@styled-icons/zondicons'
 
 const Container = styled.div`
-  padding-right: 2rem;
+  /* padding-right: 0.5rem; */
 `
 
 const Header = styled.div`

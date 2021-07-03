@@ -11,6 +11,7 @@ export const GlobalStyles = createGlobalStyle`
 		box-sizing: border-box;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
+		-webkit-tap-highlight-color: transparent;
 	}
 	
 	body {

@@ -10,20 +10,13 @@ const Container = styled.div`
 const NavbarContainer = styled.div`
   position: sticky;
   top: 0;
-  /* box-shadow: ${({ shadow }) =>
-    shadow || '0 0 0.5rem rgba(0, 0, 0, 0.5)'}; */
-  /* z-index: 9; */
 `
 
 const TopbarContainer = styled.div`
   position: sticky;
   top: 0;
-`
-
-const ContentContainer = styled.div`
-  position: sticky;
-  top: 4rem;
-  height: 4rem;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+  z-index: 9;
 `
 
 const MobileLayout = (props) => {
@@ -38,9 +31,7 @@ const MobileLayout = (props) => {
           <Topbar />
         </TopbarContainer>
 
-        <ContentContainer>{props.children}</ContentContainer>
-        {/* <ContentContainer>Settings</ContentContainer> */}
-        <div style={{ height: '200vh' }}>{/* {props.children} */}</div>
+        {props.children}
       </Container>
     </ScrollToTop>
   )

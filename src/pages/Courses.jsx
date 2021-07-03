@@ -1,34 +1,11 @@
+import { Filter, X } from '@styled-icons/heroicons-outline'
+import { CourseList } from 'components/courses'
+import { useLocalStorage } from 'hooks'
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
-import { useLocalStorage } from 'hooks'
-import { CourseList, Filters } from 'components/courses'
-import { Filter, X } from '@styled-icons/heroicons-outline'
 
 const Container = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 19rem;
-  ${({ showFilters }) =>
-    showFilters
-      ? `
-    grid-template-columns: 1fr 19rem;
-    grid-template-areas:
-      'courselist filter';
-      `
-      : `
-        grid-template-columns: 1fr;
-        grid-template-areas:
-          'courselist';
-        `};
-
-  @media (max-width: 992px) {
-    grid-template-rows: 4rem 4rem calc(100vh - 8rem);
-    grid-template-columns: auto;
-
-    grid-template-areas:
-      'header'
-      'navigation'
-      'content';
-  }
+  display: flex;
 `
 
 const IconContainer = styled.div`
@@ -61,11 +38,12 @@ const Courses = () => {
         <title>Courses - ResoBin</title>
         <meta name="description" content="Courses availabe at IIT Bombay" />
       </Helmet>
+
       <IconContainer showFilters={showFilters} onClick={handleClick}>
         {showFilters ? <X size="1.5rem" /> : <Filter size="1.5rem" />}
       </IconContainer>
       <CourseList showFilters={showFilters} onClick={handleClick} />
-      <Filters showFilters={showFilters} onClick={handleClick} />
+      {/* <Filters showFilters={showFilters} onClick={handleClick} /> */}
     </Container>
   )
 }

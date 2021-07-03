@@ -1,5 +1,4 @@
 import { css } from 'styled-components'
-import { HEX2RGBA } from 'helpers'
 
 const scrollBar = css`
   overflow-y: auto;
