@@ -5,7 +5,7 @@ const ButtonSquare = styled.button`
   display: block;
   height: 2.5rem;
   padding: 0 20px;
-  margin: 0 0 1.5rem;
+  /* margin: 0 0 1.5rem; */
 
   cursor: pointer;
   background-color: ${({ theme }) => theme.logo};
