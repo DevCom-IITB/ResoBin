@@ -11,8 +11,7 @@ const Container = styled.div`
   justify-content: center;
   height: 4rem;
   background: ${({ theme }) => theme.darksecondary};
-  box-shadow: ${({ shadow }) =>
-    shadow || '11.5rem 0px 0.5rem rgba(0, 0, 0, 0.5)'};
+  box-shadow: '0 0 0.5rem rgba(0, 0, 0, 0.5)';
   z-index: 9; /* To put navbar at the top */
 `
 
@@ -54,9 +53,9 @@ const SignUpButton = ({ button, buttonLink }) => {
   )
 }
 
-const Navbar = ({ shadow, button, buttonLink = '' }) => {
+const Navbar = ({ button, buttonLink = '' }) => {
   return (
-    <Container shadow={shadow}>
+    <Container>
       <LeftContainer>
         <StyledLink to="/dashboard">
           <ResoBinLogo size="1.75rem" />

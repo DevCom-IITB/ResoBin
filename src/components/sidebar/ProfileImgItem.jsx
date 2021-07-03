@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import PropTypes from 'prop-types'
 import { ProfileImg } from 'components/shared'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
 const Container = styled.div`
   min-height: 4rem;
@@ -23,7 +23,8 @@ const IconContainer = styled.div`
 `
 
 const Title = styled.h4`
-  font-weight: 200;
+  font-size: 1.125rem;
+  font-weight: 300;
   color: ${({ theme }) => theme.textColor};
   width: 70%;
 

@@ -82,11 +82,7 @@ const Login = () => {
         <title>Log In - ResoBin</title>
         <meta name="description" content="Login to continue" />
       </Helmet>
-      <Navbar
-        button="Sign up"
-        buttonLink="/signup"
-        shadow="0 0 0.5rem rgba(0, 0, 0, 0.5)"
-      />
+      <Navbar button="Sign up" buttonLink="/signup" />
 
       <Container>
         <FormBox>

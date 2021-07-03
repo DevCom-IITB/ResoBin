@@ -29,7 +29,7 @@ export const LightTheme = {
 }
 
 export const DarkTheme = {
-  primary: '#FEDFED',
+  primary: '#d6c9f8',
   // primary: '#302C40',
   secondary: '#2C2839',
   darksecondary: '#1b1728',

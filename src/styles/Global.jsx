@@ -6,15 +6,11 @@ export const GlobalStyles = createGlobalStyle`
 	*::before {
 		margin: 0;
 		padding: 0;
-		
-		font-family: 'Mulish', sans-serif;
+		font-family: 'Montserrat', sans-serif;
 		font-size: 80%;
-  		letter-spacing: 1px;
-		
 		box-sizing: border-box;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		overflow:hidden;
 	}
 	
 	body {

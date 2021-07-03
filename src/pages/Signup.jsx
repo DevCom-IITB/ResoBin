@@ -1,12 +1,12 @@
+import Navbar from 'components/navbar'
+import { LoaderAnimation } from 'components/shared'
+import { SignupBody } from 'components/signup'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
-import styled from 'styled-components'
-import { SignupBody } from 'components/signup'
-import Navbar from 'components/navbar'
-import { LoaderAnimation } from 'components/shared'
 import { signupAction } from 'store/authSlice'
+import styled from 'styled-components'
 
 const Container = styled.div`
   display: flex;
@@ -92,11 +92,7 @@ const Signup = () => {
           content="Signup if you don't have an account yet"
         />
       </Helmet>
-      <Navbar
-        button="Login"
-        buttonLink="/login"
-        shadow="0 0 0.5rem rgba(0, 0, 0, 0.5)"
-      />
+      <Navbar button="Login" buttonLink="/login" />
 
       <Container>
         <FormBox>
