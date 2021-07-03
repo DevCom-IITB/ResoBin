@@ -2,6 +2,7 @@ import {
   Bookmark as BookmarkFill,
   BookmarkOutline as Bookmark,
 } from '@styled-icons/zondicons'
+import { ReadMore } from 'components/shared'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
@@ -94,7 +95,7 @@ const LeftSection = ({ data }) => {
   const coursePage = 'courses/' + data.CourseCode.replace(/\s/g, '')
   const [favourite, setFavourite] = useState(false)
 
-  const handleClick = (e) => {
+  const favouriteClick = () => {
     setFavourite(!favourite)
   }
 
@@ -105,7 +106,7 @@ const LeftSection = ({ data }) => {
       <SubHeader>
         <SubTitle>{data.Department}</SubTitle>
         <IconContainer>{data.CourseCredit}</IconContainer>
-        <FavouriteIcon style={FavouriteStyles} onClick={handleClick} />
+        <FavouriteIcon style={FavouriteStyles} onClick={favouriteClick} />
       </SubHeader>
 
       <Header to={coursePage}>
@@ -113,7 +114,9 @@ const LeftSection = ({ data }) => {
         <CourseTitle>{data.CourseTitle}</CourseTitle>
       </Header>
 
-      <CourseDescription>{data.CourseDescription}</CourseDescription>
+      <CourseDescription>
+        <ReadMore>{data.CourseDescription}</ReadMore>
+      </CourseDescription>
     </Container>
   )
 }
