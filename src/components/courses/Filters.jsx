@@ -1,10 +1,8 @@
 // import { useState } from 'react'
-import styled from 'styled-components'
-import { filterData } from 'data/courses'
 import { FilterItem } from 'components/courses'
 import { Divider } from 'components/shared'
-// import DropdownMulti from './DropdownMulti'
-import { scrollBar } from 'styles'
+import { filterData } from 'data/courses'
+import styled from 'styled-components'
 
 const Container = styled.div`
   background: ${({ theme }) => theme.secondary};
@@ -39,7 +37,7 @@ const FilterList = styled.div`
   opacity: 100%;
   padding: 0rem 2rem 2rem;
   height: calc(100% - 8rem);
-  ${scrollBar}
+  overflow: auto;
 `
 
 // const initialState = {

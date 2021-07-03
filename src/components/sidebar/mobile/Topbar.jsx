@@ -1,71 +1,71 @@
-import styled from 'styled-components'
-// import { Divider } from 'components/shared'
-// import SidebarItem from 'components/sidebar/SidebarItem'
 // import ProfileImgItem from 'components/sidebar/ProfileImgItem'
 // import ProfileImage from 'assets/images/ProfileImg_Laxman.jpg'
-// import {
-//   BookOpen,
-//   ChartPie,
-//   CloudUpload,
-//   Cog,
-//   Logout,
-// } from '@styled-icons/heroicons-outline'
-// import { BookmarkOutline } from '@styled-icons/zondicons'
+import {
+  BookOpen,
+  // ChartPie,
+  // Logout,
+  CloudUpload,
+  Cog,
+} from '@styled-icons/heroicons-outline'
 // import { ContactSupport } from '@styled-icons/material-outlined'
+import { BookmarkOutline } from '@styled-icons/zondicons'
+// import TopbarItem from 'components/sidebar/mobile/TopbarItem'
+import styled from 'styled-components'
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  align-items: center;
   width: 100%;
   height: 3rem;
-
+  justify-content: space-between;
+  padding: 0 1.5rem;
   position: sticky;
   top: 0;
 
   background: ${({ theme }) => theme.secondary};
-  align-items: center;
-  z-index: 8; /* For shadow effects */
+  z-index: 100;
   box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.5);
 `
 
 const Topbar = () => {
-  // console.log(1)
   return (
     <Container>
-      {/* <SidebarItem
+      <BookOpen size="1.5rem" />
+      <CloudUpload size="1.5rem" />
+      <BookmarkOutline size="1.25rem" title="Check course material" />
+      <Cog size="1.5rem" />
+      {/* <Logout size="1.75rem" />
+      <ContactSupport size="1.75rem" /> */}
+      {/* <TopbarItem
         title="Courses"
-        icon={<BookOpen size="22" />}
+        icon={<BookOpen size="22px" />}
         to="/dashboard/courses"
       />
-      <SidebarItem
+      <TopbarItem
         title="Contribute"
         icon={<CloudUpload size="22" />}
         to="/dashboard/contribute"
       />
-      <SidebarItem
+      <TopbarItem
         title="Stats"
         icon={<ChartPie size="22" />}
         to="/dashboard/stats"
       />
 
-      <Divider margin="1.5rem 0" />
-      <ProfileImgItem title="Laxman D." src={ProfileImage} />
-
-      <SidebarItem
+      <TopbarItem
         title="Favourites"
         icon={<BookmarkOutline size="22" title="Check course material" />}
         to="/dashboard/favourites"
       />
-      <SidebarItem
+      <TopbarItem
         title="Account"
         icon={<Cog size="22" />}
         exact
         to="/dashboard/account"
       />
-      <SidebarItem title="Sign out" icon={<Logout size="22" />} to="/login" />
+      <TopbarItem title="Sign out" icon={<Logout size="22" />} to="/login" />
 
-      <Divider margin="1.5rem 0" />
-      <SidebarItem
+      <TopbarItem
         title="Get help"
         icon={<ContactSupport size="22" />}
         to="/dashboard/contact"

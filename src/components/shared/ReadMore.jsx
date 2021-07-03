@@ -2,7 +2,10 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 const ReadMoreText = styled.span`
-  color: rgb(192, 192, 192);
+  color: inherit;
+  opacity: 75%;
+  font-weight: 600;
+  letter-spacing: 0.75px;
   cursor: pointer;
 `
 

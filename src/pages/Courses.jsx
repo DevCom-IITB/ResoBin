@@ -1,5 +1,5 @@
 import { Filter, X } from '@styled-icons/heroicons-outline'
-import { CourseList } from 'components/courses'
+import { CourseList, Filters } from 'components/courses'
 import { useLocalStorage } from 'hooks'
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
@@ -42,8 +42,10 @@ const Courses = () => {
       <IconContainer showFilters={showFilters} onClick={handleClick}>
         {showFilters ? <X size="1.5rem" /> : <Filter size="1.5rem" />}
       </IconContainer>
+
       <CourseList showFilters={showFilters} onClick={handleClick} />
-      {/* <Filters showFilters={showFilters} onClick={handleClick} /> */}
+
+      <Filters showFilters={showFilters} onClick={handleClick} />
     </Container>
   )
 }

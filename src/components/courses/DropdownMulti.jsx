@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Select } from 'antd'
 import styled from 'styled-components'
 import { departmentData } from 'data/courses'
-// import { scrollBar } from 'styles'
 
 const Container = styled.div``
 

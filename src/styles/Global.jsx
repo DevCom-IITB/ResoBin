@@ -12,10 +12,27 @@ export const GlobalStyles = createGlobalStyle`
 		-moz-osx-font-smoothing: grayscale;
 		-webkit-tap-highlight-color: transparent;
 	}
-	
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 2rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 2rem;
+  }
+
 	body {
 		background: ${({ theme }) => theme.primary};
 		color: ${({ theme }) => theme.textColor};
+		
+
 	}
 	
 	code {

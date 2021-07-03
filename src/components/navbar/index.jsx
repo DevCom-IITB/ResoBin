@@ -6,6 +6,8 @@ import styled from 'styled-components'
 // import DarkmodeToggle from 'components/navbar/DarkmodeToggle'
 
 const Container = styled.div`
+  position: sticky;
+  top: 0;
   width: 100%;
   display: flex;
   align-items: center;
