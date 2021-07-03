@@ -1,10 +1,7 @@
-import styled from 'styled-components'
-import Sidebar from 'components/sidebar'
 import Navbar from 'components/navbar'
+import Sidebar from 'components/sidebar'
 import { ScrollToTop } from 'hoc'
-
-import Topbar from 'components/sidebar/1200px/Topbar'
-import { useViewport } from ''
+import styled from 'styled-components'
 
 const GridContainer = styled.div`
   display: grid;
@@ -13,16 +10,6 @@ const GridContainer = styled.div`
   grid-template-areas:
     'header header'
     'navigation content';
-
-  @media (max-width: 992px) {
-    grid-template-rows: 4rem 4rem calc(100vh - 0rem);
-    grid-template-columns: auto;
-
-    grid-template-areas:
-      'header'
-      'navigation'
-      'content';
-  }
 `
 
 const NavbarContainer = styled.div`
@@ -32,10 +19,6 @@ const NavbarContainer = styled.div`
 const SidebarContainer = styled.div`
   grid-area: navigation;
   overflow: auto;
-
-  @media (max-width: 992px) {
-    /* display: none; */
-  }
 `
 
 const ContentContainer = styled.div`
@@ -45,10 +28,7 @@ const ContentContainer = styled.div`
   top: 0;
 `
 
-const DashboardLayout = (props) => {
-  const { width } = useViewport()
-  const breakpoint = 620
-
+const DesktopLayout = (props) => {
   return (
     <ScrollToTop>
       <GridContainer>
@@ -57,7 +37,7 @@ const DashboardLayout = (props) => {
         </NavbarContainer>
 
         <SidebarContainer>
-          {width < breakpoint ? <Sidebar /> : <Topbar />}
+          <Sidebar />
         </SidebarContainer>
 
         <ContentContainer>{props.children}</ContentContainer>
@@ -66,4 +46,4 @@ const DashboardLayout = (props) => {
   )
 }
 
-export default DashboardLayout
+export default DesktopLayout

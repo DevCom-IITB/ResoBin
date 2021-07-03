@@ -8,7 +8,7 @@ export const GlobalStyles = createGlobalStyle`
 		padding: 0;
 		
 		font-family: 'Mulish', sans-serif;
-		font-size: 16px;
+		font-size: 80%;
   		letter-spacing: 1px;
 		
 		box-sizing: border-box;

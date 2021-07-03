@@ -45,6 +45,7 @@ const Title = styled.h4`
 
   /* color: ${({ theme }) => theme.textColorInactive}; */
   color: inherit;
+  font-size: 1.125rem;
   font-weight: 400;
   letter-spacing: 1.5px;
   white-space: nowrap;

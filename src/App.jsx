@@ -1,11 +1,11 @@
-import { Helmet } from 'react-helmet-async'
-import { Route, Redirect, Switch } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { ThemeProvider } from 'styled-components'
 import { useThemeContext } from 'context/ThemeContext'
 import { PrivateRoute } from 'hoc'
-import { AdminView, Login, NotFound, Signup } from 'pages'
-import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
+import { Dashboard, Login, NotFound, Signup } from 'pages'
+import { Helmet } from 'react-helmet-async'
+import { Redirect, Route, Switch } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { ThemeProvider } from 'styled-components'
+import { DarkTheme, GlobalStyles, LightTheme } from 'styles'
 
 const App = () => {
   const { theme } = useThemeContext()
@@ -23,7 +23,7 @@ const App = () => {
 
       <GlobalStyles />
       <Switch>
-        <Route path="/dashboard" component={AdminView} />
+        <Route path="/dashboard" component={Dashboard} />
         <PrivateRoute path="/courses/:id" component={NotFound} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
