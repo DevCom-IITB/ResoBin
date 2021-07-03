@@ -9,7 +9,7 @@ const SearchContainer = styled.div`
   align-items: center;
   justify-content: center;
   position: sticky;
-  top: 4rem;
+  top: 3rem;
 
   height: 4rem;
   padding: 0 0.75rem;
@@ -31,7 +31,7 @@ const CourseSearch = () => {
       <InputRounded
         name="courseSearch"
         type="text"
-        placeholder="Search"
+        placeholder="Course code, name or description"
         value={search}
         onChange={handleChange}
         Icon={Search}

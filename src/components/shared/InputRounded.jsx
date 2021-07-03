@@ -6,7 +6,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  height: 2.75rem;
+  height: 2.25rem;
   width: 100%;
   border-radius: 1.5rem;
   background: white;
@@ -19,19 +19,15 @@ const Input = styled.input`
   outline: none;
   height: 100%;
   width: 100%;
-  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 500;
   color: #1f1c2e;
 
   &::placeholder {
     color: #1f1c2e;
     opacity: 0.6;
-  }
-
-  &:focus::placeholder {
-    color: transparent;
   }
 `
 
@@ -42,15 +38,15 @@ const Label = styled.label`
 const InputRounded = ({ Icon, label, name, ...inputProps }) => {
   const iconStyles = {
     color: '#807da0',
-    width: '1.75rem',
-    margin: '0 1.25rem 0 0.75rem',
+    width: '1.25rem',
+    margin: '0 0.25rem 0 0.75rem',
   }
 
   return (
     <Container>
       <Label htmlFor={name}>{label}</Label>
-      <Input name={name} {...inputProps} />
       <Icon style={iconStyles} />
+      <Input name={name} {...inputProps} />
     </Container>
   )
 }
