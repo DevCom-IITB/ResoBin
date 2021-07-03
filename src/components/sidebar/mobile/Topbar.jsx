@@ -9,7 +9,7 @@ import {
 } from '@styled-icons/heroicons-outline'
 // import { ContactSupport } from '@styled-icons/material-outlined'
 import { BookmarkOutline } from '@styled-icons/zondicons'
-// import TopbarItem from 'components/sidebar/mobile/TopbarItem'
+import TopbarItem from 'components/sidebar/mobile/TopbarItem'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -18,7 +18,7 @@ const Container = styled.div`
   width: 100%;
   height: 3rem;
   justify-content: space-between;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
   position: sticky;
   top: 0;
 
@@ -30,40 +30,37 @@ const Container = styled.div`
 const Topbar = () => {
   return (
     <Container>
-      <BookOpen size="1.5rem" />
-      <CloudUpload size="1.5rem" />
-      <BookmarkOutline size="1.25rem" title="Check course material" />
-      <Cog size="1.5rem" />
-      {/* <Logout size="1.75rem" />
-      <ContactSupport size="1.75rem" /> */}
-      {/* <TopbarItem
+      <TopbarItem
         title="Courses"
-        icon={<BookOpen size="22px" />}
+        Icon={BookOpen}
+        size="1.5rem"
         to="/dashboard/courses"
       />
       <TopbarItem
         title="Contribute"
-        icon={<CloudUpload size="22" />}
+        Icon={CloudUpload}
+        size="1.5rem"
         to="/dashboard/contribute"
       />
-      <TopbarItem
+      {/* <TopbarItem
         title="Stats"
         icon={<ChartPie size="22" />}
         to="/dashboard/stats"
-      />
+      /> */}
 
       <TopbarItem
         title="Favourites"
-        icon={<BookmarkOutline size="22" title="Check course material" />}
+        Icon={BookmarkOutline}
+        size="1.25rem"
         to="/dashboard/favourites"
       />
       <TopbarItem
         title="Account"
-        icon={<Cog size="22" />}
-        exact
+        Icon={Cog}
+        size="1.5rem"
         to="/dashboard/account"
       />
-      <TopbarItem title="Sign out" icon={<Logout size="22" />} to="/login" />
+      {/*<TopbarItem title="Sign out" icon={<Logout size="22" />} to="/login" />
 
       <TopbarItem
         title="Get help"
