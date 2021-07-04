@@ -1,3 +1,4 @@
+import 'antd/dist/antd.css'
 import App from 'App'
 import ContextProvider from 'context'
 import React from 'react'
@@ -6,7 +7,6 @@ import { HelmetProvider } from 'react-helmet-async'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 import store from 'store'
-// import 'antd/dist/antd.css'
 import 'styles/index.css'
 
 const StrictApp = () => {

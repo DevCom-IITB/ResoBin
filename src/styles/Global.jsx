@@ -32,7 +32,7 @@ export const GlobalStyles = createGlobalStyle`
 		background: ${({ theme }) => theme.primary};
 		color: ${({ theme }) => theme.textColor};
 		
-
+		margin: 0;
 	}
 	
 	code {

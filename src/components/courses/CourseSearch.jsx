@@ -11,7 +11,7 @@ const SearchContainer = styled.div`
   position: sticky;
   top: 3rem;
 
-  height: 4rem;
+  height: 3rem;
   padding: 0 0.75rem;
   background: linear-gradient(
     0deg,
@@ -25,15 +25,19 @@ const SearchContainer = styled.div`
 const CourseSearch = () => {
   const [search, setSearch] = useState('')
   const handleChange = (event) => setSearch((search) => event.target.value)
+  const onSearch = () => {
+    console.log(search)
+  }
 
   return (
     <SearchContainer>
       <InputRounded
         name="courseSearch"
-        type="text"
+        type="search"
         placeholder="Course code, name or description"
         value={search}
         onChange={handleChange}
+        label={'Search'}
         Icon={Search}
       />
     </SearchContainer>

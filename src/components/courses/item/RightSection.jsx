@@ -27,15 +27,15 @@ const Pil = styled.h1`
   width: 5rem;
   height: 1.5rem;
   border-radius: 100px;
-  margin: 0.25rem 0;
+  margin: 0;
   color: ${({ theme }) => theme.darksecondary};
   opacity: ${({ active }) => (active ? '100%' : '20%')};
 `
 
 const Title = styled.h1`
-  margin: 0.5rem 0 0.25rem;
+  margin: 0.75rem 0 0.5rem;
   font-weight: 400;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   line-height: 20px;
   letter-spacing: 1.5px;
   color: ${({ theme }) => theme.textColor};

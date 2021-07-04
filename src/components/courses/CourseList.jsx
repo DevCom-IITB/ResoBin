@@ -18,20 +18,20 @@ const Heading = styled.div`
   padding: 0rem 0.75rem;
 `
 
-const Title = styled.h4`
+const Title = styled.h1`
   font-size: 1.5rem;
-  font-weight: bold;
-  letter-spacing: 0.5px;
+  font-weight: 700;
   color: ${({ theme }) => theme.darksecondary};
+  margin: 0;
 `
 
-const Results = styled.h4`
+const Results = styled.h1`
   font-weight: bold;
   font-size: 1rem;
-  letter-spacing: 0.5px;
   text-align: right;
   color: ${({ theme }) => theme.darksecondary};
   opacity: 80%;
+  margin: 0;
 `
 
 const CourseList = ({ showFilters, onClick }) => {
@@ -39,11 +39,11 @@ const CourseList = ({ showFilters, onClick }) => {
 
   return (
     <Container>
-      <CourseSearch showFilters={showFilters} />
+      <CourseSearch />
       <List>
         <Heading>
           <Title>Courses</Title>
-          <Results>{courseCount} courses found</Results>
+          <Results>{courseCount} results found</Results>
         </Heading>
 
         {courseData.map((data, index) => (

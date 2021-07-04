@@ -44,17 +44,19 @@ const SubHeader = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  margin-bottom: 0.75rem;
-  color: ${({ theme }) => theme.textColor};
+  margin-bottom: 0.5rem;
+  height: 1.75rem;
 `
 
-const SubTitle = styled.h4`
+const SubTitle = styled.h2`
   font-weight: 600;
   font-size: 0.75rem;
   width: calc(100% - 3.75rem);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  color: ${({ theme }) => theme.textColor};
+  margin: 0;
 `
 
 const CourseDescription = styled.p`
@@ -63,7 +65,8 @@ const CourseDescription = styled.p`
   line-height: 1rem;
   text-align: justify;
   opacity: 80%;
-  margin-top: 1rem;
+  margin: 0.75rem 0;
+  color: ${({ theme }) => theme.textColor};
 `
 
 const IconContainer = styled.span`
