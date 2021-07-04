@@ -4,7 +4,7 @@ import { Checkbox } from 'components/shared'
 
 const Title = styled.h1`
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 20px;
   letter-spacing: 0.2px;
   margin: 2rem 0 1rem;

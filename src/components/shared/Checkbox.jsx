@@ -13,7 +13,7 @@ const InputLabel = styled.label`
   margin-left: 0.25rem;
   position: relative;
   color: ${({ theme }) => theme.textColor};
-  font-size: 1rem;
+  font-size: 0.75rem;
   font-weight: 300;
   letter-spacing: 1px;
   text-decoration: none;

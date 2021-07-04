@@ -4,17 +4,35 @@ import { Divider } from 'components/shared'
 import { filterData } from 'data/courses'
 import styled from 'styled-components'
 
-const Container = styled.div`
-  background: ${({ theme }) => theme.secondary};
-  position: fixed;
-  /* top: 4rem; */
-  right: ${({ showFilters }) => (showFilters ? '0' : '-100%')};
+// const Container = styled.div`
+//   background: ${({ theme }) => theme.secondary};
+//   position: fixed;
+//   /* top: 4rem; */
+//   right: ${({ showFilters }) => (showFilters ? '0' : '-100%')};
 
-  width: 19rem;
+//   width: 19rem;
+//   height: 100%;
+//   z-index: 7; /* To put searchbar at the bottom */
+//   box-shadow: inset 2px 0px 5px rgba(0, 0, 0, 0.3);
+//   /* transition-duration: 150ms; */
+// `
+
+const Container = styled.div`
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: ${({ theme }) => theme.primary};
+  top: 0;
+`
+
+const OverlayContainer = styled.div`
+  position: fixed;
+  background: ${({ theme }) => theme.secondary};
+  margin: 0 0.75rem;
+  width: calc(100% - 1.5rem);
   height: 100%;
-  z-index: 7; /* To put searchbar at the bottom */
-  box-shadow: inset 2px 0px 5px rgba(0, 0, 0, 0.3);
-  /* transition-duration: 150ms; */
+  top: ${({ showFilters }) => (showFilters ? '9rem' : '-100%')};
+  transition: 500ms;
 `
 
 const Header = styled.div`
@@ -48,19 +66,18 @@ const Filters = ({ showFilters, onClick }) => {
   // const [filters, setFilters] = useState(initialState)
 
   return (
-    <Container showFilters={showFilters}>
+    <OverlayContainer showFilters={showFilters}>
       <Header>
         <Title>Filter</Title>
       </Header>
       <Divider style={{ margin: '0rem 2rem', width: 'auto' }} />
 
       <FilterList>
-        {/* <DropdownMulti /> */}
         {filterData.map((data, index) => (
           <FilterItem key={index} data={data} />
         ))}
       </FilterList>
-    </Container>
+    </OverlayContainer>
   )
 }
 
