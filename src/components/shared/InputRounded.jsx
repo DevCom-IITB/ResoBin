@@ -15,6 +15,8 @@ const InputBox = styled.div`
   background: white;
   overflow: hidden;
   box-shadow: 0px 0px 0.7rem rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 100;
 `
 
 const Input = styled.input`
@@ -24,7 +26,7 @@ const Input = styled.input`
   width: 100%;
   padding-right: 1.5rem;
 
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 500;
   color: #1f1c2e;
 

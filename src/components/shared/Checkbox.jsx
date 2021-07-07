@@ -10,31 +10,30 @@ const InputCheckbox = styled.input`
 `
 
 const InputLabel = styled.label`
-  margin-left: 0.25rem;
   position: relative;
   color: ${({ theme }) => theme.textColor};
-  font-size: 0.75rem;
-  font-weight: 300;
-  letter-spacing: 1px;
+  font-size: 0.875rem;
+  font-weight: 400;
   text-decoration: none;
   cursor: pointer;
   user-select: none;
 
-  display: block;
+  display: inline-block;
   padding-left: 2rem;
   text-indent: -2rem;
-
+  margin: 0.25rem 0;
   &:before {
     content: '';
     appearance: none;
-    border: 2px solid ${({ theme }) => theme.textColor};
+    border: 1px solid ${({ theme }) => theme.textColor};
 
-    padding: 0.35rem;
+    padding: 0.4rem;
     display: inline-block;
     top: 2px;
-    left: 0.275rem;
+    left: 0.35rem;
     position: relative;
     margin-right: 1rem;
+    border-radius: 2px;
   }
 
   ${InputCheckbox}:checked + &:after {

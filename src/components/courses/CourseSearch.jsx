@@ -3,6 +3,7 @@ import { InputRounded } from 'components/shared'
 import { HEX2RGBA } from 'helpers'
 import { useState } from 'react'
 import styled from 'styled-components'
+import { Filters } from 'components/courses'
 
 const SearchContainer = styled.div`
   display: flex;
@@ -19,10 +20,21 @@ const SearchContainer = styled.div`
     ${({ theme }) => HEX2RGBA(theme.primary, 0)} 30%,
     ${({ theme }) => HEX2RGBA(theme.primary, 100)} 50%
   );
-  z-index: 8;
+  z-index: 6;
 `
 
-const CourseSearch = () => {
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: ${({ showFilters }) => (showFilters ? 'initial' : 'none')};
+  background-color: rgba(0, 0, 0, 0.55);
+  z-index: 4;
+`
+
+const CourseSearch = ({ showFilters, handleClick }) => {
   const [search, setSearch] = useState('')
   const handleChange = (event) => setSearch((search) => event.target.value)
   const onSearch = () => {
@@ -31,6 +43,8 @@ const CourseSearch = () => {
 
   return (
     <SearchContainer>
+      <Filters showFilters={showFilters} onClick={handleClick} />
+      <Overlay showFilters={showFilters} />
       <InputRounded
         name="courseSearch"
         type="search"

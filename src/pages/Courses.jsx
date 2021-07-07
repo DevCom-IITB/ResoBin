@@ -45,7 +45,7 @@ const Courses = () => {
 
       <CourseList showFilters={showFilters} onClick={handleClick} />
 
-      <Filters showFilters={showFilters} onClick={handleClick} />
+      {/* <Filters showFilters={showFilters} onClick={handleClick} /> */}
     </Container>
   )
 }

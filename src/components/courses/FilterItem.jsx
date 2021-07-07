@@ -7,7 +7,8 @@ const Title = styled.h1`
   font-size: 1rem;
   line-height: 20px;
   letter-spacing: 0.2px;
-  margin: 2rem 0 1rem;
+  margin: 1rem 0 0.75rem;
+  color: ${({ theme }) => theme.textColor};
 `
 
 const FilterList = styled.div`

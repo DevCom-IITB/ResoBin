@@ -39,7 +39,7 @@ const CourseList = ({ showFilters, onClick }) => {
 
   return (
     <Container>
-      <CourseSearch />
+      <CourseSearch showFilters={showFilters} handleClick={onClick} />
       <List>
         <Heading>
           <Title>Courses</Title>
