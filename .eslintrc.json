@@ -30,6 +30,17 @@
         "react/prop-types": "off",
         "react/react-in-jsx-scope": "off",
         "semi": "off",
+        "react/jsx-props-no-spreading": "off",
+        "comma-dangle": "off",
+        "no-param-reassign": [
+            "error",
+            {
+                "props": true,
+                "ignorePropertyModificationsFor": [
+                    "state"
+                ]
+            }
+        ],
         "import/no-extraneous-dependencies": [
             "off",
             {
@@ -38,6 +49,11 @@
                 "peerDependencies": true
             }
         ],
+        "arrow-body-style": [
+            "off"
+        ]
+    },
+    "settings": {
         "import/resolver": {
             "node": {
                 "paths": [

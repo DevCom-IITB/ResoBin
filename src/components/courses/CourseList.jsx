@@ -43,11 +43,14 @@ const CourseList = ({ showFilters, onClick }) => {
       <List>
         <Heading>
           <Title>Courses</Title>
-          <Results>{courseCount} results found</Results>
+          <Results>
+            {courseCount}
+            &nbsp;results found
+          </Results>
         </Heading>
 
-        {courseData.map((data, index) => (
-          <CourseItem data={data} key={index} />
+        {courseData.map((data) => (
+          <CourseItem data={data} key={data.id} />
         ))}
       </List>
       <PageNo />
