@@ -8,13 +8,16 @@ const Container = styled.div`
   position: absolute;
   background: ${({ theme }) => theme.secondary};
   margin: 0 0.75rem;
+  padding: ${({ showFilters }) => (showFilters ? '1rem 0 8rem' : '0')};
   width: calc(100% - 1.5rem);
-  height: ${({ showFilters }) => (showFilters ? '100vh' : 0)};
+
   top: 2rem;
 
   transition: 500ms;
   z-index: 5;
   box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.3);
+  height: ${({ showFilters }) => (showFilters ? 'calc(100vh - 5rem)' : '0')};
+  overflow: auto;
 `
 
 const Header = styled.div`
@@ -37,8 +40,6 @@ const FilterList = styled.div`
   display: ${({ showFilters }) => (showFilters ? 'block' : 'none')};
   opacity: 100%;
   padding: 0rem 2rem 2rem;
-  height: calc(100vh - 13rem);
-  overflow: auto;
 `
 
 // const initialState = {

@@ -4,6 +4,8 @@ import { HEX2RGBA } from 'helpers'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { Filters } from 'components/courses'
+// import { Input, Space } from 'antd'
+// const { Search } = Input
 
 const SearchContainer = styled.div`
   display: flex;
@@ -34,6 +36,15 @@ const Overlay = styled.div`
   z-index: 4;
 `
 
+// const StyledSearch = styled(Search)`
+//   .ant-input {
+//     border-radius: 2rem;
+//   }
+//   .ant-input-search-button {
+//     border-radius: 2rem;
+//   }
+// `
+
 const CourseSearch = ({ showFilters, handleClick }) => {
   const [search, setSearch] = useState('')
   const handleChange = (event) => setSearch((search) => event.target.value)
@@ -54,6 +65,11 @@ const CourseSearch = ({ showFilters, handleClick }) => {
         label={'Search'}
         Icon={Search}
       />
+      {/* <StyledSearch
+        placeholder="input search text"
+        onSearch={onSearch}
+        style={{ width: 200 }}
+      /> */}
     </SearchContainer>
   )
 }
