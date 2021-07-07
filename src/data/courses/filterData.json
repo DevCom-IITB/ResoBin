@@ -1,89 +1,137 @@
 [
   {
+    "id": 0,
     "FilterTitle": "Offered in",
     "Options": [
       {
+        "id": 0,
         "Label": "Spring Semester",
         "Type": "Checkbox"
       },
       {
+        "id": 1,
         "Label": "Autumn Semester",
         "Type": "Checkbox"
       }
     ]
   },
   {
+    "id": 1,
     "FilterTitle": "Credits",
     "Options": [
       {
+        "id": 0,
         "Label": "3",
         "Type": "Checkbox"
       },
       {
+        "id": 1,
         "Label": "4",
         "Type": "Checkbox"
       },
       {
+        "id": 2,
         "Label": "6",
         "Type": "Checkbox"
       },
       {
+        "id": 3,
         "Label": "8",
         "Type": "Checkbox"
       }
     ]
   },
   {
+    "id": 2,
     "FilterTitle": "Level",
     "Options": [
       {
+        "id": 0,
         "Label": "100",
         "Type": "Checkbox"
       },
       {
+        "id": 1,
         "Label": "200",
         "Type": "Checkbox"
       },
       {
+        "id": 2,
         "Label": "300",
         "Type": "Checkbox"
       },
       {
+        "id": 3,
         "Label": "400",
         "Type": "Checkbox"
       },
       {
+        "id": 4,
         "Label": "500",
         "Type": "Checkbox"
       },
       {
+        "id": 5,
         "Label": "600",
         "Type": "Checkbox"
       },
       {
+        "id": 6,
         "Label": "700",
         "Type": "Checkbox"
       },
       {
+        "id": 7,
         "Label": "800",
         "Type": "Checkbox"
       }
     ]
   },
   {
+    "id": 3,
     "FilterTitle": "Department",
     "Type": "Checkbox",
     "Options": [
-      { "Label": "AE | Aerospace Engineering" },
-      { "Label": "GP | Applied Geophysics" },
-      { "Label": "CL | Chemical Engineering" },
-      { "Label": "Applied Statistics and Informatics" },
-      { "Label": "Biosciences & Bioengineering" },
-      { "Label": "Chemical Engineering" },
-      { "Label": "Chemistry" },
-      { "Label": "Civil Engineering" },
-      { "Label": "Computer Science & Engineering" },
-      { "Label": "Chemical Engineering" }
+      {
+        "id": 0,
+        "Label": "AE | Aerospace Engineering"
+      },
+      {
+        "id": 1,
+        "Label": "GP | Applied Geophysics"
+      },
+      {
+        "id": 2,
+        "Label": "CL | Chemical Engineering"
+      },
+      {
+        "id": 3,
+        "Label": "Applied Statistics and Informatics"
+      },
+      {
+        "id": 4,
+        "Label": "Biosciences & Bioengineering"
+      },
+      {
+        "id": 5,
+        "Label": "Chemical Engineering"
+      },
+      {
+        "id": 6,
+        "Label": "Chemistry"
+      },
+      {
+        "id": 7,
+        "Label": "Civil Engineering"
+      },
+      {
+        "id": 8,
+        "Label": "Computer Science & Engineering"
+      },
+      {
+        "id": 9,
+        "Label": "Chemical Engineering"
+      }
     ]
   }
 ]

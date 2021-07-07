@@ -1,6 +1,7 @@
+// import { Checkbox } from 'components/shared'
+import { Checkbox } from 'antd'
 import { Fragment } from 'react'
 import styled from 'styled-components'
-import { Checkbox } from 'components/shared'
 
 const Title = styled.h1`
   font-weight: 600;
@@ -17,14 +18,23 @@ const FilterList = styled.div`
   gap: 0.75rem;
 `
 
-const FilterItem = ({ data, index }) => {
+const FilterItem = ({ data: filterGroupData, index }) => {
+  const onChange = (checkedValues) => {
+    console.log(checkedValues)
+  }
+
   return (
     <Fragment key={index}>
-      <Title>{data.FilterTitle}</Title>
+      <Title>{filterGroupData.FilterTitle}</Title>
       <FilterList>
-        {data.Options.map((data, index) => (
-          <Checkbox key={index} label={data.Label} />
-        ))}
+        <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
+          {filterGroupData.Options.map((filterOptionData) => (
+            <Checkbox key={filterOptionData.id} value={filterOptionData.Label}>
+              {filterOptionData.Label}
+            </Checkbox>
+          ))}
+        </Checkbox.Group>
+        {/* <Checkbox key={index} label={data.Label} /> */}
       </FilterList>
     </Fragment>
   )

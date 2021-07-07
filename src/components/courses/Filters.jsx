@@ -58,8 +58,8 @@ const Filters = ({ showFilters, onClick }) => {
       <Divider style={{ margin: '0rem 2rem', width: 'auto' }} />
 
       <FilterList showFilters={showFilters}>
-        {filterData.map((data, index) => (
-          <FilterItem key={index} data={data} />
+        {filterData.map((data) => (
+          <FilterItem key={data.id} data={data} />
         ))}
       </FilterList>
     </Container>
