@@ -3,12 +3,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
-.filters {
-  .ant-checkbox-group {
-    .ant-checkbox-wrapper {
-      color: white;
-      font-size: 0.875rem;
-      font-weight: 400;
-    }
+// Checkbox
+.ant-checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0 0.5rem;
+  margin-bottom: 2rem;
+
+  .ant-checkbox-wrapper {
+    color: white;
+    // font-size: 0.875rem;
+    font-weight: 400;
+    margin: 0;
   }
 }

@@ -1,4 +1,5 @@
 // import { Checkbox } from 'components/shared'
+import { X } from '@styled-icons/heroicons-outline'
 import { Checkbox } from 'antd'
 import { Fragment } from 'react'
 import styled from 'styled-components'
@@ -8,34 +9,36 @@ const Title = styled.h1`
   font-size: 1rem;
   line-height: 20px;
   letter-spacing: 0.2px;
-  margin: 1rem 0 0.75rem;
+  margin-bottom: 0.75rem;
   color: ${({ theme }) => theme.textColor};
 `
 
-const FilterList = styled.div`
+const Header = styled.h1`
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  color: white;
+  align-items: baseline;
+  justify-content: space-between;
 `
 
-const FilterItem = ({ data: filterGroupData, index }) => {
+const FilterItem = ({ data: groupData, index }) => {
   const onChange = (checkedValues) => {
     console.log(checkedValues)
   }
 
   return (
     <Fragment key={index}>
-      <Title>{filterGroupData.FilterTitle}</Title>
-      <FilterList className="filters">
-        <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
-          {filterGroupData.Options.map((filterOptionData) => (
-            <Checkbox key={filterOptionData.id} value={filterOptionData.Label}>
-              {filterOptionData.Label}
-            </Checkbox>
-          ))}
-        </Checkbox.Group>
-        {/* <Checkbox key={index} label={data.Label} /> */}
-      </FilterList>
+      <Header>
+        <Title>{groupData.FilterTitle}</Title>
+        <X style={{ cursor: 'pointer', width: '1rem' }} />
+      </Header>
+
+      <Checkbox.Group onChange={onChange}>
+        {groupData.Options.map((optionData) => (
+          <Checkbox key={optionData.id} value={optionData.Label}>
+            {optionData.Label}
+          </Checkbox>
+        ))}
+      </Checkbox.Group>
     </Fragment>
   )
 }
