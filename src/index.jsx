@@ -1,4 +1,3 @@
-import 'antd/dist/antd.css'
 import App from 'App'
 import ContextProvider from 'context'
 import React from 'react'

@@ -1,3 +1,4 @@
+import { Select } from 'antd'
 import { FilterItem } from 'components/courses'
 import { Divider } from 'components/shared'
 import { filterData } from 'data/courses'
@@ -56,6 +57,11 @@ const FilterList = styled.div`
   padding: 1rem 1rem 2rem;
 `
 
+const OPTIONS = filterData[3].Options.map((data) => ({
+  label: data.Label,
+  value: data.id,
+}))
+
 const initialState = {
   offeredIn: null,
 }
@@ -66,6 +72,16 @@ const Filters = ({ showFilters, onClick }) => {
 
   const handleClearAll = (e) => {
     setFilters(initialState)
+  }
+
+  // console.log(OPTIONS)
+  // Dept selector
+  // const state = {
+  //   selectedItems: [],
+  // }
+
+  const handleDepartmentSelect = (selectedItems) => {
+    console.log(selectedItems)
   }
 
   return (
@@ -80,6 +96,14 @@ const Filters = ({ showFilters, onClick }) => {
         {filterData.map((data) => (
           <FilterItem key={data.id} data={data} />
         ))}
+
+        <Select
+          mode="multiple"
+          placeholder="Select departments to filter"
+          // defaultValue={['a10', 'c12']}
+          onChange={handleDepartmentSelect}
+          options={OPTIONS}
+        />
       </FilterList>
     </Container>
   )

@@ -94,15 +94,15 @@
     "Options": [
       {
         "id": 0,
-        "Label": "AE | Aerospace Engineering"
+        "Label": "Aerospace Engineering"
       },
       {
         "id": 1,
-        "Label": "GP | Applied Geophysics"
+        "Label": "Applied Geophysics"
       },
       {
         "id": 2,
-        "Label": "CL | Chemical Engineering"
+        "Label": "Chemical Engineering"
       },
       {
         "id": 3,

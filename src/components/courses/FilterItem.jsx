@@ -4,7 +4,7 @@ import { Checkbox } from 'antd'
 import { Fragment } from 'react'
 import styled from 'styled-components'
 
-const Title = styled.h1`
+const Title = styled.h4`
   font-weight: 600;
   font-size: 1rem;
   line-height: 20px;
@@ -13,7 +13,7 @@ const Title = styled.h1`
   color: ${({ theme }) => theme.textColor};
 `
 
-const Header = styled.h1`
+const Header = styled.div`
   display: flex;
   color: white;
   align-items: baseline;

@@ -1,4 +1,7 @@
 /* Only imports are present here, rest of the content is under styles/Global.jsx */
+@use 'scss/colors' as *;
+
+@import 'antd/dist/antd';
 @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
@@ -16,5 +19,16 @@
     // font-size: 0.875rem;
     font-weight: 400;
     margin: 0;
+  }
+}
+
+// MultiSelect
+// ant-select-single ant-select-show-arrow
+.ant-select {
+  width: 100%;
+
+  .ant-select-selection-placeholder {
+    font-size: 0.75rem;
+    color: $text-placeholder;
   }
 }
