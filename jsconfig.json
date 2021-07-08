@@ -1,13 +1,13 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "checkJs": true,
-        "jsx": "react",
-        "allowSyntheticDefaultImports": true,
-        "baseUrl": "src"
-    },
-    "exclude": [
-        "node_modules",
-        "build"
-    ]
+  "compilerOptions": {
+    "target": "es5",
+    "checkJs": true,
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "src"
+  },
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
 }

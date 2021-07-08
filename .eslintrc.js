@@ -7,7 +7,13 @@ module.exports = {
     es2021: true,
   },
 
-  extends: ['plugin:react/recommended', 'airbnb', 'prettier'],
+  extends: [
+    'react-app',
+    'react-app/jest',
+    'plugin:react/recommended',
+    'airbnb',
+    'prettier',
+  ],
 
   ignorePatterns: ['node_modules/*', 'public/*', 'build/*'],
 
@@ -22,16 +28,25 @@ module.exports = {
   plugins: ['react', 'prettier', 'import', 'jsx-a11y', 'react-hooks'],
 
   rules: {
-    'prettier/prettier': warnInDevelopment,
-
     // Allow debugger and console statement in development
     'no-debugger': warnInDevelopment,
     'no-console': warnInDevelopment,
+
     // Enable i++ in for loops
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
 
     'arrow-body-style': ['off'],
     'comma-dangle': 'off',
+
+    'import/extensions': [
+      warnInDevelopment,
+      'always',
+      {
+        js: 'never',
+        jsx: 'never',
+      },
+    ],
+
     'import/no-extraneous-dependencies': [
       'off',
       {
@@ -40,7 +55,11 @@ module.exports = {
         peerDependencies: true,
       },
     ],
+
+    // Git handles this instead
     'linebreak-style': 'off',
+
+    // For use with redux-toolkit (immer)
     'no-param-reassign': [
       'error',
       {
@@ -48,6 +67,7 @@ module.exports = {
         props: true,
       },
     ],
+
     'no-unused-expressions': 'warn',
     'no-unused-vars': [
       'error',
@@ -57,8 +77,13 @@ module.exports = {
       },
     ],
     'react/jsx-props-no-spreading': 'off',
+
+    // Shift to TypeScript for this
     'react/prop-types': 'off',
+
+    // React 17 doesn't need this
     'react/react-in-jsx-scope': 'off',
+
     semi: 'off',
   },
 
