@@ -7,7 +7,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 import store from 'store'
-import 'styles/index.css'
+import 'styles/styles.scss'
 
 const StrictApp = () => {
   return (

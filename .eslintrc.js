@@ -8,9 +8,10 @@ module.exports = {
   },
 
   extends: [
+    'plugin:react-hooks/recommended',
+    'plugin:react/recommended',
     'react-app',
     'react-app/jest',
-    'plugin:react/recommended',
     'airbnb',
     'prettier',
   ],
@@ -83,6 +84,11 @@ module.exports = {
 
     // React 17 doesn't need this
     'react/react-in-jsx-scope': 'off',
+
+    // Checks rules of Hooks
+    'react-hooks/rules-of-hooks': 'error',
+    // Checks effect dependencies
+    'react-hooks/exhaustive-deps': 'warn',
 
     semi: 'off',
   },

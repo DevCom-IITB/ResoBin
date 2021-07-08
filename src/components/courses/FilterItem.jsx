@@ -26,7 +26,7 @@ const FilterItem = ({ data: filterGroupData, index }) => {
   return (
     <Fragment key={index}>
       <Title>{filterGroupData.FilterTitle}</Title>
-      <FilterList>
+      <FilterList className="filters">
         <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
           {filterGroupData.Options.map((filterOptionData) => (
             <Checkbox key={filterOptionData.id} value={filterOptionData.Label}>

@@ -33,7 +33,7 @@ const ContentContainer = styled.div`
   top: 0;
 `
 
-const DesktopLayout = (props) => {
+const DesktopLayout = ({ children }) => {
   return (
     <ScrollToTop>
       <GridContainer>
@@ -45,7 +45,7 @@ const DesktopLayout = (props) => {
           <Sidebar />
         </SidebarContainer>
 
-        <ContentContainer>{props.children}</ContentContainer>
+        <ContentContainer>{children}</ContentContainer>
       </GridContainer>
     </ScrollToTop>
   )

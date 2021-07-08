@@ -2,12 +2,12 @@ import Navbar from 'components/navbar'
 import Topbar from 'components/sidebar/mobile/Topbar'
 import { ScrollToTop } from 'hoc'
 
-const MobileLayout = (props) => {
+const MobileLayout = ({ children }) => {
   return (
     <ScrollToTop>
       <Navbar />
       <Topbar />
-      {props.children}
+      {children}
     </ScrollToTop>
   )
 }
