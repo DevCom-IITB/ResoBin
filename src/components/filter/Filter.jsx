@@ -2,6 +2,7 @@ import { FilterItem } from 'components/filter'
 import { Divider } from 'components/shared'
 import { filterData } from 'data/courses'
 import styled from 'styled-components'
+import MultiSelect from 'components/filter/filterData'
 
 const Container = styled.div`
   position: absolute;
@@ -78,6 +79,8 @@ const Filters = ({ showFilters, onClick }) => {
           <FilterItem key={data.id} data={data} />
         ))}
       </FilterList>
+
+      <MultiSelect />
     </Container>
   )
 }

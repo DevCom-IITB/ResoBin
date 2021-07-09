@@ -5,35 +5,34 @@ const Container = styled.div`
 `
 
 const InputCheckbox = styled.input`
-  cursor: pointer;
   display: none;
+  cursor: pointer;
 `
 
 const InputLabel = styled.label`
   position: relative;
-  color: ${({ theme }) => theme.textColor};
-  font-size: 0.875rem;
+  display: inline-block;
+  padding-left: 2rem;
+  margin: 0.25rem 0;
   font-weight: 400;
+  font-size: 0.875rem;
   text-decoration: none;
+  text-indent: -2rem;
+  color: ${({ theme }) => theme.textColor};
   cursor: pointer;
   user-select: none;
 
-  display: inline-block;
-  padding-left: 2rem;
-  text-indent: -2rem;
-  margin: 0.25rem 0;
-  &:before {
+  &::before {
     content: '';
-    appearance: none;
-    border: 1px solid ${({ theme }) => theme.textColor};
-
-    padding: 0.4rem;
-    display: inline-block;
+    position: relative;
     top: 2px;
     left: 0.35rem;
-    position: relative;
+    display: inline-block;
+    padding: 0.4rem;
     margin-right: 1rem;
+    border: 1px solid ${({ theme }) => theme.textColor};
     border-radius: 2px;
+    appearance: none;
   }
 
   ${InputCheckbox}:checked + &:after {

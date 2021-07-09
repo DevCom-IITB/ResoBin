@@ -5,34 +5,32 @@ const Container = styled.div`
 `
 
 const InputBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  height: 2rem;
-  width: 100%;
-  border-radius: 0.5rem;
-  background: white;
-  overflow: hidden;
-  box-shadow: 0px 0px 0.7rem rgba(0, 0, 0, 0.3);
   position: relative;
   z-index: 100;
+  display: flex;
+  overflow: hidden;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background: white;
+  box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.3);
 `
 
 const Input = styled.input`
+  width: 100%;
+  height: 100%;
+  padding-right: 1.5rem;
   border: none;
   outline: none;
-  height: 100%;
-  width: 100%;
-  padding-right: 1.5rem;
-
-  font-size: 0.875rem;
   font-weight: 500;
+  font-size: 0.875rem;
   color: #1f1c2e;
 
   &::placeholder {
-    color: #1f1c2e;
     opacity: 0.6;
+    color: #1f1c2e;
   }
 `
 

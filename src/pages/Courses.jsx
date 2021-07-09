@@ -10,21 +10,20 @@ const Container = styled.div`
 `
 
 const IconContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 3.5rem;
-  height: 3.5rem;
   position: fixed;
   right: 2rem;
   bottom: 1.5rem;
-
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
   color: white;
   background: ${({ theme }) => theme.logo};
-  box-shadow: 0px 0px 0.7rem rgba(0, 0, 0, 0.6);
-  border-radius: 50%;
+  box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.6);
   cursor: pointer;
-  z-index: 100;
 `
 
 const Courses = () => {

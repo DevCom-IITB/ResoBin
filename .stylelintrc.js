@@ -5,21 +5,28 @@ module.exports = {
   defaultSeverity: process.env.NODE_ENV === 'production' ? 'error' : 'warning',
 
   rules: {
-    'color-hex-case': 'upper',
+    'at-rule-no-unknown': null,
+    'color-hex-case': 'lower',
     'color-hex-length': 'long',
-    'max-nesting-depth': 3,
     'declaration-block-single-line-max-declarations': 1,
     'declaration-block-semicolon-newline-after': 'always-multi-line',
+    'function-name-case': null,
+    'max-nesting-depth': 3,
+    'no-invalid-position-at-import-rule': null,
     'number-leading-zero': 'always',
+    'value-keyword-case': null,
+
     // 'declaration-property-value-whitelist': {
     //   color: ['/^\\$|initial|inherit|transparent/'],
     // },
+
     'selector-pseudo-class-no-unknown': [
       true,
       {
         ignorePseudoClasses: ['global', 'local'],
       },
     ],
+
     'order/order': [
       'custom-properties',
       'dollar-variables',
@@ -27,6 +34,8 @@ module.exports = {
       'rules',
       'at-rules',
     ],
+
+    // https://github.com/hudochenkov/stylelint-order/blob/master/rules/properties-order/README.md
     'order/properties-order': [
       [
         // CSS Modules
@@ -350,6 +359,5 @@ module.exports = {
       ],
       { unspecified: 'bottomAlphabetical' },
     ],
-    'value-keyword-case': null,
   },
 }

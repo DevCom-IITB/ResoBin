@@ -1,5 +1,6 @@
 import { Select } from 'antd'
 import { useEffect, useState } from 'react'
+import { filterData } from 'data/courses'
 
 const OPTIONS = filterData[3].Options.map((data) => ({
   key: data.id,
@@ -48,3 +49,5 @@ const MultiSelect = () => {
     </Select>
   )
 }
+
+export default MultiSelect

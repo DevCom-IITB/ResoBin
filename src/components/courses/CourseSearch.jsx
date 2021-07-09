@@ -8,12 +8,12 @@ import styled from 'styled-components'
 // const { Search } = Input
 
 const SearchContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: sticky;
   top: 3rem;
-
+  z-index: 6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 3rem;
   padding: 0 0.75rem;
   background: linear-gradient(
@@ -22,18 +22,17 @@ const SearchContainer = styled.div`
     ${({ theme }) => HEX2RGBA(theme.primary, 0)} 30%,
     ${({ theme }) => HEX2RGBA(theme.primary, 100)} 50%
   );
-  z-index: 6;
 `
 
 const Overlay = styled.div`
   position: fixed;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
+  z-index: 4;
   display: ${({ showFilters }) => (showFilters ? 'initial' : 'none')};
   background-color: rgba(0, 0, 0, 0.55);
-  z-index: 4;
 `
 
 // const StyledSearch = styled(Search)`
