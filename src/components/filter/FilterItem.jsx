@@ -5,19 +5,19 @@ import { Fragment } from 'react'
 import styled from 'styled-components'
 
 const Title = styled.span`
+  margin-bottom: 0.75rem;
   font-weight: 600;
   font-size: 1rem;
   line-height: 20px;
   letter-spacing: 0.2px;
-  margin-bottom: 0.75rem;
   color: ${({ theme }) => theme.textColor};
 `
 
 const Header = styled.div`
   display: flex;
-  color: white;
-  align-items: baseline;
   justify-content: space-between;
+  align-items: baseline;
+  color: white;
 `
 
 const FilterItem = ({ data: groupData, index }) => {

@@ -10,10 +10,10 @@ module.exports = {
     'max-nesting-depth': 3,
     'declaration-block-single-line-max-declarations': 1,
     'declaration-block-semicolon-newline-after': 'always-multi-line',
-    'number-leading-zero': 'never',
-    'declaration-property-value-whitelist': {
-      color: ['/^\\$|initial|inherit|transparent/'],
-    },
+    'number-leading-zero': 'always',
+    // 'declaration-property-value-whitelist': {
+    //   color: ['/^\\$|initial|inherit|transparent/'],
+    // },
     'selector-pseudo-class-no-unknown': [
       true,
       {
@@ -350,6 +350,6 @@ module.exports = {
       ],
       { unspecified: 'bottomAlphabetical' },
     ],
-    'value-keyword-case': ['lower', { ignoreProperties: ['composes'] }],
+    'value-keyword-case': null,
   },
 }

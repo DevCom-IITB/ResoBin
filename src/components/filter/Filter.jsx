@@ -1,49 +1,45 @@
-import { Select } from 'antd'
 import { FilterItem } from 'components/filter'
 import { Divider } from 'components/shared'
 import { filterData } from 'data/courses'
-import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
   position: absolute;
-  background: ${({ theme }) => theme.secondary};
-  margin: 0 0.75rem;
-  padding: ${({ showFilters }) => (showFilters ? '1rem 0 40rem' : '0')};
-  height: ${({ showFilters }) => (showFilters ? 'calc(100vh - 5rem)' : '0')};
-  width: calc(100% - 1.5rem);
-
   top: 2rem;
-
-  transition: 500ms;
   z-index: 5;
-  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.3);
   overflow: auto;
+  width: calc(100% - 1.5rem);
+  height: ${({ showFilters }) => (showFilters ? 'calc(100vh - 5rem)' : '0')};
+  padding: ${({ showFilters }) => (showFilters ? '1rem 0 20rem' : '0')};
+  margin: 0 0.75rem;
+  background: ${({ theme }) => theme.secondary};
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  transition: 500ms;
 `
 
 const Header = styled.div`
   display: flex;
-  align-items: baseline;
   justify-content: space-between;
+  align-items: baseline;
   height: 3rem;
-  margin-bottom: 0.5rem;
   padding: 1.25rem 1rem 0;
+  margin-bottom: 0.5rem;
 `
 
 const Title = styled.h4`
-  font-size: 1.25rem;
   font-weight: 700;
+  font-size: 1.25rem;
   letter-spacing: 1px;
   color: ${({ theme }) => theme.textColor};
 `
 
 const ClearAll = styled.button`
-  background: transparent;
   border: 0;
   font-weight: 400;
-  color: ${({ theme }) => theme.textColor};
-  cursor: pointer;
   font-size: 0.75rem;
+  color: ${({ theme }) => theme.textColor};
+  background: transparent;
+  cursor: pointer;
 
   &:hover {
     text-decoration: underline;
@@ -57,11 +53,6 @@ const FilterList = styled.div`
   padding: 1rem 1rem 2rem;
 `
 
-const OPTIONS = filterData[3].Options.map((data) => ({
-  key: data.id,
-  value: data.Label,
-}))
-
 // const initialState = {
 //   offeredIn: null,
 // }
@@ -74,56 +65,18 @@ const Filters = ({ showFilters, onClick }) => {
     // setFilters(initialState)
   }
 
-  const [selectedDept, setSelectedDept] = useState([])
-  const [remainingDept, setRemainingDept] = useState(OPTIONS)
-
-  const handleDepartmentSelect = (selectedItems) =>
-    setSelectedDept(selectedItems)
-
-  useEffect(() => {
-    setRemainingDept(
-      OPTIONS.filter((item) => {
-        // console.log(item.value)
-        return !selectedDept.includes(item.key)
-      })
-    )
-  }, [selectedDept])
-
   return (
     <Container showFilters={showFilters}>
       <Header>
         <Title>Filter</Title>
         <ClearAll onClick={handleClearAll}>Clear all</ClearAll>
       </Header>
-      <Divider style={{ margin: '0rem 1rem', width: 'auto' }} />
+      <Divider style={{ margin: '0 1rem', width: 'auto' }} />
 
       <FilterList showFilters={showFilters}>
         {filterData.map((data) => (
           <FilterItem key={data.id} data={data} />
         ))}
-        <Select
-          mode="multiple"
-          placeholder="Select departments to filter"
-          onChange={handleDepartmentSelect}
-          // value={selectedDept}
-          // options={remainingDept}
-          showArrow
-          allowClear
-          // loading
-          // maxTagCount={1}
-          // listHeight="6rem"
-          dropdownAlign={{
-            overflow: { adjustY: 0 },
-          }}
-          // dropdownStyle={{ maxHeight: 100, overflowY: 'hidden' }}
-          getPopupContainer={(trigger) => trigger.parentNode}
-        >
-          {remainingDept.map((item) => (
-            <Select.Option key={item.key} value={item.key}>
-              {item.value}
-            </Select.Option>
-          ))}
-        </Select>
       </FilterList>
     </Container>
   )
