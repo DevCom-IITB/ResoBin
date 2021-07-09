@@ -6,11 +6,10 @@ const Container = styled.div`
   /* display: flex; */
   width: 100%;
   padding: 1.5rem 1rem;
-
   margin: 1rem 0;
-  background: ${({ theme }) => theme.darksecondary};
   border-radius: 8px;
-  box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.4);
+  background: ${({ theme }) => theme.darksecondary};
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);
 `
 
 const CourseItem = ({ ...props }) => {

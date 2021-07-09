@@ -15,22 +15,22 @@ const Header = styled(Link)`
   display: inline;
   align-items: center;
   margin-bottom: 0.5rem;
-  text-decoration: none;
-  color: ${({ theme }) => theme.primary};
   font-weight: 400;
   font-size: 1rem;
+  text-decoration: none;
+  color: ${({ theme }) => theme.primary};
 
   &:hover {
     text-decoration: underline;
-    text-underline-offset: 1.5px;
     text-decoration-thickness: 1.5px;
+    text-underline-offset: 1.5px;
   }
 `
 
 const CourseCode = styled.span`
+  margin-right: 0.5rem;
   font-weight: 600;
   font-size: 1.25rem;
-  margin-right: 0.5rem;
   text-align: center;
 `
 
@@ -41,50 +41,48 @@ const CourseTitle = styled.span`
 `
 
 const SubHeader = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
-  position: relative;
-  margin-bottom: 0.5rem;
   height: 1.75rem;
+  margin-bottom: 0.5rem;
 `
 
 const SubTitle = styled.h2`
+  overflow: hidden;
+  width: calc(100% - 3.75rem);
+  margin: 0;
   font-weight: 600;
   font-size: 0.75rem;
-  width: calc(100% - 3.75rem);
-  overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  white-space: nowrap;
   color: ${({ theme }) => theme.textColor};
-  margin: 0;
 `
 
 const CourseDescription = styled.p`
+  opacity: 80%;
+  margin: 0.75rem 0;
   font-weight: 300;
   font-size: 0.8rem;
   line-height: 1rem;
   text-align: justify;
-  opacity: 80%;
-  margin: 0.75rem 0;
   color: ${({ theme }) => theme.textColor};
 `
 
 const IconContainer = styled.span`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.25rem;
-  height: 1.25rem;
-
   position: absolute;
   right: 1.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
   font-weight: 700;
   font-size: 1rem;
-
   color: ${({ theme }) => theme.darksecondary};
   background: white;
-  box-shadow: 0px 0px 0.7rem rgba(0, 0, 0, 0.6);
-  border-radius: 50%;
+  box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.6);
 `
 
 const FavouriteStyles = {
@@ -95,7 +93,7 @@ const FavouriteStyles = {
 }
 
 const LeftSection = ({ data }) => {
-  const coursePage = 'courses/' + data.CourseCode.replace(/\s/g, '')
+  const coursePage = `courses/${data.CourseCode.replace(/\s/g, '')}`
   const [favourite, setFavourite] = useState(false)
 
   const favouriteClick = () => {

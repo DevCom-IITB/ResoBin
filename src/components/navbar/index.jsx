@@ -8,14 +8,14 @@ import styled from 'styled-components'
 const Container = styled.div`
   position: sticky;
   top: 0;
-  width: 100%;
+  z-index: 9; /* To put navbar at the top */
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  width: 100%;
   height: 3rem;
   background: ${({ theme }) => theme.darksecondary};
   box-shadow: '0 0 0.5rem rgba(0, 0, 0, 0.5)';
-  z-index: 9; /* To put navbar at the top */
 `
 
 // const LeftContainer = styled.div`

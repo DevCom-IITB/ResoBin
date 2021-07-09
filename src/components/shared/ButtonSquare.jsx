@@ -1,21 +1,20 @@
-import styled from 'styled-components'
 import { HEX2RGBA } from 'helpers'
+import styled from 'styled-components'
 
 const ButtonSquare = styled.button`
+  box-sizing: border-box;
   display: block;
+  opacity: 100%;
   height: 2.5rem;
   padding: 0 20px;
+
   /* margin: 0 0 1.5rem; */
-
-  cursor: pointer;
-  background-color: ${({ theme }) => theme.logo};
-  opacity: 100%;
-  color: #fff;
-  font-size: 0.9rem;
-
   border: 0;
   border-radius: 0.25rem;
-  box-sizing: border-box;
+  font-size: 0.9rem;
+  color: #ffffff;
+  background-color: ${({ theme }) => theme.logo};
+  cursor: pointer;
 
   &:hover {
     opacity: 90%;

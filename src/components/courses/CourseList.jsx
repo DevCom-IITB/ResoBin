@@ -7,31 +7,31 @@ const Container = styled.div`
 `
 
 const List = styled.div`
-  margin: 0 0.75rem;
   padding-bottom: 1rem;
+  margin: 0 0.75rem;
 `
 
 const Heading = styled.div`
   display: flex;
-  align-items: baseline;
   justify-content: space-between;
-  padding: 0rem 0.75rem;
+  align-items: baseline;
+  padding: 0 0.75rem;
 `
 
 const Title = styled.h1`
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.darksecondary};
   margin: 0;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: ${({ theme }) => theme.darksecondary};
 `
 
 const Results = styled.h1`
+  opacity: 80%;
+  margin: 0;
   font-weight: bold;
   font-size: 1rem;
   text-align: right;
   color: ${({ theme }) => theme.darksecondary};
-  opacity: 80%;
-  margin: 0;
 `
 
 const CourseList = ({ showFilters, onClick }) => {

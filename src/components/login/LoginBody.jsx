@@ -1,20 +1,20 @@
+import { LockPassword, User } from '@styled-icons/remix-line'
+import { GoogleAuth } from 'components/login'
+import {
+  ButtonSquare,
+  Checkbox,
+  InputRounded as Input,
+} from 'components/shared'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import {
-  InputRounded as Input,
-  ButtonSquare,
-  Checkbox,
-} from 'components/shared'
-import { LockPassword, User } from '@styled-icons/remix-line'
-import { GoogleAuth } from 'components/login'
 
 const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 2rem;
   padding: 0 2rem;
+  margin-top: 2rem;
   > * {
     margin-bottom: 1.5rem;
   }
@@ -22,17 +22,17 @@ const FormContainer = styled.form`
 
 const ContainerSpaceBetween = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 2rem;
 `
 
 const StyledLink = styled(Link)`
-  color: ${({ theme }) => theme.textColor};
-  font-size: 1rem;
   font-weight: 300;
-  letter-spacing: 1px;
+  font-size: 1rem;
   text-decoration: none;
+  letter-spacing: 1px;
+  color: ${({ theme }) => theme.textColor};
   user-select: none;
   &:hover {
     text-decoration: underline;

@@ -13,24 +13,24 @@ const GridContainer = styled.div`
 `
 
 const NavbarContainer = styled.div`
+  z-index: 9; /* To put navbar at the top */
   grid-area: header;
   box-shadow: ${({ shadow }) =>
     shadow || '12rem 0px 0.5rem rgba(0, 0, 0, 0.5)'};
-  z-index: 9; /* To put navbar at the top */
 `
 
 const SidebarContainer = styled.div`
-  grid-area: navigation;
-  overflow: auto;
   z-index: 8; /* For shadow effects */
-  box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.5);
+  overflow: auto;
+  grid-area: navigation;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
 `
 
 const ContentContainer = styled.div`
-  grid-area: content;
-  overflow: auto;
   position: sticky;
   top: 0;
+  overflow: auto;
+  grid-area: content;
 `
 
 const DesktopLayout = ({ children }) => {

@@ -20,32 +20,33 @@ const LoaderTrack = styled.div`
 `
 
 const Anim1 = keyframes`
-  0%   { 
+  0%   {
     right: 100%;
-    left: -35%; 
+    left: -35%;
   }
-  60%  { 
+  60%  {
     right: -90%;
-    left: 100%; 
+    left: 100%;
   }
-  100% { 
+  100% {
     right: -35%;
-  left: 100%; 
+  left: 100%;
   }
 `
 
 const Anim2 = keyframes`
-  0%   { 
+  0%   {
     right: 100%;
-    left: -200%; 
+    left: -200%;
   }
-  60%  { 
+  60%  {
     right:  -8%;
-    left:  107%; 
+    left:  107%;
   }
-  100% { 
+
+  100% {
     right:  -8%;
-    left:  107%; 
+    left:  107%;
   }
 `
 

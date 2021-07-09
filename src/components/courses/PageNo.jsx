@@ -1,13 +1,12 @@
 import styled from 'styled-components'
 
 const Container = styled.div`
-  background-color: black;
-  opacity: 20%;
+  bottom: 0;
   display: flex;
+  opacity: 20%;
   width: 100%;
   height: 4rem;
-
-  bottom: 0;
+  background-color: black;
 `
 
 const PageNo = () => {

@@ -12,6 +12,7 @@ module.exports = {
     'declaration-block-semicolon-newline-after': 'always-multi-line',
     'function-name-case': null,
     'max-nesting-depth': 3,
+    'no-eol-whitespace': true,
     'no-invalid-position-at-import-rule': null,
     'number-leading-zero': 'always',
     'value-keyword-case': null,

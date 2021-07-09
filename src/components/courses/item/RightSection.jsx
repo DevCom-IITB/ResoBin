@@ -9,27 +9,25 @@ const Container = styled.div`
 
 const Group = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 5%;
+  align-items: center;
   width: 100%;
+  gap: 5%;
 `
 
 const Pil = styled.h1`
   display: flex;
-  align-items: center;
+  opacity: ${({ active }) => (active ? '100%' : '20%')};
   justify-content: center;
-
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-
+  align-items: center;
   width: 5rem;
   height: 1.5rem;
-  border-radius: 100px;
   margin: 0;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
   color: ${({ theme }) => theme.darksecondary};
-  opacity: ${({ active }) => (active ? '100%' : '20%')};
 `
 
 const Title = styled.h1`
@@ -41,7 +39,7 @@ const Title = styled.h1`
   color: ${({ theme }) => theme.textColor};
 `
 
-const Autumn = { backgroundColor: '#FEC400' }
+const Autumn = { backgroundColor: '#fec400' }
 
 const Spring = { backgroundColor: '#29cc97' }
 
