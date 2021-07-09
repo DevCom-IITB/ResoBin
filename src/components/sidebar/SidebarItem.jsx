@@ -2,55 +2,53 @@ import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
 const Container = styled(NavLink)`
-  min-height: 4rem;
-  width: 100%;
-  padding: 0px 0.75rem;
-  text-decoration: none;
-
   display: flex;
   flex-direction: row;
-  cursor: pointer;
-
+  width: 100%;
+  min-height: 4rem;
+  padding: 0 0.75rem;
+  border-left: 3px solid transparent;
+  text-decoration: none;
   color: ${({ theme }) => theme.textColorInactive};
   background-color: ${({ theme }) => theme.secondary};
-  border-left: 3px solid transparent;
+  cursor: pointer;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
     text-decoration: underline;
-    text-underline-offset: 1.5px;
-    text-decoration-thickness: 2px;
+    background-color: rgba(0, 0, 0, 0.1);
     box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.24);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 1.5px;
   }
   &.active {
+    border-left: 3px solid ${({ theme }) => theme.activeMenu};
     color: ${({ theme }) => theme.textColor};
     background-color: ${({ theme }) => theme.headerNumber};
-    border-left: 3px solid ${({ theme }) => theme.activeMenu};
   }
 `
 
 const IconContainer = styled.div`
-  width: 30%; /* width: 60px */
-  padding-left: 6px;
-  min-height: 100%;
   display: flex;
   align-items: center;
+  width: 30%; /* width: 60px */
+  min-height: 100%;
+  padding-left: 6px;
 `
 
 const Title = styled.h4`
   display: flex;
+  overflow: hidden;
   align-items: center;
-  min-height: 100%;
   width: 70%;
+  min-height: 100%;
+  font-weight: 400;
+  font-size: 1.125rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 1.5px;
 
   /* color: ${({ theme }) => theme.textColorInactive}; */
   color: inherit;
-  font-size: 1.125rem;
-  font-weight: 400;
-  letter-spacing: 1.5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `
 
 const SidebarItem = ({ title, icon, to }) => {

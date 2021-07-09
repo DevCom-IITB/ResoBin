@@ -2,10 +2,10 @@ import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
 const Container = styled(NavLink)`
-  text-decoration: none;
   text-align: center;
-  cursor: pointer;
+  text-decoration: none;
   color: ${({ theme }) => theme.textColorInactive};
+  cursor: pointer;
 
   &:hover {
     color: ${({ theme }) => theme.textColor};

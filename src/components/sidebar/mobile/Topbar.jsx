@@ -13,18 +13,17 @@ import TopbarItem from 'components/sidebar/mobile/TopbarItem'
 import styled from 'styled-components'
 
 const Container = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 100;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 3rem;
-  justify-content: space-between;
   padding: 0 2rem;
-  position: sticky;
-  top: 0;
-
   background: ${({ theme }) => theme.secondary};
-  z-index: 100;
-  box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
 `
 
 const Topbar = () => {
@@ -60,13 +59,14 @@ const Topbar = () => {
         size="1.5rem"
         to="/dashboard/account"
       />
-      {/*<TopbarItem title="Sign out" icon={<Logout size="22" />} to="/login" />
+      {/* <TopbarItem title="Sign out" icon={<Logout size="22" />} to="/login" /> */}
 
-      <TopbarItem
+      {/* <TopbarItem
         title="Get help"
         icon={<ContactSupport size="22" />}
         to="/dashboard/contact"
       /> */}
+
     </Container>
   )
 }

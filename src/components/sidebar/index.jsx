@@ -1,8 +1,3 @@
-import styled from 'styled-components'
-import { Divider } from 'components/shared'
-import SidebarItem from 'components/sidebar/SidebarItem'
-import ProfileImgItem from 'components/sidebar/ProfileImgItem'
-import ProfileImage from 'assets/images/ProfileImg_Laxman.jpg'
 import {
   BookOpen,
   ChartPie,
@@ -10,18 +5,23 @@ import {
   Cog,
   Logout,
 } from '@styled-icons/heroicons-outline'
-import { BookmarkOutline } from '@styled-icons/zondicons'
 import { ContactSupport } from '@styled-icons/material-outlined'
+import { BookmarkOutline } from '@styled-icons/zondicons'
+import ProfileImage from 'assets/images/ProfileImg_Laxman.jpg'
+import { Divider } from 'components/shared'
+import ProfileImgItem from 'components/sidebar/ProfileImgItem'
+import SidebarItem from 'components/sidebar/SidebarItem'
+import styled from 'styled-components'
 
 const Container = styled.div`
-  background: ${({ theme }) => theme.secondary};
-  width: 12rem;
-  height: 100%;
+  z-index: 8; /* For shadow effects */
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 8; /* For shadow effects */
-  box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.5);
+  width: 12rem;
+  height: 100%;
+  background: ${({ theme }) => theme.secondary};
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
 `
 
 const Sidebar = () => {
