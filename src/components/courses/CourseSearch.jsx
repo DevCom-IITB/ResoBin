@@ -1,5 +1,5 @@
 import { Search } from '@styled-icons/heroicons-outline'
-import { Filters } from 'components/courses'
+import { Filters } from 'components/filter'
 import { InputRounded } from 'components/shared'
 import { HEX2RGBA } from 'helpers'
 import { useState } from 'react'

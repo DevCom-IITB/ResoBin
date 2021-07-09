@@ -26,9 +26,20 @@
 // ant-select-single ant-select-show-arrow
 .ant-select {
   width: 100%;
+  max-height: 2rem;
 
-  .ant-select-selection-placeholder {
+  &-selection-placeholder {
     font-size: 0.75rem;
     color: $text-placeholder;
+  }
+
+  &-selection--multiple {
+    white-space: nowrap;
+    height: 2rem;
+    overflow: auto;
+  }
+
+  &-dropdown {
+    top: 0rem;
   }
 }

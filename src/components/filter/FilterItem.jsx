@@ -4,7 +4,7 @@ import { Checkbox } from 'antd'
 import { Fragment } from 'react'
 import styled from 'styled-components'
 
-const Title = styled.h4`
+const Title = styled.span`
   font-weight: 600;
   font-size: 1rem;
   line-height: 20px;

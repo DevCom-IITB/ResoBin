@@ -1,15 +1,15 @@
 import { Select } from 'antd'
-import { FilterItem } from 'components/courses'
+import { FilterItem } from 'components/filter'
 import { Divider } from 'components/shared'
 import { filterData } from 'data/courses'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
   position: absolute;
   background: ${({ theme }) => theme.secondary};
   margin: 0 0.75rem;
-  padding: ${({ showFilters }) => (showFilters ? '1rem 0 8rem' : '0')};
+  padding: ${({ showFilters }) => (showFilters ? '1rem 0 40rem' : '0')};
   height: ${({ showFilters }) => (showFilters ? 'calc(100vh - 5rem)' : '0')};
   width: calc(100% - 1.5rem);
 
@@ -58,31 +58,36 @@ const FilterList = styled.div`
 `
 
 const OPTIONS = filterData[3].Options.map((data) => ({
-  label: data.Label,
-  value: data.id,
+  key: data.id,
+  value: data.Label,
 }))
 
-const initialState = {
-  offeredIn: null,
-}
+// const initialState = {
+//   offeredIn: null,
+// }
 
 const Filters = ({ showFilters, onClick }) => {
-  const [filters, setFilters] = useState(initialState)
   document.body.style.overflow = showFilters ? 'hidden' : 'auto'
 
+  // const [filters, setFilters] = useState(initialState)
   const handleClearAll = (e) => {
-    setFilters(initialState)
+    // setFilters(initialState)
   }
 
-  // console.log(OPTIONS)
-  // Dept selector
-  // const state = {
-  //   selectedItems: [],
-  // }
+  const [selectedDept, setSelectedDept] = useState([])
+  const [remainingDept, setRemainingDept] = useState(OPTIONS)
 
-  const handleDepartmentSelect = (selectedItems) => {
-    console.log(selectedItems)
-  }
+  const handleDepartmentSelect = (selectedItems) =>
+    setSelectedDept(selectedItems)
+
+  useEffect(() => {
+    setRemainingDept(
+      OPTIONS.filter((item) => {
+        // console.log(item.value)
+        return !selectedDept.includes(item.key)
+      })
+    )
+  }, [selectedDept])
 
   return (
     <Container showFilters={showFilters}>
@@ -96,14 +101,29 @@ const Filters = ({ showFilters, onClick }) => {
         {filterData.map((data) => (
           <FilterItem key={data.id} data={data} />
         ))}
-
         <Select
           mode="multiple"
           placeholder="Select departments to filter"
-          // defaultValue={['a10', 'c12']}
           onChange={handleDepartmentSelect}
-          options={OPTIONS}
-        />
+          // value={selectedDept}
+          // options={remainingDept}
+          showArrow
+          allowClear
+          // loading
+          // maxTagCount={1}
+          // listHeight="6rem"
+          dropdownAlign={{
+            overflow: { adjustY: 0 },
+          }}
+          // dropdownStyle={{ maxHeight: 100, overflowY: 'hidden' }}
+          getPopupContainer={(trigger) => trigger.parentNode}
+        >
+          {remainingDept.map((item) => (
+            <Select.Option key={item.key} value={item.key}>
+              {item.value}
+            </Select.Option>
+          ))}
+        </Select>
       </FilterList>
     </Container>
   )

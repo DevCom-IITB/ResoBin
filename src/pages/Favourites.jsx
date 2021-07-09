@@ -1,7 +1,8 @@
+import { CourseList, CourseSearch } from 'components/courses'
+import { Filters } from 'components/filter'
+import { useLocalStorage } from 'hooks'
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
-import { useLocalStorage } from 'hooks'
-import { CourseList, CourseSearch, Filters } from 'components/courses'
 
 const Container = styled.div`
   display: flex;
