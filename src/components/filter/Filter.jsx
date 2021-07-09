@@ -78,9 +78,8 @@ const Filters = ({ showFilters, onClick }) => {
         {filterData.map((data) => (
           <FilterItem key={data.id} data={data} />
         ))}
+        <MultiSelect />
       </FilterList>
-
-      <MultiSelect />
     </Container>
   )
 }

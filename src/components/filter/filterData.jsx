@@ -38,7 +38,7 @@ const MultiSelect = () => {
       dropdownAlign={{
         overflow: { adjustY: 0 },
       }}
-      // dropdownStyle={{ maxHeight: 100, overflowY: 'hidden' }}
+      dropdownStyle={{ maxHeight: 100 }}
       getPopupContainer={(trigger) => trigger.parentNode}
     >
       {remainingDept.map((item) => (
