@@ -4,7 +4,7 @@ export const breakpoints = {
   md: 992,
   lg: 1200,
   xl: 1440,
-  xxl: 1800,
+  // xxl: 1800,
 }
 
 export const size = {
@@ -13,7 +13,7 @@ export const size = {
   md: `${breakpoints.md}px`,
   lg: `${breakpoints.lg}px`,
   xl: `${breakpoints.xl}px`,
-  xxl: `${breakpoints.xxl}px`,
+  // xxl: `${breakpoints.xxl}px`,
 }
 
 export const device = {
@@ -22,5 +22,18 @@ export const device = {
   md: `(min-width: ${breakpoints.md}px)`,
   lg: `(min-width: ${breakpoints.lg}px)`,
   xl: `(min-width: ${breakpoints.xl}px)`,
-  xxl: `(min-width: ${breakpoints.xxl}px)`,
+  // xxl: `(min-width: ${breakpoints.xxl}px)`,
+}
+
+export const deviceMax = {
+  xs: `(max-width: ${breakpoints.xs}px)`,
+  sm: `(max-width: ${breakpoints.sm}px)`,
+  md: `(max-width: ${breakpoints.md}px)`,
+  lg: `(max-width: ${breakpoints.lg}px)`,
+  xl: `(max-width: ${breakpoints.xl}px)`,
+  // xxl: `(max-width: ${breakpoints.xxl}px)`,
+}
+
+export const deviceRange = {
+  sm2md: `${device.sm} and ${deviceMax.md}`,
 }

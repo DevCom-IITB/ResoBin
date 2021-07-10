@@ -3,7 +3,7 @@ import { device } from 'helpers/mediaQueries'
 import { NavLink } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
-const ContainerStyles = css`
+const ContainerBase = css`
   display: flex;
   align-items: center;
   width: 100%;
@@ -25,7 +25,7 @@ const ContainerLink = styled(NavLink)`
   }
 
   @media ${device.md} {
-    ${ContainerStyles}
+    ${ContainerBase}
 
     &:hover {
       text-decoration: underline;
@@ -79,7 +79,7 @@ export const MenuItem = ({ title, icon, to }) => {
 }
 
 const ContainerDiv = styled.div`
-  ${ContainerStyles}
+  ${ContainerBase}
 
   color: ${({ theme }) => theme.textColor};
 `

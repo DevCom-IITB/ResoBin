@@ -6,9 +6,14 @@ import { ReadMore } from 'components/shared'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { device, deviceRange } from 'helpers/mediaQueries'
 
 const Container = styled.div`
   width: 100%;
+
+  @media ${deviceRange.sm2md}, ${device.lg} {
+    margin-right: 1rem;
+  }
 `
 
 const Header = styled(Link)`
