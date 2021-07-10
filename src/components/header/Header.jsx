@@ -33,7 +33,7 @@ const LeftContainer = styled(Link)`
   }
 `
 
-const MiddleContainer = styled(Link)`
+const MiddleContainer = styled.div`
   display: none;
 
   @media ${device.md} {
@@ -68,7 +68,7 @@ const SignUpButton = ({ button, buttonLink }) => {
   }
 
   const handleClick = () => {
-    console.log(1)
+    // console.log(1)
   }
 
   return (

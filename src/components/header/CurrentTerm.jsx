@@ -10,7 +10,7 @@ const Term = styled.span`
   font-size: 1rem;
   line-height: 80%;
   white-space: nowrap;
-  letter-spacing: 4px;
+  letter-spacing: 2px;
   color: ${({ theme }) => theme.textColor};
 `
 

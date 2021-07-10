@@ -49,7 +49,7 @@ const buttonStyle = {
   height: '1.5rem',
 }
 
-const CourseItem = ({ data }) => {
+const CourseItemSub = ({ data }) => {
   return (
     <Container>
       <Title>Semester</Title>
@@ -78,4 +78,4 @@ const CourseItem = ({ data }) => {
   )
 }
 
-export default CourseItem
+export default CourseItemSub

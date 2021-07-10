@@ -6,16 +6,11 @@ const Container = styled.div`
   width: 100%;
 `
 
-const List = styled.div`
-  padding: 0.5rem 0 1rem;
-  margin: 0 0.75rem;
-`
-
-const Heading = styled.div`
+const Heading = styled.h3`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: 0 0.75rem;
+  margin: 0.5rem 1.5rem;
 `
 
 const Title = styled.span`
@@ -33,28 +28,32 @@ const Results = styled.span`
   color: ${({ theme }) => theme.darksecondary};
 `
 
-const CourseList = ({ showFilters, onClick }) => {
+const CourseList = styled.ul`
+  margin: 0 0.75rem;
+`
+
+const CourseBody = ({ showFilters, onClick }) => {
   const courseCount = courseData.length
 
   return (
     <Container>
       <CourseSearch showFilters={showFilters} handleClick={onClick} />
-      <List>
-        <Heading>
-          <Title>Courses</Title>
-          <Results>
-            {courseCount}
-            &nbsp;results found
-          </Results>
-        </Heading>
+      <Heading>
+        <Title>Courses</Title>
+        <Results>
+          {courseCount}
+          &nbsp;results found
+        </Results>
+      </Heading>
 
+      <CourseList>
         {courseData.map((data) => (
           <CourseItem data={data} key={data.id} />
         ))}
-      </List>
+      </CourseList>
       <PageNo />
     </Container>
   )
 }
 
-export default CourseList
+export default CourseBody

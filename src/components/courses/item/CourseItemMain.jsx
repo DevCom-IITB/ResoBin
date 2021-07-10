@@ -33,12 +33,10 @@ const CourseCode = styled.span`
   margin-right: 0.5rem;
   font-weight: 600;
   font-size: 1.25rem;
-  text-align: center;
 `
 
 const CourseTitle = styled.span`
   display: inline-block;
-  grid-area: title;
   font-weight: 400;
   font-size: 1rem;
 `
@@ -95,7 +93,7 @@ const FavouriteStyles = {
   cursor: 'pointer',
 }
 
-const LeftSection = ({ data }) => {
+const CourseItemMain = ({ data }) => {
   const coursePage = `courses/${data.CourseCode.replace(/\s/g, '')}`
   const [favourite, setFavourite] = useState(false)
 
@@ -125,4 +123,4 @@ const LeftSection = ({ data }) => {
   )
 }
 
-export default LeftSection
+export default CourseItemMain
