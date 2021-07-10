@@ -8,24 +8,62 @@ import {
 import { ContactSupport } from '@styled-icons/material-outlined'
 import { BookmarkOutline } from '@styled-icons/zondicons'
 import ProfileImage from 'assets/images/ProfileImg_Laxman.jpg'
+import { MenuItem, ProfileImgItem } from 'components/menu'
 import { Divider } from 'components/shared'
-import { ProfileImgItem, MenuItem } from 'components/menu'
 import styled from 'styled-components'
 
 const Container = styled.div`
-  position: fixed;
-  top: 3rem;
-  z-index: 8; /* For shadow effects */
+  position: sticky;
+  top: 0;
+  z-index: 100;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  width: 9rem;
-  height: 100%;
+  width: 100%;
+  height: 3rem;
+  padding: 0 2rem;
   background: ${({ theme }) => theme.secondary};
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+
+  @media (min-width: 992px) {
+    position: fixed;
+    top: 3rem;
+    z-index: 8; /* For shadow effects */
+    flex-direction: column;
+    width: 9rem;
+    height: 100%;
+  }
 `
 
-const MenuVertical = () => {
+export const MenuHorizontal = () => {
+  return (
+    <Container>
+      <MenuItem
+        title="Courses"
+        icon={<BookOpen size="1.5rem" />}
+        to="/dashboard/courses"
+      />
+      <MenuItem
+        title="Contribute"
+        icon={<CloudUpload size="1.5rem" />}
+        to="/dashboard/contribute"
+      />
+
+      <MenuItem
+        title="Favourites"
+        icon={<BookmarkOutline size="1.25rem" />}
+        to="/dashboard/favourites"
+      />
+      <MenuItem
+        title="Account"
+        icon={<Cog size="1.5rem" />}
+        to="/dashboard/account"
+      />
+    </Container>
+  )
+}
+
+export const MenuVertical = () => {
   return (
     <Container>
       <MenuItem
@@ -69,5 +107,3 @@ const MenuVertical = () => {
     </Container>
   )
 }
-
-export default MenuVertical
