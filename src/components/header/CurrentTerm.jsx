@@ -1,15 +1,17 @@
 import styled from 'styled-components'
 
-const Term = styled.h4`
+const Term = styled.span`
   display: flex;
   opacity: 80%;
   justify-content: center;
   align-items: center;
-  font-weight: 300;
-  font-size: 1.25rem;
+  height: 100%;
+  font-weight: 400;
+  font-size: 1rem;
   line-height: 80%;
   white-space: nowrap;
   letter-spacing: 4px;
+  color: ${({ theme }) => theme.textColor};
 `
 
 const CurrentTerm = ({ text }) => {

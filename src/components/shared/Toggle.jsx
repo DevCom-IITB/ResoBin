@@ -9,16 +9,16 @@ const CheckboxLabel = styled.label`
   position: absolute;
   top: 0;
   left: 0;
-  width: 42px;
-  height: 26px;
+  width: 45px;
+  height: 25px;
   border-radius: 15px;
   background: ${({ theme }) => theme.logo};
 
   &::after {
     content: '';
     display: block;
-    width: 1rem;
-    height: 1rem;
+    width: 0.75rem;
+    height: 0.75rem;
     margin: 5px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.8);
@@ -30,8 +30,8 @@ const CheckboxLabel = styled.label`
 const CheckboxInput = styled.input`
   z-index: 1;
   opacity: 0;
-  width: 42px;
-  height: 26px;
+  width: 45px;
+  height: 25px;
   border-radius: 15px;
   cursor: pointer;
 
@@ -39,9 +39,9 @@ const CheckboxInput = styled.input`
     &::after {
       content: '';
       display: block;
-      width: 1rem;
-      height: 1rem;
-      margin-left: 21px;
+      width: 0.75rem;
+      height: 0.75rem;
+      margin-left: 24px;
       border-radius: 50%;
       transition: 200ms;
     }
