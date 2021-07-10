@@ -7,6 +7,16 @@ const Container = styled.div`
   text-align: center;
 `
 
+const Title = styled.span`
+  display: block;
+  margin: 0.75rem 0 0.5rem;
+  font-weight: 400;
+  font-size: 0.8rem;
+  line-height: 20px;
+  letter-spacing: 1.5px;
+  color: ${({ theme }) => theme.textColor};
+`
+
 const Group = styled.div`
   display: flex;
   justify-content: center;
@@ -28,15 +38,6 @@ const Pil = styled.span`
   font-size: 0.75rem;
   letter-spacing: 1px;
   color: ${({ theme }) => theme.darksecondary};
-`
-
-const Title = styled.span`
-  margin: 0.75rem 0 0.5rem;
-  font-weight: 400;
-  font-size: 0.8rem;
-  line-height: 20px;
-  letter-spacing: 1.5px;
-  color: ${({ theme }) => theme.textColor};
 `
 
 const Autumn = { backgroundColor: '#fec400' }

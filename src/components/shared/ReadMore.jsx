@@ -2,6 +2,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 const ReadMoreText = styled.span`
+  display: inline-block;
   opacity: 75%;
   margin: 0;
   font-weight: 500;

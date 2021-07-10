@@ -12,8 +12,8 @@ const Container = styled.div`
 `
 
 const Header = styled(Link)`
-  display: inline;
-  align-items: center;
+  display: flex;
+  align-items: baseline;
   margin-bottom: 0.5rem;
   font-weight: 400;
   font-size: 1rem;
@@ -24,10 +24,12 @@ const Header = styled(Link)`
     text-decoration: underline;
     text-decoration-thickness: 1.5px;
     text-underline-offset: 1.5px;
+    color: ${({ theme }) => theme.primary};
   }
 `
 
 const CourseCode = styled.span`
+  display: inline-block;
   margin-right: 0.5rem;
   font-weight: 600;
   font-size: 1.25rem;
@@ -35,6 +37,7 @@ const CourseCode = styled.span`
 `
 
 const CourseTitle = styled.span`
+  display: inline-block;
   grid-area: title;
   font-weight: 400;
   font-size: 1rem;
@@ -48,7 +51,8 @@ const SubHeader = styled.div`
   margin-bottom: 0.5rem;
 `
 
-const SubTitle = styled.h2`
+const SubTitle = styled.span`
+  display: inline-block;
   overflow: hidden;
   width: calc(100% - 3.75rem);
   margin: 0;

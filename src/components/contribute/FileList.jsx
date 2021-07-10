@@ -14,6 +14,7 @@ const Container = styled.div`
 `
 
 const Title = styled.span`
+  display: inline-block;
   margin-bottom: 1rem;
   font-style: normal;
   font-weight: bold;

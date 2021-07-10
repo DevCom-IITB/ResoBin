@@ -5,6 +5,7 @@ import { Fragment } from 'react'
 import styled from 'styled-components'
 
 const Title = styled.span`
+  display: inline-block;
   margin-bottom: 0.75rem;
   font-weight: 600;
   font-size: 1rem;

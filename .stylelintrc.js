@@ -36,7 +36,8 @@ module.exports = {
       'at-rules',
     ],
 
-    // https://github.com/hudochenkov/stylelint-order/blob/master/rules/properties-order/README.md
+    // https://github.com/brandon-rhodes/Concentric-CSS/blob/master/style.css
+    // https://9elements.com/css-rule-order/
     'order/properties-order': [
       [
         // CSS Modules
@@ -254,6 +255,7 @@ module.exports = {
         'text-decoration-color',
         'text-decoration-line',
         'text-decoration-style',
+        'text-decoration-thickness',
         'text-emphasis',
         'text-emphasis-color',
         'text-emphasis-position',
@@ -270,6 +272,7 @@ module.exports = {
         'text-stroke-width',
         'text-transform',
         'text-underline-position',
+        'text-underline-offset',
         'vertical-align',
 
         // Text spacing

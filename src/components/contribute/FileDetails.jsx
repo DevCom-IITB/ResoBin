@@ -10,6 +10,7 @@ const Container = styled.div`
 `
 
 const Title = styled.span`
+  display: inline-block;
   padding: 2.5rem 2.5rem 1rem;
   font-style: normal;
   font-weight: bold;

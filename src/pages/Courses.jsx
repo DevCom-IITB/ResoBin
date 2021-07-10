@@ -27,7 +27,7 @@ const IconContainer = styled.div`
 `
 
 const Courses = () => {
-  const [showFilters, setShowFilters] = useLocalStorage('CourseFilter', true)
+  const [showFilters, setShowFilters] = useLocalStorage('CourseFilter', false)
   const handleClick = () => {
     setShowFilters(!showFilters)
   }
