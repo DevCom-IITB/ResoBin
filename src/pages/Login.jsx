@@ -1,5 +1,5 @@
 import { LoginBody } from 'components/login'
-import Navbar from 'components/navbar'
+import { Header } from 'components/header'
 import { LoaderAnimation } from 'components/shared'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
@@ -87,7 +87,7 @@ const Login = () => {
         <title>Log In - ResoBin</title>
         <meta name="description" content="Login to continue" />
       </Helmet>
-      <Navbar button="Sign up" buttonLink="/signup" />
+      <Header button="Sign up" buttonLink="/signup" />
 
       <Container>
         <FormBox>

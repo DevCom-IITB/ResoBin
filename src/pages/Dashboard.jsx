@@ -1,6 +1,9 @@
-import { DesktopLayout, MobileLayout } from 'components/dashboard'
+import { Header } from 'components/header'
 import { LoaderAnimation } from 'components/shared'
+import Sidebar from 'components/sidebar'
+import Topbar from 'components/sidebar/mobile/Topbar'
 import { useViewportContext } from 'context/ViewportContext'
+import { ScrollToTop } from 'hoc'
 import { Suspense } from 'react'
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 import Routes from 'RoutesConfig'
@@ -34,14 +37,12 @@ const Dashboard = () => {
   const { width } = useViewportContext()
   const breakpoint = 992
 
-  return width < breakpoint ? (
-    <MobileLayout>
+  return (
+    <ScrollToTop>
+      <Header />
+      {width < breakpoint ? <Topbar /> : <Sidebar />}
       <Content url={url} />
-    </MobileLayout>
-  ) : (
-    <DesktopLayout>
-      <Content url={url} />
-    </DesktopLayout>
+    </ScrollToTop>
   )
 }
 

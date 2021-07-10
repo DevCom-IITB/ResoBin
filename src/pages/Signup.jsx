@@ -1,4 +1,4 @@
-import Navbar from 'components/navbar'
+import { Header } from 'components/header'
 import { LoaderAnimation } from 'components/shared'
 import { SignupBody } from 'components/signup'
 import { useState } from 'react'
@@ -95,7 +95,7 @@ const Signup = () => {
           content="Signup if you don't have an account yet"
         />
       </Helmet>
-      <Navbar button="Login" buttonLink="/login" />
+      <Header button="Login" buttonLink="/login" />
 
       <Container>
         <FormBox>

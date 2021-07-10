@@ -14,6 +14,8 @@ import SidebarItem from 'components/sidebar/SidebarItem'
 import styled from 'styled-components'
 
 const Container = styled.div`
+  position: fixed;
+  top: 3rem;
   z-index: 8; /* For shadow effects */
   display: flex;
   flex-direction: column;

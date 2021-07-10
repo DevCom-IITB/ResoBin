@@ -2,13 +2,13 @@ import { ResoBinLogo } from 'components/shared'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 // import { ButtonSquare } from 'components/shared'
-// import CurrentTerm from 'components/navbar/CurrentTerm'
-// import DarkmodeToggle from 'components/navbar/DarkmodeToggle'
+// import CurrentTerm from 'components/header/CurrentTerm'
+// import DarkmodeToggle from 'components/header/DarkmodeToggle'
 
 const Container = styled.div`
   position: sticky;
   top: 0;
-  z-index: 9; /* To put navbar at the top */
+  z-index: 9; /* To put header at the top */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,7 +56,7 @@ const StyledLink = styled(Link)`
 //   )
 // }
 
-const Navbar = ({ button, buttonLink = '' }) => {
+const Header = ({ button, buttonLink = '' }) => {
   return (
     <Container>
       {/* <LeftContainer> */}
@@ -75,4 +75,4 @@ const Navbar = ({ button, buttonLink = '' }) => {
   )
 }
 
-export default Navbar
+export default Header
