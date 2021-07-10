@@ -10,8 +10,8 @@ import styled from 'styled-components'
 
 const Container = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   height: calc(100vh - 4rem);
   background-color: ${({ theme }) => theme.secondary};
 `
@@ -22,28 +22,28 @@ const FormBox = styled.div`
   justify-content: flex-start;
   width: 480px;
   padding: 2.5rem 0;
-  background-color: ${({ theme }) => theme.darksecondary};
   border-radius: 8px;
-  box-shadow: 0px 0px 0.75rem rgba(0, 0, 0, 0.4);
+  background-color: ${({ theme }) => theme.darksecondary};
+  box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.4);
 `
 
 const TitleHeader = styled.h4`
   font-weight: 300;
   font-size: 1.5rem;
   line-height: 2rem;
-  letter-spacing: 4px;
   text-align: center;
+  letter-spacing: 4px;
   color: ${({ theme }) => theme.textColor};
 `
 
 const StyledLink = styled(Link)`
-  color: ${({ theme }) => theme.textColor};
-  font-size: 1rem;
   font-weight: 300;
-  letter-spacing: 1px;
-  text-decoration: none;
-  user-select: none;
+  font-size: 1rem;
   text-align: center;
+  text-decoration: none;
+  letter-spacing: 1px;
+  color: ${({ theme }) => theme.textColor};
+  user-select: none;
   &:hover {
     text-decoration: underline;
     text-decoration-thickness: 1px;
@@ -60,9 +60,15 @@ const initialState = {
 }
 
 const validCheck = (data) => {
-  for (const key in data) if (!data[key]) return false
-  if (data.password !== data.passwordAgain) return false
-  return true
+  let flg = true
+
+  data.forEach((key) => {
+    if (!data[key]) flg = false
+  })
+
+  if (data.password !== data.passwordAgain) flg = false
+
+  return flg
 }
 
 const Signup = () => {
@@ -70,14 +76,13 @@ const Signup = () => {
   const dispatch = useDispatch()
   const { isAuthenticated, loading } = useSelector((state) => state.auth)
 
-  const handleChange = (event) => {
-    const { name, value } = event.target
-    setUser((user) => ({ ...user, [name]: value }))
-  }
+  // Change name to id if error occurs
+  const handleChange = ({ target }) =>
+    setUser({ ...user, [target.name]: target.value })
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    validCheck(user) && dispatch(signupAction(user))
+    if (validCheck(user)) dispatch(signupAction(user))
   }
 
   if (isAuthenticated) return <Redirect to="/dashboard" />

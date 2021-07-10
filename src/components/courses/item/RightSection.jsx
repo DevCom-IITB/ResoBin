@@ -15,7 +15,7 @@ const Group = styled.div`
   gap: 5%;
 `
 
-const Pil = styled.h1`
+const Pil = styled.span`
   display: flex;
   opacity: ${({ active }) => (active ? '100%' : '20%')};
   justify-content: center;
@@ -30,7 +30,7 @@ const Pil = styled.h1`
   color: ${({ theme }) => theme.darksecondary};
 `
 
-const Title = styled.h1`
+const Title = styled.span`
   margin: 0.75rem 0 0.5rem;
   font-weight: 400;
   font-size: 0.8rem;

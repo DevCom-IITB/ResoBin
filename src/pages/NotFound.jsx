@@ -8,39 +8,39 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: ${({ theme }) => theme.secondary};
   color: ${({ theme }) => theme.textColor};
+  background-color: ${({ theme }) => theme.secondary};
 `
 
 const Title = styled.h1`
-  font-size: 6.2rem;
-  font-weight: 400;
   margin-bottom: 2rem;
+  font-weight: 400;
+  font-size: 6.2rem;
   color: ${({ theme }) => theme.textColor};
 `
 
 const Subtitle = styled.p`
-  font-size: 2.4rem;
-  font-weight: 200;
   margin-bottom: 1rem;
+  font-weight: 200;
+  font-size: 2.4rem;
 `
 
 const StyledLink = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-
-  font-size: 2.3rem;
-  font-weight: 200;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 2px;
-  color: ${({ theme }) => theme.textColor};
   margin-bottom: 1rem;
+  border: none;
+  font-weight: 200;
+  font-size: 2.3rem;
+  text-decoration: underline;
+  color: ${({ theme }) => theme.textColor};
+  background: none;
+  cursor: pointer;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
 `
 
 const NotFound = () => {
-  let history = useHistory()
+  const history = useHistory()
+
   return (
     <Container>
       <Helmet>

@@ -11,7 +11,7 @@ const menu = (url) =>
       route.component && (
         <Route
           exact
-          key={index}
+          key={route.slug}
           path={url + route.slug}
           render={(props) => <route.component {...props} />}
         />
@@ -30,7 +30,7 @@ const Content = ({ url }) => {
 }
 
 const Dashboard = () => {
-  let { url } = useRouteMatch()
+  const { url } = useRouteMatch()
   const { width } = useViewportContext()
   const breakpoint = 992
 

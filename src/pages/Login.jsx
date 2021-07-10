@@ -1,17 +1,17 @@
+import { LoginBody } from 'components/login'
+import Navbar from 'components/navbar'
+import { LoaderAnimation } from 'components/shared'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
-import styled from 'styled-components'
-import { LoginBody } from 'components/login'
-import Navbar from 'components/navbar'
-import { LoaderAnimation } from 'components/shared'
 import { loginAction } from 'store/authSlice'
+import styled from 'styled-components'
 
 const Container = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   height: calc(100vh - 4rem);
   background-color: ${({ theme }) => theme.secondary};
 `
@@ -22,28 +22,28 @@ const FormBox = styled.div`
   justify-content: flex-start;
   width: 480px;
   padding: 2.5rem 0;
-  background-color: ${({ theme }) => theme.darksecondary};
   border-radius: 8px;
-  box-shadow: 0px 0px 0.75rem rgba(0, 0, 0, 0.4);
+  background-color: ${({ theme }) => theme.darksecondary};
+  box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.4);
 `
 
 const TitleHeader = styled.h4`
   font-weight: 300;
   font-size: 1.5rem;
   line-height: 2rem;
-  letter-spacing: 4px;
   text-align: center;
+  letter-spacing: 4px;
   color: ${({ theme }) => theme.textColor};
 `
 
 const StyledLink = styled(Link)`
-  color: ${({ theme }) => theme.textColor};
-  font-size: 1rem;
   font-weight: 300;
-  letter-spacing: 1px;
-  text-decoration: none;
-  user-select: none;
+  font-size: 1rem;
   text-align: center;
+  text-decoration: none;
+  letter-spacing: 1px;
+  color: ${({ theme }) => theme.textColor};
+  user-select: none;
   &:hover {
     text-decoration: underline;
     text-decoration-thickness: 1px;
@@ -52,8 +52,12 @@ const StyledLink = styled(Link)`
 `
 
 const validCheck = (data) => {
-  for (const key in data) if (!data[key]) return false
-  return true
+  let flg = true
+  data.forEach((key) => {
+    if (!data[key]) flg = false
+  })
+
+  return flg
 }
 
 const Login = () => {
@@ -65,12 +69,13 @@ const Login = () => {
   const dispatch = useDispatch()
   const { isAuthenticated, loading } = useSelector((state) => state.auth)
 
-  const handleChange = ({ target }) => {
-    setUser((inputs) => ({ ...inputs, [target.id]: target.value }))
-  }
+  // Change name to id if error occurs
+  const handleChange = ({ target }) =>
+    setUser({ ...user, [target.name]: target.value })
+
   const handleSubmit = (event) => {
     event.preventDefault()
-    validCheck(user) && dispatch(loginAction(user))
+    if (validCheck(user)) dispatch(loginAction(user))
   }
 
   if (isAuthenticated) return <Redirect to="/dashboard" />
@@ -87,12 +92,16 @@ const Login = () => {
       <Container>
         <FormBox>
           <TitleHeader>Login to Your Account</TitleHeader>
+
           <LoginBody
             onChange={handleChange}
             onSubmit={handleSubmit}
             user={user}
           />
-          <StyledLink to="/signup">Don't have an account? Sign up!</StyledLink>
+
+          <StyledLink to="/signup">
+            Don&rsquo;t have an account? Sign up!
+          </StyledLink>
         </FormBox>
       </Container>
     </>
