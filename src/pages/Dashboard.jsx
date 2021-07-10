@@ -1,7 +1,6 @@
 import { Header } from 'components/header'
 import { LoaderAnimation } from 'components/shared'
-import Sidebar from 'components/sidebar'
-import Topbar from 'components/sidebar/mobile/Topbar'
+import { SidebarHorizontal, SidebarVertical } from 'components/sidebar'
 import { useViewportContext } from 'context/ViewportContext'
 import { ScrollToTop } from 'hoc'
 import { Suspense } from 'react'
@@ -40,7 +39,7 @@ const Dashboard = () => {
   return (
     <ScrollToTop>
       <Header />
-      {width < breakpoint ? <Topbar /> : <Sidebar />}
+      {width < breakpoint ? <SidebarHorizontal /> : <SidebarVertical />}
       <Content url={url} />
     </ScrollToTop>
   )
