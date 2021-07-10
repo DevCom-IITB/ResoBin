@@ -53,8 +53,9 @@ const StyledLink = styled(Link)`
 
 const validCheck = (data) => {
   let flg = true
-  data.forEach((key) => {
-    if (!data[key]) flg = false
+
+  Object.values(data).forEach((val) => {
+    if (!val) flg = false
   })
 
   return flg
@@ -69,7 +70,6 @@ const Login = () => {
   const dispatch = useDispatch()
   const { isAuthenticated, loading } = useSelector((state) => state.auth)
 
-  // Change name to id if error occurs
   const handleChange = ({ target }) =>
     setUser({ ...user, [target.name]: target.value })
 

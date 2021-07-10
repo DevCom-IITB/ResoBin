@@ -56,7 +56,7 @@ const LoginBody = ({ onChange, onSubmit, user }) => {
     <FormContainer onSubmit={onSubmit}>
       <GoogleAuth />
       <Input
-        id="username"
+        name="username"
         type="text"
         placeholder="Username"
         value={user.username}
@@ -64,7 +64,7 @@ const LoginBody = ({ onChange, onSubmit, user }) => {
         Icon={User}
       />
       <Input
-        id="password"
+        name="password"
         type="password"
         placeholder="Password"
         value={user.password}
@@ -74,7 +74,7 @@ const LoginBody = ({ onChange, onSubmit, user }) => {
 
       <ContainerSpaceBetween>
         <Checkbox
-          id="rememberMe"
+          name="rememberMe"
           value={rememberMe}
           label="Remember me"
           onClick={handleClick}
