@@ -9,7 +9,7 @@ import {
 } from '@styled-icons/heroicons-outline'
 // import { ContactSupport } from '@styled-icons/material-outlined'
 import { BookmarkOutline } from '@styled-icons/zondicons'
-import TopbarItem from 'components/sidebar/mobile/TopbarItem'
+import { SidebarItem } from 'components/sidebar'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -29,16 +29,14 @@ const Container = styled.div`
 const Topbar = () => {
   return (
     <Container>
-      <TopbarItem
+      <SidebarItem
         title="Courses"
-        Icon={BookOpen}
-        size="1.5rem"
+        icon={<BookOpen size="1.5rem" />}
         to="/dashboard/courses"
       />
-      <TopbarItem
+      <SidebarItem
         title="Contribute"
-        Icon={CloudUpload}
-        size="1.5rem"
+        icon={<CloudUpload size="1.5rem" />}
         to="/dashboard/contribute"
       />
       {/* <TopbarItem
@@ -47,16 +45,14 @@ const Topbar = () => {
         to="/dashboard/stats"
       /> */}
 
-      <TopbarItem
+      <SidebarItem
         title="Favourites"
-        Icon={BookmarkOutline}
-        size="1.25rem"
+        icon={<BookmarkOutline size="1.25rem" />}
         to="/dashboard/favourites"
       />
-      <TopbarItem
+      <SidebarItem
         title="Account"
-        Icon={Cog}
-        size="1.5rem"
+        icon={<Cog size="1.5rem" />}
         to="/dashboard/account"
       />
       {/* <TopbarItem title="Sign out" icon={<Logout size="22" />} to="/login" /> */}

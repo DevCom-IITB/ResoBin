@@ -9,8 +9,7 @@ import { ContactSupport } from '@styled-icons/material-outlined'
 import { BookmarkOutline } from '@styled-icons/zondicons'
 import ProfileImage from 'assets/images/ProfileImg_Laxman.jpg'
 import { Divider } from 'components/shared'
-import ProfileImgItem from 'components/sidebar/ProfileImgItem'
-import SidebarItem from 'components/sidebar/SidebarItem'
+import { ProfileImgItem, SidebarItem } from 'components/sidebar'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -45,7 +44,7 @@ const Sidebar = () => {
         to="/dashboard/stats"
       />
 
-      <Divider margin="1.5rem 0" />
+      <Divider margin="1rem 0" />
       <ProfileImgItem title="Laxman D." src={ProfileImage} />
 
       <SidebarItem
@@ -61,7 +60,7 @@ const Sidebar = () => {
       />
       <SidebarItem title="Sign out" icon={<Logout size="22" />} to="/login" />
 
-      <Divider margin="1.5rem 0" />
+      <Divider margin="1rem 0" />
       <SidebarItem
         title="Get help"
         icon={<ContactSupport size="20" />}

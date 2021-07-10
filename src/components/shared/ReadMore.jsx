@@ -6,7 +6,7 @@ const ReadMoreText = styled.span`
   opacity: 75%;
   margin: 0;
   font-weight: 500;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   color: inherit;
   cursor: pointer;
 `
@@ -18,10 +18,10 @@ const ReadMore = ({ children }) => {
 
   return (
     <>
-      {isReadMore ? text.slice(0, 490) : text}
+      {isReadMore ? text.slice(0, 199) : text}
 
       <ReadMoreText onClick={toggleReadMore}>
-        {isReadMore ? '...read more' : ' show less'}
+        {isReadMore ? '...read more' : ' show less'.replace(/ /g, '\u00a0')}
       </ReadMoreText>
     </>
   )
