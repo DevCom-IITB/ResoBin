@@ -10,6 +10,7 @@ import { BookmarkOutline } from '@styled-icons/zondicons'
 import ProfileImage from 'assets/images/ProfileImg_Laxman.jpg'
 import { MenuItem, ProfileImgItem } from 'components/menu'
 import { Divider } from 'components/shared'
+import { device } from 'helpers/mediaQueries'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -25,13 +26,14 @@ const Container = styled.div`
   background: ${({ theme }) => theme.secondary};
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
 
-  @media (min-width: 992px) {
+  @media ${device.md} {
     position: fixed;
     top: 3rem;
     z-index: 8; /* For shadow effects */
     flex-direction: column;
     width: 9rem;
     height: 100%;
+    padding: 0;
   }
 `
 

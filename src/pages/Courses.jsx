@@ -1,5 +1,6 @@
 import { Filter, X } from '@styled-icons/heroicons-outline'
 import { CourseList } from 'components/courses'
+import { device } from 'helpers/mediaQueries'
 // import { Filters } from 'components/filter'
 import { useLocalStorage } from 'hooks'
 import { Helmet } from 'react-helmet-async'
@@ -8,7 +9,7 @@ import styled from 'styled-components'
 const Container = styled.div`
   display: flex;
 
-  @media (min-width: 992px) {
+  @media ${device.md} {
     margin-left: 9rem;
   }
 `

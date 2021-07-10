@@ -1,4 +1,5 @@
 import { ProfileImg } from 'components/shared'
+import { device } from 'helpers/mediaQueries'
 import { NavLink } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
@@ -23,7 +24,7 @@ const ContainerLink = styled(NavLink)`
     color: ${({ theme }) => theme.textColor};
   }
 
-  @media (min-width: 992px) {
+  @media ${device.md} {
     ${ContainerStyles}
 
     &:hover {
@@ -44,7 +45,7 @@ const ContainerLink = styled(NavLink)`
 const IconContainer = styled.div`
   display: inline;
 
-  @media (min-width: 992px) {
+  @media ${device.md} {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -55,7 +56,7 @@ const IconContainer = styled.div`
 const Title = styled.h4`
   display: none;
 
-  @media (min-width: 992px) {
+  @media ${device.md} {
     display: flex;
     overflow: hidden;
     align-items: center;

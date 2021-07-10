@@ -1,30 +1,30 @@
 import { Header } from 'components/header'
-import { LoaderAnimation } from 'components/shared'
 import { MenuHorizontal, MenuVertical } from 'components/menu'
+import { LoaderAnimation } from 'components/shared'
 import { useViewportContext } from 'context/ViewportContext'
+import { breakpoints } from 'helpers/mediaQueries'
 import { ScrollToTop } from 'hoc'
 import { Suspense } from 'react'
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 import Routes from 'RoutesConfig'
 
-const menu = (url) =>
-  Routes.map(
-    (route, index) =>
-      route.component && (
-        <Route
-          exact
-          key={route.slug}
-          path={url + route.slug}
-          render={(props) => <route.component {...props} />}
-        />
-      )
-  )
+const Content = () => {
+  const { url } = useRouteMatch()
 
-const Content = ({ url }) => {
   return (
     <Suspense fallback={<LoaderAnimation />}>
       <Switch>
-        {menu(url)}
+        {Routes.map(
+          (route, index) =>
+            route.component && (
+              <Route
+                exact
+                key={route.slug}
+                path={url + route.slug}
+                render={(props) => <route.component {...props} />}
+              />
+            )
+        )}
         <Redirect from="*" to="/404" />
       </Switch>
     </Suspense>
@@ -32,15 +32,13 @@ const Content = ({ url }) => {
 }
 
 const Dashboard = () => {
-  const { url } = useRouteMatch()
   const { width } = useViewportContext()
-  const breakpoint = 992
 
   return (
     <ScrollToTop>
       <Header />
-      {width < breakpoint ? <MenuHorizontal /> : <MenuVertical />}
-      <Content url={url} />
+      {width < breakpoints.md ? <MenuHorizontal /> : <MenuVertical />}
+      <Content />
     </ScrollToTop>
   )
 }
