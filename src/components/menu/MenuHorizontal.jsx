@@ -9,7 +9,7 @@ import {
 } from '@styled-icons/heroicons-outline'
 // import { ContactSupport } from '@styled-icons/material-outlined'
 import { BookmarkOutline } from '@styled-icons/zondicons'
-import { SidebarItem } from 'components/sidebar'
+import { MenuItem } from 'components/menu'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -26,15 +26,15 @@ const Container = styled.div`
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
 `
 
-const Topbar = () => {
+const MenuHorizontal = () => {
   return (
     <Container>
-      <SidebarItem
+      <MenuItem
         title="Courses"
         icon={<BookOpen size="1.5rem" />}
         to="/dashboard/courses"
       />
-      <SidebarItem
+      <MenuItem
         title="Contribute"
         icon={<CloudUpload size="1.5rem" />}
         to="/dashboard/contribute"
@@ -45,12 +45,12 @@ const Topbar = () => {
         to="/dashboard/stats"
       /> */}
 
-      <SidebarItem
+      <MenuItem
         title="Favourites"
         icon={<BookmarkOutline size="1.25rem" />}
         to="/dashboard/favourites"
       />
-      <SidebarItem
+      <MenuItem
         title="Account"
         icon={<Cog size="1.5rem" />}
         to="/dashboard/account"
@@ -66,4 +66,4 @@ const Topbar = () => {
   )
 }
 
-export default Topbar
+export default MenuHorizontal

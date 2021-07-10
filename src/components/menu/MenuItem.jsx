@@ -2,7 +2,7 @@ import { ProfileImg } from 'components/shared'
 import { NavLink } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
-const SidebarItemContainer = css`
+const ContainerStyles = css`
   display: flex;
   align-items: center;
   width: 100%;
@@ -12,7 +12,7 @@ const SidebarItemContainer = css`
   background-color: ${(props) => props.theme.secondary};
 `
 
-const ContainerNavLink = styled(NavLink)`
+const ContainerLink = styled(NavLink)`
   text-align: center;
   text-decoration: none;
   color: ${({ theme }) => theme.textColorInactive};
@@ -24,7 +24,7 @@ const ContainerNavLink = styled(NavLink)`
   }
 
   @media (min-width: 992px) {
-    ${SidebarItemContainer}
+    ${ContainerStyles}
 
     &:hover {
       text-decoration: underline;
@@ -68,36 +68,28 @@ const Title = styled.h4`
   }
 `
 
-// const TopbarItem = ({ title, icon, to }) => {
-//   return (
-//     <ContainerNavLink to={to}>
-//       {icon}
-//     </ContainerNavLink>
-//   )
-// }
-
-export const SidebarItem = ({ title, icon, to }) => {
+export const MenuItem = ({ title, icon, to }) => {
   return (
-    <ContainerNavLink to={to}>
+    <ContainerLink to={to}>
       <IconContainer>{icon}</IconContainer>
       <Title>{title}</Title>
-    </ContainerNavLink>
+    </ContainerLink>
   )
 }
 
-const Container = styled.div`
-  ${SidebarItemContainer}
+const ContainerDiv = styled.div`
+  ${ContainerStyles}
 
   color: ${({ theme }) => theme.textColor};
 `
 
 export const ProfileImgItem = ({ title, src }) => {
   return (
-    <Container>
+    <ContainerDiv>
       <IconContainer>
         <ProfileImg src={src} size="28px" />
       </IconContainer>
       <Title style={{ fontWeight: '300' }}>{title}</Title>
-    </Container>
+    </ContainerDiv>
   )
 }
