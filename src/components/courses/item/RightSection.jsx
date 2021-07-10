@@ -12,7 +12,6 @@ const Title = styled.span`
   margin: 0.75rem 0 0.5rem;
   font-weight: 400;
   font-size: 0.8rem;
-  line-height: 20px;
   letter-spacing: 1.5px;
   color: ${({ theme }) => theme.textColor};
 `

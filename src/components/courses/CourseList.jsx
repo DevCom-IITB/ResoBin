@@ -7,7 +7,7 @@ const Container = styled.div`
 `
 
 const List = styled.div`
-  padding-bottom: 1rem;
+  padding: 0.5rem 0 1rem;
   margin: 0 0.75rem;
 `
 
@@ -18,14 +18,13 @@ const Heading = styled.div`
   padding: 0 0.75rem;
 `
 
-const Title = styled.h1`
-  margin: 0;
+const Title = styled.span`
   font-weight: 700;
   font-size: 1.5rem;
   color: ${({ theme }) => theme.darksecondary};
 `
 
-const Results = styled.h1`
+const Results = styled.span`
   opacity: 80%;
   margin: 0;
   font-weight: bold;

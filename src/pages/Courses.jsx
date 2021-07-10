@@ -7,6 +7,10 @@ import styled from 'styled-components'
 
 const Container = styled.div`
   display: flex;
+
+  @media (min-width: 992px) {
+    margin-left: 9rem;
+  }
 `
 
 const IconContainer = styled.div`

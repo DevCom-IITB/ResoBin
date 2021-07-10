@@ -68,7 +68,6 @@ const CourseDescription = styled.p`
   margin: 0.75rem 0;
   font-weight: 300;
   font-size: 0.8rem;
-  line-height: 1rem;
   text-align: justify;
   color: ${({ theme }) => theme.textColor};
 `

@@ -9,7 +9,6 @@ const Title = styled.span`
   margin-bottom: 0.75rem;
   font-weight: 600;
   font-size: 1rem;
-  line-height: 20px;
   letter-spacing: 0.2px;
   color: ${({ theme }) => theme.textColor};
 `

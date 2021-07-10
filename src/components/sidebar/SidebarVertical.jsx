@@ -20,7 +20,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 12rem;
+  width: 9rem;
   height: 100%;
   background: ${({ theme }) => theme.secondary};
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
@@ -50,7 +50,7 @@ const Sidebar = () => {
 
       <SidebarItem
         title="Favourites"
-        icon={<BookmarkOutline size="22" title="Check course material" />}
+        icon={<BookmarkOutline size="18" title="Check course material" />}
         to="/dashboard/favourites"
       />
       <SidebarItem
@@ -64,7 +64,7 @@ const Sidebar = () => {
       <Divider margin="1.5rem 0" />
       <SidebarItem
         title="Get help"
-        icon={<ContactSupport size="22" />}
+        icon={<ContactSupport size="20" />}
         to="/dashboard/contact"
       />
     </Container>
