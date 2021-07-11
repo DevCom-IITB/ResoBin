@@ -3,16 +3,11 @@ import styled from 'styled-components'
 
 const ReadMoreText = styled.span`
   display: inline-block;
-  opacity: 65%;
   margin: 0;
   font-weight: 600;
-  font-size: 70%;
+  font-size: 85%;
   font-family: 'Source Sans Pro', sans-serif;
-  text-decoration: underline;
-  text-transform: uppercase;
-  text-underline-offset: 1px;
-  letter-spacing: 1px;
-  color: inherit;
+  color: gray;
   cursor: pointer;
 `
 
@@ -27,9 +22,8 @@ const ReadMore = ({ children }) => {
   ) : (
     <>
       {isReadMore ? text.slice(0, maxChars) : text}
-      &nbsp;&nbsp;
       <ReadMoreText onClick={toggleReadMore}>
-        {isReadMore ? 'show more' : 'show less'.replace(/ /g, '\u00a0')}
+        {isReadMore ? '...show more' : ' show less'.replace(/ /g, '\u00a0')}
       </ReadMoreText>
     </>
   )

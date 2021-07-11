@@ -5,7 +5,7 @@ import {
 import { ReadMore } from 'components/shared'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { device, fontSize } from 'styles/responsive'
 
 const Container = styled.div`
@@ -16,35 +16,35 @@ const Container = styled.div`
   }
 `
 
-const Header = styled(Link)`
-  display: flex;
-  align-items: baseline;
-  margin-bottom: 0.5rem;
-  text-decoration: none;
-  color: ${({ theme }) => theme.primary};
+const Title = styled(Link)`
+  display: inline;
+`
 
-  &:hover {
+const CourseHeader = css`
+  display: inline;
+  color: ${({ theme }) => theme.textColor};
+
+  ${Title}:hover & {
     text-decoration: underline;
-    text-decoration-thickness: 1.5px;
+    text-decoration-thickness: 2px;
     text-underline-offset: 1.5px;
-    color: ${({ theme }) => theme.primary};
   }
 `
 
 const CourseCode = styled.span`
-  display: inline-block;
-  margin-right: 0.5rem;
+  margin-right: 0.375rem;
   font-weight: 600;
   font-size: ${fontSize.responsive.xl};
+  ${CourseHeader}
 `
 
 const CourseTitle = styled.span`
-  display: inline-block;
   font-weight: 400;
   font-size: ${fontSize.responsive.md};
+  ${CourseHeader}
 `
 
-const SubHeader = styled.div`
+const SubTitle = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -52,50 +52,64 @@ const SubHeader = styled.div`
   margin-bottom: 0.5rem;
 `
 
-const SubTitle = styled.span`
+const Department = styled.span`
   display: inline-block;
   overflow: hidden;
   width: calc(100% - 3.75rem);
   margin: 0;
   font-weight: 600;
-  font-size: clamp(0.875rem, 1.75vw, 1rem);
+  font-size: ${fontSize.responsive.xs};
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: ${({ theme }) => theme.textColor};
+  color: ${({ theme }) => theme.primary};
+
+  @media ${device.min.md} {
+    font-weight: 500;
+  }
 `
 
 const CourseDescription = styled.p`
-  opacity: 80%;
   margin: 0.75rem 0;
   font-weight: 300;
-  font-size: clamp(1rem, 2vw, 1.125rem);
+  font-size: ${fontSize.static.md};
   font-family: 'Source Sans Pro', sans-serif;
   text-align: justify;
-  color: ${({ theme }) => theme.textColor};
+  color: lightgray;
 `
 
-const IconContainer = styled.span`
+const CreditContainer = styled.span`
   position: absolute;
   right: 1.75rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1rem;
+  height: 1rem;
   border-radius: 50%;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: ${fontSize.responsive.sm};
   color: ${({ theme }) => theme.darksecondary};
   background: white;
   box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.6);
+
+  @media ${device.min.md} {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
 `
 
-const FavouriteStyles = {
-  position: 'absolute',
-  right: '0',
-  width: '1rem',
-  cursor: 'pointer',
-}
+const StyledFavourite = styled(({ Icon, className, ...props }) => {
+  return <Icon {...props} className={className} />
+})`
+  position: absolute;
+  right: 0;
+  width: 1rem;
+  color: ${({ theme }) => theme.textColor};
+  cursor: pointer;
+  @media ${device.min.md} {
+    width: 1.125rem;
+  }
+`
 
 const CourseItemMain = ({ data }) => {
   const coursePage = `courses/${data.CourseCode.replace(/\s/g, '')}`
@@ -105,20 +119,21 @@ const CourseItemMain = ({ data }) => {
     setFavourite(!favourite)
   }
 
-  const FavouriteIcon = favourite ? BookmarkFill : Bookmark
-
   return (
     <Container>
-      <SubHeader>
-        <SubTitle>{data.Department}</SubTitle>
-        <IconContainer>{data.CourseCredit}</IconContainer>
-        <FavouriteIcon style={FavouriteStyles} onClick={favouriteClick} />
-      </SubHeader>
+      <SubTitle>
+        <Department>{data.Department}</Department>
+        <CreditContainer>{data.CourseCredit}</CreditContainer>
+        <StyledFavourite
+          Icon={favourite ? BookmarkFill : Bookmark}
+          onClick={favouriteClick}
+        />
+      </SubTitle>
 
-      <Header to={coursePage}>
+      <Title to={coursePage}>
         <CourseCode>{data.CourseCode}</CourseCode>
         <CourseTitle>{data.CourseTitle}</CourseTitle>
-      </Header>
+      </Title>
 
       <CourseDescription>
         <ReadMore>{data.CourseDescription}</ReadMore>

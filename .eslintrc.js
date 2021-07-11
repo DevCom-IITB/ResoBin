@@ -71,7 +71,7 @@ module.exports = {
 
     'no-unused-expressions': 'warn',
     'no-unused-vars': [
-      'error',
+      warnInDevelopment,
       {
         args: 'none',
         vars: 'all',
