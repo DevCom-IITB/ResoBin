@@ -5,54 +5,73 @@ const Container = styled.div`
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 10000;
   width: 100%;
   height: 0.25rem;
-  z-index: 10000;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
 `
 
 const LoaderTrack = styled.div`
   position: relative;
-  height: 0.25rem;
   display: block;
-  width: 100%;
   overflow: hidden;
+  width: 100%;
+  height: 0.25rem;
 `
 
 const Anim1 = keyframes`
-  0%   { left: -35%; right: 100%; }
-  60%  { left: 100%; right: -90%; }
-  100% { left: 100%; right: -35%; }
+  0%   {
+    right: 100%;
+    left: -35%;
+  }
+  60%  {
+    right: -90%;
+    left: 100%;
+  }
+  100% {
+    right: -35%;
+  left: 100%;
+  }
 `
 
 const Anim2 = keyframes`
-  0%   { left: -200%; right: 100%; }
-  60%  { left:  107%; right:  -8%; }
-  100% { left:  107%; right:  -8%; }
+  0%   {
+    right: 100%;
+    left: -200%;
+  }
+  60%  {
+    right:  -8%;
+    left:  107%;
+  }
+
+  100% {
+    right:  -8%;
+    left:  107%;
+  }
 `
 
 const LoaderFill = styled.div`
-  &:after,
-  &:before {
+  &::after,
+  &::before {
     content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
     background: linear-gradient(
       -135deg,
       ${({ theme }) => theme.logo} 0%,
       ${({ theme }) => theme.logo} 30%,
       ${({ theme }) => theme.darksecondary} 100%
     );
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
     will-change: left, right;
   }
 
-  &:before {
+  &::before {
     animation: ${Anim1} 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
   }
 
-  &:after {
+  &::after {
     animation: ${Anim2} 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
     animation-delay: 1.15s;
   }

@@ -1,32 +1,30 @@
-import styled, { css } from 'styled-components'
 import { HEX2RGBA } from 'helpers'
+import styled, { css } from 'styled-components'
 
 const sharedStyles = css`
+  box-sizing: border-box;
   display: block;
+  opacity: 80%;
   width: 100%;
   padding: 0.5rem 1.25rem;
   margin: 0 auto 1.25rem auto;
-
-  outline: 0;
   border: 1px solid ${({ theme }) => HEX2RGBA(theme.textColor, 40)};
   border-radius: 0.25rem;
-  background-color: ${({ theme }) => HEX2RGBA(theme.textColor, 20)};
-  box-sizing: border-box;
-
-  color: ${({ theme }) => theme.activeMenu};
-  font-size: 1.25rem;
+  outline: 0;
   font-weight: 600;
+  font-size: 1.25rem;
+  color: ${({ theme }) => theme.activeMenu};
+  background-color: ${({ theme }) => HEX2RGBA(theme.textColor, 20)};
   transition-duration: 100ms;
-  opacity: 80%;
 
   &:hover {
     opacity: 100%;
   }
 
   &:focus {
-    background-color: white;
     opacity: 100%;
     color: #1f1c2e;
+    background-color: white;
   }
 `
 

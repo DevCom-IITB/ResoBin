@@ -1,6 +1,4 @@
-export { default as CourseItem } from 'components/courses/item'
 export { default as CourseList } from 'components/courses/CourseList'
 export { default as CourseSearch } from 'components/courses/CourseSearch'
-export { default as Filters } from 'components/courses/Filters'
+export { CourseItem } from 'components/courses/item'
 export { default as PageNo } from 'components/courses/PageNo'
-export { default as FilterItem } from 'components/courses/FilterItem'

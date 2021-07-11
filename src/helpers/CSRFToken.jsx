@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import { useEffect, useState } from 'react'
 
 const CSRFToken = () => {
-  const [CSRFToken, setCSRFToken] = useState('')
+  const [token, setToken] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -12,10 +12,10 @@ const CSRFToken = () => {
         .catch((error) => console.log(error))
     }
     fetchData()
-    setCSRFToken(Cookies.get('csrftoken') || '')
-  }, [setCSRFToken])
+    setToken(Cookies.get('csrftoken') || '')
+  }, [setToken])
 
-  return <input type="hidden" name="csrfmiddlewaretoken" value={CSRFToken} />
+  return <input type="hidden" name="csrfmiddlewaretoken" value={token} />
 }
 
 export default CSRFToken

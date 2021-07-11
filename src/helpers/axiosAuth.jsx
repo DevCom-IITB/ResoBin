@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { toastSuccess, toastError } from 'components/toast'
+import { toastError, toastSuccess } from 'components/toast'
 
 // ? Add csrf cookie to header
 const axiosAuth = axios.create({

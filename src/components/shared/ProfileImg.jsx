@@ -3,16 +3,16 @@ import styled from 'styled-components'
 const Image = styled.img`
   min-width: 100%;
   height: 100%;
-  pointer-events: none;
+  padding: 2px;
   border-radius: 50%;
-	padding: 2px;
+  pointer-events: none;
 `
 
 const Border = styled.div`
   min-width: ${({ size }) => size};
   height: ${({ size }) => size};
-  border-radius: 50%;
   border: 1px solid ${({ theme }) => theme.textColor};
+  border-radius: 50%;
 `
 
 const ProfileImg = ({ src, size }) => {

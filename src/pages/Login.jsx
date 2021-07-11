@@ -1,18 +1,19 @@
-import { useState } from 'react'
+import { Header } from 'components/header'
+import { LoginBody } from 'components/login'
+import { LoaderAnimation } from 'components/shared'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
-import styled from 'styled-components'
-import { LoginBody } from 'components/login'
-import Navbar from 'components/navbar'
-import { LoaderAnimation } from 'components/shared'
+import { Link, useHistory } from 'react-router-dom'
 import { loginAction } from 'store/authSlice'
+import styled from 'styled-components'
+import { fontSize } from 'styles/responsive'
 
 const Container = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
-  height: calc(100vh - 4rem);
+  align-items: center;
+  height: calc(100vh - 3rem);
   background-color: ${({ theme }) => theme.secondary};
 `
 
@@ -20,43 +21,52 @@ const FormBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 480px;
-  padding: 2.5rem 0;
-  background-color: ${({ theme }) => theme.darksecondary};
+  padding: 1.5rem 0;
   border-radius: 8px;
-  box-shadow: 0px 0px 0.75rem rgba(0, 0, 0, 0.4);
+  background-color: ${({ theme }) => theme.darksecondary};
+  box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.4);
 `
 
 const TitleHeader = styled.h4`
   font-weight: 300;
-  font-size: 1.5rem;
-  line-height: 2rem;
-  letter-spacing: 4px;
+  font-size: ${fontSize.responsive.lg};
   text-align: center;
+  letter-spacing: 2px;
   color: ${({ theme }) => theme.textColor};
 `
 
 const StyledLink = styled(Link)`
-  color: ${({ theme }) => theme.textColor};
-  font-size: 1rem;
-  font-weight: 300;
-  letter-spacing: 1px;
-  text-decoration: none;
-  user-select: none;
+  font-weight: 400;
+  font-size: 0.875rem;
   text-align: center;
+  text-decoration: none;
+  letter-spacing: 1px;
+  color: ${({ theme }) => theme.textColor};
+
   &:hover {
     text-decoration: underline;
-    text-decoration-thickness: 1px;
+    text-decoration-thickness: 2px;
     text-underline-offset: 1px;
+    color: ${({ theme }) => theme.textColor};
   }
 `
 
 const validCheck = (data) => {
-  for (const key in data) if (!data[key]) return false
-  return true
+  let flg = true
+  Object.values(data).forEach((val) => {
+    if (!val) flg = false
+  })
+  return flg
 }
 
 const Login = () => {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  })
+
   const [user, setUser] = useState({
     username: '',
     password: '',
@@ -65,15 +75,16 @@ const Login = () => {
   const dispatch = useDispatch()
   const { isAuthenticated, loading } = useSelector((state) => state.auth)
 
-  const handleChange = ({ target }) => {
-    setUser((inputs) => ({ ...inputs, [target.id]: target.value }))
-  }
+  const handleChange = ({ target }) =>
+    setUser({ ...user, [target.name]: target.value })
+
   const handleSubmit = (event) => {
     event.preventDefault()
-    validCheck(user) && dispatch(loginAction(user))
+    if (validCheck(user)) dispatch(loginAction(user))
   }
 
-  if (isAuthenticated) return <Redirect to="/dashboard" />
+  const history = useHistory()
+  if (isAuthenticated) history.push('/dashboard')
 
   return (
     <>
@@ -82,21 +93,21 @@ const Login = () => {
         <title>Log In - ResoBin</title>
         <meta name="description" content="Login to continue" />
       </Helmet>
-      <Navbar
-        button="Sign up"
-        buttonLink="/signup"
-        shadow="0 0 0.5rem rgba(0, 0, 0, 0.5)"
-      />
+      <Header />
 
       <Container>
         <FormBox>
           <TitleHeader>Login to Your Account</TitleHeader>
+
           <LoginBody
             onChange={handleChange}
             onSubmit={handleSubmit}
             user={user}
           />
-          <StyledLink to="/signup">Don't have an account? Sign up!</StyledLink>
+
+          <StyledLink to="/signup">
+            Don&rsquo;t have an account? Sign up!
+          </StyledLink>
         </FormBox>
       </Container>
     </>

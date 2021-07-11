@@ -1,62 +1,74 @@
-import { useState } from 'react'
-import styled from 'styled-components'
+import { Search } from '@styled-icons/heroicons-outline'
+import { Filters } from 'components/filter'
 import { InputRounded } from 'components/shared'
 import { HEX2RGBA } from 'helpers'
-import { Search } from '@styled-icons/heroicons-outline'
-import { Filter } from '@styled-icons/heroicons-outline'
+import { useState } from 'react'
+import styled from 'styled-components'
+// import { Input, Space } from 'antd'
+// const { Search } = Input
 
 const SearchContainer = styled.div`
+  position: sticky;
+  top: 3rem;
+  z-index: 6;
   display: flex;
-  align-items: center;
   justify-content: center;
-  height: 4rem;
-  padding: 0 ${({ showFilters }) => (showFilters ? 2 : 6)}rem 0 2rem;
-  position: fixed;
-  right: calc(0.75rem + ${({ showFilters }) => (showFilters ? 19 : 0)}rem);
-  left: 11.5rem;
+  align-items: center;
+  height: 3rem;
+  padding: 0 0.75rem;
   background: linear-gradient(
     0deg,
     ${({ theme }) => HEX2RGBA(theme.primary, 0)} 0%,
     ${({ theme }) => HEX2RGBA(theme.primary, 0)} 30%,
     ${({ theme }) => HEX2RGBA(theme.primary, 100)} 50%
   );
-  z-index: 7;
 `
 
-const IconContainer = styled.div`
-  display: ${({ showFilters }) => (showFilters ? 'none' : 'flex')};
-  align-items: center;
-  justify-content: center;
-  width: 3rem;
-  height: 3rem;
+const Overlay = styled.div`
   position: fixed;
-  right: 2rem;
-
-  color: #807da0;
-  background: white;
-  box-shadow: 0px 0px 0.7rem rgba(0, 0, 0, 0.3);
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 10;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 4;
+  display: ${({ showFilters }) => (showFilters ? 'initial' : 'none')};
+  background-color: rgba(0, 0, 0, 0.55);
 `
 
-const CourseSearch = ({ showFilters, onClick }) => {
+// const StyledSearch = styled(Search)`
+//   .ant-input {
+//     border-radius: 2rem;
+//   }
+//   .ant-input-search-button {
+//     border-radius: 2rem;
+//   }
+// `
+
+const CourseSearch = ({ showFilters, handleClick }) => {
   const [search, setSearch] = useState('')
-  const handleChange = (event) => setSearch((search) => event.target.value)
+  const handleChange = (event) => setSearch((e) => e.target.value)
+  // const onSearch = () => {
+  //   console.log(search)
+  // }
 
   return (
-    <SearchContainer showFilters={showFilters}>
+    <SearchContainer>
+      <Filters showFilters={showFilters} onClick={handleClick} />
+      <Overlay showFilters={showFilters} />
       <InputRounded
         name="courseSearch"
-        type="text"
-        placeholder="Search"
+        type="search"
+        placeholder="Course code, name or description"
         value={search}
         onChange={handleChange}
+        label="Search"
         Icon={Search}
       />
-      <IconContainer showFilters={showFilters} onClick={onClick}>
-        <Filter size="1.5rem" />
-      </IconContainer>
+      {/* <StyledSearch
+        placeholder="input search text"
+        onSearch={onSearch}
+        style={{ width: 200 }}
+      /> */}
     </SearchContainer>
   )
 }

@@ -1,86 +1,59 @@
-import { Fragment } from 'react'
-import styled from 'styled-components'
-import { Divider } from 'components/shared'
-import { CourseItem, PageNo } from 'components/courses'
+import { CourseItem, CourseSearch, PageNo } from 'components/courses'
 import { courseData } from 'data/courses'
-import { HEX2RGBA } from 'helpers'
+import styled from 'styled-components'
 
 const Container = styled.div`
-  display: relative;
-  margin-right: ${({ showFilters }) => (showFilters ? '19rem' : '0')};
-  padding-right: ${({ showFilters }) => (showFilters ? '0' : '4rem')};
-
-  height: calc(100vh - 4rem);
-  overflow-y: scroll;
-
-  &::-webkit-scrollbar {
-    width: 0.75rem;
-  }
-
-  &::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
-    background-color: ${({ theme }) => HEX2RGBA(theme.textColor, 10)};
-    border-radius: 2rem;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: ${({ theme }) => theme.textColorInactive};
-    border-radius: 2rem;
-  }
+  width: 100%;
 `
 
-const List = styled.div`
-  background: ${({ theme }) => theme.darksecondary};
-  margin: 5rem 2rem 2rem;
-  border-radius: 8px;
-  box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.4);
-  padding-bottom: 1rem;
-`
-
-const Heading = styled.div`
+const Heading = styled.h3`
   display: flex;
-  align-items: baseline;
   justify-content: space-between;
-  padding: 2.5rem 2.5rem 0.5rem;
+  align-items: baseline;
+  margin: 0.5rem 1.5rem;
 `
 
-const Title = styled.h4`
-  font-weight: bold;
+const Title = styled.span`
+  font-weight: 700;
   font-size: 1.5rem;
-  letter-spacing: 1.5px;
-  color: ${({ theme }) => theme.textColor};
+  color: ${({ theme }) => theme.darksecondary};
 `
 
-const Results = styled.h4`
-  font-weight: bold;
-  font-size: 1.25rem;
-  letter-spacing: 1.5px;
-  text-align: right;
-  color: ${({ theme }) => theme.textColor};
+const Results = styled.span`
   opacity: 80%;
+  margin: 0;
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: right;
+  color: ${({ theme }) => theme.darksecondary};
 `
 
-const CourseList = ({ showFilters }) => {
+const CourseList = styled.ul`
+  margin: 0 0.75rem;
+`
+
+const CourseBody = ({ showFilters, onClick }) => {
   const courseCount = courseData.length
 
   return (
-    <Container showFilters={showFilters}>
-      <List>
-        <Heading>
-          <Title>Courses</Title>
-          <Results>{courseCount} courses found</Results>
-        </Heading>
+    <Container>
+      <CourseSearch showFilters={showFilters} handleClick={onClick} />
+      <Heading>
+        <Title>Courses</Title>
+        <Results>
+          {courseCount}
+          &nbsp;results found
+        </Results>
+      </Heading>
 
-        {courseData.map((data, index) => (
-          <Fragment key={index}>
-            <Divider margin="0.75rem 0" />
-            <CourseItem data={data} />
-          </Fragment>
+      <CourseList>
+        {courseData.map((data) => (
+          <CourseItem data={data} key={data.id} />
         ))}
-      </List>
+      </CourseList>
       <PageNo />
     </Container>
   )
 }
 
-export default CourseList
+export default CourseBody

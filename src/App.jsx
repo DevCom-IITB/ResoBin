@@ -1,15 +1,14 @@
-import { useContext } from 'react'
+import { useThemeContext } from 'context/ThemeContext'
+import { PrivateRoute } from 'hoc'
+import { Dashboard, Login, NotFound, Signup } from 'pages'
 import { Helmet } from 'react-helmet-async'
-import { Route, Redirect, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { ThemeProvider } from 'styled-components'
-import { ThemeContext } from 'context'
-import { PrivateRoute } from 'hoc'
-import { AdminView, Login, NotFound, Signup } from 'pages'
-import { GlobalStyles, DarkTheme, LightTheme } from 'styles'
+import { DarkTheme, GlobalStyles, LightTheme } from 'styles'
 
 const App = () => {
-  const { theme } = useContext(ThemeContext)
+  const { theme } = useThemeContext()
   toast.configure()
 
   return (
@@ -24,8 +23,8 @@ const App = () => {
 
       <GlobalStyles />
       <Switch>
-        <PrivateRoute path="/dashboard" component={AdminView} />
-        {/* <PrivateRoute path="/courses/:id" component={NotFound} /> */}
+        <PrivateRoute path="/dashboard" component={Dashboard} />
+        <PrivateRoute path="/courses/:id" component={NotFound} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/forgot-password" component={NotFound} />

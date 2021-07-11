@@ -13,9 +13,8 @@ export const loginAction = createAsyncThunk('auth/login', async (data) => {
   //   : sessionStorage.setItem('TOKEN_KEY', 'token')
 })
 
-export const signupAction = createAsyncThunk(
-  'auth/signup',
-  async (data) => await axiosAuth.post('/accounts/signup', data)
+export const signupAction = createAsyncThunk('auth/signup', async (data) =>
+  axiosAuth.post('/accounts/signup', data)
 )
 
 export const logoutAction = createAsyncThunk('auth/logout', async () => {
@@ -25,14 +24,13 @@ export const logoutAction = createAsyncThunk('auth/logout', async () => {
   localStorage.removeItem('TOKEN_KEY')
 })
 
-export const checkAuthAction = createAsyncThunk(
-  'auth/checkAuth',
-  async () => await axiosAuth.get('/accounts/authenticated')
+export const checkAuthAction = createAsyncThunk('auth/checkAuth', async () =>
+  axiosAuth.get('/accounts/authenticated')
 )
 
 export const deleteAccAction = createAsyncThunk(
   'auth/deleteAcc',
-  async (data) => await axiosAuth.delete('/accounts/delete')
+  async (data) => axiosAuth.delete('/accounts/delete')
 )
 
 const authSlice = createSlice({

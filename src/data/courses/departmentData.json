@@ -1,0 +1,42 @@
+[
+  {
+    "value": "AE",
+    "label": "Aerospace Engineering"
+  },
+  {
+    "value": "GP",
+    "label": "Applied Geophysics"
+  },
+  {
+    "value": "GP",
+    "label": "Chemical Engineering"
+  },
+  {
+    "value": "GP",
+    "label": "Applied Statistics & Informatics"
+  },
+  {
+    "value": "BB",
+    "label": "Biosciences & Bioengineering"
+  },
+  {
+    "value": "CL",
+    "label": "Chemical Engineering"
+  },
+  {
+    "value": "CH",
+    "label": "Chemistry"
+  },
+  {
+    "value": "CE",
+    "label": "Civil Engineering"
+  },
+  {
+    "value": "CS",
+    "label": "Computer Science & Engineering"
+  },
+  {
+    "value": "CL",
+    "label": "Chemical Engineering"
+  }
+]

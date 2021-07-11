@@ -1,66 +1,60 @@
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 const Container = styled.div`
+  width: 100%;
+`
+
+const InputBox = styled.div`
+  position: relative;
+  z-index: 100;
   display: flex;
+  overflow: hidden;
   justify-content: space-between;
   align-items: center;
-
-  height: 2.75rem;
   width: 100%;
-  border-radius: 1.5rem;
+  height: 2rem;
+  border-radius: 0.5rem;
   background: white;
-  overflow: hidden;
-  box-shadow: 0px 0px 0.7rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.3);
 `
 
 const Input = styled.input`
+  width: 100%;
+  height: 100%;
+  padding-right: 1.5rem;
   border: none;
   outline: none;
-  height: 100%;
-  width: 100%;
-  padding-left: 1.5rem;
-
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 0.875rem;
   color: #1f1c2e;
 
   &::placeholder {
-    color: #1f1c2e;
     opacity: 0.6;
-  }
-
-  &:focus::placeholder {
-    color: transparent;
+    color: #1f1c2e;
   }
 `
 
 const Label = styled.label`
+  font-size: 0.75rem;
   color: ${({ theme }) => theme.text};
 `
 
-const InputRounded = ({ Icon, label, name, ...inputProps }) => {
+const InputRounded = ({ Icon, label, displayLabel, name, ...inputProps }) => {
   const iconStyles = {
     color: '#807da0',
-    width: '1.75rem',
-    margin: '0 1.25rem 0 0.75rem',
+    width: '1.25rem',
+    margin: '0 0.25rem 0 0.5rem',
   }
 
   return (
     <Container>
-      <Label htmlFor={name}>{label}</Label>
-      <Input name={name} {...inputProps} />
-      <Icon style={iconStyles} />
+      {displayLabel && <Label htmlFor={name}>{label}</Label>}
+      <InputBox>
+        <Icon style={iconStyles} />
+        <Input name={name} {...inputProps} />
+      </InputBox>
     </Container>
   )
-}
-
-InputRounded.propTypes = {
-  type: PropTypes.string.isRequired,
-  value: PropTypes.node.isRequired,
-  onChange: PropTypes.func.isRequired,
-  Icon: PropTypes.elementType,
-  placeholder: PropTypes.string,
 }
 
 export default InputRounded

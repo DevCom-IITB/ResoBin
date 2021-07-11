@@ -1,50 +1,48 @@
-import styled from 'styled-components'
 import ProfileImg from 'components/shared/ProfileImg'
+import styled from 'styled-components'
 
 const Container = styled.a`
-  height: 4rem;
-  width: 100%;
-  margin: 0.5rem 0;
-  padding: 0.5rem 1.5rem;
-
   display: flex;
   flex-direction: row;
+  width: 100%;
+  height: 4rem;
+  padding: 0.5rem 1.5rem;
+  margin: 0.5rem 0;
+  text-decoration: none;
+  color: ${({ theme }) => theme.textColorInactive};
+  background-color: ${({ theme }) => theme.secondary};
   cursor: pointer;
 
-  color: ${({ theme }) => theme.textColorInactive};
-  text-decoration: none;
-  background-color: ${({ theme }) => theme.secondary};
-
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
     text-decoration: underline;
-    text-underline-offset: 1.5px;
-    text-decoration-thickness: 2px;
+    background-color: rgba(0, 0, 0, 0.1);
     box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.24);
     transition: 100ms ease-out;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 1.5px;
   }
 `
 
 const IconContainer = styled.div`
-  width: 30%; /* 60px */
   display: flex;
   align-items: center;
+  width: 30%; /* 60px */
 `
 
 const TitleContainer = styled.div`
-  margin: 0 0 0 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 70%;
+  margin: 0 0 0 1.5rem;
 `
 
 const Title = styled.h4`
+  overflow: hidden;
   font-weight: 300;
   font-size: 1rem;
-  color: ${({ theme }) => theme.textColor};
-  overflow: hidden;
   letter-spacing: 1px;
+  color: ${({ theme }) => theme.textColor};
 `
 
 const Developer = ({ name, img, href, switchOrder }) => {

@@ -1,20 +1,17 @@
-import { useState } from 'react'
+import { LockPassword, User } from '@styled-icons/remix-line'
+import { Checkbox } from 'antd'
+import { GoogleAuth } from 'components/login'
+import { ButtonSquare, InputRounded as Input } from 'components/shared'
+// import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import {
-  InputRounded as Input,
-  ButtonSquare,
-  Checkbox,
-} from 'components/shared'
-import { LockPassword, User } from '@styled-icons/remix-line'
-import { GoogleAuth } from 'components/login'
 
 const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 2rem;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
+  margin-top: 1rem;
   > * {
     margin-bottom: 1.5rem;
   }
@@ -22,41 +19,41 @@ const FormContainer = styled.form`
 
 const ContainerSpaceBetween = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 2rem;
 `
 
-const StyledLink = styled(Link)`
+const ForgotPassword = styled(Link)`
+  margin-left: 1rem;
+  font-weight: 400;
+  font-size: 0.875rem;
   color: ${({ theme }) => theme.textColor};
-  font-size: 1rem;
-  font-weight: 300;
-  letter-spacing: 1px;
-  text-decoration: none;
-  user-select: none;
+
   &:hover {
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 1px;
+    color: ${({ theme }) => theme.textColor};
   }
 `
 
 const buttonStyle = {
-  fontSize: '1.25rem',
-  width: '100%',
+  fontSize: '1rem',
 }
 
 const LoginBody = ({ onChange, onSubmit, user }) => {
-  const [rememberMe, setRememberMe] = useState(false)
+  // const [rememberMe, setRememberMe] = useState(false)
   const handleClick = ({ target }) => {
-    setRememberMe(target.checked)
+    // setRememberMe(target.checked)
+    console.log(target)
   }
 
   return (
     <FormContainer onSubmit={onSubmit}>
       <GoogleAuth />
       <Input
-        id="username"
+        name="username"
         type="text"
         placeholder="Username"
         value={user.username}
@@ -64,7 +61,7 @@ const LoginBody = ({ onChange, onSubmit, user }) => {
         Icon={User}
       />
       <Input
-        id="password"
+        name="password"
         type="password"
         placeholder="Password"
         value={user.password}
@@ -73,13 +70,11 @@ const LoginBody = ({ onChange, onSubmit, user }) => {
       />
 
       <ContainerSpaceBetween>
-        <Checkbox
-          id="rememberMe"
-          value={rememberMe}
-          label="Remember me"
-          onClick={handleClick}
-        />
-        <StyledLink to="/forgot-password">Forgot password?</StyledLink>
+        <Checkbox key="rememberMe" value="rememberMe" onClick={handleClick}>
+          Remember me
+        </Checkbox>
+
+        <ForgotPassword to="/forgot-password">Forgot password?</ForgotPassword>
       </ContainerSpaceBetween>
 
       <ButtonSquare type="submit" style={buttonStyle}>
