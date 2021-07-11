@@ -15,27 +15,27 @@ const Container = styled.div`
 const Title = styled.h1`
   margin-bottom: 2rem;
   font-weight: 400;
-  font-size: 6.2rem;
+  font-size: clamp(1rem, 10vw, 5rem);
   color: ${({ theme }) => theme.textColor};
 `
 
 const Subtitle = styled.p`
-  margin-bottom: 1rem;
+  margin-bottom: clamp(1rem, 4vw, 4rem);
   font-weight: 200;
-  font-size: 2.4rem;
+  font-size: clamp(0.75rem, 4vw, 2rem);
 `
 
 const StyledLink = styled.button`
   margin-bottom: 1rem;
   border: none;
   font-weight: 200;
-  font-size: 2.3rem;
+  font-size: clamp(1rem, 6vw, 2.5rem);
   text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
   color: ${({ theme }) => theme.textColor};
   background: none;
   cursor: pointer;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 2px;
 `
 
 const NotFound = () => {

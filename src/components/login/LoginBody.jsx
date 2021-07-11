@@ -2,7 +2,7 @@ import { LockPassword, User } from '@styled-icons/remix-line'
 import { Checkbox } from 'antd'
 import { GoogleAuth } from 'components/login'
 import { ButtonSquare, InputRounded as Input } from 'components/shared'
-import { useState } from 'react'
+// import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -10,8 +10,8 @@ const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0 2rem;
-  margin-top: 2rem;
+  padding: 0 1.5rem;
+  margin-top: 1rem;
   > * {
     margin-bottom: 1.5rem;
   }
@@ -27,10 +27,8 @@ const ContainerSpaceBetween = styled.div`
 const ForgotPassword = styled(Link)`
   margin-left: 1rem;
   font-weight: 400;
-  font-size: 0.75rem;
-  text-decoration: none;
+  font-size: 0.875rem;
   color: ${({ theme }) => theme.textColor};
-  user-select: none;
 
   &:hover {
     text-decoration: underline;
