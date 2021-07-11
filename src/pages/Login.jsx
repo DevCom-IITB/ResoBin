@@ -4,7 +4,7 @@ import { LoaderAnimation } from 'components/shared'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import { loginAction } from 'store/authSlice'
 import styled from 'styled-components'
 import { fontSize } from 'styles/responsive'
@@ -60,6 +60,8 @@ const validCheck = (data) => {
 }
 
 const Login = () => {
+  const history = useHistory()
+
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => {
@@ -80,6 +82,7 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    history.push('/dashboard')
     if (validCheck(user)) dispatch(loginAction(user))
   }
 
