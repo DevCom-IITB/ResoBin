@@ -29,7 +29,3 @@ export const device = {
     xl: `(max-width: ${breakpoints.xl}px)`,
   },
 }
-
-export const deviceRange = {
-  sm2md: `${device.min.sm} and ${device.max.md}`,
-}

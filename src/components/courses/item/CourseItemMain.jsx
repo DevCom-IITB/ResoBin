@@ -6,12 +6,12 @@ import { ReadMore } from 'components/shared'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { device, deviceRange } from 'helpers/mediaQueries'
+import { device, fontSize } from 'styles/responsive'
 
 const Container = styled.div`
   width: 100%;
 
-  @media ${deviceRange.sm2md}, ${device.lg} {
+  @media ${device.min.sm} and ${device.max.md}, ${device.lg} {
     margin-right: 1rem;
   }
 `
@@ -20,8 +20,6 @@ const Header = styled(Link)`
   display: flex;
   align-items: baseline;
   margin-bottom: 0.5rem;
-  font-weight: 400;
-  font-size: 1rem;
   text-decoration: none;
   color: ${({ theme }) => theme.primary};
 
@@ -37,13 +35,13 @@ const CourseCode = styled.span`
   display: inline-block;
   margin-right: 0.5rem;
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: ${fontSize.responsive.xl};
 `
 
 const CourseTitle = styled.span`
   display: inline-block;
   font-weight: 400;
-  font-size: 1rem;
+  font-size: ${fontSize.responsive.md};
 `
 
 const SubHeader = styled.div`
@@ -60,7 +58,7 @@ const SubTitle = styled.span`
   width: calc(100% - 3.75rem);
   margin: 0;
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: clamp(0.875rem, 1.75vw, 1rem);
   text-overflow: ellipsis;
   white-space: nowrap;
   color: ${({ theme }) => theme.textColor};
@@ -70,7 +68,8 @@ const CourseDescription = styled.p`
   opacity: 80%;
   margin: 0.75rem 0;
   font-weight: 300;
-  font-size: 0.8rem;
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  font-family: 'Source Sans Pro', sans-serif;
   text-align: justify;
   color: ${({ theme }) => theme.textColor};
 `

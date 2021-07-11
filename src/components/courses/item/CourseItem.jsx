@@ -1,5 +1,5 @@
 import { CourseItemMain, CourseItemSub } from 'components/courses/item'
-import { device, deviceRange } from 'helpers/mediaQueries'
+import { device } from 'styles/responsive'
 import styled from 'styled-components'
 
 const Container = styled.li`
@@ -10,7 +10,7 @@ const Container = styled.li`
   background: ${({ theme }) => theme.darksecondary};
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);
 
-  @media ${deviceRange.sm2md}, ${device.lg} {
+  @media ${device.min.sm} and ${device.max.md}, ${device.lg} {
     display: flex;
   }
 `

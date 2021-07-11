@@ -1,6 +1,6 @@
-export { font, fontR } from 'styles/responsive/fontSizes'
 export {
-  breakpoints,
-  device,
-  deviceRange,
-} from 'styles/responsive/mediaQueries'
+  default as fontSize,
+  fontSizeR,
+  fontSizeS,
+} from 'styles/responsive/fontSize'
+export { breakpoints, device } from 'styles/responsive/mediaQuery'

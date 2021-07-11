@@ -1,6 +1,6 @@
 import { ButtonSquare } from 'components/shared'
-import { device, deviceRange } from 'helpers/mediaQueries'
 import styled, { css } from 'styled-components'
+import { device } from 'styles/responsive'
 
 const Container = styled.div`
   display: block;
@@ -33,16 +33,17 @@ const SemesterGroup = styled.div`
 const OptionsGroup = styled.div`
   ${GroupBase}
 
-  @media ${deviceRange.sm2md}, ${device.lg} {
+  /* Activate below styles between device width sm and md and also lg onwards */
+  @media ${device.min.sm} and ${device.max.md}, ${device.min.lg} {
     flex-direction: column;
     justify-content: space-between;
     height: 6.5rem;
   }
 `
 
-const Pil = styled.span`
+const Pil = css`
   display: flex;
-  opacity: ${({ active }) => (active ? '100%' : '20%')};
+  opacity: ${({ active }) => (active ? '100%' : '30%')};
   justify-content: center;
   align-items: center;
   width: 5rem;
@@ -55,9 +56,17 @@ const Pil = styled.span`
   color: ${({ theme }) => theme.darksecondary};
 `
 
-const Autumn = { backgroundColor: '#fec400' }
+const Autumn = styled.span`
+  ${Pil}
 
-const Spring = { backgroundColor: '#29cc97' }
+  background-color: #fec400;
+`
+
+const Spring = styled.span`
+  ${Pil}
+
+  background-color: #29cc97;
+`
 
 const buttonStyle = {
   fontSize: '0.75rem',
@@ -70,13 +79,8 @@ const CourseItemSub = ({ data }) => {
     <Container>
       <Title>Semester</Title>
       <SemesterGroup>
-        <Pil active={data.Semester.includes('Autumn')} style={Autumn}>
-          Autumn
-        </Pil>
-
-        <Pil active={data.Semester.includes('Spring')} style={Spring}>
-          Spring
-        </Pil>
+        <Autumn active={data.Semester.includes('Autumn')}>Autumn</Autumn>
+        <Spring active={data.Semester.includes('Spring')}>Spring</Spring>
       </SemesterGroup>
 
       <Title>Study material</Title>

@@ -1,9 +1,9 @@
 import CurrentTerm from 'components/header/CurrentTerm'
 import DarkmodeToggle from 'components/header/DarkmodeToggle'
 import { ButtonSquare, ResoBinLogo } from 'components/shared'
-import { device } from 'helpers/mediaQueries'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { device } from 'styles/responsive'
 
 const Container = styled.div`
   position: sticky;
@@ -19,17 +19,15 @@ const Container = styled.div`
 `
 
 const LeftContainer = styled(Link)`
-  all: initial;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
 
   @media ${device.md} {
-    position: relative;
+    position: absolute;
     left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     min-width: 9rem;
-    height: 100%;
-    text-decoration: none;
   }
 `
 
