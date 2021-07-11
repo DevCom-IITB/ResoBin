@@ -9,6 +9,7 @@
   outline: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: calc(1.618em + (1ex - 1ch));
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
 }
