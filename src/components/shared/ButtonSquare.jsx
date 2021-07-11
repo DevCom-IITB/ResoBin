@@ -2,26 +2,22 @@ import { HEX2RGBA } from 'helpers'
 import styled from 'styled-components'
 
 const ButtonSquare = styled.button`
-  box-sizing: border-box;
-  display: block;
-  opacity: 100%;
-  height: 2.5rem;
-  padding: 0 20px;
-
-  /* margin: 0 0 1.5rem; */
-  border: 0;
+  height: 1.75rem;
+  padding: 0 0.75rem;
   border-radius: 0.25rem;
-  font-size: 0.9rem;
+  font-weight: 400;
+  font-size: 0.875rem;
+  letter-spacing: 1px;
   color: #ffffff;
   background-color: ${({ theme }) => theme.logo};
   cursor: pointer;
 
-  &:hover {
+  &:hover,
+  &:active {
     opacity: 90%;
   }
 
   &:active {
-    opacity: 90%;
     box-shadow: inset 0 0 5px ${HEX2RGBA('#000', 40)};
   }
 `

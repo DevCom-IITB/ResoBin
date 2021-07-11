@@ -1,7 +1,5 @@
-import CurrentTerm from 'components/header/CurrentTerm'
-import DarkmodeToggle from 'components/header/DarkmodeToggle'
 import { ButtonSquare, ResoBinLogo } from 'components/shared'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { device } from 'styles/responsive'
 
@@ -18,31 +16,10 @@ const Container = styled.div`
   box-shadow: '0 0 0.5rem rgba(0, 0, 0, 0.5)';
 `
 
-const LeftContainer = styled(Link)`
+const LogoContainer = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  text-decoration: none;
-
-  @media ${device.md} {
-    position: absolute;
-    left: 0;
-    min-width: 9rem;
-  }
-`
-
-const MiddleContainer = styled.div`
-  display: none;
-
-  @media ${device.md} {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-`
-
-const StyledLink = styled(Link)`
-  all: initial;
   text-decoration: none;
 `
 
@@ -53,47 +30,41 @@ const RightContainer = styled.div`
     position: absolute;
     right: 0;
     display: flex;
-    align-items: center;
-    height: 100%;
+    padding: 0 0.75rem;
   }
 `
 
+const Term = styled.span`
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 80%;
+  white-space: nowrap;
+  letter-spacing: 1.5px;
+  color: lightgray;
+`
+
 const SignUpButton = ({ button, buttonLink }) => {
-  const buttonStyle = {
-    margin: '0.875rem 1rem',
-    height: '2.25rem',
-    fontSize: '1rem',
-  }
-
-  const handleClick = () => {
-    // console.log(1)
-  }
-
+  const history = useHistory()
   return (
-    <StyledLink to={buttonLink}>
-      {button && (
-        <ButtonSquare onClick={handleClick} type="submit" style={buttonStyle}>
-          {button}
-        </ButtonSquare>
-      )}
-    </StyledLink>
+    <ButtonSquare onClick={() => history.push(buttonLink)} type="submit">
+      {button}
+    </ButtonSquare>
   )
 }
 
 const Header = ({ button, buttonLink = '' }) => {
   return (
     <Container>
-      <LeftContainer to="/dashboard">
+      <LogoContainer to="/dashboard">
         <ResoBinLogo size="1.5rem" />
-      </LeftContainer>
-
-      <MiddleContainer>
-        <CurrentTerm text="AY 2021/22 | AUTUMN" />
-      </MiddleContainer>
+      </LogoContainer>
 
       <RightContainer>
-        <SignUpButton button={button} buttonLink={buttonLink} />
-        <DarkmodeToggle />
+        {button ? (
+          <SignUpButton button={button} buttonLink={buttonLink} />
+        ) : (
+          <Term>AY 2021/22 | AUTUMN</Term>
+        )}
       </RightContainer>
     </Container>
   )
