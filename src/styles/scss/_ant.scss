@@ -8,13 +8,12 @@
   padding: 0 0.5rem;
   margin-bottom: 2rem;
   gap: 1rem;
-
-  .ant-checkbox-wrapper {
-    margin: 0;
-    // font-size: 0.875rem;
-    font-weight: 400;
-    color: white;
-  }
+}
+.ant-checkbox-wrapper {
+  margin: 0;
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: white;
 }
 
 // MultiSelect

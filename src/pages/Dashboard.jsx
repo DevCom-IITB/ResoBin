@@ -36,7 +36,7 @@ const Dashboard = () => {
 
   return (
     <ScrollToTop>
-      <Header />
+      <Header dashboard />
       {width < breakpoints.md ? <MenuHorizontal /> : <MenuVertical />}
       <Content />
     </ScrollToTop>

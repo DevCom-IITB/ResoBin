@@ -14,7 +14,7 @@ const InputLabel = styled.label`
   display: inline-block;
   padding-left: 2rem;
   margin: 0.25rem 0;
-  font-weight: 400;
+  font-weight: 300;
   font-size: 0.875rem;
   text-decoration: none;
   text-indent: -2rem;

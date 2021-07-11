@@ -3,10 +3,10 @@ import styled from 'styled-components'
 
 const ButtonSquare = styled.button`
   height: 1.75rem;
-  padding: 0 0.75rem;
+  padding: 0 1rem;
   border-radius: 0.25rem;
   font-weight: 400;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   letter-spacing: 1px;
   color: #ffffff;
   background-color: ${({ theme }) => theme.logo};

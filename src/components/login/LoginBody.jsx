@@ -1,10 +1,7 @@
 import { LockPassword, User } from '@styled-icons/remix-line'
+import { Checkbox } from 'antd'
 import { GoogleAuth } from 'components/login'
-import {
-  ButtonSquare,
-  Checkbox,
-  InputRounded as Input,
-} from 'components/shared'
+import { ButtonSquare, InputRounded as Input } from 'components/shared'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
@@ -27,29 +24,31 @@ const ContainerSpaceBetween = styled.div`
   margin-bottom: 2rem;
 `
 
-const StyledLink = styled(Link)`
-  font-weight: 300;
-  font-size: 1rem;
+const ForgotPassword = styled(Link)`
+  margin-left: 1rem;
+  font-weight: 400;
+  font-size: 0.75rem;
   text-decoration: none;
-  letter-spacing: 1px;
   color: ${({ theme }) => theme.textColor};
   user-select: none;
+
   &:hover {
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 1px;
+    color: ${({ theme }) => theme.textColor};
   }
 `
 
 const buttonStyle = {
-  fontSize: '1.25rem',
-  width: '100%',
+  fontSize: '1rem',
 }
 
 const LoginBody = ({ onChange, onSubmit, user }) => {
-  const [rememberMe, setRememberMe] = useState(false)
+  // const [rememberMe, setRememberMe] = useState(false)
   const handleClick = ({ target }) => {
-    setRememberMe(target.checked)
+    // setRememberMe(target.checked)
+    console.log(target)
   }
 
   return (
@@ -73,13 +72,11 @@ const LoginBody = ({ onChange, onSubmit, user }) => {
       />
 
       <ContainerSpaceBetween>
-        <Checkbox
-          name="rememberMe"
-          value={rememberMe}
-          label="Remember me"
-          onClick={handleClick}
-        />
-        <StyledLink to="/forgot-password">Forgot password?</StyledLink>
+        <Checkbox key="rememberMe" value="rememberMe" onClick={handleClick}>
+          Remember me
+        </Checkbox>
+
+        <ForgotPassword to="/forgot-password">Forgot password?</ForgotPassword>
       </ContainerSpaceBetween>
 
       <ButtonSquare type="submit" style={buttonStyle}>

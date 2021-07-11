@@ -1,18 +1,19 @@
-import { LoginBody } from 'components/login'
 import { Header } from 'components/header'
+import { LoginBody } from 'components/login'
 import { LoaderAnimation } from 'components/shared'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import { loginAction } from 'store/authSlice'
 import styled from 'styled-components'
+import { fontSize } from 'styles/responsive'
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 4rem);
+  height: calc(100vh - 3rem);
   background-color: ${({ theme }) => theme.secondary};
 `
 
@@ -20,8 +21,7 @@ const FormBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 480px;
-  padding: 2.5rem 0;
+  padding: 1.5rem 0;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.darksecondary};
   box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.4);
@@ -29,39 +29,44 @@ const FormBox = styled.div`
 
 const TitleHeader = styled.h4`
   font-weight: 300;
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: ${fontSize.responsive.lg};
   text-align: center;
-  letter-spacing: 4px;
+  letter-spacing: 2px;
   color: ${({ theme }) => theme.textColor};
 `
 
 const StyledLink = styled(Link)`
-  font-weight: 300;
-  font-size: 1rem;
+  font-weight: 400;
+  font-size: 0.875rem;
   text-align: center;
   text-decoration: none;
   letter-spacing: 1px;
   color: ${({ theme }) => theme.textColor};
-  user-select: none;
+
   &:hover {
     text-decoration: underline;
-    text-decoration-thickness: 1px;
+    text-decoration-thickness: 2px;
     text-underline-offset: 1px;
+    color: ${({ theme }) => theme.textColor};
   }
 `
 
 const validCheck = (data) => {
   let flg = true
-
   Object.values(data).forEach((val) => {
     if (!val) flg = false
   })
-
   return flg
 }
 
 const Login = () => {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  })
+
   const [user, setUser] = useState({
     username: '',
     password: '',
@@ -87,7 +92,7 @@ const Login = () => {
         <title>Log In - ResoBin</title>
         <meta name="description" content="Login to continue" />
       </Helmet>
-      <Header button="Sign up" buttonLink="/signup" />
+      <Header />
 
       <Container>
         <FormBox>

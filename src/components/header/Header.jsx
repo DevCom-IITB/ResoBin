@@ -1,5 +1,5 @@
-import { ButtonSquare, ResoBinLogo } from 'components/shared'
-import { Link, useHistory } from 'react-router-dom'
+import { ResoBinLogo } from 'components/shared'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { device } from 'styles/responsive'
 
@@ -23,7 +23,7 @@ const LogoContainer = styled(Link)`
   text-decoration: none;
 `
 
-const RightContainer = styled.div`
+const Term = styled.span`
   display: none;
 
   @media ${device.md} {
@@ -31,41 +31,23 @@ const RightContainer = styled.div`
     right: 0;
     display: flex;
     padding: 0 0.75rem;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 80%;
+    white-space: nowrap;
+    letter-spacing: 1.5px;
+    color: lightgray;
   }
 `
 
-const Term = styled.span`
-  font-weight: 400;
-  font-size: 0.875rem;
-  line-height: 80%;
-  white-space: nowrap;
-  letter-spacing: 1.5px;
-  color: lightgray;
-`
-
-const SignUpButton = ({ button, buttonLink }) => {
-  const history = useHistory()
-  return (
-    <ButtonSquare onClick={() => history.push(buttonLink)} type="submit">
-      {button}
-    </ButtonSquare>
-  )
-}
-
-const Header = ({ button, buttonLink = '' }) => {
+const Header = ({ dashboard }) => {
   return (
     <Container>
-      <LogoContainer to="/dashboard">
+      <LogoContainer to={dashboard ? '/dashboard' : '/login'}>
         <ResoBinLogo size="1.5rem" />
       </LogoContainer>
 
-      <RightContainer>
-        {button ? (
-          <SignUpButton button={button} buttonLink={buttonLink} />
-        ) : (
-          <Term>AY 2021/22 | AUTUMN</Term>
-        )}
-      </RightContainer>
+      {dashboard ? <Term>AY 2021/22 | AUTUMN</Term> : null}
     </Container>
   )
 }
