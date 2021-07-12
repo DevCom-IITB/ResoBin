@@ -1,17 +1,22 @@
-import { FileDetails, FileList } from 'components/contribute'
 import { Helmet } from 'react-helmet-async'
+import styled from 'styled-components'
+import { FileDetails, FileList } from 'components/contribute'
+import { useState } from 'react'
+
+const Container = styled.div`
+  margin-left: 11.5rem;
+`
 
 const Contribute = () => {
+  const [formvalue, setFormvalue]= useState([])
+  const handleFormdetail = (value) =>{
+    setFormvalue(value);
+  }
   return (
-    <>
-      <Helmet>
-        <title>Contribute - ResoBin</title>
-        <meta name="description" content="Upload and share your own notes" />
-      </Helmet>
-
-      <FileDetails />
-      <FileList />
-    </>
+    <Container>
+      <FileDetails handleFormdetail={(value)=>{handleFormdetail(value);}}  />
+      <FileList  formvalues={formvalue}/>
+    </Container>
   )
 }
 

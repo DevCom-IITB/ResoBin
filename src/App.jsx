@@ -23,7 +23,7 @@ const App = () => {
 
       <GlobalStyles />
       <Switch>
-        <PrivateRoute path="/dashboard" component={Dashboard} />
+        <Route path="/dashboard" component={Dashboard} />
         <PrivateRoute path="/courses/:id" component={NotFound} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
