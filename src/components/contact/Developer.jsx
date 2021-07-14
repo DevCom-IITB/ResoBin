@@ -1,5 +1,6 @@
-import ProfileImg from 'components/shared/ProfileImg'
 import styled from 'styled-components'
+
+import ProfileImg from 'components/shared/ProfileImg'
 
 const Container = styled.a`
   display: flex;
@@ -15,11 +16,11 @@ const Container = styled.a`
 
   &:hover {
     text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 1.5px;
     background-color: rgba(0, 0, 0, 0.1);
     box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.24);
     transition: 100ms ease-out;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 1.5px;
   }
 `
 

@@ -32,7 +32,7 @@ const SearchContainer = styled.div`
   );
 
   @media ${device.min.lg} {
-    margin-right: ${({ theme }) => theme.filterAsideWidth};
+    margin-right: ${({ theme }) => theme.asideWidth};
     transition: margin-right 200ms ease-in;
   }
 `

@@ -1,7 +1,8 @@
+import styled from 'styled-components'
+
 import Google from 'assets/svgs/g-normal.svg'
 import { Divider } from 'components/shared'
 import { HEX2RGBA } from 'helpers'
-import styled from 'styled-components'
 
 const GoogleContainer = styled.button`
   box-sizing: border-box;

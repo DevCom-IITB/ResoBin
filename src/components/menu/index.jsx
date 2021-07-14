@@ -1,2 +1,2 @@
-export { MenuHorizontal, MenuVertical } from 'components/menu/Menu'
-export { MenuItem, ProfileImgItem } from 'components/menu/MenuItem'
+export { MenuHorizontal, MenuVertical } from './Menu'
+export { MenuItem, ProfileImgItem } from './MenuItem'

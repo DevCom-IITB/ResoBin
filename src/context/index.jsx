@@ -1,5 +1,5 @@
-import ThemeContextProvider from 'context/ThemeContext'
-import ViewportContextProvider from 'context/ViewportContext'
+import ThemeContextProvider from './ThemeContext'
+import ViewportContextProvider from './ViewportContext'
 
 const CombineContexts = (...components) => {
   return components.reduce(

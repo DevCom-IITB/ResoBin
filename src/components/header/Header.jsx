@@ -1,6 +1,7 @@
-import { ResoBinLogo } from 'components/shared'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+
+import { ResoBinLogo } from 'components/shared'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`

@@ -1,2 +1,2 @@
-export { default as Header } from 'components/header/Header'
-export { default as FilterItem } from 'components/header/DarkmodeToggle'
+export { default as Header } from './Header'
+export { default as FilterItem } from './DarkmodeToggle'

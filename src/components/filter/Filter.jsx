@@ -1,9 +1,10 @@
+import { useEffect } from 'react'
+import styled from 'styled-components'
+
 import { FilterItem } from 'components/filter'
 import MultiSelect from 'components/filter/filterData'
 import { Divider } from 'components/shared'
 import { filterData } from 'data/courses'
-import { useEffect } from 'react'
-import styled from 'styled-components'
 import { device } from 'styles/responsive'
 
 const ContainerDropdown = styled.div`
@@ -25,7 +26,7 @@ const ContainerAside = styled.div`
   top: 3rem;
   right: ${({ showFilters }) => (showFilters ? '0' : '-100%')};
   z-index: 5;
-  width: ${({ theme }) => theme.filterAsideWidth};
+  width: ${({ theme }) => theme.asideWidth};
   height: calc(100% - 3rem);
   background: ${({ theme }) => theme.secondary};
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);

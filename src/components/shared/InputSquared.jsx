@@ -1,5 +1,6 @@
-import { HEX2RGBA } from 'helpers'
 import styled, { css } from 'styled-components'
+
+import { HEX2RGBA } from 'helpers'
 
 const sharedStyles = css`
   box-sizing: border-box;

@@ -8,8 +8,8 @@ const Container = styled.div`
   min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
   padding-top: 0.5rem;
 
-  @media ${device.min.md} {
-    margin-right: ${({ theme }) => theme.fileManagerWidth};
+  @media ${device.min.lg} {
+    margin-right: ${({ theme }) => theme.asideWidth};
   }
 `
 

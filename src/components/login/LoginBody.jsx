@@ -1,10 +1,11 @@
 import { LockPassword, User } from '@styled-icons/remix-line'
 import { Checkbox } from 'antd'
-import { GoogleAuth } from 'components/login'
-import { ButtonSquare, InputRounded as Input } from 'components/shared'
-// import { useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+
+import { GoogleAuth } from 'components/login'
+import { ButtonSquare, InputRounded as Input } from 'components/shared'
 
 const FormContainer = styled.form`
   display: flex;

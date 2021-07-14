@@ -5,12 +5,12 @@ import styled from 'styled-components'
 
 import Divider from 'components/shared/Divider'
 
-const Container = styled.div`
+const ContainerAside = styled.div`
   position: fixed;
   top: 3rem;
   right: 0;
   z-index: 7; /* To put searchbar at the bottom */
-  width: ${({ theme }) => theme.fileManagerWidth};
+  width: ${({ theme }) => theme.asideWidth};
   height: 100%;
   padding: 2rem;
   color: ${({ theme }) => theme.textColor};
@@ -81,7 +81,7 @@ const FileList = (props) => {
   }
 
   return (
-    <Container>
+    <ContainerAside>
       <Title> Files </Title>
       <Divider />
       <div style={{ height: '200px' }}>
@@ -97,7 +97,7 @@ const FileList = (props) => {
       <Button type="button" onClick={submitForm(props)}>
         Submit
       </Button>
-    </Container>
+    </ContainerAside>
   )
 }
 

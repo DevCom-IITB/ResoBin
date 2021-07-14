@@ -14,9 +14,8 @@
 // }
 
 const globalTheme = {
-  filterAsideWidth: '16rem',
+  asideWidth: '16rem',
   navbarHorizontalWidth: '9rem',
-  fileManagerWidth: '16rem',
   headerHeight: '3rem',
 }
 
