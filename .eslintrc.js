@@ -55,6 +55,7 @@ module.exports = {
         peerDependencies: true,
       },
     ],
+
     'import/order': [
       'error',
       {

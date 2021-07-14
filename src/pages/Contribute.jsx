@@ -3,10 +3,12 @@ import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
 
 import { FileDetails, FileList } from 'components/contribute'
+import { device } from 'styles/responsive'
 
 const Container = styled.div`
-  margin-left: 11.5rem;
-  background-color: ${({ theme }) => theme.primary};
+  @media ${device.min.md} {
+    margin-left: ${({ theme }) => theme.navbarHorizontalWidth};
+  }
 `
 
 const Contribute = () => {
