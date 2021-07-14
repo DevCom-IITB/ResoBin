@@ -35,7 +35,7 @@ module.exports = {
 
     // Enable i++ in for loops
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
-
+    'object-shorthand': 0,
     'arrow-body-style': ['off'],
     'comma-dangle': 'off',
 
@@ -89,6 +89,7 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     // Checks effect dependencies
     'react-hooks/exhaustive-deps': 'warn',
+    
 
     semi: 'off',
   },
