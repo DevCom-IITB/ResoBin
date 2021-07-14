@@ -1,5 +1,6 @@
-import { ButtonSquare } from 'components/shared'
 import styled, { css } from 'styled-components'
+
+import { ButtonSquare } from 'components/shared'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`

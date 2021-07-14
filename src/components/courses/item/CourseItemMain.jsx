@@ -2,10 +2,11 @@ import {
   Bookmark as BookmarkFill,
   BookmarkOutline as Bookmark,
 } from '@styled-icons/zondicons'
-import { ReadMore } from 'components/shared'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
+
+import { ReadMore } from 'components/shared'
 import { device, fontSize } from 'styles/responsive'
 
 const Container = styled.div`

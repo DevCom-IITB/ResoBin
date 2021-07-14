@@ -1,12 +1,13 @@
 import { Search } from '@styled-icons/heroicons-outline'
+import { useState } from 'react'
+import styled from 'styled-components'
+
 import { CourseList } from 'components/courses'
 import { FilterDropdown, FilterAside } from 'components/filter'
 import { InputRounded } from 'components/shared'
 import { useViewportContext } from 'context/ViewportContext'
 import { courseData } from 'data/courses'
 import { HEX2RGBA } from 'helpers'
-import { useState } from 'react'
-import styled from 'styled-components'
 import { breakpoints, device } from 'styles/responsive'
 
 const Container = styled.div`
