@@ -1,10 +1,11 @@
-import { useThemeContext } from 'context/ThemeContext'
-import { PrivateRoute } from 'hoc'
-import { Dashboard, Login, NotFound, Signup } from 'pages'
 import { Helmet } from 'react-helmet-async'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { ThemeProvider } from 'styled-components'
+
+import { useThemeContext } from 'context/ThemeContext'
+import { PrivateRoute } from 'hoc'
+import { Dashboard, Login, NotFound, Signup } from 'pages'
 import { DarkTheme, GlobalStyles, LightTheme } from 'styles'
 
 const App = () => {
