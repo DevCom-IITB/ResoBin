@@ -29,8 +29,7 @@ const Input = styled.input`
   color: #1f1c2e;
 
   &::placeholder {
-    opacity: 0.6;
-    color: #1f1c2e;
+    color: #747474;
   }
 `
 

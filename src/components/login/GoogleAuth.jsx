@@ -6,7 +6,6 @@ import styled from 'styled-components'
 const GoogleContainer = styled.button`
   box-sizing: border-box;
   display: flex;
-  opacity: 100%;
   overflow: hidden;
   justify-content: center;
   align-items: center;

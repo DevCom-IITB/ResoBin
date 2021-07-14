@@ -35,7 +35,8 @@ const Title = styled.h4`
 const FilterList = styled.div`
   overflow: auto;
   height: 100%;
-  padding: 1rem 1rem 12rem;
+  padding: 1rem 0.5rem 12rem;
+  margin: 0 0.5rem;
 `
 
 const ClearAll = styled.button`
