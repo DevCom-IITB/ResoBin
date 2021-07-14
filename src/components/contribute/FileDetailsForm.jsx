@@ -4,25 +4,20 @@ import styled from 'styled-components'
 const Form = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 2rem;
-  margin-bottom: 10px;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 2rem;
-  text-align: start;
-  color: #0d001a;
-  background-color: #e6ecff;
-  appearance: none;
-
+  padding: 1rem;
+  margin: 0.75rem;
   border-radius: 8px;
-  background: #e6ecff;
+  background: ${({ theme }) => theme.darksecondary};
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+  appearance: none;
+  gap: 2%;
 `
 
 const Label = styled.label`
   width: 100%;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 0.5rem 0;
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.textColor};
 `
 
 // const StyledTextarea = styled.label`
@@ -116,8 +111,6 @@ const FormElement = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 48%;
-  padding-left: 15px;
-  margin-right: 20px;
 `
 const FormElement1 = styled.div`
   display: flex;

@@ -12,6 +12,7 @@ import { breakpoints, device } from 'styles/responsive'
 
 const Container = styled.div`
   width: 100%;
+  min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
 `
 
 const SearchContainer = styled.div`

@@ -10,7 +10,7 @@ const Container = styled.div`
   top: 3rem;
   right: 0;
   z-index: 7; /* To put searchbar at the bottom */
-  width: 19rem;
+  width: ${({ theme }) => theme.fileManagerWidth};
   height: 100%;
   padding: 2rem;
   color: ${({ theme }) => theme.textColor};
