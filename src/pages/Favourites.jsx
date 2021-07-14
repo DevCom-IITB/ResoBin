@@ -1,14 +1,16 @@
-import { CourseList } from 'components/courses'
 import { Filter, X } from '@styled-icons/heroicons-outline'
+import { CourseList } from 'components/courses'
 import { useLocalStorage } from 'hooks'
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
 import { device } from 'styles/responsive'
+import { courseData } from 'data/courses'
 
 const Container = styled.div`
   display: flex;
+
   @media ${device.min.md} {
-    margin-left: 9rem;
+    margin-left: ${({ theme }) => theme.navbarHorizontalWidth};
   }
 `
 
@@ -46,7 +48,7 @@ const Favourites = () => {
         {showFilters ? <X size="1.5rem" /> : <Filter size="1.5rem" />}
       </IconContainer>
 
-      <CourseList showFilters={showFilters} onClick={handleClick} />
+      <CourseList coursesData={courseData} />
     </Container>
   )
 }

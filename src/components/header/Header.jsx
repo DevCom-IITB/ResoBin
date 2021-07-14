@@ -30,13 +30,17 @@ const Term = styled.span`
     position: absolute;
     right: 0;
     display: flex;
-    padding: 0 0.75rem;
+    padding: 0 1.5rem;
     font-weight: 400;
     font-size: 0.875rem;
     line-height: 80%;
     white-space: nowrap;
     letter-spacing: 1.5px;
     color: lightgray;
+  }
+
+  @media ${device.lg} {
+    padding: 0 0.75rem;
   }
 `
 

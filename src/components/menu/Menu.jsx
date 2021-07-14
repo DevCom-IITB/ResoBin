@@ -32,7 +32,7 @@ const Container = styled.div`
     z-index: 8; /* For shadow effects */
     flex-direction: column;
     justify-content: initial;
-    width: 9rem;
+    width: ${({ theme }) => theme.navbarHorizontalWidth};
     height: calc(100% - 3rem);
     padding: 0;
   }

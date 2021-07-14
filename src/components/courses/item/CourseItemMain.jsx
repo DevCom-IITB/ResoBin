@@ -11,7 +11,7 @@ import { device, fontSize } from 'styles/responsive'
 const Container = styled.div`
   width: 100%;
 
-  @media ${device.min.sm} and ${device.max.md}, ${device.lg} {
+  @media ${device.min.sm} and ${device.max.md}, ${device.xl} {
     margin-right: 1rem;
   }
 `

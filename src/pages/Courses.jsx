@@ -1,16 +1,16 @@
 import { Filter, X } from '@styled-icons/heroicons-outline'
-import { CourseList } from 'components/courses'
-// import { Filters } from 'components/filter'
-import { useLocalStorage } from 'hooks'
+import { CourseBody } from 'components/courses'
+import { useViewportContext } from 'context/ViewportContext'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
-import { device } from 'styles/responsive'
+import { breakpoints, device } from 'styles/responsive'
 
 const Container = styled.div`
   display: flex;
 
   @media ${device.min.md} {
-    margin-left: 9rem;
+    margin-left: ${({ theme }) => theme.navbarHorizontalWidth};
   }
 `
 
@@ -32,25 +32,35 @@ const IconContainer = styled.div`
 `
 
 const Courses = () => {
-  const [showFilters, setShowFilters] = useLocalStorage('CourseFilter', false)
+  const [showFilters, setShowFilters] = useState(false)
   const handleClick = () => {
     setShowFilters(!showFilters)
   }
 
+  const { width } = useViewportContext()
+
+  const [Icon, setIcon] = useState(Filter)
+  useEffect(() => {
+    if (width > breakpoints.lg) {
+      setShowFilters(false)
+      setIcon(null)
+    } else setIcon(showFilters ? X : Filter)
+  }, [showFilters, width])
+
   return (
-    <Container showFilters={showFilters}>
+    <Container>
       <Helmet>
         <title>Courses - ResoBin</title>
         <meta name="description" content="Courses availabe at IIT Bombay" />
       </Helmet>
 
-      <IconContainer showFilters={showFilters} onClick={handleClick}>
-        {showFilters ? <X size="1.5rem" /> : <Filter size="1.5rem" />}
-      </IconContainer>
+      {Icon && (
+        <IconContainer onClick={handleClick}>
+          <Icon size="1.5rem" />
+        </IconContainer>
+      )}
 
-      <CourseList showFilters={showFilters} onClick={handleClick} />
-
-      {/* <Filters showFilters={showFilters} onClick={handleClick} /> */}
+      <CourseBody showFilters={showFilters} onClick={handleClick} />
     </Container>
   )
 }

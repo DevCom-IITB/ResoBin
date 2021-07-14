@@ -34,7 +34,7 @@ const OptionsGroup = styled.div`
   ${GroupBase}
 
   /* Activate below styles between device width sm and md and also lg onwards */
-  @media ${device.min.sm} and ${device.max.md}, ${device.min.lg} {
+  @media ${device.min.sm} and ${device.max.md}, ${device.min.xl} {
     flex-direction: column;
     justify-content: space-between;
     height: 6.5rem;
