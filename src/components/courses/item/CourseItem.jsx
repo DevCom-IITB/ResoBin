@@ -10,7 +10,7 @@ const Container = styled.li`
   background: ${({ theme }) => theme.darksecondary};
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);
 
-  @media ${device.min.sm} and ${device.max.md}, ${device.xl} {
+  @media ${device.min.sm} and ${device.max.md}, ${device.min.xl} {
     display: flex;
   }
 `

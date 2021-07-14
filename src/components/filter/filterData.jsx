@@ -1,6 +1,6 @@
 import { Select } from 'antd'
-import { useEffect, useState } from 'react'
 import { filterData } from 'data/courses'
+import { useEffect, useState } from 'react'
 
 const OPTIONS = filterData[3].Options.map((data) => ({
   key: data.id,
@@ -38,7 +38,6 @@ const MultiSelect = () => {
       dropdownAlign={{
         overflow: { adjustY: 0 },
       }}
-      dropdownStyle={{ maxHeight: 100 }}
       getPopupContainer={(trigger) => trigger.parentNode}
     >
       {remainingDept.map((item) => (

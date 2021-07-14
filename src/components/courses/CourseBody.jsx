@@ -1,6 +1,6 @@
 import { Search } from '@styled-icons/heroicons-outline'
 import { CourseList } from 'components/courses'
-import { Filter, FilterAside } from 'components/filter'
+import { FilterDropdown, FilterAside } from 'components/filter'
 import { InputRounded } from 'components/shared'
 import { useViewportContext } from 'context/ViewportContext'
 import { courseData } from 'data/courses'
@@ -31,6 +31,7 @@ const SearchContainer = styled.div`
 
   @media ${device.min.lg} {
     margin-right: ${({ theme }) => theme.filterAsideWidth};
+    transition: margin-right 200ms ease-in;
   }
 `
 
@@ -61,7 +62,7 @@ const CourseBody = ({ showFilters, onClick }) => {
           // if viewport width is not adequate, use dropdown filter else use aside filter
           width < breakpoint ? (
             <>
-              <Filter showFilters={showFilters} onClick={onClick} />
+              <FilterDropdown showFilters={showFilters} onClick={onClick} />
               <Overlay showFilters={showFilters} />
             </>
           ) : null
@@ -78,11 +79,9 @@ const CourseBody = ({ showFilters, onClick }) => {
         />
       </SearchContainer>
 
+      <FilterAside FilterDropdown showFilters={width >= breakpoint} />
+
       <CourseList coursesData={courseData} />
-      <FilterAside
-        showFilters={width >= breakpoint && showFilters}
-        onClick={onClick}
-      />
     </Container>
   )
 }

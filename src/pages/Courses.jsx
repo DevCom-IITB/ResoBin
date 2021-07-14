@@ -42,8 +42,8 @@ const Courses = () => {
   const [Icon, setIcon] = useState(Filter)
   useEffect(() => {
     if (width > breakpoints.lg) {
+      setShowFilters(false)
       setIcon(null)
-      setShowFilters(true)
     } else setIcon(showFilters ? X : Filter)
   }, [showFilters, width])
 
