@@ -1,9 +1,12 @@
-import { CourseItem, CourseSearch, PageNo } from 'components/courses'
-import { courseData } from 'data/courses'
+import { CourseItem, PageNo } from 'components/courses'
 import styled from 'styled-components'
+import { device } from 'styles/responsive'
 
 const Container = styled.div`
   width: 100%;
+  @media ${device.min.lg} {
+    padding-right: ${({ theme }) => theme.filterAsideWidth};
+  }
 `
 
 const Heading = styled.h3`
@@ -28,16 +31,15 @@ const Results = styled.span`
   color: ${({ theme }) => theme.darksecondary};
 `
 
-const CourseList = styled.ul`
+const List = styled.ul`
   margin: 0 0.75rem;
 `
 
-const CourseBody = ({ showFilters, onClick }) => {
-  const courseCount = courseData.length
+const CourseList = ({ coursesData }) => {
+  const courseCount = coursesData.length
 
   return (
     <Container>
-      <CourseSearch showFilters={showFilters} handleClick={onClick} />
       <Heading>
         <Title>Courses</Title>
         <Results>
@@ -46,14 +48,15 @@ const CourseBody = ({ showFilters, onClick }) => {
         </Results>
       </Heading>
 
-      <CourseList>
-        {courseData.map((data) => (
+      <List>
+        {coursesData.map((data) => (
           <CourseItem data={data} key={data.id} />
         ))}
-      </CourseList>
+      </List>
+
       <PageNo />
     </Container>
   )
 }
 
-export default CourseBody
+export default CourseList

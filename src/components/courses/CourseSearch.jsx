@@ -1,5 +1,5 @@
 import { Search } from '@styled-icons/heroicons-outline'
-import { Filters } from 'components/filter'
+import { Filter } from 'components/filter'
 import { InputRounded } from 'components/shared'
 import { HEX2RGBA } from 'helpers'
 import { useState } from 'react'
@@ -35,15 +35,6 @@ const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.55);
 `
 
-// const StyledSearch = styled(Search)`
-//   .ant-input {
-//     border-radius: 2rem;
-//   }
-//   .ant-input-search-button {
-//     border-radius: 2rem;
-//   }
-// `
-
 const CourseSearch = ({ showFilters, handleClick }) => {
   const [search, setSearch] = useState('')
   const handleChange = (event) => setSearch((e) => e.target.value)
@@ -53,7 +44,7 @@ const CourseSearch = ({ showFilters, handleClick }) => {
 
   return (
     <SearchContainer>
-      <Filters showFilters={showFilters} onClick={handleClick} />
+      <Filter showFilters={showFilters} onClick={handleClick} />
       <Overlay showFilters={showFilters} />
       <InputRounded
         name="courseSearch"

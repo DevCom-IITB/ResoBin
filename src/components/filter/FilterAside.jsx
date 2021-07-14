@@ -1,19 +1,17 @@
+// import { useState } from 'react'
 import { FilterItem } from 'components/filter'
 import MultiSelect from 'components/filter/filterData'
 import { Divider } from 'components/shared'
 import { filterData } from 'data/courses'
-import { useEffect } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
-  position: absolute;
-  top: 2rem;
+  position: fixed;
+  top: 3rem;
+  right: ${({ showFilters }) => (showFilters ? '0' : '-100%')};
   z-index: 5;
-  overflow: auto;
-  width: calc(100% - 1.5rem);
-  height: ${({ showFilters }) => (showFilters ? 'calc(100vh - 5rem)' : '0')};
-  padding: ${({ showFilters }) => (showFilters ? '1rem 0 20rem' : '0')};
-  margin: 0 0.75rem;
+  width: ${({ theme }) => theme.filterAsideWidth};
+  height: calc(100% - 3rem);
   background: ${({ theme }) => theme.secondary};
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   transition: 500ms;
@@ -24,8 +22,7 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: baseline;
   height: 3rem;
-  padding: 1.25rem 1rem 0;
-  margin-bottom: 0.5rem;
+  padding: 1rem 1rem 0.5rem;
 `
 
 const Title = styled.h4`
@@ -33,6 +30,12 @@ const Title = styled.h4`
   font-size: 1.25rem;
   letter-spacing: 1px;
   color: ${({ theme }) => theme.textColor};
+`
+
+const FilterList = styled.div`
+  overflow: auto;
+  height: 100%;
+  padding: 1rem 1rem 12rem;
 `
 
 const ClearAll = styled.button`
@@ -49,28 +52,15 @@ const ClearAll = styled.button`
   }
 `
 
-const FilterList = styled.div`
-  display: ${({ showFilters }) => (showFilters ? 'block' : 'none')};
-  padding: 1rem 1rem 2rem;
-`
-
 // const initialState = {
 //   offeredIn: null,
 // }
 
-const Filters = ({ showFilters, onClick }) => {
+const FilterAside = ({ showFilters, onClick }) => {
   // const [filters, setFilters] = useState(initialState)
   const handleClearAll = (e) => {
     // setFilters(initialState)
   }
-
-  useEffect(() => {
-    document.body.style.overflow = showFilters ? 'hidden' : 'auto'
-
-    return () => {
-      document.body.style.overflow = 'auto'
-    }
-  }, [showFilters])
 
   return (
     <Container showFilters={showFilters}>
@@ -90,4 +80,4 @@ const Filters = ({ showFilters, onClick }) => {
   )
 }
 
-export default Filters
+export default FilterAside
