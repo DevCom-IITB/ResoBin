@@ -1,9 +1,10 @@
 import { Filter, X } from '@styled-icons/heroicons-outline'
-import { CourseBody } from 'components/courses'
-import { useViewportContext } from 'context/ViewportContext'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
+
+import { CourseBody } from 'components/courses'
+import { useViewportContext } from 'context/ViewportContext'
 import { breakpoints, device } from 'styles/responsive'
 
 const Container = styled.div`

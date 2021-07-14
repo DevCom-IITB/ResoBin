@@ -1,12 +1,13 @@
-import { Header } from 'components/header'
-import { LoaderAnimation } from 'components/shared'
-import { SignupBody } from 'components/signup'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
-import { signupAction } from 'store/authSlice'
 import styled from 'styled-components'
+
+import { Header } from 'components/header'
+import { LoaderAnimation } from 'components/shared'
+import { SignupBody } from 'components/signup'
+import { signupAction } from 'store/authSlice'
 import { fontSize } from 'styles/responsive'
 
 const Container = styled.div`

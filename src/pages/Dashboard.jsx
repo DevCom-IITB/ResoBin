@@ -1,12 +1,13 @@
+import { Suspense } from 'react'
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
+
 import { Header } from 'components/header'
 import { MenuHorizontal, MenuVertical } from 'components/menu'
 import { LoaderAnimation } from 'components/shared'
 import { useViewportContext } from 'context/ViewportContext'
-import { breakpoints } from 'styles/responsive'
 import { ScrollToTop } from 'hoc'
-import { Suspense } from 'react'
-import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 import Routes from 'RoutesConfig'
+import { breakpoints } from 'styles/responsive'
 
 const Content = () => {
   const { url } = useRouteMatch()
