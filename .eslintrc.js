@@ -35,7 +35,6 @@ module.exports = {
 
     // Enable i++ in for loops
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
-    'object-shorthand': 0,
     'arrow-body-style': ['off'],
     'comma-dangle': 'off',
 
@@ -54,6 +53,27 @@ module.exports = {
         devDependencies: true,
         optionalDependencies: true,
         peerDependencies: true,
+      },
+    ],
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index',
+          'object',
+          'type',
+        ],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
+        warnOnUnassignedImports: true,
       },
     ],
 
@@ -89,7 +109,6 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     // Checks effect dependencies
     'react-hooks/exhaustive-deps': 'warn',
-    
 
     semi: 'off',
   },
