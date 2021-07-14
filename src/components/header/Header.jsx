@@ -26,7 +26,7 @@ const LogoContainer = styled(Link)`
 const Term = styled.span`
   display: none;
 
-  @media ${device.md} {
+  @media ${device.min.md} {
     position: absolute;
     right: 0;
     display: flex;
@@ -39,7 +39,7 @@ const Term = styled.span`
     color: lightgray;
   }
 
-  @media ${device.lg} {
+  @media ${device.min.lg} {
     padding: 0 0.75rem;
   }
 `
