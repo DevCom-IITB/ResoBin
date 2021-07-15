@@ -1,12 +1,13 @@
 import { Search } from '@styled-icons/heroicons-outline'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { CourseList } from 'components/courses'
 import { FilterDropdown, FilterAside } from 'components/filter'
 import { InputRounded } from 'components/shared'
 import { useViewportContext } from 'context/ViewportContext'
-import { courseData } from 'data/courses'
+// import { courseData } from 'data/courses'
 import { HEX2RGBA } from 'helpers'
 import { breakpoints, device } from 'styles/responsive'
 
@@ -56,6 +57,11 @@ const CourseBody = ({ showFilters, onClick }) => {
   // search input state
   const [search, setSearch] = useState('')
   const handleChange = (event) => setSearch((e) => e.target.value)
+
+  const { list: courseData } = useSelector((state) => state.course)
+  useEffect(() => {
+    // search
+  }, [courseData])
 
   return (
     <Container>

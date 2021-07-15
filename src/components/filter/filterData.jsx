@@ -1,6 +1,7 @@
 import { Select } from 'antd'
-import { filterData } from 'data/courses'
 import { useEffect, useState } from 'react'
+
+import { filterData } from 'data/courses'
 
 const OPTIONS = filterData[3].Options.map((data) => ({
   key: data.id,

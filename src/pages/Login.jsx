@@ -89,11 +89,13 @@ const Login = () => {
 
   return (
     <>
-      {loading && <LoaderAnimation />}
       <Helmet>
         <title>Log In - ResoBin</title>
         <meta name="description" content="Login to continue" />
       </Helmet>
+
+      {loading && <LoaderAnimation />}
+
       <Header />
 
       <Container>

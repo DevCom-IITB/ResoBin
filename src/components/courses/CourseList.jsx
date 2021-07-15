@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { CourseItem, PageNo } from 'components/courses'
+import { CourseItem } from 'components/courses'
 import { PageHeading, PageTitle } from 'components/shared'
 import { device } from 'styles/responsive'
 
@@ -41,8 +41,6 @@ const CourseList = ({ coursesData }) => {
           <CourseItem data={data} key={data.id} />
         ))}
       </List>
-
-      <PageNo />
     </Container>
   )
 }
