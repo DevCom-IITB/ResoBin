@@ -5,7 +5,7 @@ import { ThemeProvider } from 'styled-components'
 
 import { useThemeContext } from 'context/ThemeContext'
 import { PrivateRoute } from 'hoc'
-import { Dashboard, Login, NotFound, Signup } from 'pages'
+import { Dashboard, Login, NotFound, Signup, CoursePage } from 'pages'
 import { DarkTheme, GlobalStyles, LightTheme } from 'styles'
 
 const App = () => {
@@ -25,7 +25,7 @@ const App = () => {
       <GlobalStyles />
       <Switch>
         <Route path="/dashboard" component={Dashboard} />
-        <PrivateRoute path="/courses/:id" component={NotFound} />
+        <Route path="/courses/:id" component={CoursePage} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/forgot-password" component={NotFound} />
