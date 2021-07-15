@@ -1,3 +1,5 @@
+import { Pagination } from 'antd'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import { CourseItem } from 'components/courses'
@@ -23,24 +25,48 @@ const List = styled.ul`
   margin: 0 0.75rem;
 `
 
-const CourseList = ({ coursesData }) => {
-  const courseCount = coursesData.length
+const CourseList = ({ courses }) => {
+  const count = courses ? courses.length : 0
+
+  // pagination
+  const [pageInfo, setPageInfo] = useState({
+    page: 1,
+    perPage: 10,
+  })
+
+  const handlePageChange = (page) => setPageInfo({ ...pageInfo, page })
+  const { page, perPage } = pageInfo
+  const paginate = (data) => data.slice((page - 1) * perPage, page * perPage)
 
   return (
     <Container>
       <PageHeading>
         <PageTitle>Courses</PageTitle>
         <Results>
-          {courseCount}
+          {count}
           &nbsp;results found
         </Results>
       </PageHeading>
 
       <List>
-        {coursesData.map((data) => (
-          <CourseItem data={data} key={data.id} />
-        ))}
+        {count > 0 ? (
+          paginate(courses).map((data) => (
+            <CourseItem data={data} key={data.id} />
+          ))
+        ) : (
+          <h1>No results found</h1>
+        )}
       </List>
+
+      <Pagination
+        defaultCurrent={1}
+        defaultPageSize={perPage}
+        responsive
+        hideOnSinglePage
+        onChange={handlePageChange}
+        showSizeChanger={false}
+        total={count}
+      />
     </Container>
   )
 }

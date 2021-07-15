@@ -89,7 +89,7 @@ const CourseBody = ({ showFilters, onClick }) => {
 
       <FilterAside FilterDropdown showFilters={width >= breakpoint} />
 
-      <CourseList coursesData={courseData} />
+      <CourseList courses={courseData} />
     </Container>
   )
 }
