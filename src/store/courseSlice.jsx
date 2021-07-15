@@ -6,8 +6,8 @@ import axios from 'axios'
 export const getCourseList = createAsyncThunk(
   'course/getCourseList',
   async () =>
-    axios.get('https://run.mocky.io/v3/f7148570-7766-488e-9239-1360027e35a0') // Small data
-  // axios.get('https://run.mocky.io/v3/9f98826e-dbe2-4fed-b67a-914dd5a4c28c') // Large data
+    // axios.get('https://run.mocky.io/v3/f7148570-7766-488e-9239-1360027e35a0') // Small data
+    axios.get('https://run.mocky.io/v3/9f98826e-dbe2-4fed-b67a-914dd5a4c28c') // Large data
 )
 
 const courseSlice = createSlice({

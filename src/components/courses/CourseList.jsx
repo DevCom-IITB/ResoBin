@@ -1,5 +1,6 @@
 import { Pagination } from 'antd'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { CourseItem } from 'components/courses'
@@ -27,6 +28,7 @@ const List = styled.ul`
 
 const CourseList = ({ courses }) => {
   const count = courses ? courses.length : 0
+  const { loading } = useSelector((state) => state.course)
 
   // pagination
   const [pageInfo, setPageInfo] = useState({
@@ -54,12 +56,13 @@ const CourseList = ({ courses }) => {
             <CourseItem data={data} key={data.id} />
           ))
         ) : (
-          <h1>No results found</h1>
+          <h1>
+            {loading ? 'Loading courses, please wait...' : 'No results found'}
+          </h1>
         )}
       </List>
 
       <Pagination
-        defaultCurrent={1}
         defaultPageSize={perPage}
         responsive
         hideOnSinglePage

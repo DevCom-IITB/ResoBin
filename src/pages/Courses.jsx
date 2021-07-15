@@ -1,13 +1,12 @@
 import { Filter, X } from '@styled-icons/heroicons-outline'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { CourseBody } from 'components/courses'
 import { LoaderAnimation } from 'components/shared'
 import { useViewportContext } from 'context/ViewportContext'
-import { getCourseList } from 'store/courseSlice'
 import { breakpoints, device } from 'styles/responsive'
 
 const Container = styled.div`
@@ -36,12 +35,6 @@ const IconContainer = styled.div`
 `
 
 const Courses = () => {
-  // get course list from the backend when user opens the course page
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(getCourseList())
-  }, [dispatch])
-
   // loading status when fetching course list
   const { loading } = useSelector((state) => state.course)
 
