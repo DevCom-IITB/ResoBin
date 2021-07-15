@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 import { toastError, toastSuccess } from 'components/toast'
 
 // ? Add csrf cookie to header

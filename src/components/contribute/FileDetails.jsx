@@ -1,30 +1,35 @@
-import Divider from 'components/shared/Divider'
 import styled from 'styled-components'
 
+import { FileDetailsForm } from 'components/contribute'
+import { PageHeading, PageTitle } from 'components/shared'
+import { device } from 'styles/responsive'
+
 const Container = styled.div`
-  height: 5000px;
-  margin: 2rem 21rem 2rem 2rem;
-  border-radius: 8px;
-  background: ${({ theme }) => theme.darksecondary};
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+  min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
+  padding-top: 0.5rem;
+
+  @media ${device.min.lg} {
+    margin-right: ${({ theme }) => theme.asideWidth};
+  }
 `
 
-const Title = styled.span`
-  display: inline-block;
-  padding: 2.5rem 2.5rem 1rem;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 1.5rem;
-  line-height: 30px;
-  letter-spacing: 1.5px;
-  color: ${({ theme }) => theme.textColor};
-`
+const FileDetails = (props) => {
+  const handleParentFun = (value) => {
+    const formdetails = value
+    props.handleFormdetail(formdetails)
+  }
 
-const FileDetails = () => {
   return (
     <Container>
-      <Title> Upload details </Title>
-      <Divider />
+      <PageHeading>
+        <PageTitle>File Details</PageTitle>
+      </PageHeading>
+
+      <FileDetailsForm
+        handleParentFun={(value) => {
+          handleParentFun(value)
+        }}
+      />
     </Container>
   )
 }

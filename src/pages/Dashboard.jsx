@@ -1,12 +1,15 @@
+import { Suspense, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
+
 import { Header } from 'components/header'
 import { MenuHorizontal, MenuVertical } from 'components/menu'
 import { LoaderAnimation } from 'components/shared'
 import { useViewportContext } from 'context/ViewportContext'
-import { breakpoints } from 'styles/responsive'
 import { ScrollToTop } from 'hoc'
-import { Suspense } from 'react'
-import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 import Routes from 'RoutesConfig'
+import { getCourseList } from 'store/courseSlice'
+import { breakpoints } from 'styles/responsive'
 
 const Content = () => {
   const { url } = useRouteMatch()
@@ -33,6 +36,11 @@ const Content = () => {
 
 const Dashboard = () => {
   const { width } = useViewportContext()
+  // get course list from the backend when user opens the app
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getCourseList())
+  }, [dispatch])
 
   return (
     <ScrollToTop>

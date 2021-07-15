@@ -1,3 +1,3 @@
-export { default as axiosAuth } from 'helpers/axiosAuth'
-export { default as CSRFToken } from 'helpers/CSRFToken'
-export { default as HEX2RGBA } from 'helpers/HEX2RGBA'
+export { default as axiosAuth } from './axiosAuth'
+export { default as CSRFToken } from './CSRFToken'
+export { default as HEX2RGBA } from './HEX2RGBA'

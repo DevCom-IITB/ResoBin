@@ -1,6 +1,7 @@
-import { ResoBinLogo } from 'components/shared'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+
+import { ResoBinLogo } from 'components/shared'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`
@@ -26,7 +27,7 @@ const LogoContainer = styled(Link)`
 const Term = styled.span`
   display: none;
 
-  @media ${device.md} {
+  @media ${device.min.md} {
     position: absolute;
     right: 0;
     display: flex;
@@ -39,7 +40,7 @@ const Term = styled.span`
     color: lightgray;
   }
 
-  @media ${device.lg} {
+  @media ${device.min.lg} {
     padding: 0 0.75rem;
   }
 `

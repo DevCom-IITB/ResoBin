@@ -1,3 +1,3 @@
-export { default as Developer } from 'components/contact/Developer'
-export { default as DeveloperList } from 'components/contact/DeveloperList'
-export { default as ContactForm } from 'components/contact/form/ContactForm'
+export { default as Developer } from './Developer'
+export { default as DeveloperList } from './DeveloperList'
+export { default as ContactForm } from './form/ContactForm'

@@ -1,2 +1,2 @@
-export { default as PrivateRoute } from 'hoc/PrivateRoute'
-export { default as ScrollToTop } from 'hoc/ScrollToTop'
+export { default as PrivateRoute } from './PrivateRoute'
+export { default as ScrollToTop } from './ScrollToTop'

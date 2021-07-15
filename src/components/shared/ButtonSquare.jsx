@@ -1,5 +1,6 @@
-import { HEX2RGBA } from 'helpers'
 import styled from 'styled-components'
+
+import { HEX2RGBA } from 'helpers'
 
 const ButtonSquare = styled.button`
   height: 1.75rem;

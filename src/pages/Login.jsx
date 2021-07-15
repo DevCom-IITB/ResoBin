@@ -1,12 +1,13 @@
-import { Header } from 'components/header'
-import { LoginBody } from 'components/login'
-import { LoaderAnimation } from 'components/shared'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
-import { loginAction } from 'store/authSlice'
 import styled from 'styled-components'
+
+import { Header } from 'components/header'
+import { LoginBody } from 'components/login'
+import { LoaderAnimation } from 'components/shared'
+import { loginAction } from 'store/authSlice'
 import { fontSize } from 'styles/responsive'
 
 const Container = styled.div`
@@ -88,11 +89,13 @@ const Login = () => {
 
   return (
     <>
-      {loading && <LoaderAnimation />}
       <Helmet>
         <title>Log In - ResoBin</title>
         <meta name="description" content="Login to continue" />
       </Helmet>
+
+      {loading && <LoaderAnimation />}
+
       <Header />
 
       <Container>

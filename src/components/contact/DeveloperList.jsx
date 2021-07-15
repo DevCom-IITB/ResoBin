@@ -1,7 +1,8 @@
+import styled from 'styled-components'
+
 import ImgLaxman from 'assets/images/ProfileImg_Laxman.jpg'
 import { Developer } from 'components/contact'
 import Divider from 'components/shared/Divider'
-import styled from 'styled-components'
 
 const Container = styled.div`
   position: fixed;

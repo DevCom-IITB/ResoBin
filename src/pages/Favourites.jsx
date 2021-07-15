@@ -1,10 +1,11 @@
 import { Filter, X } from '@styled-icons/heroicons-outline'
-import { CourseList } from 'components/courses'
-import { useLocalStorage } from 'hooks'
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
-import { device } from 'styles/responsive'
+
+import { CourseList } from 'components/courses'
 import { courseData } from 'data/courses'
+import { useLocalStorage } from 'hooks'
+import { device } from 'styles/responsive'
 
 const Container = styled.div`
   display: flex;

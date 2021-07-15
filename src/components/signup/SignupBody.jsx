@@ -1,9 +1,10 @@
 import { Email } from '@styled-icons/material-outlined'
 import { LockPassword, Profile, User } from '@styled-icons/remix-line'
-import { ButtonSquare, InputRounded as Input } from 'components/shared'
-import { CSRFToken } from 'helpers'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+
+import { ButtonSquare, InputRounded as Input } from 'components/shared'
+import { CSRFToken } from 'helpers'
 // import { fontSize } from 'styles/responsive'
 
 const FormContainer = styled.form`

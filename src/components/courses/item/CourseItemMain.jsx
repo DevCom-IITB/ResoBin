@@ -2,16 +2,17 @@ import {
   Bookmark as BookmarkFill,
   BookmarkOutline as Bookmark,
 } from '@styled-icons/zondicons'
-import { ReadMore } from 'components/shared'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
+
+import { ReadMore } from 'components/shared'
 import { device, fontSize } from 'styles/responsive'
 
 const Container = styled.div`
   width: 100%;
 
-  @media ${device.min.sm} and ${device.max.md}, ${device.xl} {
+  @media ${device.min.sm} and ${device.max.md}, ${device.min.xl} {
     margin-right: 1rem;
   }
 `
@@ -112,7 +113,7 @@ const StyledFavourite = styled(({ Icon, className, ...props }) => {
 `
 
 const CourseItemMain = ({ data }) => {
-  const coursePage = `courses/${data.CourseCode.replace(/\s/g, '')}`
+  const coursePage = `courses/${data.Code.replace(/\s/g, '')}`
   const [favourite, setFavourite] = useState(false)
 
   const favouriteClick = () => {
@@ -122,8 +123,8 @@ const CourseItemMain = ({ data }) => {
   return (
     <Container>
       <SubTitle>
-        <Department>{data.Department}</Department>
-        <CreditContainer>{data.CourseCredit}</CreditContainer>
+        <Department>{data.Department || 'Not available'}</Department>
+        <CreditContainer>{data.TotalCredits}</CreditContainer>
         <StyledFavourite
           Icon={favourite ? BookmarkFill : Bookmark}
           onClick={favouriteClick}
@@ -131,12 +132,12 @@ const CourseItemMain = ({ data }) => {
       </SubTitle>
 
       <Title to={coursePage}>
-        <CourseCode>{data.CourseCode}</CourseCode>
-        <CourseTitle>{data.CourseTitle}</CourseTitle>
+        <CourseCode>{data.Code}</CourseCode>
+        <CourseTitle>{data.Title}</CourseTitle>
       </Title>
 
       <CourseDescription>
-        <ReadMore>{data.CourseDescription}</ReadMore>
+        <ReadMore>{data.Description || 'Not available'}</ReadMore>
       </CourseDescription>
     </Container>
   )

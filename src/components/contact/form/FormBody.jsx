@@ -1,6 +1,7 @@
 // import { useState } from 'react'
-import { ButtonSquare, InputSquared, TextAreaSquared } from 'components/shared'
 import styled from 'styled-components'
+
+import { ButtonSquare, InputSquared, TextAreaSquared } from 'components/shared'
 // import { Fragment } from 'react'
 // import { Link, NavLink } from 'react-router-dom'
 // import { connect } from 'react-redux'

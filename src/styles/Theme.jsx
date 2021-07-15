@@ -14,8 +14,9 @@
 // }
 
 const globalTheme = {
-  filterAsideWidth: '16rem',
+  asideWidth: '16rem',
   navbarHorizontalWidth: '9rem',
+  headerHeight: '3rem',
 }
 
 export const LightTheme = {

@@ -1,6 +1,7 @@
-import { ProfileImg } from 'components/shared'
 import { NavLink } from 'react-router-dom'
 import styled, { css } from 'styled-components'
+
+import { ProfileImg } from 'components/shared'
 import { device } from 'styles/responsive'
 
 const ContainerBase = css`

@@ -12,10 +12,10 @@ const ReadMoreText = styled.span`
 `
 
 const ReadMore = ({ children }) => {
-  const text = children
   const [isReadMore, setIsReadMore] = useState(true)
   const toggleReadMore = () => setIsReadMore(!isReadMore)
   const maxChars = 199
+  const text = children
 
   return text.length < maxChars ? (
     <>{text}</>

@@ -1,6 +1,7 @@
+import styled from 'styled-components'
+
 import { Toggle } from 'components/shared'
 import { useThemeContext } from 'context/ThemeContext'
-import styled from 'styled-components'
 
 const CheckboxContainer = styled.div`
   display: flex;

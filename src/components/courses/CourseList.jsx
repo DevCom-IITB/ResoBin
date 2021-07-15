@@ -1,34 +1,24 @@
-import { CourseItem, PageNo } from 'components/courses'
+import { Pagination } from 'antd'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+
+import { CourseItem } from 'components/courses'
+import { PageHeading, PageTitle } from 'components/shared'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`
   width: 100%;
   @media ${device.min.lg} {
-    padding-right: ${({ theme }) => theme.filterAsideWidth};
+    padding-right: ${({ theme }) => theme.asideWidth};
     transition: padding-right 200ms ease-in;
   }
 `
 
-const Heading = styled.h3`
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin: 0.5rem 1.5rem;
-`
-
-const Title = styled.span`
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: ${({ theme }) => theme.darksecondary};
-`
-
 const Results = styled.span`
   opacity: 80%;
-  margin: 0;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 1rem;
-  text-align: right;
   color: ${({ theme }) => theme.darksecondary};
 `
 
@@ -36,26 +26,50 @@ const List = styled.ul`
   margin: 0 0.75rem;
 `
 
-const CourseList = ({ coursesData }) => {
-  const courseCount = coursesData.length
+const CourseList = ({ courses }) => {
+  const count = courses ? courses.length : 0
+  const { loading } = useSelector((state) => state.course)
+
+  // pagination
+  const [pageInfo, setPageInfo] = useState({
+    page: 1,
+    perPage: 10,
+  })
+
+  const handlePageChange = (page) => setPageInfo({ ...pageInfo, page })
+  const { page, perPage } = pageInfo
+  const paginate = (data) => data.slice((page - 1) * perPage, page * perPage)
 
   return (
     <Container>
-      <Heading>
-        <Title>Courses</Title>
+      <PageHeading>
+        <PageTitle>Courses</PageTitle>
         <Results>
-          {courseCount}
+          {count}
           &nbsp;results found
         </Results>
-      </Heading>
+      </PageHeading>
 
       <List>
-        {coursesData.map((data) => (
-          <CourseItem data={data} key={data.id} />
-        ))}
+        {count > 0 ? (
+          paginate(courses).map((data) => (
+            <CourseItem data={data} key={data.id} />
+          ))
+        ) : (
+          <h1>
+            {loading ? 'Loading courses, please wait...' : 'No results found'}
+          </h1>
+        )}
       </List>
 
-      <PageNo />
+      <Pagination
+        defaultPageSize={perPage}
+        responsive
+        hideOnSinglePage
+        onChange={handlePageChange}
+        showSizeChanger={false}
+        total={count}
+      />
     </Container>
   )
 }

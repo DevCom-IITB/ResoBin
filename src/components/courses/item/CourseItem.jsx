@@ -1,6 +1,7 @@
+import styled from 'styled-components'
+
 import { CourseItemMain, CourseItemSub } from 'components/courses/item'
 import { device } from 'styles/responsive'
-import styled from 'styled-components'
 
 const Container = styled.li`
   width: 100%;

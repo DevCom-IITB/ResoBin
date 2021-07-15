@@ -1,5 +1,6 @@
-import { useLocalStorage } from 'hooks'
 import { createContext, useContext } from 'react'
+
+import { useLocalStorage } from 'hooks'
 
 const ThemeContext = createContext()
 

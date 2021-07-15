@@ -7,10 +7,11 @@ import {
 } from '@styled-icons/heroicons-outline'
 import { ContactSupport } from '@styled-icons/material-outlined'
 import { BookmarkOutline } from '@styled-icons/zondicons'
+import styled from 'styled-components'
+
 import ProfileImage from 'assets/images/ProfileImg_Laxman.jpg'
 import { MenuItem, ProfileImgItem } from 'components/menu'
 import { Divider } from 'components/shared'
-import styled from 'styled-components'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`

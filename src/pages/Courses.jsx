@@ -1,9 +1,12 @@
 import { Filter, X } from '@styled-icons/heroicons-outline'
-import { CourseBody } from 'components/courses'
-import { useViewportContext } from 'context/ViewportContext'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+
+import { CourseBody } from 'components/courses'
+import { LoaderAnimation } from 'components/shared'
+import { useViewportContext } from 'context/ViewportContext'
 import { breakpoints, device } from 'styles/responsive'
 
 const Container = styled.div`
@@ -32,13 +35,17 @@ const IconContainer = styled.div`
 `
 
 const Courses = () => {
+  // loading status when fetching course list
+  const { loading } = useSelector((state) => state.course)
+
+  // Show or hide dropdown filters state
   const [showFilters, setShowFilters] = useState(false)
   const handleClick = () => {
     setShowFilters(!showFilters)
   }
 
+  // Responsiveness for filter icon (media query alternative)
   const { width } = useViewportContext()
-
   const [Icon, setIcon] = useState(Filter)
   useEffect(() => {
     if (width > breakpoints.lg) {
@@ -53,6 +60,8 @@ const Courses = () => {
         <title>Courses - ResoBin</title>
         <meta name="description" content="Courses availabe at IIT Bombay" />
       </Helmet>
+
+      {loading && <LoaderAnimation />}
 
       {Icon && (
         <IconContainer onClick={handleClick}>

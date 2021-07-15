@@ -1,16 +1,19 @@
 import { Search } from '@styled-icons/heroicons-outline'
+import { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import styled from 'styled-components'
+
 import { CourseList } from 'components/courses'
 import { FilterDropdown, FilterAside } from 'components/filter'
 import { InputRounded } from 'components/shared'
 import { useViewportContext } from 'context/ViewportContext'
-import { courseData } from 'data/courses'
+// import { courseData } from 'data/courses'
 import { HEX2RGBA } from 'helpers'
-import { useState } from 'react'
-import styled from 'styled-components'
 import { breakpoints, device } from 'styles/responsive'
 
 const Container = styled.div`
   width: 100%;
+  min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
 `
 
 const SearchContainer = styled.div`
@@ -30,7 +33,7 @@ const SearchContainer = styled.div`
   );
 
   @media ${device.min.lg} {
-    margin-right: ${({ theme }) => theme.filterAsideWidth};
+    margin-right: ${({ theme }) => theme.asideWidth};
     transition: margin-right 200ms ease-in;
   }
 `
@@ -54,6 +57,11 @@ const CourseBody = ({ showFilters, onClick }) => {
   // search input state
   const [search, setSearch] = useState('')
   const handleChange = (event) => setSearch((e) => e.target.value)
+
+  const { list: courseData } = useSelector((state) => state.course)
+  useEffect(() => {
+    // search
+  }, [courseData])
 
   return (
     <Container>
@@ -81,7 +89,7 @@ const CourseBody = ({ showFilters, onClick }) => {
 
       <FilterAside FilterDropdown showFilters={width >= breakpoint} />
 
-      <CourseList coursesData={courseData} />
+      <CourseList courses={courseData} />
     </Container>
   )
 }

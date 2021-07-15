@@ -1,5 +1,6 @@
-import { ButtonSquare } from 'components/shared'
 import styled, { css } from 'styled-components'
+
+import { ButtonSquare } from 'components/shared'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`
@@ -75,12 +76,14 @@ const buttonStyle = {
 }
 
 const CourseItemSub = ({ data }) => {
+  const { Semester: sem } = data
+
   return (
     <Container>
       <Title>Semester</Title>
       <SemesterGroup>
-        <Autumn active={data.Semester.includes('Autumn')}>Autumn</Autumn>
-        <Spring active={data.Semester.includes('Spring')}>Spring</Spring>
+        <Autumn active={sem && sem.includes('Autumn')}>Autumn</Autumn>
+        <Spring active={sem && sem.includes('Spring')}>Spring</Spring>
       </SemesterGroup>
 
       <Title>Study material</Title>
