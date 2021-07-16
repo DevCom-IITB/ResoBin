@@ -35,9 +35,6 @@ const IconContainer = styled.div`
 `
 
 const Courses = () => {
-  // loading status when fetching course list
-  const { loading } = useSelector((state) => state.course)
-
   // Show or hide dropdown filters state
   const [showFilters, setShowFilters] = useState(false)
   const handleClick = () => {
@@ -60,8 +57,6 @@ const Courses = () => {
         <title>Courses - ResoBin</title>
         <meta name="description" content="Courses availabe at IIT Bombay" />
       </Helmet>
-
-      {loading && <LoaderAnimation />}
 
       {Icon && (
         <IconContainer onClick={handleClick}>

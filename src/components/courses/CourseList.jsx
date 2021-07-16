@@ -1,9 +1,8 @@
-import { Pagination } from 'antd'
+import { Pagination, Skeleton } from 'antd'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
-import { CourseItem } from 'components/courses'
+import { CourseItem, CourseNotFound } from 'components/courses'
 import { PageHeading, PageTitle } from 'components/shared'
 import { device } from 'styles/responsive'
 
@@ -28,7 +27,6 @@ const List = styled.ul`
 
 const CourseList = ({ courses }) => {
   const count = courses ? courses.length : 0
-  const { loading } = useSelector((state) => state.course)
 
   // pagination
   const [pageInfo, setPageInfo] = useState({
@@ -56,9 +54,7 @@ const CourseList = ({ courses }) => {
             <CourseItem data={data} key={data.id} />
           ))
         ) : (
-          <h1>
-            {loading ? 'Loading courses, please wait...' : 'No results found'}
-          </h1>
+          <CourseNotFound />
         )}
       </List>
 

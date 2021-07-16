@@ -1,4 +1,5 @@
 export { default as CourseBody } from './CourseBody'
 export { default as CourseList } from './CourseList'
+export { default as CourseNotFound } from './CourseNotFound'
 export { CourseItem } from './item'
 export { default as PageNo } from './PageNo'
