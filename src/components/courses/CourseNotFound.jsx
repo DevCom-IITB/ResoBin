@@ -1,6 +1,9 @@
 import { Skeleton } from 'antd'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+
+import NotFoundSearch from 'assets/images/NotFoundSearch.png'
 
 const Container = styled.div`
   display: flex;
@@ -14,8 +17,45 @@ const Container = styled.div`
 `
 
 const Title = styled.h2`
-  margin: 0 0 30px 0;
+  max-width: 30rem;
+  margin: 1rem 0 0.5rem;
+  font-weight: 400;
+  font-size: 0.875rem;
   text-align: center;
+  text-decoration: none;
+  letter-spacing: 1px;
+  color: ${({ theme }) => theme.darksecondary};
+`
+
+const Content = styled.p`
+  max-width: 22rem;
+  font-weight: 400;
+  font-size: 0.875rem;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 1px;
+  color: ${({ theme }) => theme.secondary};
+`
+
+const StyledLink = styled(Link)`
+  font-weight: 400;
+  font-size: 0.75rem;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 1px;
+  color: ${({ theme }) => theme.secondary};
+
+  &:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 1px;
+    color: ${({ theme }) => theme.secondary};
+  }
+`
+
+const Image = styled.img`
+  max-width: 12rem;
+  margin-top: 2rem;
 `
 
 const CourseNotFound = () => {
@@ -25,13 +65,19 @@ const CourseNotFound = () => {
     <Skeleton active />
   ) : (
     <Container>
+      <Image src={NotFoundSearch} alt="No results found" />
       <Title>
-        <h1>Course Not Found</h1>
+        <h1>No results found</h1>
       </Title>
-      <p>
-        We couldn&rsquo;t find the course you were looking for. Please try a
-        different search or contact us if you think this is an error.
-      </p>
+
+      <Content>
+        Try adjusting your search or filter to find what you&rsquo;re looking
+        for.
+      </Content>
+
+      <Content style={{ fontSize: '0.75rem' }}>
+        Think this is an error? <StyledLink to="contact">Contact us</StyledLink>
+      </Content>
     </Container>
   )
 }

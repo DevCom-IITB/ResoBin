@@ -49,7 +49,7 @@ const CourseList = ({ courses }) => {
       </PageHeading>
 
       <List>
-        {count > 0 ? (
+        {count < 0 ? (
           paginate(courses).map((data) => (
             <CourseItem data={data} key={data.id} />
           ))
@@ -58,14 +58,14 @@ const CourseList = ({ courses }) => {
         )}
       </List>
 
-      <Pagination
+      {/* <Pagination
         defaultPageSize={perPage}
         responsive
         hideOnSinglePage
         onChange={handlePageChange}
         showSizeChanger={false}
         total={count}
-      />
+      /> */}
     </Container>
   )
 }
