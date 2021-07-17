@@ -29,16 +29,16 @@ const FormBox = styled.div`
 `
 
 const TitleHeader = styled.h4`
-  font-weight: 300;
   font-size: ${fontSize.responsive.lg};
+  font-weight: 300;
   text-align: center;
   letter-spacing: 2px;
   color: ${({ theme }) => theme.textColor};
 `
 
 const StyledLink = styled(Link)`
-  font-weight: 400;
   font-size: 0.875rem;
+  font-weight: 400;
   text-align: center;
   text-decoration: none;
   letter-spacing: 1px;

@@ -35,9 +35,9 @@ const GoogleIcon = styled.img`
 
 const Title = styled.h4`
   margin: 0 1rem 0 0.5rem;
-  font-weight: 400;
   font-size: 1.25rem;
   font-family: 'Roboto', sans-serif;
+  font-weight: 400;
   color: #444444;
 `
 
@@ -46,8 +46,8 @@ const ContainerOr = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
-  font-weight: 300;
   font-size: 1rem;
+  font-weight: 300;
   letter-spacing: 0.25rem;
 `
 

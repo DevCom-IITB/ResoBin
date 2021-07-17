@@ -27,7 +27,10 @@ const CourseBody = ({ showFilters, onClick }) => {
 
   return (
     <Container>
-      <CourseSearch showFilters={showFilters && width < breakpoints.lg} />
+      <CourseSearch
+        showFilters={showFilters}
+        disableFilter={width >= breakpoints.lg}
+      />
       <FilterAside FilterDropdown showFilters={width >= breakpoints.lg} />
 
       <CourseList courses={courseData} />

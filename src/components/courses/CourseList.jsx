@@ -17,8 +17,8 @@ const Container = styled.div`
 
 const Results = styled.span`
   opacity: 80%;
-  font-weight: 600;
   font-size: 1rem;
+  font-weight: 600;
   color: ${({ theme }) => theme.darksecondary};
 `
 

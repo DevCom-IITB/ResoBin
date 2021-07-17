@@ -62,8 +62,8 @@ const Title = styled.h4`
     overflow: hidden;
     align-items: center;
     width: 70%;
-    font-weight: 400;
     font-size: 0.875rem;
+    font-weight: 400;
     text-overflow: ellipsis;
     white-space: nowrap;
     letter-spacing: 0.5px;

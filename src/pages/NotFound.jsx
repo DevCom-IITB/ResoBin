@@ -14,22 +14,22 @@ const Container = styled.div`
 
 const Title = styled.h1`
   margin-bottom: 2rem;
-  font-weight: 400;
   font-size: clamp(1rem, 10vw, 5rem);
+  font-weight: 400;
   color: ${({ theme }) => theme.textColor};
 `
 
 const Subtitle = styled.p`
   margin-bottom: clamp(1rem, 4vw, 4rem);
-  font-weight: 200;
   font-size: clamp(0.75rem, 4vw, 2rem);
+  font-weight: 200;
 `
 
 const StyledLink = styled.button`
   margin-bottom: 1rem;
   border: none;
-  font-weight: 200;
   font-size: clamp(1rem, 6vw, 2.5rem);
+  font-weight: 200;
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 2px;

@@ -12,8 +12,8 @@ const Container = styled.div`
 
 const Title = styled.h4`
   margin: 1rem 1.5rem;
-  font-weight: bold;
   font-size: 1.5rem;
+  font-weight: bold;
   color: ${({ theme }) => theme.darksecondary};
 `
 

@@ -12,8 +12,8 @@ const Container = styled.div`
 const Title = styled.span`
   display: block;
   margin: 0 0 0.5rem;
-  font-weight: 400;
   font-size: 0.8rem;
+  font-weight: 400;
   letter-spacing: 1.5px;
   color: ${({ theme }) => theme.textColor};
 `
@@ -51,9 +51,8 @@ const Pil = css`
   height: 1.5rem;
   margin: 0;
   border-radius: 100px;
-  font-weight: 700;
   font-size: 0.75rem;
-  letter-spacing: 1px;
+  font-weight: 700;
   color: ${({ theme }) => theme.darksecondary};
 `
 

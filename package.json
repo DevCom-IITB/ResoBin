@@ -13,7 +13,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint:fix": "eslint 'src/**/*.{js,jsx}'"
+    "lint": "npm-run-all --parallel lint:*",
+    "lint:js": "eslint src/**/*.{js,jsx} --fix",
+    "lint:css": "stylelint src/**/*.{js,jsx} --fix"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.0",

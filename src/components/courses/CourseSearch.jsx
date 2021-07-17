@@ -31,16 +31,13 @@ const SearchContainer = styled.div`
 
 const Overlay = styled.div`
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   z-index: 4;
-  display: ${({ showFilters }) => (showFilters ? 'initial' : 'none')};
   background-color: rgba(0, 0, 0, 0.55);
 `
 
-const CourseSearch = ({ showFilters }) => {
+// Disable filter will disable the filter entirely, show filter will trigger on/off animation
+const CourseSearch = ({ showFilters: showFilter, disableFilter }) => {
   // search input state
   const [search, setSearch] = useState('')
   const handleChange = (event) => setSearch((e) => e.target.value)
@@ -56,12 +53,12 @@ const CourseSearch = ({ showFilters }) => {
 
   return (
     <SearchContainer>
-      {showFilters ? (
+      {!disableFilter && (
         <>
-          <FilterDropdown showFilters={showFilters} />
-          <Overlay showFilters={showFilters} />
+          <FilterDropdown showFilters={showFilter} />
+          {showFilter && <Overlay />}
         </>
-      ) : null}
+      )}
 
       <InputRounded
         name="courseSearch"

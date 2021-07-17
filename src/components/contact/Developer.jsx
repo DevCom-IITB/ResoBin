@@ -36,10 +36,10 @@ const Title = styled.h4`
   display: flex;
   overflow: hidden;
   align-items: center;
-  font-weight: 300;
-  font-size: 1rem;
-  text-overflow: ellipsis;
   margin-left: 0.5rem;
+  font-size: 1rem;
+  font-weight: 300;
+  text-overflow: ellipsis;
   color: ${({ theme }) => theme.textColor};
 `
 

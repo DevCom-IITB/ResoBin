@@ -18,15 +18,15 @@ const Container = styled.div`
 
 const Title = styled.h1`
   margin: 1rem 0 0.5rem;
-  font-weight: 500;
   font-size: 1.75rem;
+  font-weight: 500;
   color: ${({ theme }) => theme.darksecondary};
 `
 
 const Content = styled.p`
   max-width: 22rem;
-  font-weight: 400;
   font-size: 0.875rem;
+  font-weight: 400;
   text-align: center;
   text-decoration: none;
   letter-spacing: 1px;
@@ -34,8 +34,8 @@ const Content = styled.p`
 `
 
 const StyledLink = styled(Link)`
-  font-weight: 500;
   font-size: 0.75rem;
+  font-weight: 500;
   color: inherit;
 
   &:hover {

@@ -1,9 +1,9 @@
-// Checkbox
+@use 'styles/scss/variables' as *;
 
 .ant-checkbox-wrapper {
   margin: 0;
-  font-weight: 400;
   font-size: 0.75rem;
+  font-weight: 400;
   color: white;
 }
 
@@ -19,5 +19,15 @@
     margin: 0;
     font-weight: 400;
     color: white;
+  }
+}
+
+.ant-checkbox-checked {
+  & .ant-checkbox-inner {
+    background: $logo;
+  }
+
+  &::after {
+    border: 1px solid $logo;
   }
 }
