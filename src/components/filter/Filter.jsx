@@ -4,8 +4,9 @@ import styled from 'styled-components'
 import { FilterItem } from 'components/filter'
 import MultiSelect from 'components/filter/filterData'
 import { Divider } from 'components/shared'
-import { filterData } from 'data/courses'
 import { device } from 'styles/responsive'
+
+import filterData from './mock/filterData.json'
 
 const ContainerDropdown = styled.div`
   position: absolute;
