@@ -34,14 +34,16 @@ const CourseHeader = css`
 
 const CourseCode = styled.span`
   margin-right: 0.375rem;
-  font-weight: 600;
   font-size: ${fontSize.responsive.xl};
+  font-weight: 600;
+
   ${CourseHeader}
 `
 
 const CourseTitle = styled.span`
-  font-weight: 400;
   font-size: ${fontSize.responsive.md};
+  font-weight: 400;
+
   ${CourseHeader}
 `
 
@@ -58,8 +60,8 @@ const Department = styled.span`
   overflow: hidden;
   width: calc(100% - 3.75rem);
   margin: 0;
-  font-weight: 600;
   font-size: ${fontSize.responsive.xs};
+  font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: ${({ theme }) => theme.primary};
@@ -71,9 +73,9 @@ const Department = styled.span`
 
 const CourseDescription = styled.p`
   margin: 0.75rem 0;
-  font-weight: 300;
   font-size: ${fontSize.static.md};
   font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 300;
   text-align: justify;
   color: lightgray;
 `
@@ -87,8 +89,8 @@ const CreditContainer = styled.span`
   width: 1rem;
   height: 1rem;
   border-radius: 50%;
-  font-weight: 700;
   font-size: ${fontSize.responsive.sm};
+  font-weight: 700;
   color: ${({ theme }) => theme.darksecondary};
   background: white;
   box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.6);

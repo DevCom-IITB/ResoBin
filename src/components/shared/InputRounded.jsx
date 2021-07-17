@@ -24,8 +24,8 @@ const Input = styled.input`
   padding-right: 1.5rem;
   border: none;
   outline: none;
-  font-weight: 500;
   font-size: 0.875rem;
+  font-weight: 500;
   color: #1f1c2e;
 
   &::placeholder {

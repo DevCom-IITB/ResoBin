@@ -27,8 +27,8 @@ const ContainerSpaceBetween = styled.div`
 
 const ForgotPassword = styled(Link)`
   margin-left: 1rem;
-  font-weight: 400;
   font-size: 0.875rem;
+  font-weight: 400;
   color: ${({ theme }) => theme.textColor};
 
   &:hover {

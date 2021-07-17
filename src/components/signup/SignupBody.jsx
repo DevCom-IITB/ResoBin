@@ -20,14 +20,14 @@ const FormContainer = styled.form`
 
 const SubTitle = styled.h4`
   display: flex;
-  font-weight: 300;
   font-size: 0.875rem;
+  font-weight: 300;
   color: ${({ theme }) => theme.textColor};
 `
 
 const StyledLink = styled(Link)`
-  font-weight: 600;
   font-size: 0.875rem;
+  font-weight: 600;
   color: ${({ theme }) => theme.textColor};
 
   &:hover {

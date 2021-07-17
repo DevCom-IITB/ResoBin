@@ -15,10 +15,10 @@ const Container = styled.div`
 `
 
 const Title = styled.div`
-  font-style: normal;
-  font-weight: 600;
   font-size: ${({ size }) => size};
   font-family: Montserrat, sans-serif;
+  font-style: normal;
+  font-weight: 600;
   line-height: 110%;
   color: ${({ theme }) => theme.logo};
 `

@@ -48,16 +48,16 @@ const Header = styled.div`
 `
 
 const Title = styled.h4`
-  font-weight: 700;
   font-size: 1.25rem;
+  font-weight: 700;
   letter-spacing: 1px;
   color: ${({ theme }) => theme.textColor};
 `
 
 const ClearAll = styled.button`
   border: 0;
-  font-weight: 400;
   font-size: 0.75rem;
+  font-weight: 400;
   color: ${({ theme }) => theme.textColor};
   background: transparent;
   cursor: pointer;
@@ -84,7 +84,7 @@ const ListAside = styled.div`
 //   offeredIn: null,
 // }
 
-export const FilterDropdown = ({ showFilters, onClick }) => {
+export const FilterDropdown = ({ showFilters }) => {
   // const [filters, setFilters] = useState(initialState)
   const handleClearAll = (e) => {
     // setFilters(initialState)

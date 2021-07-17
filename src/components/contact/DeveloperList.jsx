@@ -6,23 +6,18 @@ import Divider from 'components/shared/Divider'
 
 const Container = styled.div`
   position: fixed;
-  top: 4rem;
+  top: ${({ theme }) => theme.headerHeight};
   right: 0;
-  z-index: 7; /* To put searchbar at the bottom */
-  width: 19rem;
+  z-index: 7;
+  width: ${({ theme }) => theme.asideWidth};
   height: 100%;
-  padding: 2rem;
   background: ${({ theme }) => theme.secondary};
   box-shadow: inset 2px 0 5px rgba(0, 0, 0, 0.3);
 `
 
 const Title = styled.h4`
-  margin-bottom: 1rem;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 1.25rem;
-  line-height: 30px;
-  letter-spacing: 1.5px;
+  padding: 1rem;
+  font-size: 1rem;
   color: ${({ theme }) => theme.textColor};
 `
 
@@ -30,7 +25,7 @@ const DeveloperList = () => {
   return (
     <Container>
       <Title>Made with ❤️ by</Title>
-      <Divider margin="1rem 0 1.5rem 0" />
+      <Divider style={{ margin: '0 1rem', width: 'auto' }} />
 
       <Developer
         name="Laxman Desai"

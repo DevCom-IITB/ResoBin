@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { CourseItem } from 'components/courses'
-import { PageHeading, PageTitle } from 'components/shared'
+import { PageHeading, PageTitle, NotFoundSearch } from 'components/shared'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`
@@ -17,8 +17,8 @@ const Container = styled.div`
 
 const Results = styled.span`
   opacity: 80%;
-  font-weight: 600;
   font-size: 1rem;
+  font-weight: 600;
   color: ${({ theme }) => theme.darksecondary};
 `
 
@@ -56,9 +56,7 @@ const CourseList = ({ courses }) => {
             <CourseItem data={data} key={data.id} />
           ))
         ) : (
-          <h1>
-            {loading ? 'Loading courses, please wait...' : 'No results found'}
-          </h1>
+          <NotFoundSearch loading={loading} active />
         )}
       </List>
 

@@ -32,8 +32,8 @@ const Term = styled.span`
     right: 0;
     display: flex;
     padding: 0 1.5rem;
-    font-weight: 400;
     font-size: 0.875rem;
+    font-weight: 400;
     line-height: 80%;
     white-space: nowrap;
     letter-spacing: 1.5px;

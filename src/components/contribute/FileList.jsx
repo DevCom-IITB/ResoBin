@@ -21,9 +21,9 @@ const ContainerAside = styled.div`
 const Title = styled.span`
   display: inline-block;
   margin-bottom: 1rem;
+  font-size: 1.5rem;
   font-style: normal;
   font-weight: bold;
-  font-size: 1.5rem;
   line-height: 30px;
   letter-spacing: 1.5px;
   color: ${({ theme }) => theme.textColor};

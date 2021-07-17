@@ -52,6 +52,7 @@ module.exports = {
 
         // Positioning
         'position',
+        'inset',
         'top',
         'right',
         'bottom',
@@ -219,13 +220,13 @@ module.exports = {
 
         // Font
         'font',
+        'font-size',
+        'font-family',
         'font-style',
         'font-variant',
         'font-weight',
         'font-stretch',
-        'font-size',
         'font-size-adjust',
-        'font-family',
         'font-emphasize',
         'font-emphasize-position',
         'font-emphasize-style',
