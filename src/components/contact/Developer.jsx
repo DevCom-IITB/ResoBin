@@ -6,7 +6,7 @@ const Container = styled.a`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 4rem;
+  height: ${({ theme }) => theme.headerHeight};
   padding: 0.5rem 1.5rem;
   margin: 0.5rem 0;
   text-decoration: none;
@@ -16,9 +16,10 @@ const Container = styled.a`
 
   &:hover {
     text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 1.5px;
-    background-color: rgba(0, 0, 0, 0.1);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 1px;
+    color: ${({ theme }) => theme.textColor};
+    background-color: rgba(0, 0, 0, 0.2);
     box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.24);
     transition: 100ms ease-out;
   }
@@ -27,22 +28,18 @@ const Container = styled.a`
 const IconContainer = styled.div`
   display: flex;
   align-items: center;
-  width: 30%; /* 60px */
 `
 
-const TitleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 70%;
-  margin: 0 0 0 1.5rem;
-`
+const TitleContainer = styled.div``
 
 const Title = styled.h4`
+  display: flex;
   overflow: hidden;
+  align-items: center;
   font-weight: 300;
   font-size: 1rem;
-  letter-spacing: 1px;
+  text-overflow: ellipsis;
+  margin-left: 0.5rem;
   color: ${({ theme }) => theme.textColor};
 `
 
@@ -50,11 +47,9 @@ const Developer = ({ name, img, href, switchOrder }) => {
   return (
     <Container href={href}>
       <IconContainer>
-        <ProfileImg src={img} size="3rem" />
+        <ProfileImg src={img} size="2rem" />
       </IconContainer>
-      <TitleContainer>
-        <Title>{name}</Title>
-      </TitleContainer>
+      <Title>{name}</Title>
     </Container>
   )
 }

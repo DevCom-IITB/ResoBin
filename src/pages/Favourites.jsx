@@ -2,8 +2,7 @@ import { Filter, X } from '@styled-icons/heroicons-outline'
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
 
-import { CourseList } from 'components/courses'
-import { courseData } from 'data/courses'
+import { CourseBody } from 'components/courses'
 import { useLocalStorage } from 'hooks'
 import { device } from 'styles/responsive'
 
@@ -49,7 +48,7 @@ const Favourites = () => {
         {showFilters ? <X size="1.5rem" /> : <Filter size="1.5rem" />}
       </IconContainer>
 
-      <CourseList coursesData={courseData} />
+      <CourseBody showFilters={false} onClick={handleClick} />
     </Container>
   )
 }

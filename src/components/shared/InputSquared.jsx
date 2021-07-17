@@ -7,13 +7,12 @@ const sharedStyles = css`
   display: block;
   opacity: 80%;
   width: 100%;
-  padding: 0.5rem 1.25rem;
-  margin: 0 auto 1.25rem auto;
+  padding: 0.375rem 1rem;
+  margin: 0 auto 1rem auto;
   border: 1px solid ${({ theme }) => HEX2RGBA(theme.textColor, 40)};
   border-radius: 0.25rem;
   outline: 0;
-  font-weight: 600;
-  font-size: 1.25rem;
+  font-size: 1rem;
   color: ${({ theme }) => theme.activeMenu};
   background-color: ${({ theme }) => HEX2RGBA(theme.textColor, 20)};
   transition-duration: 100ms;
@@ -24,8 +23,7 @@ const sharedStyles = css`
 
   &:focus {
     opacity: 100%;
-    color: #1f1c2e;
-    background-color: white;
+    background-color: ${({ theme }) => theme.textInactive};
   }
 `
 
