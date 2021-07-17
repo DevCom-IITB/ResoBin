@@ -34,14 +34,16 @@ const CourseHeader = css`
 
 const CourseCode = styled.span`
   margin-right: 0.375rem;
-  font-weight: 600;
   font-size: ${fontSize.responsive.xl};
+  font-weight: 600;
+
   ${CourseHeader}
 `
 
 const CourseTitle = styled.span`
-  font-weight: 400;
   font-size: ${fontSize.responsive.md};
+  font-weight: 400;
+
   ${CourseHeader}
 `
 

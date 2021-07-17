@@ -1,41 +1,40 @@
 import { Helmet } from 'react-helmet-async'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
+
+import NotFoundImg from 'assets/images/NotFound.png'
+import { fontSize } from 'styles/responsive'
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  color: ${({ theme }) => theme.textColor};
+  min-height: 100vh;
   background-color: ${({ theme }) => theme.secondary};
 `
 
-const Title = styled.h1`
-  margin-bottom: 2rem;
-  font-size: clamp(1rem, 10vw, 5rem);
-  font-weight: 400;
-  color: ${({ theme }) => theme.textColor};
-`
-
 const Subtitle = styled.p`
-  margin-bottom: clamp(1rem, 4vw, 4rem);
-  font-size: clamp(0.75rem, 4vw, 2rem);
-  font-weight: 200;
+  font-size: ${fontSize.responsive.xxl};
+  font-weight: 300;
+  text-align: center;
+  color: ${({ theme }) => theme.textColor};
 `
 
-const StyledLink = styled.button`
-  margin-bottom: 1rem;
-  border: none;
-  font-size: clamp(1rem, 6vw, 2.5rem);
-  font-weight: 200;
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 2px;
-  color: ${({ theme }) => theme.textColor};
-  background: none;
-  cursor: pointer;
+const StyledLink = styled(Link)`
+  font-size: ${fontSize.responsive.xl};
+  font-weight: 400;
+  color: inherit;
+
+  &:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 1px;
+  }
+`
+
+const Image = styled.img`
+  max-height: 15rem;
 `
 
 const NotFound = () => {
@@ -44,16 +43,17 @@ const NotFound = () => {
   return (
     <Container>
       <Helmet>
-        <title>Page Not Found</title>
-        <meta
-          name="description"
-          content="The page you were searching for does not exist"
-        />
+        <title>404 Not Found</title>
+        <meta name="description" content="Page not found" />
       </Helmet>
 
-      <Title>404 Not Found</Title>
-      <Subtitle>The link you requested does not exist.</Subtitle>
-      <StyledLink onClick={history.goBack}>Go back</StyledLink>
+      <Image src={NotFoundImg} alt="404 Page not found" />
+
+      <Subtitle>
+        This page is not available.
+        <br />
+        <StyledLink onClick={history.goBack}>Take me back!</StyledLink>
+      </Subtitle>
     </Container>
   )
 }

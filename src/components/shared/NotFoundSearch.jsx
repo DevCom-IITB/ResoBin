@@ -72,7 +72,7 @@ const NotFoundSearch = ({ loading = false, active = true }) => {
         </Content>
 
         <Content style={{ fontSize: '0.75rem' }}>
-          Think this is an error?{' '}
+          Think this is an error?&nbsp;
           <StyledLink to="contact">Contact us</StyledLink>
         </Content>
       </Container>
