@@ -3,8 +3,8 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
-import { CourseItem, NotFoundSearch } from 'components/courses'
-import { PageHeading, PageTitle } from 'components/shared'
+import { CourseItem } from 'components/courses'
+import { PageHeading, PageTitle, NotFoundSearch } from 'components/shared'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`

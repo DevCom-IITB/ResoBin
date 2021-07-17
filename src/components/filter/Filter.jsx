@@ -84,7 +84,7 @@ const ListAside = styled.div`
 //   offeredIn: null,
 // }
 
-export const FilterDropdown = ({ showFilters, onClick }) => {
+export const FilterDropdown = ({ showFilters }) => {
   // const [filters, setFilters] = useState(initialState)
   const handleClearAll = (e) => {
     // setFilters(initialState)
