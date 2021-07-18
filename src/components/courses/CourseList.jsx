@@ -26,9 +26,8 @@ const List = styled.ul`
   margin: 0 0.75rem;
 `
 
-const CourseList = ({ courses }) => {
+const CourseList = ({ courses, loading }) => {
   const count = courses ? courses.length : 0
-  const { loading } = useSelector((state) => state.course)
 
   // pagination
   const [pageInfo, setPageInfo] = useState({
@@ -51,12 +50,13 @@ const CourseList = ({ courses }) => {
       </PageHeading>
 
       <List>
+        <
         {count > 0 ? (
           paginate(courses).map((data) => (
             <CourseItem data={data} key={data.id} />
           ))
         ) : (
-          <NotFoundSearch loading={loading} active />
+          <NotFoundSearch loading={loading} active={} />
         )}
       </List>
 

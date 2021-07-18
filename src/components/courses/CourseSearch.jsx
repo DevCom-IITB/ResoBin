@@ -44,21 +44,13 @@ const StyledSearch = styled(Search)`
 `
 
 // Disable filter will disable the filter entirely, show filter will trigger on/off animation
-const CourseSearch = ({ showFilter }) => {
-  // search input state
-  const [search, setSearch] = useState('')
-  const handleChange = (event) => setSearch(event.currentTarget.value)
-  const [loading, setLoading] = useState(false)
-
-  // const { list: courseData } = useSelector((state) => state.course)
-  // useEffect(() => {
-  //   // search
-  // }, [courseData])
-
-  useEffect(() => {
-    console.log('search', search)
-  }, [search])
-
+const CourseSearch = ({
+  value,
+  onChange,
+  showFilter,
+  filterState,
+  loading = false,
+}) => {
   return (
     <SearchContainer>
       <FilterDropdown showFilters={showFilter} />
@@ -69,8 +61,8 @@ const CourseSearch = ({ showFilter }) => {
         placeholder="course code, name or description"
         allowClear
         maxLength={100}
-        onChange={handleChange}
-        value={search}
+        onChange={onChange}
+        value={value}
         prefix={loading ? <LoadingOutlined /> : <StyledSearch />}
       />
     </SearchContainer>

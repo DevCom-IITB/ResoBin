@@ -12,25 +12,58 @@ const Container = styled.div`
   min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
 `
 
+const searchFields = ['Code', 'Title', 'Description']
+
 const CourseBody = ({ showFilters: showFilter, onClick }) => {
   // responsive layout state
   const { width } = useViewportContext()
+  // total course data
+  const { list: courseData, loading: loadingAPI } = useSelector(
+    (state) => state.course
+  )
+
+  // filtered course data
+  const [courseDataFiltered, setCourseDataFiltered] = useState([])
 
   // search input state
-  // const [search, setSearch] = useState('')
-  // const handleChange = (event) => setSearch((e) => e.target.value)
+  const [search, setSearch] = useState('')
+  const handleChange = (event) => setSearch(event.currentTarget.value)
 
-  const { list: courseData } = useSelector((state) => state.course)
+  // loading status while searching
+  const [loadingSearch, setLoadingSearch] = useState(false)
+
   useEffect(() => {
-    // search
-  }, [courseData])
+    // search through course data
+    setLoadingSearch(true)
+
+    async function filterMyData() {
+      await setTimeout(() => {
+        setCourseDataFiltered(
+          courseData.filter((course) =>
+            course.Title.toLowerCase().includes(search.toLowerCase())
+          )
+        )
+        setLoadingSearch(false)
+      }, 1000)
+    }
+
+    filterMyData()
+  }, [search, courseData])
+
+  const loading = loadingSearch || loadingAPI
 
   return (
     <Container>
-      <CourseSearch showFilter={width < breakpoints.lg && showFilter} />
+      <CourseSearch
+        loading={loading}
+        value={search}
+        onChange={handleChange}
+        showFilter={width < breakpoints.lg && showFilter}
+        filterState={null}
+      />
       <FilterAside FilterDropdown showFilters={width >= breakpoints.lg} />
 
-      <CourseList courses={courseData} />
+      <CourseList courses={courseDataFiltered} loading={loading} />
     </Container>
   )
 }
