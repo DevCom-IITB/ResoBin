@@ -18,15 +18,15 @@ const StrictApp = () => {
   return (
     <React.StrictMode>
       <Provider store={store}>
-        <PersistGate loading={<LoaderAnimation />} persistor={persistor}>
-          <Router>
-            <ContextProvider>
-              <HelmetProvider>
-                <App />
-              </HelmetProvider>
-            </ContextProvider>
-          </Router>
-        </PersistGate>
+        {/* <PersistGate loading={<LoaderAnimation />} persistor={persistor}> */}
+        <Router>
+          <ContextProvider>
+            <HelmetProvider>
+              <App />
+            </HelmetProvider>
+          </ContextProvider>
+        </Router>
+        {/* </PersistGate> */}
       </Provider>
     </React.StrictMode>
   )

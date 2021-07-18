@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { ResoBinLogo } from 'components/shared'
@@ -17,7 +17,7 @@ const Container = styled.div`
   box-shadow: '0 0 0.5rem rgba(0, 0, 0, 0.5)';
 `
 
-const LogoContainer = styled(Link)`
+const LogoContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,9 +46,12 @@ const Term = styled.span`
 `
 
 const Header = ({ dashboard }) => {
+  const history = useHistory()
+  const routeHome = () => dashboard && history.push('/dashboard')
+
   return (
     <Container>
-      <LogoContainer to={dashboard ? '/dashboard' : '/login'}>
+      <LogoContainer onClick={routeHome}>
         <ResoBinLogo size="1.5rem" />
       </LogoContainer>
 

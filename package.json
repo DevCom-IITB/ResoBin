@@ -43,6 +43,7 @@
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-promise": "^5.1.0",
     "prettier": "^2.3.2",
     "redux-logger": "^3.0.6",
     "sass": "^1.35.2",
