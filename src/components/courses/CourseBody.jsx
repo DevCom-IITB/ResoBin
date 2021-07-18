@@ -23,7 +23,7 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
   )
 
   // filtered course data
-  const [courseDataFiltered, setCourseDataFiltered] = useState([])
+  const [courseDataFiltered, setCourseDataFiltered] = useState(courseData)
 
   // search input state
   const [search, setSearch] = useState('')
@@ -33,21 +33,36 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
   const [loadingSearch, setLoadingSearch] = useState(false)
 
   useEffect(() => {
-    // search through course data
-    setLoadingSearch(true)
-
-    async function filterMyData() {
+    const searchCourses = async (keyword) => {
+      setLoadingSearch(true)
       await setTimeout(() => {
         setCourseDataFiltered(
-          courseData.filter((course) =>
-            course.Title.toLowerCase().includes(search.toLowerCase())
-          )
+          courseData.filter((course) => {
+            // Empty search allow all
+            if (!keyword) return true
+
+            // by default not accepted. Accept only if keyword found
+            let flg = false
+
+            // check if keyword exists in any of the selected keys
+            searchFields.forEach((field) => {
+              if (course[field]) {
+                flg =
+                  flg ||
+                  course[field].toLowerCase().includes(keyword.toLowerCase())
+              }
+            })
+
+            return flg
+          })
         )
+
         setLoadingSearch(false)
       }, 1000)
     }
 
-    filterMyData()
+    if (search) searchCourses(search)
+    else setCourseDataFiltered(courseData)
   }, [search, courseData])
 
   const loading = loadingSearch || loadingAPI
