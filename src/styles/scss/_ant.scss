@@ -3,13 +3,5 @@
 @use 'ant/pagination';
 @use 'ant/skeleton';
 @use 'ant/checkbox';
+@use 'ant/search';
 @use 'ant/multiselect';
-
-// const StyledSearch = styled(Search)`
-//   .ant-input {
-//     border-radius: 2rem;
-//   }
-//   .ant-input-search-button {
-//     border-radius: 2rem;
-//   }
-// `

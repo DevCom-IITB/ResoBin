@@ -12,7 +12,7 @@ const Container = styled.div`
   min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
 `
 
-const CourseBody = ({ showFilters, onClick }) => {
+const CourseBody = ({ showFilters: showFilter, onClick }) => {
   // responsive layout state
   const { width } = useViewportContext()
 
@@ -27,10 +27,7 @@ const CourseBody = ({ showFilters, onClick }) => {
 
   return (
     <Container>
-      <CourseSearch
-        showFilters={showFilters}
-        disableFilter={width >= breakpoints.lg}
-      />
+      <CourseSearch showFilter={width < breakpoints.lg && showFilter} />
       <FilterAside FilterDropdown showFilters={width >= breakpoints.lg} />
 
       <CourseList courses={courseData} />
