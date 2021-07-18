@@ -1,3 +1,4 @@
+import { Skeleton } from 'antd'
 import styled from 'styled-components'
 
 import { CourseItemMain, CourseItemSub } from 'components/courses/item'
@@ -16,7 +17,7 @@ const Container = styled.li`
   }
 `
 
-const CourseItem = ({ ...props }) => {
+export const CourseItem = ({ ...props }) => {
   return (
     <Container>
       <CourseItemMain {...props} />
@@ -25,4 +26,4 @@ const CourseItem = ({ ...props }) => {
   )
 }
 
-export default CourseItem
+export const CourseItemLoading = ({ active }) => active && <Skeleton active />

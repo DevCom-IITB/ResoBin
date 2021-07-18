@@ -58,7 +58,7 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
         )
 
         setLoadingSearch(false)
-      }, 1000)
+      }, 400)
     }
 
     if (search) searchCourses(search)

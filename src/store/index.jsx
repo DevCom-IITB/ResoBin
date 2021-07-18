@@ -9,6 +9,8 @@ const store = configureStore({
     course: courseReducer,
   },
 
+  devTools: process.env.NODE_ENV !== 'production',
+
   preloadedState: {},
 })
 
