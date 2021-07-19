@@ -1,4 +1,5 @@
-import DarkmodeToggle from 'components/header/DarkmodeToggle'
+// import { DarkmodeToggle } from 'components/settings'
+import DarkmodeToggle from 'components/settings/DarkmodeToggle'
 
 const Settings = () => {
   return (

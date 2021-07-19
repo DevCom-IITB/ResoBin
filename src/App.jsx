@@ -1,16 +1,17 @@
 import { Helmet } from 'react-helmet-async'
+import { useSelector } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { ThemeProvider } from 'styled-components'
 
-import { useThemeContext } from 'context/ThemeContext'
 import { PrivateRoute } from 'hoc'
 import { Dashboard, Login, NotFound, Signup } from 'pages'
+import { selectTheme } from 'store/settingsSlice'
 import { DarkTheme, GlobalStyles, LightTheme } from 'styles'
 
 const App = () => {
-  const { theme } = useThemeContext()
   toast.configure()
+  const theme = useSelector(selectTheme)
 
   return (
     <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>

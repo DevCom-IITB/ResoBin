@@ -8,12 +8,21 @@ const settingsSlice = createSlice({
   },
 
   reducers: {
-    setTheme: (state, { payload }) => {
+    applyTheme: (state, { payload }) => {
       state.theme = payload
     },
   },
 })
 
-export const { setTheme } = settingsSlice.actions
+// ? actions
+// * same names as that set inside reducers key of createSlice
+export const { applyTheme } = settingsSlice.actions
 
+// ? selectors
+// * naming convention: https://twitter.com/_jayphelps/status/739905438116806656
+// * avoid using inline selectors
+export const selectTheme = (state) => state.settings.theme
+
+// ? reducer
+// * always export reducer as default
 export default settingsSlice.reducer
