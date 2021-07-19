@@ -61,7 +61,7 @@ export const MenuHorizontal = () => {
       <MenuItem
         title="Account"
         icon={<Cog size="1.5rem" />}
-        to="/dashboard/account"
+        to="/dashboard/settings"
       />
     </Container>
   )
@@ -98,7 +98,7 @@ export const MenuVertical = () => {
         title="Account"
         icon={<Cog size="22" />}
         exact
-        to="/dashboard/account"
+        to="/dashboard/settings"
       />
       <MenuItem title="Sign out" icon={<Logout size="22" />} to="/login" />
 

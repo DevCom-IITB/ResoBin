@@ -5,6 +5,7 @@ const Courses = lazy(() => import('pages/Courses'))
 const Contribute = lazy(() => import('pages/Contribute'))
 const Contact = lazy(() => import('pages/Contact'))
 const Favourites = lazy(() => import('pages/Favourites'))
+const Settings = lazy(() => import('pages/Settings'))
 
 const routes = [
   {
@@ -36,6 +37,12 @@ const routes = [
     slug: '/contact',
     exact: true,
     component: Contact,
+  },
+  {
+    name: 'Settings',
+    slug: '/settings',
+    exact: true,
+    component: Settings,
   },
 ]
 

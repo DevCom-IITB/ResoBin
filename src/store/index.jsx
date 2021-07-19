@@ -1,34 +1,19 @@
-import {
-  combineReducers,
-  configureStore,
-  getDefaultMiddleware,
-} from '@reduxjs/toolkit'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import logger from 'redux-logger'
 import {
-  persistReducer,
   FLUSH,
   REHYDRATE,
   PAUSE,
   PERSIST,
   PURGE,
   REGISTER,
+  persistStore,
 } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
 
-import authReducer from 'store/authSlice'
-import courseReducer from 'store/courseSlice'
-
-const reducer = combineReducers({
-  auth: authReducer,
-  course: courseReducer,
-})
-
-const persistConfig = {
-  key: 'root',
-  storage,
-}
-
-const persistedReducer = persistReducer(persistConfig, reducer)
+import {
+  // reducer,
+  persistedReducer,
+} from './combineReducers'
 
 const middleware = getDefaultMiddleware({
   serializableCheck: {
@@ -38,7 +23,7 @@ const middleware = getDefaultMiddleware({
 
 if (process.env.NODE_ENV === 'development') middleware.push(logger)
 
-const store = configureStore({
+export const store = configureStore({
   reducer: persistedReducer,
 
   devTools: process.env.NODE_ENV === 'development',
@@ -46,4 +31,4 @@ const store = configureStore({
   preloadedState: {},
 })
 
-export default store
+export const persistor = persistStore(store)
