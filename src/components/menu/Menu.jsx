@@ -45,24 +45,20 @@ export const MenuHorizontal = () => {
       <MenuItem
         title="Courses"
         icon={<BookOpen size="1.5rem" />}
-        to="/dashboard/courses"
+        to="/courses"
       />
       <MenuItem
         title="Contribute"
         icon={<CloudUpload size="1.5rem" />}
-        to="/dashboard/contribute"
+        to="/contribute"
       />
 
       <MenuItem
         title="Favourites"
         icon={<BookmarkOutline size="1.25rem" />}
-        to="/dashboard/favourites"
+        to="/favourites"
       />
-      <MenuItem
-        title="Account"
-        icon={<Cog size="1.5rem" />}
-        to="/dashboard/settings"
-      />
+      <MenuItem title="Settings" icon={<Cog size="1.5rem" />} to="settings" />
     </Container>
   )
 }
@@ -70,21 +66,13 @@ export const MenuHorizontal = () => {
 export const MenuVertical = () => {
   return (
     <Container>
-      <MenuItem
-        title="Courses"
-        icon={<BookOpen size="22" />}
-        to="/dashboard/courses"
-      />
+      <MenuItem title="Courses" icon={<BookOpen size="22" />} to="/courses" />
       <MenuItem
         title="Contribute"
         icon={<CloudUpload size="22" />}
-        to="/dashboard/contribute"
+        to="/contribute"
       />
-      <MenuItem
-        title="Stats"
-        icon={<ChartPie size="22" />}
-        to="/dashboard/stats"
-      />
+      <MenuItem title="Stats" icon={<ChartPie size="22" />} to="/stats" />
 
       <Divider margin="1rem 0" />
       <ProfileImgItem title="Laxman D." src={ProfileImage} />
@@ -92,13 +80,13 @@ export const MenuVertical = () => {
       <MenuItem
         title="Favourites"
         icon={<BookmarkOutline size="18" title="Check course material" />}
-        to="/dashboard/favourites"
+        to="/favourites"
       />
       <MenuItem
-        title="Account"
+        title="Settings"
         icon={<Cog size="22" />}
         exact
-        to="/dashboard/settings"
+        to="/settings"
       />
       <MenuItem title="Sign out" icon={<Logout size="22" />} to="/login" />
 
@@ -106,7 +94,7 @@ export const MenuVertical = () => {
       <MenuItem
         title="Get help"
         icon={<ContactSupport size="20" />}
-        to="/dashboard/contact"
+        to="/contact"
       />
     </Container>
   )
