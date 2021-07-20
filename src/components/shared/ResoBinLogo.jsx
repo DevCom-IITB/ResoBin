@@ -1,23 +1,21 @@
+import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
-const Container = styled.div`
+const LogoContainer = styled.button`
   display: flex;
   flex-direction: column;
   align-items: center;
-  cursor: pointer;
-  user-select: none;
-  transition: 100ms;
+  background: transparent;
 
-  &:hover {
-    transform: scale(1.03);
-    transition: 100ms;
+  &:enabled {
+    cursor: pointer;
   }
 `
 
 const Title = styled.div`
   font-size: ${({ size }) => size};
   font-family: Montserrat, sans-serif;
-  font-style: normal;
   font-weight: 600;
   line-height: 110%;
   color: ${({ theme }) => theme.logo};
@@ -31,11 +29,15 @@ const Underline = styled.div`
 `
 
 const ResoBinLogo = ({ size }) => {
+  const { isAuthenticated } = useSelector((state) => state.auth)
+  const history = useHistory()
+  const redirectHome = () => history.push('/')
+
   return (
-    <Container>
+    <LogoContainer onClick={redirectHome} enabled={isAuthenticated}>
       <Title size={size}>ResoBin</Title>
       <Underline size={size} />
-    </Container>
+    </LogoContainer>
   )
 }
 

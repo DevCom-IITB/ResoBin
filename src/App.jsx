@@ -1,13 +1,18 @@
+import { Suspense, lazy } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useSelector } from 'react-redux'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { ThemeProvider } from 'styled-components'
 
+import { LoaderAnimation } from 'components/shared'
 import { PrivateRoute } from 'hoc'
-import { Dashboard, Login, NotFound, Signup } from 'pages'
 import { selectTheme } from 'store/settingsSlice'
 import { DarkTheme, GlobalStyles, LightTheme } from 'styles'
+
+const Dashboard = lazy(() => import('pages/Dashboard'))
+const Login = lazy(() => import('pages/Login'))
+const NotFound = lazy(() => import('pages/NotFound'))
 
 const App = () => {
   toast.configure()
@@ -24,15 +29,14 @@ const App = () => {
       </Helmet>
 
       <GlobalStyles />
-      <Switch>
-        {/* <PrivateRoute path="/courses/:id" component={NotFound} /> */}
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/signup" component={Signup} />
-        <Route exact path="/forgot-password" component={NotFound} />
-        <Route exact path="/404" component={NotFound} />
-        <PrivateRoute path="/" component={Dashboard} />
-        <Redirect from="*" to="/login" />
-      </Switch>
+      <Suspense fallback={<LoaderAnimation />}>
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route path="/404" component={NotFound} />
+          <PrivateRoute path="/" component={Dashboard} />
+          <Route component={NotFound} />
+        </Switch>
+      </Suspense>
     </ThemeProvider>
   )
 }

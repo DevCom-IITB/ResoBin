@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { Header } from 'components/header'
 import { LoaderAnimation } from 'components/shared'
 import { SignupBody } from 'components/signup'
+import { CSRFToken } from 'helpers'
 import { signupAction } from 'store/authSlice'
 import { fontSize } from 'styles/responsive'
 
@@ -96,6 +97,8 @@ const Signup = () => {
           content="Signup if you don't have an account yet"
         />
       </Helmet>
+      <CSRFToken />
+
       <Header button="Login" buttonLink="/login" />
 
       <Container>
