@@ -25,12 +25,12 @@ const App = () => {
 
       <GlobalStyles />
       <Switch>
-        <Route path="/dashboard" component={Dashboard} />
-        <PrivateRoute path="/courses/:id" component={NotFound} />
+        {/* <PrivateRoute path="/courses/:id" component={NotFound} /> */}
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/forgot-password" component={NotFound} />
         <Route exact path="/404" component={NotFound} />
+        <PrivateRoute path="/" component={Dashboard} />
         <Redirect from="*" to="/login" />
       </Switch>
     </ThemeProvider>

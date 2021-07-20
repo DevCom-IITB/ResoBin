@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 import NotFoundImg from 'assets/images/NotFound.png'
@@ -21,10 +21,12 @@ const Subtitle = styled.p`
   color: ${({ theme }) => theme.textColor};
 `
 
-const StyledLink = styled(Link)`
+const GoBack = styled.button`
   font-size: ${fontSize.responsive.xl};
   font-weight: 400;
   color: inherit;
+  background-color: transparent;
+  cursor: pointer;
 
   &:hover {
     text-decoration: underline;
@@ -52,7 +54,7 @@ const NotFound = () => {
       <Subtitle>
         This page is not available.
         <br />
-        <StyledLink onClick={history.goBack}>Take me back!</StyledLink>
+        <GoBack onClick={history.goBack}>Take me back!</GoBack>
       </Subtitle>
     </Container>
   )

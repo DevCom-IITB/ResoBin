@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { ResoBinLogo } from 'components/shared'
@@ -14,14 +14,6 @@ const Container = styled.div`
   width: 100%;
   height: 3rem;
   background: ${({ theme }) => theme.darksecondary};
-  box-shadow: '0 0 0.5rem rgba(0, 0, 0, 0.5)';
-`
-
-const LogoContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
 `
 
 const Term = styled.span`
@@ -45,17 +37,13 @@ const Term = styled.span`
   }
 `
 
-const Header = ({ dashboard }) => {
-  const history = useHistory()
-  const routeHome = () => dashboard && history.push('/dashboard')
+const Header = () => {
+  const { isAuthenticated } = useSelector((state) => state.auth)
 
   return (
     <Container>
-      <LogoContainer onClick={routeHome}>
-        <ResoBinLogo size="1.5rem" />
-      </LogoContainer>
-
-      {dashboard ? <Term>AY 2021/22 | AUTUMN</Term> : null}
+      <ResoBinLogo size="1.5rem" />
+      {isAuthenticated && <Term>AY 2021/22 | AUTUMN</Term>}
     </Container>
   )
 }

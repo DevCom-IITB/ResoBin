@@ -31,10 +31,8 @@ const StrictApp = () => {
 
 const rootElement = document.getElementById('root')
 
-ReactDOM.render(<StrictApp />, rootElement)
-
 // if (rootElement.hasChildNodes()) {
 //   ReactDOM.hydrate(<StrictApp />, rootElement)
 // } else {
-//   ReactDOM.render(<StrictApp />, rootElement)
+ReactDOM.render(<StrictApp />, rootElement)
 // }
