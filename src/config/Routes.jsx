@@ -1,12 +1,3 @@
-import {
-  BookOpen,
-  ChartPie,
-  CloudUpload,
-  Cog,
-  Logout,
-} from '@styled-icons/heroicons-outline'
-import { ContactSupport } from '@styled-icons/material-outlined'
-import { BookmarkOutline } from '@styled-icons/zondicons'
 import { lazy } from 'react'
 
 // lazy load the pages when called
@@ -15,62 +6,49 @@ const Contribute = lazy(() => import('pages/Contribute'))
 const Contact = lazy(() => import('pages/Contact'))
 const Favourites = lazy(() => import('pages/Favourites'))
 const Settings = lazy(() => import('pages/Settings'))
+const Home = lazy(() => import('pages/Home'))
 
 const routes = [
-  // {
-  //   name: 'Login',
-  //   // path: '/',
-  //   slug: '/login',
-  //   exact: true,
-  //   component: Login,
-  //   icon: <BookOpen size="1.5rem" />,
-  // },
   {
     name: 'Home',
-    // path: '/',
-    slug: '/',
+    path: '/',
     exact: true,
-    component: Courses,
-    navbar: {
-      // use null to hide this route from the navbar
-      horizontal: {
-        icon: <BookOpen size="1.5rem" />,
-      },
-      vertical: {
-        icon: <BookOpen size="1.5rem" />,
-      },
-    },
+    component: Home,
   },
+
   {
     name: 'Courses',
-    slug: '/courses',
-    exact: true,
+    path: '/courses/:courseCode?/:slug?',
+    exact: false,
     component: Courses,
-    icon: <ContactSupport size="20" />,
   },
+
   {
     name: 'Contribute',
-    slug: '/contribute',
+    path: '/contribute',
     exact: true,
     component: Contribute,
   },
+
   {
     name: 'Favourites',
-    slug: '/favourites',
+    path: '/favourites',
     exact: true,
     component: Favourites,
   },
-  {
-    name: 'Contact Us',
-    slug: '/contact',
-    exact: true,
-    component: Contact,
-  },
+
   {
     name: 'Settings',
-    slug: '/settings',
+    path: '/settings',
     exact: true,
     component: Settings,
+  },
+
+  {
+    name: 'Contact Us',
+    path: '/contact',
+    exact: true,
+    component: Contact,
   },
 ]
 

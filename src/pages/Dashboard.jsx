@@ -2,13 +2,10 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
-import { Header } from 'components/header'
-import { MenuHorizontal, MenuVertical } from 'components/menu'
+import { Menu } from 'components/menu'
 import routes from 'config/Routes'
-import { useViewportContext } from 'context/ViewportContext'
 import { ScrollToTop } from 'hoc'
 import { getCourseList } from 'store/courseSlice'
-import { breakpoints } from 'styles/responsive'
 
 const Content = () => {
   return (
@@ -31,7 +28,6 @@ const Content = () => {
 }
 
 const Dashboard = () => {
-  const { width } = useViewportContext()
   // get course list from the backend when user opens the app
   const dispatch = useDispatch()
   useEffect(() => {
@@ -40,8 +36,7 @@ const Dashboard = () => {
 
   return (
     <ScrollToTop>
-      <Header dashboard />
-      {width < breakpoints.md ? <MenuHorizontal /> : <MenuVertical />}
+      <Menu />
       <Content />
     </ScrollToTop>
   )

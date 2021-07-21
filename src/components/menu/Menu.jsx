@@ -1,20 +1,21 @@
 import {
   BookOpen,
-  ChartPie,
   CloudUpload,
   Cog,
-  Logout,
+  Home,
+  Bookmark as BookmarkOutline,
 } from '@styled-icons/heroicons-outline'
 import { ContactSupport } from '@styled-icons/material-outlined'
-import { BookmarkOutline } from '@styled-icons/zondicons'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import ProfileImage from 'assets/images/ProfileImg_Laxman.jpg'
 import { MenuItem, ProfileImgItem } from 'components/menu'
 import { Divider } from 'components/shared'
-import { device } from 'styles/responsive'
+import { useViewportContext } from 'context/ViewportContext'
+import { device, breakpoints } from 'styles/responsive'
 
-const Container = styled.div`
+const Container = styled.nav`
   position: sticky;
   top: 0;
   z-index: 100;
@@ -23,7 +24,7 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 3rem;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
   background: ${({ theme }) => theme.secondary};
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
 
@@ -39,63 +40,60 @@ const Container = styled.div`
   }
 `
 
-export const MenuHorizontal = () => {
+const Menu = () => {
+  // mobile devices horizontal menu & desktops vertical menu
+  const { width } = useViewportContext()
+  const [isDesktop, setIsDesktop] = useState(true)
+
+  useEffect(() => {
+    setIsDesktop(width >= breakpoints.md)
+  }, [width])
+
+  const iconSize = isDesktop ? '1.125rem' : '1.5rem'
+
   return (
     <Container>
+      <MenuItem title="Home" icon={Home} iconSize={iconSize} to="/" />
       <MenuItem
         title="Courses"
-        icon={<BookOpen size="1.5rem" />}
+        icon={BookOpen}
+        iconSize={iconSize}
         to="/courses"
       />
       <MenuItem
         title="Contribute"
-        icon={<CloudUpload size="1.5rem" />}
+        icon={CloudUpload}
+        iconSize={iconSize}
         to="/contribute"
       />
 
-      <MenuItem
-        title="Favourites"
-        icon={<BookmarkOutline size="1.25rem" />}
-        to="/favourites"
-      />
-      <MenuItem title="Settings" icon={<Cog size="1.5rem" />} to="settings" />
-    </Container>
-  )
-}
-
-export const MenuVertical = () => {
-  return (
-    <Container>
-      <MenuItem title="Courses" icon={<BookOpen size="22" />} to="/courses" />
-      <MenuItem
-        title="Contribute"
-        icon={<CloudUpload size="22" />}
-        to="/contribute"
-      />
-      <MenuItem title="Stats" icon={<ChartPie size="22" />} to="/stats" />
-
-      <Divider margin="1rem 0" />
-      <ProfileImgItem title="Laxman D." src={ProfileImage} />
+      {isDesktop && <Divider margin="1rem 0" />}
+      {isDesktop && <ProfileImgItem title="Laxman D." src={ProfileImage} />}
 
       <MenuItem
         title="Favourites"
-        icon={<BookmarkOutline size="18" title="Check course material" />}
+        icon={BookmarkOutline}
+        iconSize={iconSize}
         to="/favourites"
       />
       <MenuItem
         title="Settings"
-        icon={<Cog size="22" />}
-        exact
+        icon={Cog}
+        iconSize={iconSize}
         to="/settings"
       />
-      <MenuItem title="Sign out" icon={<Logout size="22" />} to="/login" />
 
-      <Divider margin="1rem 0" />
-      <MenuItem
-        title="Get help"
-        icon={<ContactSupport size="20" />}
-        to="/contact"
-      />
+      {isDesktop && <Divider margin="1rem 0" />}
+      {isDesktop && (
+        <MenuItem
+          title="Get help"
+          icon={ContactSupport}
+          iconSize={iconSize}
+          to="/contact"
+        />
+      )}
     </Container>
   )
 }
+
+export default Menu

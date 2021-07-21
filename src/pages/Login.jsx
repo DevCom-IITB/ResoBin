@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { Header } from 'components/header'
 import { LoginBody } from 'components/login'
 import { LoaderAnimation } from 'components/shared'
 import { CSRFToken } from 'helpers'
@@ -72,7 +71,6 @@ const Login = () => {
       <CSRFToken />
 
       {loading && <LoaderAnimation />}
-      <Header />
 
       <Container>
         <FormBox>

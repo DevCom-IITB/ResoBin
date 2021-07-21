@@ -6,11 +6,12 @@ import NotFoundImg from 'assets/images/NotFound.png'
 import { fontSize } from 'styles/responsive'
 
 const Container = styled.div`
+  position: absolute;
+  inset: 3rem 0 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   background-color: ${({ theme }) => theme.secondary};
 `
 
@@ -36,7 +37,7 @@ const GoBack = styled.button`
 `
 
 const Image = styled.img`
-  max-height: 15rem;
+  width: clamp(13rem, 30vw, 20rem);
 `
 
 const NotFound = () => {

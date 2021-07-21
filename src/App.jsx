@@ -5,6 +5,7 @@ import { Route, Switch } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { ThemeProvider } from 'styled-components'
 
+import { Header } from 'components/header'
 import { LoaderAnimation } from 'components/shared'
 import { PrivateRoute } from 'hoc'
 import { selectTheme } from 'store/settingsSlice'
@@ -27,6 +28,7 @@ const App = () => {
           content="IIT Bombay's course resources sharing website"
         />
       </Helmet>
+      <Header />
 
       <GlobalStyles />
       <Suspense fallback={<LoaderAnimation />}>

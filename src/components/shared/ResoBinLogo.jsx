@@ -34,7 +34,7 @@ const ResoBinLogo = ({ size }) => {
   const redirectHome = () => history.push('/')
 
   return (
-    <LogoContainer onClick={redirectHome} enabled={isAuthenticated}>
+    <LogoContainer onClick={redirectHome} disabled={!isAuthenticated}>
       <Title size={size}>ResoBin</Title>
       <Underline size={size} />
     </LogoContainer>

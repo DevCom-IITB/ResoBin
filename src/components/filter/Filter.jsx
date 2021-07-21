@@ -19,7 +19,7 @@ const ContainerDropdown = styled.div`
   margin: 0 0.75rem;
   background: ${({ theme }) => theme.secondary};
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
-  transition: 500ms;
+  transition: 200ms;
 `
 
 const ContainerAside = styled.div`

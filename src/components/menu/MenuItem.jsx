@@ -70,10 +70,13 @@ const Title = styled.h4`
   }
 `
 
-export const MenuItem = ({ title, icon, to }) => {
+export const MenuItem = ({ title, icon: Icon, iconSize, to }) => {
   return (
-    <ContainerLink to={to}>
-      <IconContainer>{icon}</IconContainer>
+    <ContainerLink exact to={to}>
+      <IconContainer>
+        <Icon size={iconSize} />
+      </IconContainer>
+
       <Title>{title}</Title>
     </ContainerLink>
   )
