@@ -9,7 +9,7 @@ const Container = styled.div`
   top: ${({ theme }) => theme.headerHeight};
   right: 0;
   z-index: 7;
-  width: ${({ theme }) => theme.asideWidth};
+  width: ${({ theme }) => theme.asideWidthRight};
   height: 100%;
   background: ${({ theme }) => theme.secondary};
   box-shadow: inset 2px 0 5px rgba(0, 0, 0, 0.3);

@@ -9,7 +9,7 @@ import { device } from 'styles/responsive'
 const Container = styled.div`
   width: 100%;
   @media ${device.min.lg} {
-    padding-right: ${({ theme }) => theme.asideWidth};
+    padding-right: ${({ theme }) => theme.asideWidthRight};
     transition: padding-right 200ms ease-in;
   }
 `

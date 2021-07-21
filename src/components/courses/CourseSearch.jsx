@@ -25,7 +25,7 @@ const SearchContainer = styled.div`
   );
 
   @media ${device.min.lg} {
-    margin-right: ${({ theme }) => theme.asideWidth};
+    margin-right: ${({ theme }) => theme.asideWidthRight};
     transition: margin-right 200ms ease-in;
   }
 `

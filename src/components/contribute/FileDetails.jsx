@@ -9,7 +9,7 @@ const Container = styled.div`
   padding-top: 0.5rem;
 
   @media ${device.min.lg} {
-    margin-right: ${({ theme }) => theme.asideWidth};
+    margin-right: ${({ theme }) => theme.asideWidthRight};
   }
 `
 

@@ -10,7 +10,7 @@ const Container = styled.div`
   display: flex;
 
   @media ${device.min.md} {
-    margin-left: ${({ theme }) => theme.navbarHorizontalWidth};
+    margin-left: ${({ theme }) => theme.asideWidthLeft};
   }
 `
 

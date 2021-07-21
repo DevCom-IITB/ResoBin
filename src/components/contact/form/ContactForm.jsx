@@ -6,8 +6,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
-  margin: 0 ${({ theme }) => theme.asideWidth} 0
-    ${({ theme }) => theme.navbarHorizontalWidth};
+  margin: 0 ${({ theme }) => theme.asideWidthRight} 0
+    ${({ theme }) => theme.asideWidthLeft};
 `
 
 const Title = styled.h4`
