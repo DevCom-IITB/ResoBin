@@ -7,15 +7,29 @@ import { fontSize } from 'styles/responsive'
 
 const Container = styled.div`
   position: absolute;
-  inset: 3rem 0 0;
+  inset: 0;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.secondary};
 `
 
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.darksecondary};
+  box-shadow: 0 0 1rem 2px rgba(0, 0, 0, 0.2);
+  /* @media {
+    padding: 0.75rem;
+  } */
+`
+
 const Subtitle = styled.p`
+  margin: 1rem;
   font-size: ${fontSize.responsive.xxl};
   font-weight: 300;
   text-align: center;
@@ -49,14 +63,15 @@ const NotFound = () => {
         <title>404 Not Found</title>
         <meta name="description" content="Page not found" />
       </Helmet>
+      <Box>
+        <Image src={NotFoundImg} alt="404 Page not found" />
 
-      <Image src={NotFoundImg} alt="404 Page not found" />
-
-      <Subtitle>
-        This page is not available.
-        <br />
-        <GoBack onClick={history.goBack}>Take me back!</GoBack>
-      </Subtitle>
+        <Subtitle>
+          This page is not available.
+          <br />
+          <GoBack onClick={history.goBack}>Take me back!</GoBack>
+        </Subtitle>
+      </Box>
     </Container>
   )
 }
