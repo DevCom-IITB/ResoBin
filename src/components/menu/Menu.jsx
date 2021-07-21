@@ -53,7 +53,7 @@ const Menu = () => {
 
   return (
     <Container>
-      <MenuItem title="Home" icon={Home} iconSize={iconSize} to="/" />
+      <MenuItem exact title="Home" icon={Home} iconSize={iconSize} to="/" />
       <MenuItem
         title="Courses"
         icon={BookOpen}
