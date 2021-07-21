@@ -36,7 +36,7 @@ export const DashboardRoutes = () => {
 export const AppRoutes = () => {
   return (
     <Switch>
-      <Route path="/login" component={Login} />
+      <Route exact path="/login" component={Login} />
       <Route path="/404" component={NotFound} />
       <PrivateRoute path="/" component={Dashboard} />
 

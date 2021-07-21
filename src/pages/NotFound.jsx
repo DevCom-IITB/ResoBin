@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 import NotFoundImg from 'assets/images/NotFound.png'
-import { fontSize } from 'styles/responsive'
+import { device, fontSize } from 'styles/responsive'
 
 const Container = styled.div`
   position: absolute;
@@ -19,13 +19,15 @@ const Box = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 1rem;
+  margin: 0.75rem;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.darksecondary};
   box-shadow: 0 0 1rem 2px rgba(0, 0, 0, 0.2);
-  /* @media {
-    padding: 0.75rem;
-  } */
+
+  @media ${device.min.md} {
+    padding: 1rem 2rem;
+  }
 `
 
 const Subtitle = styled.p`
