@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { CourseList, CourseSearch } from 'components/courses'
 import { FilterAside } from 'components/filter'
 import { useViewportContext } from 'context/ViewportContext'
-import { search as applySearch } from 'helpers'
+import { search as applySearch, searchAsync } from 'helpers'
 import {
   selectCourseSearch,
   selectCourseList,
@@ -50,7 +50,6 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
             data: courseData,
             keyword,
             keys: searchFields,
-            timeout: 200,
           })
         )
         setLoadingSearch(false)
