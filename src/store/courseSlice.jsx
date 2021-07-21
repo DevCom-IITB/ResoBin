@@ -1,18 +1,27 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
+// ? async actions
 export const getCourseList = createAsyncThunk(
   'course/getCourseList',
   async () =>
     axios.get('https://run.mocky.io/v3/327e45a5-e2da-4859-b4ad-688cb6328bd1')
 )
 
+// ? reducer
 const courseSlice = createSlice({
   name: 'course',
 
   initialState: {
     list: [],
     loading: false,
+    search: '',
+  },
+
+  reducers: {
+    setSearch: (state, { payload }) => {
+      state.search = payload
+    },
   },
 
   extraReducers: {
@@ -28,5 +37,13 @@ const courseSlice = createSlice({
     },
   },
 })
+
+// ? actions
+export const { setSearch } = courseSlice.actions
+
+// ? selectors
+export const selectCourseList = (state) => state.course.list
+export const selectCourseSearch = (state) => state.course.search
+export const selectAPILoading = (state) => state.course.loading
 
 export default courseSlice.reducer

@@ -1,10 +1,13 @@
 import { Filter, X } from '@styled-icons/heroicons-outline'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { CourseBody } from 'components/courses'
+import { LoaderAnimation } from 'components/shared'
 import { useViewportContext } from 'context/ViewportContext'
+import { selectAPILoading } from 'store/courseSlice'
 import { breakpoints, device } from 'styles/responsive'
 
 const Container = styled.div`
@@ -48,6 +51,7 @@ const Courses = () => {
       setIcon(null)
     } else setIcon(showFilters ? X : Filter)
   }, [showFilters, width])
+  const loading = useSelector(selectAPILoading)
 
   return (
     <Container>
@@ -55,6 +59,8 @@ const Courses = () => {
         <title>Courses - ResoBin</title>
         <meta name="description" content="Courses availabe at IIT Bombay" />
       </Helmet>
+      {loading && <LoaderAnimation />}
+
       {Icon && (
         <IconContainer onClick={handleClick}>
           <Icon size="1.5rem" />

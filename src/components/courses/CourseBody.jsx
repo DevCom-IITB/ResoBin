@@ -1,10 +1,17 @@
+import debounce from 'lodash.debounce'
 import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { CourseList, CourseSearch } from 'components/courses'
 import { FilterAside } from 'components/filter'
 import { useViewportContext } from 'context/ViewportContext'
+import { search as applySearch } from 'helpers'
+import {
+  selectCourseSearch,
+  selectCourseList,
+  setSearch,
+} from 'store/courseSlice'
 import { breakpoints } from 'styles/responsive'
 
 const Container = styled.div`
@@ -15,48 +22,37 @@ const Container = styled.div`
 const searchFields = ['Code', 'Title', 'Description']
 
 const CourseBody = ({ showFilters: showFilter, onClick }) => {
-  // responsive layout state
+  // ? responsive layout state
   const { width } = useViewportContext()
-  // total course data
-  const { list: courseData, loading: loadingAPI } = useSelector(
-    (state) => state.course
-  )
 
-  // filtered course data
+  // ? total course data
+  const courseData = useSelector(selectCourseList)
+  const search = useSelector(selectCourseSearch)
+
+  // ? filtered course data
   const [courseDataFiltered, setCourseDataFiltered] = useState(courseData)
 
-  // search input state
-  const [search, setSearch] = useState('')
-  const handleChange = (event) => setSearch(event.currentTarget.value)
+  // ? search input state
+  const dispatch = useDispatch()
+  const handleChange = (event) => dispatch(setSearch(event.currentTarget.value))
 
-  // loading status while searching
+  // ? loading status while searching
   const [loadingSearch, setLoadingSearch] = useState(false)
 
+  // debounce(this.runSearch, 200)
   useEffect(() => {
     const searchCourses = async (keyword) => {
       setLoadingSearch(true)
+
       await setTimeout(() => {
         setCourseDataFiltered(
-          courseData.filter((course) => {
-            // Empty search allow all
-            if (!keyword) return true
-
-            // by default not accepted. Accept only if keyword found
-            let flg = false
-
-            // check if keyword exists in any of the selected keys
-            searchFields.forEach((field) => {
-              if (course[field]) {
-                flg =
-                  flg ||
-                  course[field].toLowerCase().includes(keyword.toLowerCase())
-              }
-            })
-
-            return flg
+          applySearch({
+            data: courseData,
+            keyword,
+            keys: searchFields,
+            timeout: 200,
           })
         )
-
         setLoadingSearch(false)
       }, 400)
     }
@@ -65,7 +61,7 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
     else setCourseDataFiltered(courseData)
   }, [search, courseData])
 
-  const loading = loadingSearch || loadingAPI
+  const loading = loadingSearch
 
   return (
     <Container>
