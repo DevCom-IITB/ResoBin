@@ -1,9 +1,8 @@
 import { Pagination } from 'antd'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
-import { CourseItem } from 'components/courses'
+import { CourseItem, CourseItemLoading } from 'components/courses'
 import { PageHeading, PageTitle, NotFoundSearch } from 'components/shared'
 import { device } from 'styles/responsive'
 
@@ -26,9 +25,8 @@ const List = styled.ul`
   margin: 0 0.75rem;
 `
 
-const CourseList = ({ courses }) => {
+const CourseList = ({ courses, loading }) => {
   const count = courses ? courses.length : 0
-  const { loading } = useSelector((state) => state.course)
 
   // pagination
   const [pageInfo, setPageInfo] = useState({
@@ -44,30 +42,29 @@ const CourseList = ({ courses }) => {
     <Container>
       <PageHeading>
         <PageTitle>Courses</PageTitle>
-        <Results>
-          {count}
-          &nbsp;results found
-        </Results>
+        <Results>{count}&nbsp;results found</Results>
       </PageHeading>
 
       <List>
-        {count > 0 ? (
+        <CourseItemLoading active={loading} />
+        <NotFoundSearch active={!loading && !count} />
+        {count > 0 &&
+          !loading &&
           paginate(courses).map((data) => (
             <CourseItem data={data} key={data.id} />
-          ))
-        ) : (
-          <NotFoundSearch loading={loading} active />
-        )}
+          ))}
       </List>
 
-      <Pagination
-        defaultPageSize={perPage}
-        responsive
-        hideOnSinglePage
-        onChange={handlePageChange}
-        showSizeChanger={false}
-        total={count}
-      />
+      {!loading && (
+        <Pagination
+          defaultPageSize={perPage}
+          responsive
+          hideOnSinglePage
+          onChange={handlePageChange}
+          showSizeChanger={false}
+          total={count}
+        />
+      )}
     </Container>
   )
 }

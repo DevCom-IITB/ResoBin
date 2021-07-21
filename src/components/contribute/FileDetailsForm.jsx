@@ -6,7 +6,7 @@ const Form = styled.div`
   flex-wrap: wrap;
   padding: 1rem;
   margin: 0.75rem;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background: ${({ theme }) => theme.darksecondary};
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
   appearance: none;

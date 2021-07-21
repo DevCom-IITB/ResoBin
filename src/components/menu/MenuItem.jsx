@@ -14,7 +14,7 @@ const ContainerBase = css`
   background-color: ${(props) => props.theme.secondary};
 `
 
-const ContainerLink = styled(NavLink)`
+const StyledNavLink = styled(NavLink)`
   text-align: center;
   text-decoration: none;
   color: ${({ theme }) => theme.textColorInactive};
@@ -70,12 +70,15 @@ const Title = styled.h4`
   }
 `
 
-export const MenuItem = ({ title, icon, to }) => {
+export const MenuItem = ({ title, icon: Icon, iconSize, exact, to }) => {
   return (
-    <ContainerLink to={to}>
-      <IconContainer>{icon}</IconContainer>
+    <StyledNavLink exact={exact} to={to}>
+      <IconContainer>
+        <Icon size={iconSize} />
+      </IconContainer>
+
       <Title>{title}</Title>
-    </ContainerLink>
+    </StyledNavLink>
   )
 }
 

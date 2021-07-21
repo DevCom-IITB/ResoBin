@@ -12,28 +12,73 @@ const Container = styled.div`
   min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
 `
 
-const CourseBody = ({ showFilters, onClick }) => {
+const searchFields = ['Code', 'Title', 'Description']
+
+const CourseBody = ({ showFilters: showFilter, onClick }) => {
   // responsive layout state
   const { width } = useViewportContext()
+  // total course data
+  const { list: courseData, loading: loadingAPI } = useSelector(
+    (state) => state.course
+  )
+
+  // filtered course data
+  const [courseDataFiltered, setCourseDataFiltered] = useState(courseData)
 
   // search input state
-  // const [search, setSearch] = useState('')
-  // const handleChange = (event) => setSearch((e) => e.target.value)
+  const [search, setSearch] = useState('')
+  const handleChange = (event) => setSearch(event.currentTarget.value)
 
-  const { list: courseData } = useSelector((state) => state.course)
+  // loading status while searching
+  const [loadingSearch, setLoadingSearch] = useState(false)
+
   useEffect(() => {
-    // search
-  }, [courseData])
+    const searchCourses = async (keyword) => {
+      setLoadingSearch(true)
+      await setTimeout(() => {
+        setCourseDataFiltered(
+          courseData.filter((course) => {
+            // Empty search allow all
+            if (!keyword) return true
+
+            // by default not accepted. Accept only if keyword found
+            let flg = false
+
+            // check if keyword exists in any of the selected keys
+            searchFields.forEach((field) => {
+              if (course[field]) {
+                flg =
+                  flg ||
+                  course[field].toLowerCase().includes(keyword.toLowerCase())
+              }
+            })
+
+            return flg
+          })
+        )
+
+        setLoadingSearch(false)
+      }, 400)
+    }
+
+    if (search) searchCourses(search)
+    else setCourseDataFiltered(courseData)
+  }, [search, courseData])
+
+  const loading = loadingSearch || loadingAPI
 
   return (
     <Container>
       <CourseSearch
-        showFilters={showFilters}
-        disableFilter={width >= breakpoints.lg}
+        loading={loading}
+        value={search}
+        onChange={handleChange}
+        showFilter={width < breakpoints.lg && showFilter}
+        filterState={null}
       />
       <FilterAside FilterDropdown showFilters={width >= breakpoints.lg} />
 
-      <CourseList courses={courseData} />
+      <CourseList courses={courseDataFiltered} loading={loading} />
     </Container>
   )
 }

@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
+import { PersistGate } from 'redux-persist/integration/react'
 
 import App from 'App'
+import { LoaderAnimation } from 'components/shared'
 import ContextProvider from 'context'
-import store from 'store'
+import { store, persistor } from 'store'
 import 'styles/styles.scss'
 
 const StrictApp = () => {
@@ -16,7 +18,9 @@ const StrictApp = () => {
         <Router>
           <ContextProvider>
             <HelmetProvider>
-              <App />
+              <PersistGate loading={<LoaderAnimation />} persistor={persistor}>
+                <App />
+              </PersistGate>
             </HelmetProvider>
           </ContextProvider>
         </Router>
@@ -27,8 +31,8 @@ const StrictApp = () => {
 
 const rootElement = document.getElementById('root')
 
-if (rootElement.hasChildNodes()) {
-  ReactDOM.hydrate(<StrictApp />, rootElement)
-} else {
-  ReactDOM.render(<StrictApp />, rootElement)
-}
+// if (rootElement.hasChildNodes()) {
+//   ReactDOM.hydrate(<StrictApp />, rootElement)
+// } else {
+ReactDOM.render(<StrictApp />, rootElement)
+// }

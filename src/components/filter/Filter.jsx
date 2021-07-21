@@ -4,8 +4,9 @@ import styled from 'styled-components'
 import { FilterItem } from 'components/filter'
 import MultiSelect from 'components/filter/filterData'
 import { Divider } from 'components/shared'
-import { filterData } from 'data/courses'
 import { device } from 'styles/responsive'
+
+import filterData from './mock/filterData.json'
 
 const ContainerDropdown = styled.div`
   position: absolute;
@@ -18,7 +19,7 @@ const ContainerDropdown = styled.div`
   margin: 0 0.75rem;
   background: ${({ theme }) => theme.secondary};
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
-  transition: 500ms;
+  transition: 200ms;
 `
 
 const ContainerAside = styled.div`

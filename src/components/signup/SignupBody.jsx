@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { ButtonSquare, InputRounded as Input } from 'components/shared'
-import { CSRFToken } from 'helpers'
 // import { fontSize } from 'styles/responsive'
 
 const FormContainer = styled.form`
@@ -43,7 +42,6 @@ const SignupBody = ({ onChange, onSubmit, user }) => {
 
   return (
     <FormContainer onSubmit={onSubmit}>
-      <CSRFToken />
       <Input
         name="fullname"
         type="text"

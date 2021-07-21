@@ -1,9 +1,10 @@
+import { LoadingOutlined } from '@ant-design/icons'
 import { Search } from '@styled-icons/heroicons-outline'
+import { Input } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { FilterDropdown } from 'components/filter'
-import { InputRounded } from 'components/shared'
 import { HEX2RGBA } from 'helpers'
 import { device } from 'styles/responsive'
 
@@ -36,38 +37,33 @@ const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.55);
 `
 
+const StyledSearch = styled(Search)`
+  opacity: 0.5;
+  width: 1.25rem;
+  color: ${({ theme }) => theme.darksecondary};
+`
+
 // Disable filter will disable the filter entirely, show filter will trigger on/off animation
-const CourseSearch = ({ showFilters: showFilter, disableFilter }) => {
-  // search input state
-  const [search, setSearch] = useState('')
-  const handleChange = (event) => setSearch((e) => e.target.value)
-
-  // const { list: courseData } = useSelector((state) => state.course)
-  // useEffect(() => {
-  //   // search
-  // }, [courseData])
-
-  useEffect(() => {
-    console.log('search', search)
-  }, [search])
-
+const CourseSearch = ({
+  value,
+  onChange,
+  showFilter,
+  filterState,
+  loading = false,
+}) => {
   return (
     <SearchContainer>
-      {!disableFilter && (
-        <>
-          <FilterDropdown showFilters={showFilter} />
-          {showFilter && <Overlay />}
-        </>
-      )}
+      <FilterDropdown showFilters={showFilter} />
+      {showFilter && <Overlay />}
 
-      <InputRounded
-        name="courseSearch"
-        type="search"
-        placeholder="Course code, name or description"
-        value={search}
-        onChange={handleChange}
-        label="Search"
-        Icon={Search}
+      <Input
+        size="large"
+        placeholder="course code, name or description"
+        allowClear
+        maxLength={100}
+        onChange={onChange}
+        value={value}
+        prefix={loading ? <LoadingOutlined /> : <StyledSearch />}
       />
     </SearchContainer>
   )

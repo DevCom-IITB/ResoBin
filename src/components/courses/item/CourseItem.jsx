@@ -1,3 +1,4 @@
+import { Skeleton } from 'antd'
 import styled from 'styled-components'
 
 import { CourseItemMain, CourseItemSub } from 'components/courses/item'
@@ -7,7 +8,7 @@ const Container = styled.li`
   width: 100%;
   padding: 1.5rem 1rem 1rem;
   margin: 1rem 0;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background: ${({ theme }) => theme.darksecondary};
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);
 
@@ -16,7 +17,7 @@ const Container = styled.li`
   }
 `
 
-const CourseItem = ({ ...props }) => {
+export const CourseItem = ({ ...props }) => {
   return (
     <Container>
       <CourseItemMain {...props} />
@@ -25,4 +26,4 @@ const CourseItem = ({ ...props }) => {
   )
 }
 
-export default CourseItem
+export const CourseItemLoading = ({ active }) => active && <Skeleton active />

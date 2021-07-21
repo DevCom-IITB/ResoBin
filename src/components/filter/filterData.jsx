@@ -1,7 +1,7 @@
 import { Select } from 'antd'
 import { useEffect, useState } from 'react'
 
-import { filterData } from 'data/courses'
+import filterData from './mock/filterData.json'
 
 const OPTIONS = filterData[3].Options.map((data) => ({
   key: data.id,
