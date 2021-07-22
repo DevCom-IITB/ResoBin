@@ -7,7 +7,6 @@ import { MenuHorizontal, MenuVertical } from 'components/menu'
 import { LoaderAnimation } from 'components/shared'
 import { useViewportContext } from 'context/ViewportContext'
 import { ScrollToTop } from 'hoc'
-import { CoursePage } from 'pages'
 import Routes from 'RoutesConfig'
 import { getCourseList } from 'store/courseSlice'
 import { breakpoints } from 'styles/responsive'
@@ -29,7 +28,6 @@ const Content = () => {
               />
             )
         )}
-        <Route path={`${url}/courses/:id`} component={CoursePage} />
         <Redirect from="*" to="/404" />
       </Switch>
     </Suspense>
