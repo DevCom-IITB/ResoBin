@@ -44,6 +44,6 @@ export const { setSearch } = courseSlice.actions
 // ? selectors
 export const selectCourseList = (state) => state.course.list
 export const selectCourseSearch = (state) => state.course.search
-export const selectAPILoading = (state) => state.course.loading
+export const selectCourseAPILoading = (state) => state.course.loading
 
 export default courseSlice.reducer

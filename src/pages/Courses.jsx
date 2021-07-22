@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { CourseBody } from 'components/courses'
 import { LoaderAnimation } from 'components/shared'
 import { useViewportContext } from 'context/ViewportContext'
-import { selectAPILoading } from 'store/courseSlice'
+import { selectCourseAPILoading } from 'store/courseSlice'
 import { breakpoints, device } from 'styles/responsive'
 
 const Container = styled.div`
@@ -51,7 +51,7 @@ const Courses = () => {
       setIcon(null)
     } else setIcon(showFilters ? X : Filter)
   }, [showFilters, width])
-  const loading = useSelector(selectAPILoading)
+  const loading = useSelector(selectCourseAPILoading)
 
   return (
     <Container>

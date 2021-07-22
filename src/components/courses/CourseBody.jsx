@@ -12,6 +12,7 @@ import {
   selectCourseSearch,
   selectCourseList,
   setSearch,
+  selectCourseAPILoading,
 } from 'store/courseSlice'
 import { breakpoints } from 'styles/responsive'
 
@@ -29,6 +30,7 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
   // ? total course data
   const courseData = useSelector(selectCourseList)
   const search = useSelector(selectCourseSearch)
+  const loadingAPI = useSelector(selectCourseAPILoading)
 
   // ? filtered course data
   const [courseDataFiltered, setCourseDataFiltered] = useState(courseData)
@@ -42,7 +44,6 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
 
   // ? searching courses asynchronously
   const searchCourses = (searchParams) => {
-    setLoadingSearchResults(true)
     searchAsync(searchParams)
       .then(setCourseDataFiltered)
       .then(() => setLoadingSearchResults(false))
@@ -55,7 +56,9 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
   // ? debounce search input change to provide smoother search experience
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const searchCoursesDebounced = useCallback(debounce(searchCourses, 400), [])
+
   useEffect(() => {
+    setLoadingSearchResults(true)
     searchCoursesDebounced({
       dataSrc: courseData,
       dataKeys: searchFields,
@@ -74,7 +77,10 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
       />
       <FilterAside FilterDropdown showFilters={width >= breakpoints.lg} />
 
-      <CourseList courses={courseDataFiltered} loading={loadingSearchResults} />
+      <CourseList
+        courses={courseDataFiltered}
+        loading={loadingAPI || loadingSearchResults}
+      />
     </Container>
   )
 }
