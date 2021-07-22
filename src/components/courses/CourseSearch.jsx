@@ -1,7 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import { Search } from '@styled-icons/heroicons-outline'
 import { Input } from 'antd'
-import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { FilterDropdown } from 'components/filter'
@@ -25,7 +24,7 @@ const SearchContainer = styled.div`
   );
 
   @media ${device.min.lg} {
-    margin-right: ${({ theme }) => theme.asideWidth};
+    margin-right: ${({ theme }) => theme.asideWidthRight};
     transition: margin-right 200ms ease-in;
   }
 `
@@ -37,9 +36,11 @@ const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.55);
 `
 
-const StyledSearch = styled(Search)`
+const StyledIcon = styled(({ Icon, className, ...props }) => {
+  return <Icon {...props} className={className} />
+})`
   opacity: 0.5;
-  width: 1.25rem;
+  width: 1rem;
   color: ${({ theme }) => theme.darksecondary};
 `
 
@@ -50,23 +51,21 @@ const CourseSearch = ({
   showFilter,
   filterState,
   loading = false,
-}) => {
-  return (
-    <SearchContainer>
-      <FilterDropdown showFilters={showFilter} />
-      {showFilter && <Overlay />}
+}) => (
+  <SearchContainer>
+    <FilterDropdown filterState={filterState} showFilters={showFilter} />
+    {showFilter && <Overlay />}
 
-      <Input
-        size="large"
-        placeholder="course code, name or description"
-        allowClear
-        maxLength={100}
-        onChange={onChange}
-        value={value}
-        prefix={loading ? <LoadingOutlined /> : <StyledSearch />}
-      />
-    </SearchContainer>
-  )
-}
+    <Input
+      size="large"
+      placeholder="course code, name or description"
+      allowClear
+      maxLength={100}
+      onChange={onChange}
+      value={value}
+      prefix={<StyledIcon Icon={loading ? LoadingOutlined : Search} />}
+    />
+  </SearchContainer>
+)
 
 export default CourseSearch
