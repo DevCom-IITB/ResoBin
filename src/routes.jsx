@@ -10,6 +10,7 @@ const NotFound = lazy(() => import('pages/NotFound'))
 
 const Home = lazy(() => import('pages/Home'))
 const Courses = lazy(() => import('pages/Courses'))
+const CoursePage = lazy(() => import('pages/CoursePage'))
 const Contribute = lazy(() => import('pages/Contribute'))
 const Contact = lazy(() => import('pages/Contact'))
 const Favourites = lazy(() => import('pages/Favourites'))
@@ -25,6 +26,7 @@ export const DashboardRoutes = () => {
       <Route exact path="/favourites" component={Favourites} />
       <Route exact path="/settings" component={Settings} />
       <Route exact path="/contact" component={Contact} />
+      <Route exact path="/:id" component={CoursePage} />
 
       {/* 404 page */}
       <Redirect to="/404" />
