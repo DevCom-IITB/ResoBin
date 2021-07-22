@@ -1,5 +1,5 @@
 import debounce from 'lodash.debounce'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
@@ -38,28 +38,35 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
   const handleChange = (event) => dispatch(setSearch(event.currentTarget.value))
 
   // ? loading status while searching
-  const [loadingSearch, setLoadingSearch] = useState(false)
+  const [loadingSearchResults, setLoadingSearchResults] = useState(false)
 
+  // ? searching courses asynchronously
+  const searchCourses = (searchParams) => {
+    setLoadingSearchResults(true)
+    searchAsync(searchParams)
+      .then(setCourseDataFiltered)
+      .then(() => setLoadingSearchResults(false))
+      .catch((error) => {
+        toastError(error.message)
+        setLoadingSearchResults(false)
+      })
+  }
+
+  // ? debounce search input change to provide smoother search experience
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const searchCoursesDebounced = useCallback(debounce(searchCourses, 400), [])
   useEffect(() => {
-    setLoadingSearch(true)
-    searchAsync({
+    searchCoursesDebounced({
       dataSrc: courseData,
       dataKeys: searchFields,
       keywords: search,
     })
-      .then(setCourseDataFiltered)
-      .then(() => setLoadingSearch(false))
-      .catch((error) => {
-        toastError(error.message)
-      })
-  }, [search, courseData])
-
-  const loading = loadingSearch
+  }, [courseData, search, searchCoursesDebounced])
 
   return (
     <Container>
       <CourseSearch
-        loading={loading}
+        loading={loadingSearchResults}
         value={search}
         onChange={handleChange}
         showFilter={width < breakpoints.lg && showFilter}
@@ -67,7 +74,7 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
       />
       <FilterAside FilterDropdown showFilters={width >= breakpoints.lg} />
 
-      <CourseList courses={courseDataFiltered} loading={loading} />
+      <CourseList courses={courseDataFiltered} loading={loadingSearchResults} />
     </Container>
   )
 }
