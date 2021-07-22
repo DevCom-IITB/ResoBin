@@ -1,23 +1,10 @@
-import ThemeContextProvider from './ThemeContext'
+// similar to reselect's nest function
+import { nest } from 'helpers'
+
 import ViewportContextProvider from './ViewportContext'
 
-const CombineContexts = (...components) => {
-  return components.reduce(
-    (AccumulatedComponents, CurrentComponent) => {
-      return ({ children }) => {
-        return (
-          <AccumulatedComponents>
-            <CurrentComponent>{children}</CurrentComponent>
-          </AccumulatedComponents>
-        )
-      }
-    },
-    ({ children }) => <>{children}</>
-  )
-}
+const providers = [ViewportContextProvider]
 
-const providers = [ThemeContextProvider, ViewportContextProvider]
-
-const ContextProvider = CombineContexts(...providers)
+const ContextProvider = nest(...providers)
 
 export default ContextProvider

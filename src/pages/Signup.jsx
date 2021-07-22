@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { Header } from 'components/header'
 import { LoaderAnimation } from 'components/shared'
 import { SignupBody } from 'components/signup'
+import { CSRFToken } from 'helpers'
 import { signupAction } from 'store/authSlice'
 import { fontSize } from 'styles/responsive'
 
@@ -23,22 +24,22 @@ const FormBox = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   padding: 1.5rem 0;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background-color: ${({ theme }) => theme.darksecondary};
   box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.4);
 `
 
 const TitleHeader = styled.h4`
-  font-weight: 300;
   font-size: ${fontSize.responsive.lg};
+  font-weight: 300;
   text-align: center;
   letter-spacing: 2px;
   color: ${({ theme }) => theme.textColor};
 `
 
 const StyledLink = styled(Link)`
-  font-weight: 400;
   font-size: 0.875rem;
+  font-weight: 400;
   text-align: center;
   text-decoration: none;
   letter-spacing: 1px;
@@ -96,6 +97,8 @@ const Signup = () => {
           content="Signup if you don't have an account yet"
         />
       </Helmet>
+      <CSRFToken />
+
       <Header button="Login" buttonLink="/login" />
 
       <Container>

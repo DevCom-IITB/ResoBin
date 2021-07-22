@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { ButtonSquare, InputRounded as Input } from 'components/shared'
-import { CSRFToken } from 'helpers'
 // import { fontSize } from 'styles/responsive'
 
 const FormContainer = styled.form`
@@ -20,14 +19,14 @@ const FormContainer = styled.form`
 
 const SubTitle = styled.h4`
   display: flex;
-  font-weight: 300;
   font-size: 0.875rem;
+  font-weight: 300;
   color: ${({ theme }) => theme.textColor};
 `
 
 const StyledLink = styled(Link)`
-  font-weight: 600;
   font-size: 0.875rem;
+  font-weight: 600;
   color: ${({ theme }) => theme.textColor};
 
   &:hover {
@@ -43,7 +42,6 @@ const SignupBody = ({ onChange, onSubmit, user }) => {
 
   return (
     <FormContainer onSubmit={onSubmit}>
-      <CSRFToken />
       <Input
         name="fullname"
         type="text"

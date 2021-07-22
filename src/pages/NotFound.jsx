@@ -2,40 +2,58 @@ import { Helmet } from 'react-helmet-async'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
+import NotFoundImg from 'assets/images/NotFound.png'
+import { device, fontSize } from 'styles/responsive'
+
 const Container = styled.div`
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ theme }) => theme.secondary};
+`
+
+const Box = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  color: ${({ theme }) => theme.textColor};
-  background-color: ${({ theme }) => theme.secondary};
-`
+  padding: 1rem;
+  margin: 0.75rem;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.darksecondary};
+  box-shadow: 0 0 1rem 2px rgba(0, 0, 0, 0.2);
 
-const Title = styled.h1`
-  margin-bottom: 2rem;
-  font-weight: 400;
-  font-size: clamp(1rem, 10vw, 5rem);
-  color: ${({ theme }) => theme.textColor};
+  @media ${device.min.md} {
+    padding: 1rem 2rem;
+  }
 `
 
 const Subtitle = styled.p`
-  margin-bottom: clamp(1rem, 4vw, 4rem);
-  font-weight: 200;
-  font-size: clamp(0.75rem, 4vw, 2rem);
+  margin: 1rem;
+  font-size: ${fontSize.responsive.xxl};
+  font-weight: 300;
+  text-align: center;
+  color: ${({ theme }) => theme.textColor};
 `
 
-const StyledLink = styled.button`
-  margin-bottom: 1rem;
-  border: none;
-  font-weight: 200;
-  font-size: clamp(1rem, 6vw, 2.5rem);
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 2px;
-  color: ${({ theme }) => theme.textColor};
-  background: none;
+const GoBack = styled.button`
+  font-size: ${fontSize.responsive.xl};
+  font-weight: 400;
+  color: inherit;
+  background-color: transparent;
   cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 1px;
+  }
+`
+
+const Image = styled.img`
+  width: clamp(13rem, 30vw, 20rem);
 `
 
 const NotFound = () => {
@@ -44,16 +62,18 @@ const NotFound = () => {
   return (
     <Container>
       <Helmet>
-        <title>Page Not Found</title>
-        <meta
-          name="description"
-          content="The page you were searching for does not exist"
-        />
+        <title>404 Not Found</title>
+        <meta name="description" content="Page not found" />
       </Helmet>
+      <Box>
+        <Image src={NotFoundImg} alt="404 Page not found" />
 
-      <Title>404 Not Found</Title>
-      <Subtitle>The link you requested does not exist.</Subtitle>
-      <StyledLink onClick={history.goBack}>Go back</StyledLink>
+        <Subtitle>
+          This page is not available.
+          <br />
+          <GoBack onClick={history.goBack}>Take me back!</GoBack>
+        </Subtitle>
+      </Box>
     </Container>
   )
 }

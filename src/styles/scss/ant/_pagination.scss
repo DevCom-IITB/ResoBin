@@ -9,7 +9,7 @@
     align-items: center;
     width: 2rem;
     height: 2rem;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     font-size: 0.75rem;
 
     &-link {
@@ -26,7 +26,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      border-radius: 8px;
+      border-radius: 0.5rem;
     }
   }
 }

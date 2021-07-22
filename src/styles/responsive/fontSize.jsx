@@ -26,6 +26,7 @@ const fontSize = {
     md: makeResponsive(size.md),
     lg: makeResponsive(size.lg),
     xl: makeResponsive(size.xl),
+    xxl: makeResponsive(size.xxl),
   },
 }
 

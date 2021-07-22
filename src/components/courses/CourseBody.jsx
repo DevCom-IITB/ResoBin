@@ -1,95 +1,84 @@
-import { Search } from '@styled-icons/heroicons-outline'
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
-import { CourseList } from 'components/courses'
-import { FilterDropdown, FilterAside } from 'components/filter'
-import { InputRounded } from 'components/shared'
+import { CourseList, CourseSearch } from 'components/courses'
+import { FilterAside } from 'components/filter'
 import { useViewportContext } from 'context/ViewportContext'
-// import { courseData } from 'data/courses'
-import { HEX2RGBA } from 'helpers'
-import { breakpoints, device } from 'styles/responsive'
+import { breakpoints } from 'styles/responsive'
 
 const Container = styled.div`
   width: 100%;
   min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
 `
 
-const SearchContainer = styled.div`
-  position: sticky;
-  top: 3rem;
-  z-index: 6;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 3rem;
-  padding: 0 0.75rem;
-  background: linear-gradient(
-    0deg,
-    ${({ theme }) => HEX2RGBA(theme.primary, 0)} 0%,
-    ${({ theme }) => HEX2RGBA(theme.primary, 0)} 30%,
-    ${({ theme }) => HEX2RGBA(theme.primary, 100)} 50%
-  );
+const searchFields = ['Code', 'Title', 'Description']
 
-  @media ${device.min.lg} {
-    margin-right: ${({ theme }) => theme.asideWidth};
-    transition: margin-right 200ms ease-in;
-  }
-`
-
-const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 4;
-  display: ${({ showFilters }) => (showFilters ? 'initial' : 'none')};
-  background-color: rgba(0, 0, 0, 0.55);
-`
-
-const CourseBody = ({ showFilters, onClick }) => {
+const CourseBody = ({ showFilters: showFilter, onClick }) => {
   // responsive layout state
   const { width } = useViewportContext()
-  const breakpoint = breakpoints.lg
+  // total course data
+  const { list: courseData, loading: loadingAPI } = useSelector(
+    (state) => state.course
+  )
+
+  // filtered course data
+  const [courseDataFiltered, setCourseDataFiltered] = useState(courseData)
 
   // search input state
   const [search, setSearch] = useState('')
-  const handleChange = (event) => setSearch((e) => e.target.value)
+  const handleChange = (event) => setSearch(event.currentTarget.value)
 
-  const { list: courseData } = useSelector((state) => state.course)
+  // loading status while searching
+  const [loadingSearch, setLoadingSearch] = useState(false)
+
   useEffect(() => {
-    // search
-  }, [courseData])
+    const searchCourses = async (keyword) => {
+      setLoadingSearch(true)
+      await setTimeout(() => {
+        setCourseDataFiltered(
+          courseData.filter((course) => {
+            // Empty search allow all
+            if (!keyword) return true
+
+            // by default not accepted. Accept only if keyword found
+            let flg = false
+
+            // check if keyword exists in any of the selected keys
+            searchFields.forEach((field) => {
+              if (course[field]) {
+                flg =
+                  flg ||
+                  course[field].toLowerCase().includes(keyword.toLowerCase())
+              }
+            })
+
+            return flg
+          })
+        )
+
+        setLoadingSearch(false)
+      }, 400)
+    }
+
+    if (search) searchCourses(search)
+    else setCourseDataFiltered(courseData)
+  }, [search, courseData])
+
+  const loading = loadingSearch || loadingAPI
 
   return (
     <Container>
-      <SearchContainer>
-        {
-          // if viewport width is not adequate, use dropdown filter else use aside filter
-          width < breakpoint ? (
-            <>
-              <FilterDropdown showFilters={showFilters} onClick={onClick} />
-              <Overlay showFilters={showFilters} />
-            </>
-          ) : null
-        }
+      <CourseSearch
+        loading={loading}
+        value={search}
+        onChange={handleChange}
+        showFilter={width < breakpoints.lg && showFilter}
+        filterState={null}
+      />
+      <FilterAside FilterDropdown showFilters={width >= breakpoints.lg} />
 
-        <InputRounded
-          name="courseSearch"
-          type="search"
-          placeholder="Course code, name or description"
-          value={search}
-          onChange={handleChange}
-          label="Search"
-          Icon={Search}
-        />
-      </SearchContainer>
-
-      <FilterAside FilterDropdown showFilters={width >= breakpoint} />
-
-      <CourseList courses={courseData} />
+      <CourseList courses={courseDataFiltered} loading={loading} />
     </Container>
   )
 }

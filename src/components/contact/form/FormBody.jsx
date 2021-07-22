@@ -17,8 +17,11 @@ import { ButtonSquare, InputSquared, TextAreaSquared } from 'components/shared'
 // }
 
 const ContainerForm = styled.form`
-  margin: 2rem 2rem 0.5rem;
-  appearance: none;
+  padding: 1rem;
+  margin: 0 0.75rem;
+  border-radius: 0.5rem;
+  background: ${({ theme }) => theme.darksecondary};
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
 `
 
 const FormBody = () => {

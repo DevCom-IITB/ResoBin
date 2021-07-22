@@ -4,8 +4,9 @@ import styled from 'styled-components'
 import { FilterItem } from 'components/filter'
 import MultiSelect from 'components/filter/filterData'
 import { Divider } from 'components/shared'
-import { filterData } from 'data/courses'
 import { device } from 'styles/responsive'
+
+import filterData from './mock/filterData.json'
 
 const ContainerDropdown = styled.div`
   position: absolute;
@@ -18,7 +19,7 @@ const ContainerDropdown = styled.div`
   margin: 0 0.75rem;
   background: ${({ theme }) => theme.secondary};
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
-  transition: 500ms;
+  transition: 200ms;
 `
 
 const ContainerAside = styled.div`
@@ -48,16 +49,16 @@ const Header = styled.div`
 `
 
 const Title = styled.h4`
-  font-weight: 700;
   font-size: 1.25rem;
+  font-weight: 700;
   letter-spacing: 1px;
   color: ${({ theme }) => theme.textColor};
 `
 
 const ClearAll = styled.button`
   border: 0;
-  font-weight: 400;
   font-size: 0.75rem;
+  font-weight: 400;
   color: ${({ theme }) => theme.textColor};
   background: transparent;
   cursor: pointer;
@@ -84,7 +85,7 @@ const ListAside = styled.div`
 //   offeredIn: null,
 // }
 
-export const FilterDropdown = ({ showFilters, onClick }) => {
+export const FilterDropdown = ({ showFilters }) => {
   // const [filters, setFilters] = useState(initialState)
   const handleClearAll = (e) => {
     // setFilters(initialState)

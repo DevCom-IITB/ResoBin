@@ -1,4 +1,5 @@
 # Personal Template
+**/.mock/
 *.temp
 *.old
 .env

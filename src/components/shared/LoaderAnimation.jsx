@@ -7,7 +7,7 @@ const Container = styled.div`
   left: 0;
   z-index: 10000;
   width: 100%;
-  height: 0.25rem;
+  height: 0.1rem;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
 `
 
@@ -16,7 +16,7 @@ const LoaderTrack = styled.div`
   display: block;
   overflow: hidden;
   width: 100%;
-  height: 0.25rem;
+  height: 0.1rem;
 `
 
 const Anim1 = keyframes`
@@ -62,7 +62,7 @@ const LoaderFill = styled.div`
       -135deg,
       ${({ theme }) => theme.logo} 0%,
       ${({ theme }) => theme.logo} 30%,
-      ${({ theme }) => theme.darksecondary} 100%
+      transparent 100%
     );
     will-change: left, right;
   }
@@ -81,7 +81,7 @@ const LoaderAnimation = () => {
   return (
     <Container>
       <Helmet>
-        <title>Loading...</title>
+        <title>ResoBin</title>
         <meta name="description" content="Please wait, your page is loading" />
       </Helmet>
 

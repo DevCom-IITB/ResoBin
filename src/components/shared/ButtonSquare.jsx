@@ -6,8 +6,8 @@ const ButtonSquare = styled.button`
   height: 1.75rem;
   padding: 0 1rem;
   border-radius: 0.25rem;
-  font-weight: 400;
   font-size: 0.75rem;
+  font-weight: 400;
   letter-spacing: 1px;
   color: #ffffff;
   background-color: ${({ theme }) => theme.logo};

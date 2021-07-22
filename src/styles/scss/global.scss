@@ -15,7 +15,7 @@
 
   &:hover {
     &::-webkit-scrollbar-thumb {
-      border-radius: 8px;
+      border-radius: 0.5rem;
       background-color: #90909065;
     }
   }
@@ -23,7 +23,7 @@
 
 body {
   &::-webkit-scrollbar-thumb {
-    border-radius: 8px;
+    border-radius: 0.5rem;
     background-color: #90909065;
   }
 

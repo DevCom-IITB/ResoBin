@@ -7,8 +7,8 @@ import styled from 'styled-components'
 const Title = styled.span`
   display: inline-block;
   margin-bottom: 0.75rem;
-  font-weight: 600;
   font-size: 1rem;
+  font-weight: 600;
   letter-spacing: 0.2px;
   color: ${({ theme }) => theme.textColor};
 `
