@@ -36,9 +36,11 @@ const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.55);
 `
 
-const SearchIconStyled = styled(Search)`
+const StyledIcon = styled(({ Icon, className, ...props }) => {
+  return <Icon {...props} className={className} />
+})`
   opacity: 0.5;
-  width: 1.25rem;
+  width: 1rem;
   color: ${({ theme }) => theme.darksecondary};
 `
 
@@ -61,7 +63,7 @@ const CourseSearch = ({
       maxLength={100}
       onChange={onChange}
       value={value}
-      prefix={loading ? <LoadingOutlined /> : <SearchIconStyled />}
+      prefix={<StyledIcon Icon={loading ? LoadingOutlined : Search} />}
     />
   </SearchContainer>
 )

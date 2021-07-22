@@ -5,8 +5,9 @@ import styled from 'styled-components'
 
 import { CourseList, CourseSearch } from 'components/courses'
 import { FilterAside } from 'components/filter'
+import { toastError } from 'components/toast'
 import { useViewportContext } from 'context/ViewportContext'
-import { search as applySearch, searchAsync } from 'helpers'
+import { searchAsync } from 'helpers'
 import {
   selectCourseSearch,
   selectCourseList,
@@ -39,25 +40,18 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
   // ? loading status while searching
   const [loadingSearch, setLoadingSearch] = useState(false)
 
-  // debounce(this.runSearch, 200)
   useEffect(() => {
-    const searchCourses = async (keyword) => {
-      setLoadingSearch(true)
-
-      await setTimeout(() => {
-        setCourseDataFiltered(
-          applySearch({
-            data: courseData,
-            keyword,
-            keys: searchFields,
-          })
-        )
-        setLoadingSearch(false)
-      }, 400)
-    }
-
-    if (search) searchCourses(search)
-    else setCourseDataFiltered(courseData)
+    setLoadingSearch(true)
+    searchAsync({
+      dataSrc: courseData,
+      dataKeys: searchFields,
+      keywords: search,
+    })
+      .then(setCourseDataFiltered)
+      .then(() => setLoadingSearch(false))
+      .catch((error) => {
+        toastError(error.message)
+      })
   }, [search, courseData])
 
   const loading = loadingSearch

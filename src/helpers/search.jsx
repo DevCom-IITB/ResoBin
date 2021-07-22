@@ -1,33 +1,28 @@
-export const search = ({ data, keyword, keys }) => {
+export const search = ({ dataSrc, dataKeys, keywords }) => {
   // ? empty search allow all
-  if (!keyword) return data
+  if (!keywords) return dataSrc
 
-  return data.filter((item) => {
+  return dataSrc.filter((item) => {
     // ? check if keyword exists in any of the selected keys
     // ? accept only if keyword is found (default: accept nothing)
     let flg = false
-    keys.forEach((key) => {
+    dataKeys.forEach((key) => {
       const value = item[key]
-      if (value && value.toLowerCase().includes(keyword.toLowerCase()))
+      if (value && value.toLowerCase().includes(keywords.toLowerCase()))
         flg = true
     })
     return flg
   })
 }
 
-export const searchAsync = ({ data, keyword, keys, timeout = 200 }) => {
-  if (keyword) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const result = search({ data, keyword, keys })
-        resolve(result)
-      }, timeout)
-    })
-  }
-
-  return new Promise((resolve, reject) => {
+export const searchAsync = ({ timeout = 200, ...searchParams }) =>
+  new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(data)
+      try {
+        const result = search(searchParams)
+        resolve(result)
+      } catch {
+        reject(new Error('Search error'))
+      }
     }, timeout)
   })
-}
