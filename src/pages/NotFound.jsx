@@ -32,7 +32,7 @@ const Box = styled.div`
 
 const Subtitle = styled.p`
   margin: 1rem;
-  font-size: ${fontSize.responsive.xxl};
+  font-size: ${fontSize.responsive.$2xl};
   font-weight: 300;
   text-align: center;
   color: ${({ theme }) => theme.textColor};

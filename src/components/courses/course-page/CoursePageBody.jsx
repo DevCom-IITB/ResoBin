@@ -1,6 +1,8 @@
 import { Divider } from 'antd'
 import styled from 'styled-components'
 
+import { fontSize } from 'styles/responsive'
+
 const Container = styled.div`
   width: 100%;
   padding: 1.5rem 1rem;
@@ -11,22 +13,26 @@ const Container = styled.div`
 `
 
 const CourseCode = styled.h1`
-  font-size: 3rem;
+  font-size: ${fontSize.responsive.$4xl};
   font-weight: 600;
   color: ${({ theme }) => theme.primary};
 `
 
 const CourseTitle = styled.h1`
-  font-size: 1.875rem;
+  font-size: ${fontSize.responsive.$2xl};
 `
 
 const CourseDepartment = styled.h3`
   margin-top: 0.5rem;
-  font-size: 1rem;
+  font-size: ${fontSize.responsive.sm};
+  font-weight: 400;
 `
 
 const CourseDescription = styled.p`
-  font-size: 1rem;
+  font-size: ${fontSize.responsive.md};
+  font-weight: 300;
+  text-align: justify;
+  color: lightgray;
 `
 
 const CoursePageBody = ({ courseData }) => {
@@ -34,8 +40,12 @@ const CoursePageBody = ({ courseData }) => {
     <Container>
       <CourseCode>{courseData.Code}</CourseCode>
       <CourseTitle>{courseData.Title}</CourseTitle>
-      <CourseDepartment>{courseData.Department}</CourseDepartment>
-      <Divider style={{ backgroundColor: '#aaa5a5' }} />
+      <CourseDepartment>
+        {courseData.Department} | {courseData.TotalCredits} credits
+      </CourseDepartment>
+      <Divider
+        style={{ backgroundColor: '#ffffff', margin: '1rem 0', opacity: 0.3 }}
+      />
       <CourseDescription>{courseData.Description}</CourseDescription>
     </Container>
   )

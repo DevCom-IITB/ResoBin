@@ -75,7 +75,6 @@ const Department = styled.span`
 const CourseDescription = styled.p`
   margin: 0.75rem 0;
   font-size: ${fontSize.static.md};
-  font-family: 'Source Sans Pro', sans-serif;
   font-weight: 300;
   text-align: justify;
   color: lightgray;
