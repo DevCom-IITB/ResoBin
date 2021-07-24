@@ -33,14 +33,14 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
   const loadingAPI = useSelector(selectCourseAPILoading)
 
   // ? filtered course data
-  const [courseDataFiltered, setCourseDataFiltered] = useState(courseData)
+  const [courseDataFiltered, setCourseDataFiltered] = useState([])
 
   // ? search input state
   const dispatch = useDispatch()
   const handleChange = (event) => dispatch(setSearch(event.currentTarget.value))
 
   // ? loading status while searching
-  const [loadingSearchResults, setLoadingSearchResults] = useState(false)
+  const [loadingSearchResults, setLoadingSearchResults] = useState(true)
 
   // ? searching courses asynchronously
   const searchCourses = (searchParams) => {
