@@ -53,7 +53,7 @@ const CourseSearch = ({
   loading = false,
 }) => (
   <SearchContainer>
-    <FilterDropdown filterState={filterState} showFilters={showFilter} />
+    <FilterDropdown filterState={filterState} showFilter={showFilter} />
     {showFilter && <Overlay />}
 
     <Input

@@ -4,27 +4,28 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { CourseList, CourseSearch } from 'components/courses'
-import { FilterAside } from 'components/filter'
+import { FilterAside, FilterFloatButton } from 'components/filter'
 import { toastError } from 'components/toast'
 import { useViewportContext } from 'context/ViewportContext'
 import { searchAsync } from 'helpers'
-import { selectCourseList, selectCourseAPILoading } from 'store/courseSlice'
+import { selectCourseList } from 'store/courseSlice'
 import { breakpoints } from 'styles/responsive'
 
 const Container = styled.div`
   width: 100%;
-  min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
 `
 
 const searchFields = ['Code', 'Title', 'Description']
 
-const CourseBody = ({ showFilters: showFilter, onClick }) => {
+const CourseBody = () => {
   // ? responsive layout state
   const { width } = useViewportContext()
 
+  // ? show or hide dropdown filters state
+  const [showFilter, setShowFilter] = useState(false)
+
   // ? total course data
   const courseData = useSelector(selectCourseList)
-  const loadingAPI = useSelector(selectCourseAPILoading)
 
   // ? filtered course data
   const [search, setSearch] = useState('')
@@ -34,7 +35,7 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
   const handleChange = (event) => setSearch(event.currentTarget.value)
 
   // ? loading status while searching
-  const [loadingSearchResults, setLoadingSearchResults] = useState(true)
+  const [loadingResults, setLoadingSearchResults] = useState(true)
 
   // ? searching courses asynchronously
   const searchCourses = (searchParams) => {
@@ -63,18 +64,20 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
   return (
     <Container>
       <CourseSearch
-        loading={loadingSearchResults}
+        loading={loadingResults}
         value={search}
         onChange={handleChange}
         showFilter={width < breakpoints.lg && showFilter}
         filterState={null}
       />
-      <FilterAside FilterDropdown showFilters={width >= breakpoints.lg} />
 
-      <CourseList
-        courses={courseDataFiltered}
-        loading={loadingAPI || loadingSearchResults}
+      <FilterAside showFilter={width >= breakpoints.lg} />
+      <FilterFloatButton
+        showFilter={showFilter}
+        setShowFilter={setShowFilter}
       />
+
+      <CourseList courses={courseDataFiltered} loading={loadingResults} />
     </Container>
   )
 }

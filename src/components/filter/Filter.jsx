@@ -14,8 +14,8 @@ const ContainerDropdown = styled.div`
   z-index: 5;
   overflow: auto;
   width: calc(100% - 1.5rem);
-  height: ${({ showFilters }) => (showFilters ? 'calc(100vh - 5rem)' : '0')};
-  padding: ${({ showFilters }) => (showFilters ? '1rem 0 20rem' : '0')};
+  height: ${({ showFilter }) => (showFilter ? 'calc(100vh - 5rem)' : '0')};
+  padding: ${({ showFilter }) => (showFilter ? '1rem 0 20rem' : '0')};
   margin: 0 0.75rem;
   background: ${({ theme }) => theme.secondary};
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
@@ -25,7 +25,7 @@ const ContainerDropdown = styled.div`
 const ContainerAside = styled.div`
   position: fixed;
   top: 3rem;
-  right: ${({ showFilters }) => (showFilters ? '0' : '-100%')};
+  right: ${({ showFilter }) => (showFilter ? '0' : '-100%')};
   z-index: 5;
   width: ${({ theme }) => theme.asideWidthRight};
   height: calc(100% - 3rem);
@@ -70,7 +70,7 @@ const ClearAll = styled.button`
 `
 
 const ListDropdown = styled.div`
-  display: ${({ showFilters }) => (showFilters ? 'block' : 'none')};
+  display: ${({ showFilter }) => (showFilter ? 'block' : 'none')};
   padding: 1rem 1rem 2rem;
 `
 
@@ -85,28 +85,28 @@ const ListAside = styled.div`
 //   offeredIn: null,
 // }
 
-export const FilterDropdown = ({ showFilters }) => {
+export const FilterDropdown = ({ showFilter }) => {
   // const [filters, setFilters] = useState(initialState)
   const handleClearAll = (e) => {
     // setFilters(initialState)
   }
 
   useEffect(() => {
-    document.body.style.overflow = showFilters ? 'hidden' : 'auto'
+    document.body.style.overflow = showFilter ? 'hidden' : 'auto'
     return () => {
       document.body.style.overflow = 'auto'
     }
-  }, [showFilters])
+  }, [showFilter])
 
   return (
-    <ContainerDropdown showFilters={showFilters}>
+    <ContainerDropdown showFilter={showFilter}>
       <Header>
         <Title>Filter</Title>
         <ClearAll onClick={handleClearAll}>Clear all</ClearAll>
       </Header>
       <Divider style={{ margin: '0 1rem', width: 'auto' }} />
 
-      <ListDropdown showFilters={showFilters}>
+      <ListDropdown showFilter={showFilter}>
         {filterData.map((data) => (
           <FilterItem key={data.id} data={data} />
         ))}
@@ -116,14 +116,14 @@ export const FilterDropdown = ({ showFilters }) => {
   )
 }
 
-export const FilterAside = ({ showFilters }) => {
+export const FilterAside = ({ showFilter }) => {
   // const [filters, setFilters] = useState(initialState)
   const handleClearAll = (e) => {
     // setFilters(initialState)
   }
 
   return (
-    <ContainerAside showFilters={showFilters}>
+    <ContainerAside showFilter={showFilter}>
       <Header>
         <Title>Filter</Title>
         <ClearAll onClick={handleClearAll}>Clear all</ClearAll>
