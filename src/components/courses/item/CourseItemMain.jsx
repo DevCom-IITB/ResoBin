@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
 import { ReadMore } from 'components/shared'
+import { courseCodeToSlug, coursePageUrl } from 'paths'
 import { device, fontSize } from 'styles/responsive'
 
 const Container = styled.div`
@@ -114,8 +115,7 @@ const StyledFavourite = styled(({ Icon, className, ...props }) => {
   }
 `
 
-const CourseItemMain = ({ data }) => {
-  const coursePage = `courses/${data.Code.replace(/\s/g, '')}`
+const CourseItemMain = ({ data: courseData }) => {
   const [favourite, setFavourite] = useState(false)
 
   const favouriteClick = () => {
@@ -125,21 +125,21 @@ const CourseItemMain = ({ data }) => {
   return (
     <Container>
       <SubTitle>
-        <Department>{data.Department || 'Not available'}</Department>
-        <CreditContainer>{data.TotalCredits}</CreditContainer>
+        <Department>{courseData.Department || 'Not available'}</Department>
+        <CreditContainer>{courseData.TotalCredits}</CreditContainer>
         <StyledFavourite
           Icon={favourite ? BookmarkFill : Bookmark}
           onClick={favouriteClick}
         />
       </SubTitle>
 
-      <Title to={coursePage}>
-        <CourseCode>{data.Code}</CourseCode>
-        <CourseTitle>{data.Title}</CourseTitle>
+      <Title to={coursePageUrl(courseData.Code, courseData.Title)}>
+        <CourseCode>{courseData.Code}</CourseCode>
+        <CourseTitle>{courseData.Title}</CourseTitle>
       </Title>
 
       <CourseDescription>
-        <ReadMore>{data.Description || 'Not available'}</ReadMore>
+        <ReadMore>{courseData.Description || 'Not available'}</ReadMore>
       </CourseDescription>
     </Container>
   )

@@ -1,9 +1,10 @@
 import { Helmet } from 'react-helmet-async'
 import { useSelector } from 'react-redux'
-import { Redirect, useParams } from 'react-router-dom'
+import { Redirect, useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { CoursePageBody } from 'components/courses/course-page'
+import { coursePageUrl } from 'paths'
 import { selectCourseListByCourseCode } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
@@ -17,20 +18,26 @@ const Container = styled.div`
 `
 
 const CoursePage = ({ match }) => {
+  const location = useLocation()
   const { courseCode } = useParams()
   const courseMatches = useSelector(selectCourseListByCourseCode(courseCode))
 
   if (courseMatches.length !== 1) return <Redirect to="/404" />
   const courseData = courseMatches[0]
 
+  // redirect to canonical URL (eg: courses/CL152/introduction-to-chemical-engineering)
+  const canonicalUrl = coursePageUrl(courseData.Code, courseData.Title)
+  if (match.url !== canonicalUrl)
+    return <Redirect to={{ ...location, pathname: canonicalUrl }} />
+
   return (
     <Container>
       <Helmet>
-        <title>{`${courseData.Code} ${courseData.Title} - ResoBin`}</title>
+        <title>{`${courseData.Code}: ${courseData.Title} - ResoBin`}</title>
         <meta property="description" content={courseData.Description} />
       </Helmet>
 
-      <CoursePageBody data={courseData} />
+      <CoursePageBody courseData={courseData} />
     </Container>
   )
 }

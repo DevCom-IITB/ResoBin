@@ -10,20 +10,33 @@ const Container = styled.div`
   background: ${({ theme }) => theme.darksecondary};
 `
 
-const CodeText = styled.div`
-  font-size: 36px;
+const CourseCode = styled.h1`
+  font-size: 3rem;
   font-weight: 600;
   color: ${({ theme }) => theme.primary};
 `
 
-const CoursePageBody = ({ data }) => {
+const CourseTitle = styled.h1`
+  font-size: 1.875rem;
+`
+
+const CourseDepartment = styled.h3`
+  margin-top: 0.5rem;
+  font-size: 1rem;
+`
+
+const CourseDescription = styled.p`
+  font-size: 1rem;
+`
+
+const CoursePageBody = ({ courseData }) => {
   return (
     <Container>
-      <CodeText>{data.Code}</CodeText>
-      <h1>{data.Title}</h1>
-      <h3>{data.Department}</h3>
+      <CourseCode>{courseData.Code}</CourseCode>
+      <CourseTitle>{courseData.Title}</CourseTitle>
+      <CourseDepartment>{courseData.Department}</CourseDepartment>
       <Divider style={{ backgroundColor: '#aaa5a5' }} />
-      <h3>{data.Description}</h3>
+      <CourseDescription>{courseData.Description}</CourseDescription>
     </Container>
   )
 }

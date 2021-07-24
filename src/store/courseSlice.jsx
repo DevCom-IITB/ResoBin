@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
+import { courseCodeToSlug } from 'paths'
+
 // ? async actions
 export const getCourseList = createAsyncThunk(
   'course/getCourseList',
@@ -38,11 +40,11 @@ export const selectCourseList = (state) => state.course.list
 export const selectCourseAPILoading = (state) => state.course.loading
 
 // https://stackoverflow.com/questions/62545632/how-to-pass-an-additional-argument-to-useselector
-export const selectCourseListByCourseCode = (courseCode) =>
+export const selectCourseListByCourseCode = (courseCodeParam) =>
   createSelector(selectCourseList, (courseList) =>
-    courseList.filter((course) => {
-      return course.Code.replace(/\s/g, '') === courseCode
-    })
+    courseList.filter(
+      (course) => courseCodeToSlug(course.Code) === courseCodeParam
+    )
   )
 
 export default courseSlice.reducer
