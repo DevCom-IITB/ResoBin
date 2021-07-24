@@ -115,7 +115,7 @@ const StyledFavourite = styled(({ Icon, className, ...props }) => {
 `
 
 const CourseItemMain = ({ data }) => {
-  const coursePage = `${data.Code.replace(/\s/g, '')}`
+  const coursePage = `courses/${data.Code.replace(/\s/g, '')}`
   const [favourite, setFavourite] = useState(false)
 
   const favouriteClick = () => {

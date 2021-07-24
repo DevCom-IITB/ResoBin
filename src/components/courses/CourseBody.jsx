@@ -1,6 +1,6 @@
 import debounce from 'lodash/debounce'
 import { useState, useEffect, useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { CourseList, CourseSearch } from 'components/courses'
@@ -8,12 +8,7 @@ import { FilterAside } from 'components/filter'
 import { toastError } from 'components/toast'
 import { useViewportContext } from 'context/ViewportContext'
 import { searchAsync } from 'helpers'
-import {
-  selectCourseSearch,
-  selectCourseList,
-  setSearch,
-  selectCourseAPILoading,
-} from 'store/courseSlice'
+import { selectCourseList, selectCourseAPILoading } from 'store/courseSlice'
 import { breakpoints } from 'styles/responsive'
 
 const Container = styled.div`
@@ -29,15 +24,14 @@ const CourseBody = ({ showFilters: showFilter, onClick }) => {
 
   // ? total course data
   const courseData = useSelector(selectCourseList)
-  const search = useSelector(selectCourseSearch)
   const loadingAPI = useSelector(selectCourseAPILoading)
 
   // ? filtered course data
+  const [search, setSearch] = useState('')
   const [courseDataFiltered, setCourseDataFiltered] = useState([])
 
   // ? search input state
-  const dispatch = useDispatch()
-  const handleChange = (event) => dispatch(setSearch(event.currentTarget.value))
+  const handleChange = (event) => setSearch(event.currentTarget.value)
 
   // ? loading status while searching
   const [loadingSearchResults, setLoadingSearchResults] = useState(true)

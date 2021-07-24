@@ -25,7 +25,7 @@ const List = styled.ul`
   margin: 0 0.75rem;
 `
 
-const CourseList = ({ courses, loading }) => {
+const CourseList = ({ courses, loading = false }) => {
   const count = courses ? courses.length : 0
 
   // pagination

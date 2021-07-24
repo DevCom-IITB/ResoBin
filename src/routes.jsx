@@ -22,12 +22,11 @@ export const DashboardRoutes = () => {
     <Switch>
       <Route exact path="/" component={Home} />
       <Route exact path="/courses" component={Courses} />
-      <Route exact path="/courses/:courseCode" component={Courses} />
+      <Route exact path="/courses/:courseCode" component={CoursePage} />
       <Route exact path="/contribute" component={Contribute} />
       <Route exact path="/favourites" component={Favourites} />
       <Route exact path="/settings" component={Settings} />
       <Route exact path="/contact" component={Contact} />
-      <Route exact path="/:id" component={CoursePage} />
 
       {/* 404 page */}
       <Redirect to="/404" />
@@ -41,6 +40,7 @@ export const AppRoutes = () => {
     <Switch>
       <Route exact path="/login" component={Login} />
       <Route path="/404" component={NotFound} />
+
       {/* Change to PrivateRoute for production */}
       <Route path="/" component={Dashboard} />
 
