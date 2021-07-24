@@ -33,14 +33,20 @@ const RightContainer = styled.div`
   padding: 20px;
 `
 
+const VertSpace = styled.div`
+  height: 20px;
+`
+
 const CodeText = styled.div`
   font-size: 36px;
   font-weight: 600;
   color: ${({ theme }) => theme.primary};
 `
 
-const Line = styled.div`
-  color: white;
+const SubHeaderText = styled.div`
+  font-size: 24px;
+  font-weight: 400;
+  color: ${({ theme }) => theme.logo};
 `
 
 const CoursePage = ({ match }) => {
@@ -50,7 +56,7 @@ const CoursePage = ({ match }) => {
   const splittedArray = id.match(regex)
   const code = `${splittedArray[0]} ${splittedArray[1]}`
   const data = courseData.filter((course) => course.Code === code)[0]
-  console.log(data)
+
   return (
     <Container>
       <LeftContainer>
@@ -59,6 +65,15 @@ const CoursePage = ({ match }) => {
         <h3>{data.Department}</h3>
         <Divider style={{ backgroundColor: '#aaa5a5' }} />
         <h3>{data.Description}</h3>
+        <SubHeaderText>Course Structure</SubHeaderText>
+        <h3>
+          Lectures : {data.Structure.Lecture} | Tutorial:
+          {data.Structure.Tutorial} | Practical: {data.Structure.Practical}
+        </h3>
+        <SubHeaderText>Prerequisites</SubHeaderText>
+        <h3>{data.Prerequisite}</h3>
+        <SubHeaderText>Credits</SubHeaderText>
+        <h3>{data.TotalCredits}</h3>
       </LeftContainer>
       <RightContainer />
     </Container>
