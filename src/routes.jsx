@@ -21,7 +21,8 @@ export const DashboardRoutes = () => {
   return (
     <Switch>
       <Route exact path="/" component={Home} />
-      <Route exact path="/courses/:courseCode?/:search?" component={Courses} />
+      <Route exact path="/courses" component={Courses} />
+      <Route exact path="/courses/:courseCode" component={Courses} />
       <Route exact path="/contribute" component={Contribute} />
       <Route exact path="/favourites" component={Favourites} />
       <Route exact path="/settings" component={Settings} />

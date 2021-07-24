@@ -19,17 +19,17 @@ const App = () => {
   return (
     <ThemeProvider theme={themes[selectedTheme]}>
       <PersistGate loading={<LoaderAnimation />} persistor={persistor}>
-        <Suspense fallback={<LoaderAnimation />}>
-          <Helmet>
-            <title>ResoBin</title>
-            <meta
-              name="description"
-              content="IIT Bombay's resources sharing website"
-            />
-          </Helmet>
-          <GlobalStyles />
+        <Helmet>
+          <title>ResoBin</title>
+          <meta
+            name="description"
+            content="IIT Bombay's resources sharing website"
+          />
+        </Helmet>
+        <GlobalStyles />
 
-          <Header />
+        <Header />
+        <Suspense fallback={<LoaderAnimation />}>
           <AppRoutes />
         </Suspense>
       </PersistGate>
