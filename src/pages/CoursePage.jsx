@@ -13,10 +13,15 @@ import { breakpoints, device } from 'styles/responsive'
 
 const Container = styled.div`
   display: flex;
+  width: 100%;
   height: 100%;
   color: ${({ theme }) => theme.header};
   @media ${device.min.md} {
-    margin-left: ${({ theme }) => theme.navbarHorizontalWidth};
+    margin-left: ${({ theme }) => theme.asideWidthLeft};
+  }
+  @media ${device.min.lg} {
+    padding-right: ${({ theme }) => theme.asideWidthRight};
+    transition: padding-right 200ms ease-in;
   }
 `
 
