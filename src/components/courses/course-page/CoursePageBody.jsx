@@ -43,10 +43,13 @@ const CoursePageBody = ({ courseData }) => {
       <CourseDepartment>
         {courseData.Department} | {courseData.TotalCredits} credits
       </CourseDepartment>
+
       <Divider
         style={{ backgroundColor: '#ffffff', margin: '1rem 0', opacity: 0.3 }}
       />
-      <CourseDescription>{courseData.Description}</CourseDescription>
+      <CourseDescription>
+        {courseData.Description || 'Not available'}
+      </CourseDescription>
     </Container>
   )
 }

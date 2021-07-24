@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
 
-import { CourseBody } from 'components/courses'
+import { CourseBody } from 'components/courses/course-list'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
 import { ReadMore } from 'components/shared'
-import { courseCodeToSlug, coursePageUrl } from 'paths'
+import { coursePageUrl } from 'paths'
 import { device, fontSize } from 'styles/responsive'
 
 const Container = styled.div`
@@ -124,7 +124,7 @@ const CourseItemMain = ({ data: courseData }) => {
   return (
     <Container>
       <SubTitle>
-        <Department>{courseData.Department || 'Not available'}</Department>
+        <Department>{courseData.Department}</Department>
         <CreditContainer>{courseData.TotalCredits}</CreditContainer>
         <StyledFavourite
           Icon={favourite ? BookmarkFill : Bookmark}

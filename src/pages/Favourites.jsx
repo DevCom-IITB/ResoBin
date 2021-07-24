@@ -2,7 +2,7 @@ import { Filter, X } from '@styled-icons/heroicons-outline'
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
 
-import { CourseBody } from 'components/courses'
+import { CourseBody } from 'components/courses/course-list'
 import { useLocalStorage } from 'hooks'
 import { device } from 'styles/responsive'
 

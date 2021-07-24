@@ -2,7 +2,7 @@ import { Pagination } from 'antd'
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import { CourseItem, CourseItemLoading } from 'components/courses'
+import { CourseItem, CourseItemLoading } from 'components/courses/course-list'
 import { PageHeading, PageTitle, NotFoundSearch } from 'components/shared'
 import { device } from 'styles/responsive'
 

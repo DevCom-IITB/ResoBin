@@ -1,7 +1,10 @@
 import { Skeleton } from 'antd'
 import styled from 'styled-components'
 
-import { CourseItemMain, CourseItemSub } from 'components/courses/item'
+import {
+  CourseItemMain,
+  CourseItemSub,
+} from 'components/courses/course-list/item'
 import { device } from 'styles/responsive'
 
 const Container = styled.li`
