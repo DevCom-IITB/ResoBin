@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import {
   CourseItemMain,
   CourseItemSub,
-} from 'components/courses/course-list/item'
+} from 'components/courses/course-finder/item'
 import { device } from 'styles/responsive'
 
 const Container = styled.li`

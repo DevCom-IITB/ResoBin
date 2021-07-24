@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
-import { CourseList, CourseSearch } from 'components/courses/course-list'
+import { CourseList, CourseSearch } from 'components/courses/course-finder'
 import { FilterAside, FilterFloatButton } from 'components/filter'
 import { toastError } from 'components/toast'
 import { useViewportContext } from 'context/ViewportContext'

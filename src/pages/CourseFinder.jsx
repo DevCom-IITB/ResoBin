@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
 
-import { CourseBody } from 'components/courses/course-list'
+import { CourseBody } from 'components/courses/course-finder'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`
@@ -13,7 +13,7 @@ const Container = styled.div`
   }
 `
 
-const Courses = () => {
+const CourseFinder = () => {
   return (
     <Container>
       <Helmet>
@@ -26,4 +26,4 @@ const Courses = () => {
   )
 }
 
-export default Courses
+export default CourseFinder

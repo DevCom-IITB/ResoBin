@@ -9,7 +9,7 @@ const Login = lazy(() => import('pages/Login'))
 const NotFound = lazy(() => import('pages/NotFound'))
 
 const Home = lazy(() => import('pages/Home'))
-const Courses = lazy(() => import('pages/Courses'))
+const CourseFinder = lazy(() => import('pages/CourseFinder'))
 const CoursePage = lazy(() => import('pages/CoursePage'))
 const Contribute = lazy(() => import('pages/Contribute'))
 const Contact = lazy(() => import('pages/Contact'))
@@ -21,7 +21,7 @@ export const DashboardRoutes = () => {
   return (
     <Switch>
       <Route exact path="/" component={Home} />
-      <Route exact path="/courses" component={Courses} />
+      <Route exact path="/courses" component={CourseFinder} />
       <Route
         exact
         path="/courses/:courseCode/:courseTitleSlug?"
