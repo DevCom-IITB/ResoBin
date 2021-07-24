@@ -2,33 +2,37 @@ import { Suspense } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
+import { PersistGate } from 'redux-persist/integration/react'
 import { ThemeProvider } from 'styled-components'
 
 import { Header } from 'components/header'
 import { LoaderAnimation } from 'components/shared'
 import { AppRoutes } from 'routes'
+import { persistor } from 'store'
 import { selectTheme } from 'store/settingsSlice'
-import { DarkTheme, GlobalStyles, LightTheme } from 'styles'
+import { themes, GlobalStyles } from 'styles'
 
 const App = () => {
   toast.configure()
-  const theme = useSelector(selectTheme)
+  const selectedTheme = useSelector(selectTheme)
 
   return (
-    <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
-      <Helmet>
-        <title>ResoBin</title>
-        <meta
-          name="description"
-          content="IIT Bombay's course resources sharing website"
-        />
-      </Helmet>
-      <GlobalStyles />
+    <ThemeProvider theme={themes[selectedTheme]}>
+      <PersistGate loading={<LoaderAnimation />} persistor={persistor}>
+        <Suspense fallback={<LoaderAnimation />}>
+          <Helmet>
+            <title>ResoBin</title>
+            <meta
+              name="description"
+              content="IIT Bombay's resources sharing website"
+            />
+          </Helmet>
+          <GlobalStyles />
 
-      <Header />
-      <Suspense fallback={<LoaderAnimation />}>
-        <AppRoutes />
-      </Suspense>
+          <Header />
+          <AppRoutes />
+        </Suspense>
+      </PersistGate>
     </ThemeProvider>
   )
 }

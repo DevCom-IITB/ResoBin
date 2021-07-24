@@ -7,7 +7,7 @@ import { device } from 'styles/responsive'
 
 const Container = styled.div`
   @media ${device.min.md} {
-    margin-left: ${({ theme }) => theme.navbarHorizontalWidth};
+    margin-left: ${({ theme }) => theme.asideWidthLeft};
   }
 `
 
