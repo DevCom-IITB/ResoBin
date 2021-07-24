@@ -1,17 +1,17 @@
 import { Helmet } from 'react-helmet-async'
 
-import { ContactForm, DeveloperList } from 'components/contact'
+import { ContactForm, ContributorList } from 'components/Contact'
 
 const Contribute = () => {
   return (
     <>
       <Helmet>
-        <title>Get Help - ResoBin</title>
-        <meta name="description" content="Get help form" />
+        <title>Contact - ResoBin</title>
+        <meta name="description" content="Contact us page to clarify any issues" />
       </Helmet>
 
       <ContactForm />
-      <DeveloperList />
+      <ContributorList />
     </>
   )
 }
