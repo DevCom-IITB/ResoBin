@@ -1,5 +1,5 @@
 import { Filter, X } from '@styled-icons/heroicons-outline'
-import { Divider } from 'antd'
+import { Divider, Col, Row } from 'antd'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useSelector } from 'react-redux'
@@ -13,10 +13,15 @@ import { breakpoints, device } from 'styles/responsive'
 
 const Container = styled.div`
   display: flex;
+  width: 100%;
   height: 100%;
   color: ${({ theme }) => theme.header};
   @media ${device.min.md} {
-    margin-left: ${({ theme }) => theme.navbarHorizontalWidth};
+    margin-left: ${({ theme }) => theme.asideWidthLeft};
+  }
+  @media ${device.min.lg} {
+    padding-right: ${({ theme }) => theme.asideWidthRight};
+    transition: padding-right 200ms ease-in;
   }
 `
 
@@ -33,14 +38,25 @@ const RightContainer = styled.div`
   padding: 20px;
 `
 
+const VertSpace = styled.div`
+  height: 20px;
+`
+
 const CodeText = styled.div`
   font-size: 36px;
   font-weight: 600;
   color: ${({ theme }) => theme.primary};
 `
 
-const Line = styled.div`
-  color: white;
+const SubHeaderText = styled.div`
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+  color: ${({ theme }) => theme.logo};
+`
+
+const CenterText = styled.h3`
+  text-align: center;
 `
 
 const CoursePage = ({ match }) => {
@@ -50,7 +66,7 @@ const CoursePage = ({ match }) => {
   const splittedArray = id.match(regex)
   const code = `${splittedArray[0]} ${splittedArray[1]}`
   const data = courseData.filter((course) => course.Code === code)[0]
-  console.log(data)
+
   return (
     <Container>
       <LeftContainer>
@@ -59,6 +75,26 @@ const CoursePage = ({ match }) => {
         <h3>{data.Department}</h3>
         <Divider style={{ backgroundColor: '#aaa5a5' }} />
         <h3>{data.Description}</h3>
+        <VertSpace />
+        <Row>
+          <Col span={8}>
+            <SubHeaderText>Course Structure</SubHeaderText>
+            <CenterText>
+              Lectures : {data.Structure.Lecture} | Tutorial:{' '}
+              {data.Structure.Tutorial} | Practical: {data.Structure.Practical}
+            </CenterText>
+          </Col>
+          <Col span={8}>
+            <SubHeaderText>Prerequisites</SubHeaderText>
+            <CenterText>{data.Prerequisite}</CenterText>
+          </Col>
+          <Col span={8}>
+            <SubHeaderText>Credits</SubHeaderText>
+            <CenterText>{data.TotalCredits}</CenterText>
+          </Col>
+        </Row>
+        <VertSpace />
+        <SubHeaderText>Course Reviews</SubHeaderText>
       </LeftContainer>
       <RightContainer />
     </Container>
