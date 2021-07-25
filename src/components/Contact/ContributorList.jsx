@@ -1,3 +1,4 @@
+import { List, Avatar, Card } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
@@ -13,6 +14,7 @@ const Container = styled.div`
   top: ${({ theme }) => theme.headerHeight};
   right: 0;
   z-index: 7;
+  overflow: auto;
   width: ${({ theme }) => theme.asideWidthRight};
   height: 100%;
   background: ${({ theme }) => theme.secondary};
@@ -21,8 +23,16 @@ const Container = styled.div`
 
 const Title = styled.h4`
   padding: 1rem 1rem 0.5rem;
-  font-size: 1rem;
+  font-size: 1.25rem;
   color: ${({ theme }) => theme.textColor};
+`
+
+const ContribList = styled.ul`
+  list-style: none;
+  height: 100%;
+
+  /* padding: 0; */
+  margin: 0 1rem;
 `
 
 const ContributorList = () => {
@@ -38,6 +48,10 @@ const ContributorList = () => {
             name: item.login,
             avatar: item.avatar_url,
             url: item.html_url,
+            contributions: item.contributions,
+            description: `${item.contributions} commit${
+              item.contributions > 1 ? 's' : ''
+            }`,
           }))
         )
         .then((data) => setContributors(data))
@@ -56,10 +70,32 @@ const ContributorList = () => {
       <Title>Made with ❤️ by</Title>
       <Divider style={{ margin: '0 1rem', width: 'auto' }} />
       {loading && <LoaderAnimation />}
-      {contributors &&
+      {/* {contributors &&
         contributors.map((item) => (
           <ContributorItem key={item.name} {...item} />
+        ))} */}
+      <ContribList>
+        {contributors.map((item) => (
+          <Card
+            key={item.name}
+            hoverable
+            onClick={() => {
+              window.open(item.url, '_blank')
+            }}
+          >
+            <Card.Meta
+              avatar={
+                <Avatar
+                  src={item.avatar}
+                  style={{ height: '4rem', width: '4rem' }}
+                />
+              }
+              title={item.name}
+              description={item.description}
+            />
+          </Card>
         ))}
+      </ContribList>
     </Container>
   )
 }

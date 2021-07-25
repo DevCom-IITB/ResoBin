@@ -6,7 +6,7 @@ const Container = styled.a`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: ${({ theme }) => theme.headerHeight};
+  height: 4rem;
   padding: 0.5rem 1rem;
   margin: 0.5rem 0;
   text-decoration: none;
