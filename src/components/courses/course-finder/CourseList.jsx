@@ -1,9 +1,11 @@
 import { Pagination } from 'antd'
 import { useState } from 'react'
+import { useLocation, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { CourseItem, CourseItemLoading } from 'components/courses/course-finder'
 import { PageHeading, PageTitle, NotFoundSearch } from 'components/shared'
+import { scrollToTop } from 'hoc/ScrollToTop'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`
@@ -26,17 +28,25 @@ const List = styled.ul`
 `
 
 const CourseList = ({ courses, loading = false }) => {
-  const count = courses ? courses.length : 0
-
   // pagination
-  const [pageInfo, setPageInfo] = useState({
-    page: 1,
-    perPage: 10,
-  })
+  const count = courses ? courses.length : 0
+  const perPage = 10
 
-  const handlePageChange = (page) => setPageInfo({ ...pageInfo, page })
-  const { page, perPage } = pageInfo
-  const paginate = (data) => data.slice((page - 1) * perPage, page * perPage)
+  const location = useLocation()
+  const history = useHistory()
+  const searchParams = new URLSearchParams(location.search)
+  const pageNo = searchParams.get('p') || 1
+
+  const handlePageChange = (page) => {
+    history.push({
+      pathname: location.pathname,
+      search: `?p=${page}`,
+    })
+    // scrollToTop()
+  }
+
+  const paginate = (data) =>
+    data.slice((pageNo - 1) * perPage, pageNo * perPage)
 
   return (
     <Container>
@@ -48,6 +58,7 @@ const CourseList = ({ courses, loading = false }) => {
       <List>
         <CourseItemLoading active={loading} />
         <NotFoundSearch active={!loading && !count} />
+
         {count > 0 &&
           !loading &&
           paginate(courses).map((data) => (
@@ -58,10 +69,11 @@ const CourseList = ({ courses, loading = false }) => {
       {!loading && (
         <Pagination
           defaultPageSize={perPage}
+          defaultCurrent={pageNo}
           responsive
+          showSizeChanger={false}
           hideOnSinglePage
           onChange={handlePageChange}
-          showSizeChanger={false}
           total={count}
         />
       )}

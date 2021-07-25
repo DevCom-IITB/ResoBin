@@ -1,8 +1,10 @@
 import { Menu } from 'components/menu'
-import { ScrollToTop } from 'hoc'
+import { ScrollToTop, useScrollToTop } from 'hoc/ScrollToTop'
 import { DashboardRoutes } from 'routes'
 
 const Dashboard = () => {
+  // useScrollToTop()
+
   return (
     <ScrollToTop>
       <Menu />
