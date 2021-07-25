@@ -1,11 +1,9 @@
 import { Pagination } from 'antd'
-import { useState } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { CourseItem, CourseItemLoading } from 'components/courses/course-finder'
 import { PageHeading, PageTitle, NotFoundSearch } from 'components/shared'
-import { scrollToTop } from 'hoc/ScrollToTop'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`
@@ -28,21 +26,22 @@ const List = styled.ul`
 `
 
 const CourseList = ({ courses, loading = false }) => {
+  const location = useLocation()
+  const history = useHistory()
+
   // pagination
   const count = courses ? courses.length : 0
   const perPage = 10
 
-  const location = useLocation()
-  const history = useHistory()
   const searchParams = new URLSearchParams(location.search)
   const pageNo = searchParams.get('p') || 1
 
   const handlePageChange = (page) => {
+    searchParams.set('p', page)
     history.push({
       pathname: location.pathname,
-      search: `?p=${page}`,
+      search: `?${searchParams.toString()}`,
     })
-    // scrollToTop()
   }
 
   const paginate = (data) =>

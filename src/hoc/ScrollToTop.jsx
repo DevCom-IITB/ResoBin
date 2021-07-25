@@ -8,20 +8,14 @@ export const scrollToHash = (hash) => {
   if (ele) ele.scrollIntoView(true)
 }
 
-export const ScrollToTop = ({ children }) => {
+export const useScrollToTop = () => {
+  const { hash } = useLocation()
   const history = useHistory()
 
   useEffect(() => {
-    history.listen(scrollToTop)
-  }, [history])
-
-  return children
-}
-
-export const useScrollToTop = () => {
-  const { hash } = useLocation()
-
-  useEffect(() => (hash ? scrollToHash(hash) : scrollToTop()), [hash])
+    if (hash) scrollToHash(hash)
+    else history.listen(scrollToTop)
+  }, [history, hash])
 }
 
 export default useScrollToTop
