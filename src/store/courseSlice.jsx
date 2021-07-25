@@ -17,9 +17,16 @@ const courseSlice = createSlice({
   initialState: {
     list: [],
     loading: false,
+    checksum: '',
+    lastUpdated: '',
   },
 
-  reducers: {},
+  reducers: {
+    updateChecksum: (state, { payload }) => {
+      state.checksum = payload.checksum
+      state.lastUpdated = payload.lastUpdated
+    },
+  },
 
   extraReducers: {
     [getCourseList.fulfilled]: (state, { payload }) => {
@@ -35,9 +42,13 @@ const courseSlice = createSlice({
   },
 })
 
+// ? actions
+export const { updateChecksum } = courseSlice.actions
+
 // ? selectors
 export const selectCourseList = (state) => state.course.list
 export const selectCourseAPILoading = (state) => state.course.loading
+export const selectChecksum = (state) => state.course.checksum
 
 // https://stackoverflow.com/questions/62545632/how-to-pass-an-additional-argument-to-useselector
 export const selectCourseListByCourseCode = (courseCodeParam) =>

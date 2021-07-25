@@ -8,6 +8,54 @@ import { toastError } from 'components/toast'
 
 import { ContributorItem, ContributorSkeleton } from './ContributorItem'
 
+const ContributorList = () => {
+  const [contributors, setContributors] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const getContributorsData = async () =>
+      getContributors()
+        .then((data) =>
+          data.map((item) => ({
+            name: item.login,
+            avatar: item.avatar_url,
+            url: item.html_url,
+            contributions: item.contributions,
+          }))
+        )
+        .then((data) => setContributors(data))
+        .then(() => setLoading(false))
+        .catch((err) => {
+          toastError(err.message)
+          setLoading(false)
+        })
+
+    setLoading(true)
+    getContributorsData()
+  }, [])
+
+  return (
+    <Container>
+      <Title>Made with ❤️ by</Title>
+      <Divider style={{ margin: '0 1rem', width: 'auto' }} />
+      <List>
+        {loading && (
+          <>
+            <LoaderAnimation />
+            <ContributorSkeleton />
+          </>
+        )}
+
+        {contributors.map((item) => (
+          <ContributorItem key={item.name} {...item} />
+        ))}
+      </List>
+    </Container>
+  )
+}
+
+export default ContributorList
+
 const Container = styled.div`
   position: fixed;
   top: ${({ theme }) => theme.headerHeight};
@@ -31,51 +79,3 @@ const List = styled.ul`
   height: calc(100% - ${({ theme }) => theme.headerHeight});
   padding: 0 0.75rem 5rem 1rem;
 `
-
-const ContributorList = () => {
-  const [contributors, setContributors] = useState([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    setLoading(true)
-    const getContributorsData = async () =>
-      getContributors()
-        .then((data) =>
-          data.map((item) => ({
-            name: item.login,
-            avatar: item.avatar_url,
-            url: item.html_url,
-            contributions: item.contributions,
-          }))
-        )
-        .then((data) => setContributors(data))
-        .then(() => setLoading(false))
-        .catch((err) => {
-          toastError(err.message)
-          setLoading(false)
-        })
-
-    getContributorsData()
-  }, [])
-
-  return (
-    <Container>
-      <Title>Made with ❤️ by</Title>
-      <Divider style={{ margin: '0 1rem', width: 'auto' }} />
-      <List>
-        {loading && (
-          <>
-            <LoaderAnimation />
-            <ContributorSkeleton />
-          </>
-        )}
-
-        {contributors.map((item) => (
-          <ContributorItem {...item} />
-        ))}
-      </List>
-    </Container>
-  )
-}
-
-export default ContributorList
