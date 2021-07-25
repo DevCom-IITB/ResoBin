@@ -1,4 +1,4 @@
-import { List, Avatar, Card } from 'antd'
+import { Avatar, Card } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
@@ -6,6 +6,8 @@ import getContributors from 'api/github'
 import { LoaderAnimation } from 'components/shared'
 import Divider from 'components/shared/Divider'
 import { toastError } from 'components/toast'
+
+import ContributorItem from './ContributorItem'
 
 const Container = styled.div`
   position: fixed;
@@ -28,7 +30,7 @@ const ContribList = styled.ul`
   overflow: auto;
   list-style: none;
   height: calc(100% - ${({ theme }) => theme.headerHeight});
-  padding: 0 0 5rem;
+  padding: 0 0.75rem 5rem 1rem;
 `
 
 const ContributorList = () => {
@@ -66,20 +68,7 @@ const ContributorList = () => {
 
       <ContribList>
         {contributors.map((item) => (
-          <a key={item.name} href={item.url} target="_blank" rel="noreferrer">
-            <Card hoverable>
-              <Card.Meta
-                avatar={<Avatar src={item.avatar} />}
-                title={item.name}
-                description={
-                  <>
-                    <b>{item.contributions}</b> commit
-                    {item.contributions > 1 ? 's' : ''}
-                  </>
-                }
-              />
-            </Card>
-          </a>
+          <ContributorItem {...item} />
         ))}
       </ContribList>
     </Container>

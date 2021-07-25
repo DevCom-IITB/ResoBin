@@ -1,55 +1,68 @@
+import { Avatar, Card } from 'antd'
 import styled from 'styled-components'
 
-import ProfileImg from 'components/shared/ProfileImg'
+import { HEX2RGBA } from 'helpers'
 
-const Container = styled.a`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 4rem;
-  padding: 0.5rem 1rem;
-  margin: 0.5rem 0;
-  text-decoration: none;
-  color: ${({ theme }) => theme.textColorInactive};
-  background-color: ${({ theme }) => theme.secondary};
-  cursor: pointer;
+const StyledCard = styled(Card)`
+  .ant-card-body {
+    margin: 0.75rem 0;
+    border-radius: ${({ theme }) => theme.borderRadius};
+    background-color: ${({ theme }) => HEX2RGBA(theme.darksecondary, 30)};
+  }
 
-  &:hover {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 1px;
-    color: ${({ theme }) => theme.textColor};
-    background-color: rgba(0, 0, 0, 0.2);
-    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.24);
-    transition: 100ms ease-out;
+  &.ant-card-hoverable {
+    transition: 100ms;
+
+    &:hover {
+      border-radius: ${({ theme }) => theme.borderRadius};
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  &.ant-card-bordered {
+    border: 0;
+    background-color: transparent;
+  }
+
+  .ant-card-meta {
+    display: flex;
+    align-items: center;
+
+    .ant-card-meta-title {
+      font-size: 1rem;
+      color: ${({ theme }) => theme.textColor};
+    }
+
+    &-description {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: ${({ theme }) => theme.placeholder};
+
+      b {
+        font-weight: 600;
+        color: ${({ theme }) => theme.logo};
+      }
+    }
   }
 `
 
-const IconContainer = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-const Title = styled.h4`
-  display: flex;
-  overflow: hidden;
-  align-items: center;
-  margin-left: 0.5rem;
-  font-size: 1rem;
-  font-weight: 300;
-  text-overflow: ellipsis;
-  color: ${({ theme }) => theme.textColor};
-`
-
-const Contributor = ({ name, avatar, url }) => {
+const ContributorItem = ({ name, avatar, url, contributions }) => {
   return (
-    <Container href={url}>
-      <IconContainer>
-        <ProfileImg src={avatar} size="2.5rem" />
-      </IconContainer>
-      <Title>{name}</Title>
-    </Container>
+    <a key={name} href={url} target="_blank" rel="noreferrer">
+      <StyledCard hoverable>
+        <Card.Meta
+          avatar={<Avatar src={avatar} />}
+          title={name}
+          description={
+            <>
+              <b>{contributions}</b> commit
+              {contributions > 1 ? 's' : ''}
+            </>
+          }
+        />
+      </StyledCard>
+    </a>
   )
 }
 
-export default Contributor
+export default ContributorItem

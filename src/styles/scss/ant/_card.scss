@@ -1,41 +1,45 @@
 @use 'styles/scss/variables' as *;
 
-.ant-card {
-  &-bordered {
-    border: 0;
-    background-color: transparent;
-  }
+// .ant-card {
+//   &-bordered {
+//     border: 0;
+//     background-color: transparent;
+//   }
 
-  &-body {
-    margin: 0.75rem 0;
-    background-color: rgba($secondary-dark, 0.2);
-  }
+//   &-hoverable {
+//     transition: 100ms;
 
-  &-meta {
-    display: flex;
-    align-items: center;
+//     &:hover {
+//       background-color: rgba(0, 0, 0, 0.3);
+//     }
+//   }
 
-    &-title {
-      font-size: 1rem;
-      color: white;
-    }
+//   &-body {
+//     margin: 0.75rem 0;
+//     background-color: rgba($secondary-dark, 0.2);
+//   }
 
-    &-description {
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: $text-placeholder;
+//   &-meta {
+//     display: flex;
+//     align-items: center;
 
-      b {
-        font-weight: 600;
-        color: $logo;
-      }
-    }
-  }
+//     &-title {
+//       font-size: 1rem;
+//       color: white;
+//     }
 
-  &-hoverable:hover {
-    background-color: rgba(0, 0, 0, 0.3);
-  }
-}
+//     &-description {
+//       font-size: 0.875rem;
+//       font-weight: 500;
+//       color: $text-placeholder;
+
+//       b {
+//         font-weight: 600;
+//         color: $logo;
+//       }
+//     }
+//   }
+// }
 
 .ant-avatar {
   width: 3rem;
