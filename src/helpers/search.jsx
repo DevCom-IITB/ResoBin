@@ -2,14 +2,15 @@ export const search = ({ dataSrc, dataKeys, keywords }) => {
   // ? empty search allow all
   if (!keywords) return dataSrc
 
+  const re = new RegExp(`\\b${keywords.toLowerCase()}`, 'g')
+
   return dataSrc.filter((item) => {
     // ? check if keyword exists in any of the selected keys
     // ? accept only if keyword is found (default: accept nothing)
     let flg = false
     dataKeys.forEach((key) => {
       const value = item[key]
-      if (value && value.toLowerCase().includes(keywords.toLowerCase()))
-        flg = true
+      if (value && value.toLowerCase().match(re)) flg = true
     })
     return flg
   })

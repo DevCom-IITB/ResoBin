@@ -7,7 +7,7 @@ const Container = styled.a`
   flex-direction: row;
   width: 100%;
   height: ${({ theme }) => theme.headerHeight};
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 1rem;
   margin: 0.5rem 0;
   text-decoration: none;
   color: ${({ theme }) => theme.textColorInactive};
@@ -30,8 +30,6 @@ const IconContainer = styled.div`
   align-items: center;
 `
 
-const TitleContainer = styled.div``
-
 const Title = styled.h4`
   display: flex;
   overflow: hidden;
@@ -43,15 +41,15 @@ const Title = styled.h4`
   color: ${({ theme }) => theme.textColor};
 `
 
-const Developer = ({ name, img, href, switchOrder }) => {
+const Contributor = ({ name, avatar, url }) => {
   return (
-    <Container href={href}>
+    <Container href={url}>
       <IconContainer>
-        <ProfileImg src={img} size="2rem" />
+        <ProfileImg src={avatar} size="2.5rem" />
       </IconContainer>
       <Title>{name}</Title>
     </Container>
   )
 }
 
-export default Developer
+export default Contributor

@@ -1,10 +1,12 @@
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import ImgLaxman from 'assets/images/ProfileImg_Laxman.jpg'
+import getContributors from 'api/github'
+import { LoaderAnimation } from 'components/shared'
 import Divider from 'components/shared/Divider'
+import { toastError } from 'components/toast'
 
 import ContributorItem from './ContributorItem'
-// import getContributors from './githubAPI'
 
 const Container = styled.div`
   position: fixed;
@@ -18,30 +20,46 @@ const Container = styled.div`
 `
 
 const Title = styled.h4`
-  padding: 1rem;
+  padding: 1rem 1rem 0.5rem;
   font-size: 1rem;
   color: ${({ theme }) => theme.textColor};
 `
 
 const ContributorList = () => {
-  // const contributors = getContributors()
-  
+  const [contributors, setContributors] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setLoading(true)
+    const getContributorsData = async () => {
+      getContributors()
+        .then((data) =>
+          data.map((item) => ({
+            name: item.login,
+            avatar: item.avatar_url,
+            url: item.html_url,
+          }))
+        )
+        .then((data) => setContributors(data))
+        .then(() => setLoading(false))
+        .catch((err) => {
+          toastError(err.message)
+          setLoading(false)
+        })
+    }
+
+    getContributorsData()
+  }, [])
+
   return (
     <Container>
       <Title>Made with ❤️ by</Title>
       <Divider style={{ margin: '0 1rem', width: 'auto' }} />
-
-      <ContributorItem
-        name="Laxman Desai"
-        img={ImgLaxman}
-        href="https://github.com/relaxxpls"
-      />
-      <ContributorItem
-        name="John Doe"
-        img={ImgLaxman}
-        href="https://github.com/relaxxpls"
-        switchOrder
-      />
+      {loading && <LoaderAnimation />}
+      {contributors &&
+        contributors.map((item) => (
+          <ContributorItem key={item.name} {...item} />
+        ))}
     </Container>
   )
 }
