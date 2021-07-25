@@ -1,4 +1,3 @@
-import { Avatar, Card } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
@@ -7,7 +6,7 @@ import { LoaderAnimation } from 'components/shared'
 import Divider from 'components/shared/Divider'
 import { toastError } from 'components/toast'
 
-import ContributorItem from './ContributorItem'
+import { ContributorItem, ContributorSkeleton } from './ContributorItem'
 
 const Container = styled.div`
   position: fixed;
@@ -26,7 +25,7 @@ const Title = styled.h4`
   color: ${({ theme }) => theme.textColor};
 `
 
-const ContribList = styled.ul`
+const List = styled.ul`
   overflow: auto;
   list-style: none;
   height: calc(100% - ${({ theme }) => theme.headerHeight});
@@ -39,7 +38,7 @@ const ContributorList = () => {
 
   useEffect(() => {
     setLoading(true)
-    const getContributorsData = async () => {
+    const getContributorsData = async () =>
       getContributors()
         .then((data) =>
           data.map((item) => ({
@@ -55,7 +54,6 @@ const ContributorList = () => {
           toastError(err.message)
           setLoading(false)
         })
-    }
 
     getContributorsData()
   }, [])
@@ -64,13 +62,18 @@ const ContributorList = () => {
     <Container>
       <Title>Made with ❤️ by</Title>
       <Divider style={{ margin: '0 1rem', width: 'auto' }} />
-      {loading && <LoaderAnimation />}
+      <List>
+        {loading && (
+          <>
+            <LoaderAnimation />
+            <ContributorSkeleton />
+          </>
+        )}
 
-      <ContribList>
         {contributors.map((item) => (
           <ContributorItem {...item} />
         ))}
-      </ContribList>
+      </List>
     </Container>
   )
 }

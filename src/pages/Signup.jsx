@@ -89,7 +89,7 @@ const Signup = () => {
 
   return (
     <>
-      {loading && <LoaderAnimation />}
+      {loading && <LoaderAnimation fixed />}
       <Helmet>
         <title>Sign Up - ResoBin</title>
         <meta

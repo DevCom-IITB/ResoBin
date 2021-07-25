@@ -9,14 +9,14 @@ import { getCourseList, selectCourseAPILoading } from 'store/courseSlice'
 
 const Dashboard = () => {
   // get course list from the backend when user opens the app
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(getCourseList())
-  }, [dispatch])
+  // const dispatch = useDispatch()
+  // useEffect(() => {
+  //   dispatch(getCourseList())
+  // }, [dispatch])
   const loading = useSelector(selectCourseAPILoading)
 
   return loading ? (
-    <LoaderAnimation />
+    <LoaderAnimation fixed />
   ) : (
     <ScrollToTop>
       <Menu />

@@ -1,7 +1,30 @@
-import { Avatar, Card } from 'antd'
+import { Avatar, Card, Skeleton } from 'antd'
 import styled from 'styled-components'
 
 import { HEX2RGBA } from 'helpers'
+
+export const ContributorItem = ({ name, avatar, url, contributions }) => {
+  return (
+    <a key={name} href={url} target="_blank" rel="noreferrer">
+      <StyledCard hoverable>
+        <Card.Meta
+          avatar={<Avatar src={avatar} />}
+          title={name}
+          description={
+            <>
+              <b>{contributions}</b> commit
+              {contributions > 1 ? 's' : ''}
+            </>
+          }
+        />
+      </StyledCard>
+    </a>
+  )
+}
+
+export const ContributorSkeleton = () => (
+  <StyledSkeleton avatar active paragraph={{ rows: 1 }} />
+)
 
 const StyledCard = styled(Card)`
   .ant-card-body {
@@ -44,25 +67,28 @@ const StyledCard = styled(Card)`
       }
     }
   }
+
+  .ant-avatar {
+    width: 3rem;
+    height: 3rem;
+  }
 `
 
-const ContributorItem = ({ name, avatar, url, contributions }) => {
-  return (
-    <a key={name} href={url} target="_blank" rel="noreferrer">
-      <StyledCard hoverable>
-        <Card.Meta
-          avatar={<Avatar src={avatar} />}
-          title={name}
-          description={
-            <>
-              <b>{contributions}</b> commit
-              {contributions > 1 ? 's' : ''}
-            </>
-          }
-        />
-      </StyledCard>
-    </a>
-  )
-}
+const StyledSkeleton = styled(Skeleton)`
+  display: flex;
+  align-items: center;
+  padding: 0.875rem 1.125rem;
+  margin: 0.75rem 0;
+  border-radius: 0.5rem;
+  background: #1b172866;
+  box-shadow: 0 0 0.5rem rgb(0 0 0 / 20%);
 
-export default ContributorItem
+  .ant-skeleton-avatar {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .ant-skeleton-content .ant-skeleton-title {
+    margin: 0;
+  }
+`

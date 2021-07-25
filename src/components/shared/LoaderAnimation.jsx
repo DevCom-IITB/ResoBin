@@ -1,13 +1,11 @@
 import styled, { keyframes } from 'styled-components'
 
 const Container = styled.div`
-  position: fixed;
   top: 0;
   left: 0;
   z-index: 10000;
   width: 100%;
   height: 0.1rem;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
 `
 
 const LoaderTrack = styled.div`
@@ -76,9 +74,11 @@ const LoaderFill = styled.div`
   }
 `
 
-const LoaderAnimation = () => {
+export const LoaderAnimation = ({ fixed, disable }) => {
+  if (disable) return null
+
   return (
-    <Container>
+    <Container style={fixed && { position: 'fixed' }}>
       <LoaderTrack>
         <LoaderFill />
       </LoaderTrack>

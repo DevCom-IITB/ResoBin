@@ -18,7 +18,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={themes[selectedTheme]}>
-      <PersistGate loading={<LoaderAnimation />} persistor={persistor}>
+      <PersistGate loading={<LoaderAnimation fixed />} persistor={persistor}>
         <Helmet>
           <title>ResoBin</title>
           <meta
@@ -29,7 +29,7 @@ const App = () => {
         <GlobalStyles />
 
         <Header />
-        <Suspense fallback={<LoaderAnimation />}>
+        <Suspense fallback={<LoaderAnimation fixed />}>
           <AppRoutes />
         </Suspense>
       </PersistGate>

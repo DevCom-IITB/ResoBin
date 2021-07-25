@@ -70,7 +70,7 @@ const Login = () => {
       </Helmet>
       <CSRFToken />
 
-      {loading && <LoaderAnimation />}
+      {loading && <LoaderAnimation fixed />}
 
       <Container>
         <FormBox>
