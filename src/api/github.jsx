@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-import { toastError } from 'components/toast'
-
 const baseUrl = 'https://api.github.com/repos/arya2331/ResoBin/contributors'
 const ignoredContributors = ['ImgBotApp']
 
@@ -15,7 +13,6 @@ const getContributors = async () => {
           !ignoredContributors.includes(contributor.login)
       )
     )
-    .catch((error) => toastError(error.message))
 }
 
 export default getContributors
