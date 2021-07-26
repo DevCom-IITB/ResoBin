@@ -1,8 +1,15 @@
-module.exports = {
-  extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
-  plugins: ['stylelint-order'],
+const warnInDevelopment =
+  process.env.NODE_ENV === 'production' ? 'error' : 'warn'
 
-  defaultSeverity: process.env.NODE_ENV === 'production' ? 'error' : 'warning',
+module.exports = {
+  processors: ['stylelint-processor-styled-components'],
+  plugins: ['stylelint-order'],
+  extends: [
+    'stylelint-config-standard',
+    'stylelint-config-prettier',
+    'stylelint-config-styled-components',
+  ],
+  defaultSeverity: warnInDevelopment,
 
   rules: {
     'at-rule-no-unknown': null,
@@ -16,10 +23,6 @@ module.exports = {
     'no-invalid-position-at-import-rule': null,
     'number-leading-zero': 'always',
     'value-keyword-case': null,
-
-    // 'declaration-property-value-whitelist': {
-    //   color: ['/^\\$|initial|inherit|transparent/'],
-    // },
 
     'selector-pseudo-class-no-unknown': [
       true,
