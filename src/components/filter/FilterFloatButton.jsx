@@ -1,6 +1,6 @@
 import { Filter, X } from '@styled-icons/heroicons-outline'
 import { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { useViewportContext } from 'context/ViewportContext'
 import { breakpoints } from 'styles/responsive'

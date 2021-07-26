@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 import { useHistory } from 'react-router-dom'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import NotFoundImg from 'assets/images/NotFound.png'
 import { device, fontSize } from 'styles/responsive'

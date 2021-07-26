@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { FilterItem } from 'components/filter'
 import MultiSelect from 'components/filter/filterData'

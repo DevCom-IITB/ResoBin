@@ -1,7 +1,7 @@
 import { InboxOutlined } from '@ant-design/icons'
 import { Upload, message } from 'antd'
 import { useState } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import Divider from 'components/shared/Divider'
 

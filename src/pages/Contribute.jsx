@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { FileDetails, FileList } from 'components/contribute'
 import { device } from 'styles/responsive'

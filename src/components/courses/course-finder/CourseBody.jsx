@@ -1,7 +1,7 @@
 import debounce from 'lodash/debounce'
 import { useState, useEffect, useCallback } from 'react'
 import { useSelector } from 'react-redux'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { CourseList, CourseSearch } from 'components/courses/course-finder'
 import { FilterAside, FilterFloatButton } from 'components/filter'

@@ -1,6 +1,6 @@
 import { Filter, X } from '@styled-icons/heroicons-outline'
 import { Helmet } from 'react-helmet-async'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { CourseBody } from 'components/courses/course-finder'
 import { useLocalStorage } from 'hooks'

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { CourseBody } from 'components/courses/course-finder'
 import { LoaderAnimation } from 'components/shared'

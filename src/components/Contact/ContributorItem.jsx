@@ -1,5 +1,5 @@
 import { Avatar, Card, Skeleton } from 'antd'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { HEX2RGBA } from 'helpers'
 

@@ -1,5 +1,5 @@
 import { Menu } from 'components/menu'
-import { useScrollToTop } from 'hoc/ScrollToTop'
+import { useScrollToTop } from 'hooks'
 import { DashboardRoutes } from 'routes'
 
 const Dashboard = () => {

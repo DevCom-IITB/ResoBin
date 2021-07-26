@@ -1,5 +1,5 @@
 import { Skeleton } from 'antd'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import {
   CourseItemMain,

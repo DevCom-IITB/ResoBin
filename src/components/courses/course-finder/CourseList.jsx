@@ -1,6 +1,6 @@
 import { Pagination } from 'antd'
 import { useLocation, useHistory } from 'react-router-dom'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { CourseItem, CourseItemLoading } from 'components/courses/course-finder'
 import { PageHeading, PageTitle, NotFoundSearch } from 'components/shared'

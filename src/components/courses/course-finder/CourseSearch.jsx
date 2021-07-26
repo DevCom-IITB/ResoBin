@@ -1,7 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import { Search } from '@styled-icons/heroicons-outline'
 import { Input } from 'antd'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { FilterDropdown } from 'components/filter'
 import { HEX2RGBA } from 'helpers'

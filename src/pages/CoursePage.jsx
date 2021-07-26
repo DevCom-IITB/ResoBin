@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import { useSelector } from 'react-redux'
 import { Redirect, useLocation, useParams } from 'react-router-dom'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { CoursePageBody } from 'components/courses/course-page'
 import { coursePageUrl } from 'paths'

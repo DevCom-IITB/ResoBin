@@ -4,7 +4,7 @@ import {
 } from '@styled-icons/zondicons'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components/macro'
 
 import { ReadMore } from 'components/shared'
 import { coursePageUrl } from 'paths'

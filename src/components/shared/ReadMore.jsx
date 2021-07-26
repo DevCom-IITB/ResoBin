@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 const ReadMoreText = styled.span`
   display: inline-block;

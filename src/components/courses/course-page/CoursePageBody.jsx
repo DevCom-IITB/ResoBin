@@ -1,5 +1,5 @@
 import { Divider } from 'antd'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { fontSize } from 'styles/responsive'
 

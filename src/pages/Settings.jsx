@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { DarkmodeToggle } from 'components/settings'
 import { device } from 'styles/responsive'

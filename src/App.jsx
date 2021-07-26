@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { PersistGate } from 'redux-persist/integration/react'
-import { ThemeProvider } from 'styled-components'
+import { ThemeProvider } from 'styled-components/macro'
 
 import { Header } from 'components/header'
 import { LoaderAnimation } from 'components/shared'

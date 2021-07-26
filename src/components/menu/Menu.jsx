@@ -7,7 +7,7 @@ import {
 } from '@styled-icons/heroicons-outline'
 import { ContactSupport } from '@styled-icons/material-outlined'
 import { useEffect, useState } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import ProfileImage from 'assets/images/ProfileImg_Laxman.jpg'
 import { MenuItem, ProfileImgItem } from 'components/menu'
