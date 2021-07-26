@@ -1,6 +1,6 @@
 import debounce from 'lodash/debounce'
 import { useState, useEffect, useCallback } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { CourseList, CourseSearch } from 'components/courses/course-finder'
@@ -8,7 +8,11 @@ import { FilterAside, FilterFloatButton } from 'components/filter'
 import { toastError } from 'components/toast'
 import { useViewportContext } from 'context/ViewportContext'
 import { searchAsync } from 'helpers'
-import { selectCourseList } from 'store/courseSlice'
+import {
+  selectCourseList,
+  selectCourseSearch,
+  setSearch,
+} from 'store/courseSlice'
 import { breakpoints } from 'styles/responsive'
 
 const Container = styled.div`
@@ -18,6 +22,8 @@ const Container = styled.div`
 const searchFields = ['Code', 'Title', 'Description']
 
 const CourseBody = () => {
+  const dispatch = useDispatch()
+
   // ? responsive layout state
   const { width } = useViewportContext()
 
@@ -28,11 +34,12 @@ const CourseBody = () => {
   const courseData = useSelector(selectCourseList)
 
   // ? filtered course data
-  const [search, setSearch] = useState('')
+  // const [search, setSearch] = useState('')
+  const search = useSelector(selectCourseSearch)
   const [courseDataFiltered, setCourseDataFiltered] = useState([])
 
   // ? search input state
-  const handleChange = (event) => setSearch(event.currentTarget.value)
+  const handleChange = (event) => dispatch(setSearch(event.currentTarget.value))
 
   // ? loading status while searching
   const [loadingResults, setLoadingSearchResults] = useState(true)

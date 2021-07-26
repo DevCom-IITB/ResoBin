@@ -1,8 +1,8 @@
 const warnInDevelopment =
-  process.env.NODE_ENV === 'production' ? 'error' : 'warn'
+  process.env.NODE_ENV === 'production' ? 'error' : 'warning'
 
 module.exports = {
-  processors: ['stylelint-processor-styled-components'],
+  // processors: ['stylelint-processor-styled-components'],
   plugins: ['stylelint-order'],
   extends: [
     'stylelint-config-standard',

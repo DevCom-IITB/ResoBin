@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
 
-import { ReadMore } from 'components/shared'
+import ParseDescription from 'components/courses/course-finder/ParseDescription'
 import { coursePageUrl } from 'paths'
 import { device, fontSize } from 'styles/responsive'
 
@@ -138,7 +138,7 @@ const CourseItemMain = ({ data: courseData }) => {
       </Title>
 
       <CourseDescription>
-        <ReadMore>{courseData.Description || 'Not available'}</ReadMore>
+        <ParseDescription>{courseData.Description}</ParseDescription>
       </CourseDescription>
     </Container>
   )
