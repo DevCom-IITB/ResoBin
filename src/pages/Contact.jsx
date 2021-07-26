@@ -7,7 +7,10 @@ const Contribute = () => {
     <>
       <Helmet>
         <title>Contact - ResoBin</title>
-        <meta name="description" content="Contact us page to clarify any issues" />
+        <meta
+          name="description"
+          content="Contact us page to clarify any issues"
+        />
       </Helmet>
 
       <ContactForm />
