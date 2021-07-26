@@ -1,15 +1,18 @@
 import { Divider } from 'antd'
 import styled from 'styled-components/macro'
 
-import { fontSize } from 'styles/responsive'
+import { device, fontSize } from 'styles/responsive'
 
 const Container = styled.div`
-  /* width: 100%; */
   padding: 1.5rem 1rem;
   margin: 0 0.75rem 0.75rem;
   border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.textColor};
   background: ${({ theme }) => theme.darksecondary};
+
+  @media ${device.max.md} {
+    margin: 1rem 0.75rem;
+  }
 `
 
 const CourseCode = styled.h1`

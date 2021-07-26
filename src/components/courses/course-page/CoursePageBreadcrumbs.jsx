@@ -1,31 +1,42 @@
 import { BookOpen, Home } from '@styled-icons/heroicons-outline'
 import { Breadcrumb } from 'antd'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
+import { useViewportContext } from 'context/ViewportContext'
+import { breakpoints } from 'styles/responsive'
+
+const StyledIcon = styled(({ Icon, className, ...props }) => {
+  return <Icon {...props} className={className} />
+})`
+  width: 0.9rem;
+  margin-right: 0.25rem;
+`
+
 const CoursePageBreadcrumbs = ({ courseTitle }) => {
-  const location = useLocation()
-
+  const { width } = useViewportContext()
   return (
-    <StyledBreadcrumb separator=">">
-      <Breadcrumb.Item>
-        <Link to="/">
-          <Home size="20" />
-          <span>Home</span>
-        </Link>
-      </Breadcrumb.Item>
+    width >= breakpoints.md && (
+      <StyledBreadcrumb separator=">">
+        <Breadcrumb.Item>
+          <Link to="/">
+            <StyledIcon Icon={Home} />
+            <span>Home</span>
+          </Link>
+        </Breadcrumb.Item>
 
-      <Breadcrumb.Item>
-        <Link to="/courses">
-          <BookOpen size="20" />
-          <span>Courses</span>
-        </Link>
-      </Breadcrumb.Item>
+        <Breadcrumb.Item>
+          <Link to="/courses">
+            <StyledIcon Icon={BookOpen} />
+            <span>Courses</span>
+          </Link>
+        </Breadcrumb.Item>
 
-      <Breadcrumb.Item>
-        <span>{courseTitle}</span>
-      </Breadcrumb.Item>
-    </StyledBreadcrumb>
+        <Breadcrumb.Item>
+          <span>{courseTitle}</span>
+        </Breadcrumb.Item>
+      </StyledBreadcrumb>
+    )
   )
 }
 
@@ -53,6 +64,10 @@ const StyledBreadcrumb = styled(Breadcrumb)`
     a {
       display: flex;
       align-items: center;
+
+      &:hover {
+        color: inherit;
+      }
     }
   }
 `
