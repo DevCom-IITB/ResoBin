@@ -1,7 +1,47 @@
-import { Divider } from 'antd'
+import { Col, Divider, Row } from 'antd'
 import styled from 'styled-components/macro'
 
 import { device, fontSize } from 'styles/responsive'
+
+const CoursePageBody = ({ courseData }) => {
+  return (
+    <Container>
+      <CourseCode>{courseData.Code}</CourseCode>
+      <CourseTitle>{courseData.Title}</CourseTitle>
+      <CourseDepartment>
+        {courseData.Department} | {courseData.TotalCredits} credits
+      </CourseDepartment>
+
+      <Divider
+        style={{ backgroundColor: '#ffffff', margin: '1rem 0', opacity: 0.3 }}
+      />
+      <CourseDescription>
+        {courseData.Description || 'Not available'}
+      </CourseDescription>
+
+      <Row>
+        <Col span={8}>
+          <SubHeaderText>Course Structure</SubHeaderText>
+          <CenterText>
+            Lectures : {courseData.Structure.Lecture} | Tutorial:{' '}
+            {courseData.Structure.Tutorial} | Practical:{' '}
+            {courseData.Structure.Practical}
+          </CenterText>
+        </Col>
+        <Col span={8}>
+          <SubHeaderText>Prerequisites</SubHeaderText>
+          <CenterText>{courseData.Prerequisite}</CenterText>
+        </Col>
+        <Col span={8}>
+          <SubHeaderText>Credits</SubHeaderText>
+          <CenterText>{courseData.TotalCredits}</CenterText>
+        </Col>
+      </Row>
+    </Container>
+  )
+}
+
+export default CoursePageBody
 
 const Container = styled.div`
   padding: 1.5rem 1rem;
@@ -38,26 +78,16 @@ const CourseDescription = styled.p`
   color: lightgray;
 `
 
-const CoursePageBody = ({ courseData }) => {
-  return (
-    <Container>
-      <CourseCode>{courseData.Code}</CourseCode>
-      <CourseTitle>{courseData.Title}</CourseTitle>
-      <CourseDepartment>
-        {courseData.Department} | {courseData.TotalCredits} credits
-      </CourseDepartment>
+const SubHeaderText = styled.div`
+  font-size: 24px;
+  font-weight: 500;
+  text-align: center;
+  color: ${({ theme }) => theme.textColor};
+`
 
-      <Divider
-        style={{ backgroundColor: '#ffffff', margin: '1rem 0', opacity: 0.3 }}
-      />
-      <CourseDescription>
-        {courseData.Description || 'Not available'}
-      </CourseDescription>
-    </Container>
-  )
-}
-
-export default CoursePageBody
+const CenterText = styled.h3`
+  text-align: center;
+`
 
 // Sample data
 
