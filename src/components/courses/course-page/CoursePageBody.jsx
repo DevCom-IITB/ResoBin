@@ -4,9 +4,9 @@ import styled from 'styled-components/macro'
 import { fontSize } from 'styles/responsive'
 
 const Container = styled.div`
-  width: 100%;
+  /* width: 100%; */
   padding: 1.5rem 1rem;
-  margin: 0.75rem;
+  margin: 0 0.75rem 0.75rem;
   border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.textColor};
   background: ${({ theme }) => theme.darksecondary};

@@ -3,13 +3,17 @@ import { useSelector } from 'react-redux'
 import { Redirect, useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { CoursePageBody } from 'components/courses/course-page'
+import {
+  CoursePageBody,
+  CoursePageBreadcrumbs,
+} from 'components/courses/course-page'
 import { coursePageUrl } from 'paths'
 import { selectCourseListByCourseCode } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
 
   @media ${device.min.md} {
@@ -36,6 +40,10 @@ const CoursePage = ({ match }) => {
         <title>{`${courseData.Code}: ${courseData.Title} - ResoBin`}</title>
         <meta property="description" content={courseData.Description} />
       </Helmet>
+
+      <CoursePageBreadcrumbs
+        courseTitle={`${courseData.Code}: ${courseData.Title}`}
+      />
 
       <CoursePageBody courseData={courseData} />
     </Container>

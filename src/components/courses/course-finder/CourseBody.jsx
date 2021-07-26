@@ -26,19 +26,23 @@ const CourseBody = () => {
   // ? show or hide dropdown filters state
   const [showFilter, setShowFilter] = useState(false)
 
-  // ? total course data
+  // ? total cached course data
   const courseData = useSelector(selectCourseList)
 
   // ? filtered course data
-  // const [search, setSearch] = useState('')
+  const [search, setSearch] = useState('')
 
   const location = useLocation()
   const history = useHistory()
   const queryString = new URLSearchParams(location.search)
-  const search = queryString.get('q') || ''
+  const setQueryString = (query) => {
+    // No change
+    if (query === (queryString.get('q') || '')) return
 
-  const setSearch = (query) => {
-    queryString.set('q', query)
+    // update query string or clear query string if query is empty
+    if (query) queryString.set('q', query)
+    else queryString.delete('q')
+
     history.push({
       pathname: location.pathname,
       search: `?${queryString.toString()}`,
@@ -57,6 +61,7 @@ const CourseBody = () => {
   const searchCourses = (searchParams) => {
     searchAsync(searchParams)
       .then(setCourseDataFiltered)
+      .then(() => setQueryString(searchParams.keywords))
       .then(() => setLoadingSearchResults(false))
       .catch((error) => {
         toastError(error.message)
