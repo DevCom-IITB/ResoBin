@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import debounce from 'lodash/debounce'
 import { useState, useEffect, useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { CourseList, CourseSearch } from 'components/courses/course-finder'
@@ -8,11 +10,7 @@ import { FilterAside, FilterFloatButton } from 'components/filter'
 import { toastError } from 'components/toast'
 import { useViewportContext } from 'context/ViewportContext'
 import { searchAsync } from 'helpers'
-import {
-  selectCourseList,
-  selectCourseSearch,
-  setSearch,
-} from 'store/courseSlice'
+import { selectCourseList } from 'store/courseSlice'
 import { breakpoints } from 'styles/responsive'
 
 const Container = styled.div`
@@ -22,8 +20,6 @@ const Container = styled.div`
 const searchFields = ['Code', 'Title', 'Description']
 
 const CourseBody = () => {
-  const dispatch = useDispatch()
-
   // ? responsive layout state
   const { width } = useViewportContext()
 
@@ -35,11 +31,24 @@ const CourseBody = () => {
 
   // ? filtered course data
   // const [search, setSearch] = useState('')
-  const search = useSelector(selectCourseSearch)
+
+  const location = useLocation()
+  const history = useHistory()
+  const queryString = new URLSearchParams(location.search)
+  const search = queryString.get('q') || ''
+
+  const setSearch = (query) => {
+    queryString.set('q', query)
+    history.push({
+      pathname: location.pathname,
+      search: `?${queryString.toString()}`,
+    })
+  }
+
   const [courseDataFiltered, setCourseDataFiltered] = useState([])
 
   // ? search input state
-  const handleChange = (event) => dispatch(setSearch(event.currentTarget.value))
+  const handleChange = (event) => setSearch(event.currentTarget.value)
 
   // ? loading status while searching
   const [loadingResults, setLoadingSearchResults] = useState(true)
@@ -56,7 +65,6 @@ const CourseBody = () => {
   }
 
   // ? debounce search input change to provide smoother search experience
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const searchCoursesDebounced = useCallback(debounce(searchCourses, 400), [])
 
   useEffect(() => {

@@ -1,8 +1,6 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
-
-import { selectCourseSearch } from 'store/courseSlice'
 
 const ReadMoreText = styled.span`
   display: inline-block;
@@ -27,7 +25,9 @@ const maxChars = 199
 
 const ParseDescription = ({ children: text }) => {
   const [isReadMore, setIsReadMore] = useState(true)
-  const search = useSelector(selectCourseSearch).toLowerCase()
+  const location = useLocation()
+  const queryString = new URLSearchParams(location.search)
+  const search = (queryString.get('q') || '').toLowerCase()
 
   if (!text) return 'Not available'
 

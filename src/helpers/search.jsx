@@ -27,22 +27,3 @@ export const searchAsync = ({ timeout = 200, ...searchParams }) =>
       }
     }, timeout)
   })
-
-export const HighlightSearch = (children, searchKeywords) => {
-  const text = children
-  if (!searchKeywords || !text || text.length === 0) return text
-
-  const re = new RegExp(`\\b${searchKeywords.toLowerCase()}`, 'gi')
-  const parts = text.split(re)
-
-  return (
-    <>
-      {parts.map((part) => {
-        if (part.toLowerCase() === searchKeywords.toLowerCase())
-          return <mark key={part}>{part}</mark>
-
-        return part
-      })}
-    </>
-  )
-}
