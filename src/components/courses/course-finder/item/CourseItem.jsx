@@ -1,7 +1,11 @@
 import { Skeleton } from 'antd'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
-import { CourseItemMain, CourseItemSub } from 'components/courses/item'
+import {
+  CourseItemMain,
+  CourseItemSub,
+} from 'components/courses/course-finder/item'
+import { HEX2RGBA } from 'helpers'
 import { device } from 'styles/responsive'
 
 const Container = styled.li`
@@ -26,4 +30,17 @@ export const CourseItem = ({ ...props }) => {
   )
 }
 
-export const CourseItemLoading = ({ active }) => active && <Skeleton active />
+export const CourseItemLoading = ({ active }) =>
+  active && <StyledSkeleton active />
+
+const StyledSkeleton = styled(Skeleton)`
+  width: 100%;
+  margin: 1rem 0;
+
+  .ant-skeleton-content {
+    padding: 1.5rem 1rem;
+    border-radius: 0.5rem;
+    background: ${({ theme }) => HEX2RGBA(theme.darksecondary, 80)};
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.2);
+  }
+`

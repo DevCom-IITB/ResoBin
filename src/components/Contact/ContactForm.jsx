@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
-import { FormBody } from 'components/contact/form'
+import ContactFormBody from './ContactFormBody'
 
 const Container = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ const ContactForm = () => {
   return (
     <Container>
       <Title> Contact us </Title>
-      <FormBody />
+      <ContactFormBody />
     </Container>
   )
 }

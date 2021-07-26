@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components/macro'
 
 import { ProfileImg } from 'components/shared'
 import { device } from 'styles/responsive'

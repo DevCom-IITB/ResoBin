@@ -1,7 +1,7 @@
 import { Email } from '@styled-icons/material-outlined'
 import { LockPassword, Profile, User } from '@styled-icons/remix-line'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { ButtonSquare, InputRounded as Input } from 'components/shared'
 // import { fontSize } from 'styles/responsive'

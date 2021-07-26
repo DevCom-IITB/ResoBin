@@ -1,5 +1,5 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
-import logger from 'redux-logger'
+import { createLogger } from 'redux-logger'
 import {
   FLUSH,
   REHYDRATE,
@@ -19,6 +19,10 @@ const middleware = getDefaultMiddleware({
   serializableCheck: {
     ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
   },
+})
+
+const logger = createLogger({
+  collapsed: (getState, action, logEntry) => !logEntry.error,
 })
 
 if (process.env.NODE_ENV === 'development') middleware.push(logger)

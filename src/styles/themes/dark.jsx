@@ -6,6 +6,7 @@ const DarkTheme = {
   secondary: '#2C2839',
   darksecondary: '#1b1728',
   textColor: '#FFF',
+  placeholder: '#807da0',
   textColorInactive: '#AAA5A5',
   header: '#FFF',
   headerNumber: '#585280',

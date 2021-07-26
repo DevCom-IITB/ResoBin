@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { FileDetailsForm } from 'components/contribute'
 import { PageHeading, PageTitle } from 'components/shared'

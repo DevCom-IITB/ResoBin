@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 const ReadMoreText = styled.span`
   display: inline-block;
@@ -13,6 +13,8 @@ const ReadMoreText = styled.span`
 
 const ReadMore = ({ children }) => {
   const [isReadMore, setIsReadMore] = useState(true)
+  if (!children) return children
+
   const toggleReadMore = () => setIsReadMore(!isReadMore)
   const maxChars = 199
   const text = children

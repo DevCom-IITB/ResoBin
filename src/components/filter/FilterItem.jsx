@@ -2,7 +2,7 @@
 import { X } from '@styled-icons/heroicons-outline'
 import { Checkbox } from 'antd'
 import { Fragment } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 const Title = styled.span`
   display: inline-block;

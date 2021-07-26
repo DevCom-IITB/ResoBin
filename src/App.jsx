@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { PersistGate } from 'redux-persist/integration/react'
-import { ThemeProvider } from 'styled-components'
+import { ThemeProvider } from 'styled-components/macro'
 
 import { Header } from 'components/header'
 import { LoaderAnimation } from 'components/shared'
@@ -18,18 +18,18 @@ const App = () => {
 
   return (
     <ThemeProvider theme={themes[selectedTheme]}>
-      <PersistGate loading={<LoaderAnimation />} persistor={persistor}>
-        <Suspense fallback={<LoaderAnimation />}>
-          <Helmet>
-            <title>ResoBin</title>
-            <meta
-              name="description"
-              content="IIT Bombay's resources sharing website"
-            />
-          </Helmet>
-          <GlobalStyles />
+      <PersistGate loading={<LoaderAnimation fixed />} persistor={persistor}>
+        <Helmet>
+          <title>ResoBin</title>
+          <meta
+            name="description"
+            content="IIT Bombay's resources sharing website"
+          />
+        </Helmet>
+        <GlobalStyles />
 
-          <Header />
+        <Header />
+        <Suspense fallback={<LoaderAnimation fixed />}>
           <AppRoutes />
         </Suspense>
       </PersistGate>

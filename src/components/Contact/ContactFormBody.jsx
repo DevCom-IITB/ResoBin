@@ -1,5 +1,5 @@
 // import { useState } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { ButtonSquare, InputSquared, TextAreaSquared } from 'components/shared'
 // import { Fragment } from 'react'

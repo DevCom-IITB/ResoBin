@@ -2,7 +2,7 @@ import { LockPassword, User } from '@styled-icons/remix-line'
 import { Checkbox } from 'antd'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { GoogleAuth } from 'components/login'
 import { ButtonSquare, InputRounded as Input } from 'components/shared'

@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 const LogoContainer = styled.button`
   display: flex;

@@ -1,8 +1,8 @@
 import { Pagination } from 'antd'
-import { useState } from 'react'
-import styled from 'styled-components'
+import { useLocation, useHistory } from 'react-router-dom'
+import styled from 'styled-components/macro'
 
-import { CourseItem, CourseItemLoading } from 'components/courses'
+import { CourseItem, CourseItemLoading } from 'components/courses/course-finder'
 import { PageHeading, PageTitle, NotFoundSearch } from 'components/shared'
 import { device } from 'styles/responsive'
 
@@ -25,18 +25,27 @@ const List = styled.ul`
   margin: 0 0.75rem;
 `
 
-const CourseList = ({ courses, loading }) => {
-  const count = courses ? courses.length : 0
+const CourseList = ({ courses, loading = false }) => {
+  const location = useLocation()
+  const history = useHistory()
 
   // pagination
-  const [pageInfo, setPageInfo] = useState({
-    page: 1,
-    perPage: 10,
-  })
+  const count = courses ? courses.length : 0
+  const perPage = 10
 
-  const handlePageChange = (page) => setPageInfo({ ...pageInfo, page })
-  const { page, perPage } = pageInfo
-  const paginate = (data) => data.slice((page - 1) * perPage, page * perPage)
+  const searchParams = new URLSearchParams(location.search)
+  const pageNo = searchParams.get('p') || 1
+
+  const handlePageChange = (page) => {
+    searchParams.set('p', page)
+    history.push({
+      pathname: location.pathname,
+      search: `?${searchParams.toString()}`,
+    })
+  }
+
+  const paginate = (data) =>
+    data.slice((pageNo - 1) * perPage, pageNo * perPage)
 
   return (
     <Container>
@@ -48,6 +57,7 @@ const CourseList = ({ courses, loading }) => {
       <List>
         <CourseItemLoading active={loading} />
         <NotFoundSearch active={!loading && !count} />
+
         {count > 0 &&
           !loading &&
           paginate(courses).map((data) => (
@@ -58,10 +68,11 @@ const CourseList = ({ courses, loading }) => {
       {!loading && (
         <Pagination
           defaultPageSize={perPage}
+          defaultCurrent={pageNo}
           responsive
+          showSizeChanger={false}
           hideOnSinglePage
           onChange={handlePageChange}
-          showSizeChanger={false}
           total={count}
         />
       )}
