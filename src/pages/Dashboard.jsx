@@ -2,13 +2,13 @@ import { Menu } from 'components/menu'
 import { useScrollToTop } from 'hooks'
 import { DashboardRoutes } from 'routes'
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   useScrollToTop()
 
   return (
     <>
       <Menu />
-      <DashboardRoutes />
+      <DashboardRoutes {...props} />
     </>
   )
 }

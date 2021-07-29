@@ -8,7 +8,7 @@ import {
 import { HEX2RGBA } from 'helpers'
 import { device } from 'styles/responsive'
 
-export const CourseItem = ({ ...props }) => {
+export const CourseItem = (props) => {
   return (
     <Container>
       <CourseItemMain {...props} />

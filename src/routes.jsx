@@ -1,5 +1,6 @@
 import { lazy } from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 import { PrivateRoute } from 'hoc'
 
@@ -18,23 +19,32 @@ const Settings = lazy(() => import('pages/Settings'))
 
 // authentication necessary for all routes
 export const DashboardRoutes = () => {
-  return (
-    <Switch>
-      <Route exact path="/" component={Home} />
-      <Route exact path="/courses" component={CourseFinder} />
-      <Route
-        exact
-        path="/courses/:courseCode/:courseTitleSlug?"
-        component={CoursePage}
-      />
-      <Route exact path="/contribute" component={Contribute} />
-      <Route exact path="/favourites" component={Favourites} />
-      <Route exact path="/settings" component={Settings} />
-      <Route exact path="/contact" component={Contact} />
+  const location = useLocation()
+  const key = location.pathname.split('/')[1]
 
-      {/* 404 page */}
-      <Redirect to="/404" />
-    </Switch>
+  return (
+    <TransitionGroup>
+      <CSSTransition key={key} timeout={600} classNames="fade">
+        <section>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/courses" component={CourseFinder} />
+            <Route
+              exact
+              path="/courses/:courseCode/:courseTitleSlug?"
+              component={CoursePage}
+            />
+            <Route exact path="/contribute" component={Contribute} />
+            <Route exact path="/favourites" component={Favourites} />
+            <Route exact path="/settings" component={Settings} />
+            <Route exact path="/contact" component={Contact} />
+
+            {/* 404 page */}
+            <Redirect to="/404" />
+          </Switch>
+        </section>
+      </CSSTransition>
+    </TransitionGroup>
   )
 }
 
