@@ -1,5 +1,4 @@
 import { Pagination } from 'antd'
-import { useRef } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components/macro'
@@ -59,12 +58,14 @@ const CourseList = ({ courses, loading = false }) => {
       <List>
         <CourseItemLoading active={loading} />
         <NotFoundSearch active={!loading && !count} />
+
         <TransitionGroup>
           {!loading &&
             paginate(courses).map((data) => (
               <CSSTransition
                 key={data.Code}
                 timeout={200}
+                unmountOnExit
                 classNames="course_item"
               >
                 <CourseItem data={data} />
