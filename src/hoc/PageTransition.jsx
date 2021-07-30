@@ -20,7 +20,7 @@ const Section = styled.section`
 
   &.page-enter-active {
     opacity: 1;
-    transition: opacity 300ms, transform 200ms;
+    transition: opacity 200ms ease-in;
   }
 
   /* &.page-exit {

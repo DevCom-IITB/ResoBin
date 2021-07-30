@@ -1,49 +1,5 @@
-.ant-pagination {
-  display: flex;
-  justify-content: center;
-  margin: 1rem 0;
-
-  &-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    font-size: 0.75rem;
-
-    &-link {
-      font-size: 1rem;
-    }
-  }
-
-  &-next,
-  &-prev {
-    width: 2rem;
-    height: 2rem;
-
-    .ant-pagination-item-link {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 0.5rem;
-    }
-  }
-}
-
 .ant-select-selector {
   display: flex;
   align-items: center;
   height: 2rem;
 }
-// .ant-pagination-jump-next.ant-pagination-jump-next-custom-icon {
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-//   bottom: 0;
-//   left: 0;
-//   height: 2rem;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// }
