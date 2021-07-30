@@ -14,7 +14,7 @@ const ReadMoreText = styled.span`
 
 const Highlight = styled.mark`
   padding: 0;
-  font-family: inherit;
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: bold;
   text-decoration: underline;
   color: inherit;

@@ -1,4 +1,4 @@
-import { Pagination } from 'antd'
+// import { Pagination } from 'antd'
 import { useLocation, useHistory } from 'react-router-dom'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components/macro'
@@ -6,6 +6,8 @@ import styled from 'styled-components/macro'
 import { CourseItem, CourseItemLoading } from 'components/courses/course-finder'
 import { PageHeading, PageTitle, NotFoundSearch } from 'components/shared'
 import { device } from 'styles/responsive'
+
+import Pagination from './Pagination'
 
 const Container = styled.div`
   width: 100%;
@@ -75,7 +77,7 @@ const CourseList = ({ courses, loading = false }) => {
       </List>
 
       {!loading && (
-        <StyledPagination
+        <Pagination
           defaultPageSize={perPage}
           defaultCurrent={pageNo}
           responsive
@@ -90,94 +92,3 @@ const CourseList = ({ courses, loading = false }) => {
 }
 
 export default CourseList
-
-const StyledPagination = styled(Pagination)`
-  display: flex;
-  justify-content: center;
-  margin: 1rem 0;
-
-  .ant-pagination-prev,
-  .ant-pagination-next {
-    width: 2rem;
-    height: 2rem;
-    margin: 0 0.25rem;
-    border-radius: 0.5rem;
-
-    .ant-pagination-item-link {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: none;
-      font-size: 1rem;
-      color: inherit;
-      background-color: transparent;
-    }
-
-    &:hover {
-      background: #00000030;
-    }
-  }
-
-  .ant-pagination-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 2rem;
-    height: 2rem;
-    margin: 0 0.25rem;
-    border: none;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    background-color: transparent;
-
-    &-active {
-      background: #00000030;
-    }
-
-    a {
-      font-size: 1rem;
-      font-weight: 600;
-      color: ${({ theme }) => theme.darksecondary};
-    }
-
-    &:hover {
-      color: inherit;
-      background: #00000030;
-    }
-  }
-
-  .ant-pagination-jump-next,
-  .ant-pagination-jump-prev {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 2rem;
-    height: 2rem;
-    margin: 0;
-
-    .ant-pagination-item-container .ant-pagination-item-link-icon {
-      font-size: 0.75rem;
-    }
-
-    .ant-pagination-item-ellipsis {
-      position: absolute;
-      top: -4px;
-      right: 0;
-      left: -4px;
-      font-size: 0.75rem;
-      font-weight: 400;
-      color: ${({ theme }) => theme.darksecondary};
-    }
-
-    &:hover {
-      span {
-        color: black;
-      }
-    }
-  }
-
-  .ant-pagination-disabled {
-    display: none;
-  }
-`
