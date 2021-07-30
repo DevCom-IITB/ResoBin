@@ -4,10 +4,13 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components/macro'
 
 import { CourseItem, CourseItemLoading } from 'components/courses/course-finder'
-import { PageHeading, PageTitle, NotFoundSearch } from 'components/shared'
+import {
+  PageHeading,
+  PageTitle,
+  NotFoundSearch,
+  Pagination,
+} from 'components/shared'
 import { device } from 'styles/responsive'
-
-import Pagination from './Pagination'
 
 const Container = styled.div`
   width: 100%;

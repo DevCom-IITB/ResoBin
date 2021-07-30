@@ -45,6 +45,9 @@ const CourseBody = () => {
     if (query) queryString.set('q', query)
     else queryString.delete('q')
 
+    // reset pagination
+    queryString.delete('p')
+
     history.push({
       pathname: location.pathname,
       search: `?${queryString.toString()}`,

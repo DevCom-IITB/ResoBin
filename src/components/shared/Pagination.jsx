@@ -1,8 +1,7 @@
+import { Pagination } from 'antd'
 import styled, { css } from 'styled-components/macro'
 
-const Pagination = (props) => <StyledPagination {...props} />
-
-export default Pagination
+import { HEX2RGBA } from 'helpers'
 
 const baseShape = css`
   display: flex;
@@ -13,9 +12,11 @@ const baseShape = css`
   margin: 0 0.25rem;
   border: none;
   border-radius: 0.5rem;
+  font-size: 1rem;
+  background-color: transparent;
 
   &:hover {
-    background: #00000030;
+    background: ${({ theme }) => HEX2RGBA(theme.darksecondary, 10)};
   }
 `
 
@@ -24,16 +25,15 @@ const StyledPagination = styled(Pagination)`
   justify-content: center;
   margin: 1rem 0;
 
+  .ant-pagination-disabled {
+    display: none;
+  }
+
   .ant-pagination-prev,
   .ant-pagination-next {
-    ${baseShape}
-
     .ant-pagination-item-link {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: none;
-      font-size: 1rem;
+      ${baseShape}
+
       color: inherit;
       background-color: transparent;
     }
@@ -42,12 +42,10 @@ const StyledPagination = styled(Pagination)`
   .ant-pagination-item {
     ${baseShape}
 
-    font-size: 1rem;
     font-weight: 600;
-    background-color: transparent;
 
     &-active {
-      background: #00000030;
+      border: 2px solid ${({ theme }) => HEX2RGBA(theme.darksecondary, 70)};
     }
 
     a {
@@ -75,8 +73,6 @@ const StyledPagination = styled(Pagination)`
       color: ${({ theme }) => theme.darksecondary};
     }
   }
-
-  .ant-pagination-disabled {
-    display: none;
-  }
 `
+
+export default StyledPagination

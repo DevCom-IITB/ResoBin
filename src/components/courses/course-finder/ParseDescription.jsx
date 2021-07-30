@@ -2,19 +2,22 @@ import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-const ReadMoreText = styled.span`
-  display: inline-block;
-  margin: 0;
-  font-size: 85%;
+const Span = styled.span`
   font-family: 'Source Sans Pro', sans-serif;
+  color: ${({ theme }) => theme.textColor};
+`
+
+const ReadMoreText = styled(Span)`
+  display: inline-block;
+  font-size: 85%;
   font-weight: 600;
-  color: gray;
+  color: ${({ theme }) => theme.textColorInactive};
   cursor: pointer;
 `
 
 const Highlight = styled.mark`
   padding: 0;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: inherit;
   font-weight: bold;
   text-decoration: underline;
   color: inherit;
@@ -38,13 +41,13 @@ const ParseDescription = ({ children: text }) => {
   const parts = displayText.split(re)
 
   return (
-    <span>
+    <Span>
       {search
         ? parts.map((part, index) =>
             part.toLowerCase() === search ? (
               <Highlight key={String(index)}>{part}</Highlight>
             ) : (
-              <span key={String(index)}>{part}</span>
+              <Span key={String(index)}>{part}</Span>
             )
           )
         : displayText}
@@ -52,7 +55,7 @@ const ParseDescription = ({ children: text }) => {
       <ReadMoreText onClick={toggleReadMore}>
         {isReadMore ? '...show more' : '\u00a0show less'}
       </ReadMoreText>
-    </span>
+    </Span>
   )
 }
 
