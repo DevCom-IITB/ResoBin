@@ -1,7 +1,7 @@
 import { lazy } from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
 
-import { PrivateRoute } from 'hoc'
+// import { PrivateRoute } from 'hoc'
 
 // lazy load the pages when called
 const Dashboard = lazy(() => import('pages/Dashboard'))
@@ -18,8 +18,10 @@ const Settings = lazy(() => import('pages/Settings'))
 
 // authentication necessary for all routes
 export const DashboardRoutes = () => {
+  const location = useLocation()
+
   return (
-    <Switch>
+    <Switch location={location}>
       <Route exact path="/" component={Home} />
       <Route exact path="/courses" component={CourseFinder} />
       <Route

@@ -30,11 +30,13 @@ const CourseBody = () => {
   const courseData = useSelector(selectCourseList)
 
   // ? filtered course data
-  const [search, setSearch] = useState('')
 
   const location = useLocation()
   const history = useHistory()
   const queryString = new URLSearchParams(location.search)
+
+  const [search, setSearch] = useState(queryString.get('q') || '')
+
   const setQueryString = (query) => {
     // No change
     if (query === (queryString.get('q') || '')) return
@@ -42,6 +44,9 @@ const CourseBody = () => {
     // update query string or clear query string if query is empty
     if (query) queryString.set('q', query)
     else queryString.delete('q')
+
+    // reset pagination
+    queryString.delete('p')
 
     history.push({
       pathname: location.pathname,
