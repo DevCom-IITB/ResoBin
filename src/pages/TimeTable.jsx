@@ -15,6 +15,7 @@ const CoursePage = ({ match }) => {
         />
       </Helmet>
       <h1>Time Table</h1>
+
       <TimeTableLectureItem
         title="CSR, SSR, SSG, ISR and OMG.WTF?BBQ!"
         img="https://randomuser.me/api/portraits/lego/6.jpg"
@@ -30,7 +31,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
-  background: black;
+
   @media ${device.min.md} {
     margin-left: ${({ theme }) => theme.asideWidthLeft};
   }
