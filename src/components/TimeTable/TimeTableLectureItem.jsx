@@ -41,6 +41,7 @@ const Container = styled.div`
     color: #ffffff;
   }
 `
+
 const AuthorWrapper = styled.div`
   display: flex;
   align-items: center;
