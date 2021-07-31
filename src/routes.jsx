@@ -15,6 +15,7 @@ const Contribute = lazy(() => import('pages/Contribute'))
 const Contact = lazy(() => import('pages/Contact'))
 const Favourites = lazy(() => import('pages/Favourites'))
 const Settings = lazy(() => import('pages/Settings'))
+const TimeTable = lazy(() => import('pages/TimeTable'))
 
 // authentication necessary for all routes
 export const DashboardRoutes = () => {
@@ -33,6 +34,7 @@ export const DashboardRoutes = () => {
       <Route exact path="/favourites" component={Favourites} />
       <Route exact path="/settings" component={Settings} />
       <Route exact path="/contact" component={Contact} />
+      <Route exact path="/timetable/:sem?" component={TimeTable} />
 
       {/* 404 page */}
       <Redirect to="/404" />

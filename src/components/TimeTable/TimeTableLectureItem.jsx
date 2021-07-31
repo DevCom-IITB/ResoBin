@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 
-const LectureItem = ({ title, subtitle, img }) => {
+const TimeTableLectureItem = ({ title, subtitle, img }) => {
   return (
     <Container>
       <h4>{title}</h4>
@@ -14,12 +14,12 @@ const LectureItem = ({ title, subtitle, img }) => {
   )
 }
 
-export default LectureItem
+export default TimeTableLectureItem
 
 const Container = styled.div`
   padding: 1.6rem;
   margin-bottom: 2rem;
-  border: 1px solid var(--border);
+  border: 1px solid hsl(0, 0%, 20%);
   border-radius: 0.8rem;
   font-size: 1.4rem;
   background: hsl(0, 0%, 4%);
@@ -44,7 +44,7 @@ const AuthorWrapper = styled.div`
     display: inline-block;
     overflow: hidden;
     margin-right: 1rem;
-    border: 1px solid var(--border);
+    border: 1px solid hsl(0, 0%, 20%);
     border-radius: 50%;
     block-size: 2.6rem;
     inline-size: 2.6rem;
