@@ -1,10 +1,14 @@
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components/macro'
 
-import { TimeTableLectureItem } from 'components/TimeTable'
+import {
+  TimeTableLectureItem,
+  TimeTableDay,
+  TimeTableTimeSlot,
+} from 'components/TimeTable'
 import { device } from 'styles/responsive'
 
-const CoursePage = ({ match }) => {
+const TimeTable = ({ match }) => {
   return (
     <Container>
       <Helmet>
@@ -16,16 +20,68 @@ const CoursePage = ({ match }) => {
       </Helmet>
       <h1>Time Table</h1>
 
-      <TimeTableLectureItem
-        title="CSR, SSR, SSG, ISR and OMG.WTF?BBQ!"
-        img="https://randomuser.me/api/portraits/lego/6.jpg"
-        subtitle="Ahmad Awais"
-      />
+      <div className="schedule-container">
+        <div className="schedule-stage__wrapper">
+          <TimeTableDay title="Stage X">
+            <TimeTableTimeSlot time="8:00am - 9:00am">
+              <TimeTableLectureItem
+                title="CSR, SSR, SSG, ISR and OMG.WTF?BBQ!"
+                img="https://randomuser.me/api/portraits/lego/6.jpg"
+                subtitle="Ahmad Awais"
+              />
+            </TimeTableTimeSlot>
+
+            <TimeTableTimeSlot time="9:00am - 10:00am">
+              <TimeTableLectureItem
+                title="CSR, SSR, SSG, ISR and OMG.WTF?BBQ!"
+                img="https://randomuser.me/api/portraits/lego/6.jpg"
+                subtitle="Ahmad Awais"
+              />
+
+              <TimeTableLectureItem
+                title="Changing Lanes with Lyft"
+                img="https://randomuser.me/api/portraits/lego/2.jpg"
+                subtitle="Joshua Callender"
+              />
+
+              <TimeTableLectureItem
+                title="Magic Authentication - The Missing LEGO Piece"
+                img="https://randomuser.me/api/portraits/lego/1.jpg"
+                subtitle="Sean Li"
+              />
+            </TimeTableTimeSlot>
+
+            <TimeTableTimeSlot time="10:00am - 11:00am">
+              <TimeTableLectureItem
+                title="Introducing: Edge Slice Rerendering. Performant A/B Testing, Personalization, and more."
+                img="https://randomuser.me/api/portraits/lego/3.jpg"
+                subtitle="Jay Phelps"
+              />
+            </TimeTableTimeSlot>
+
+            <TimeTableTimeSlot time="11:00am - 12:00pm">
+              <TimeTableLectureItem
+                title="Everything Is a CMS"
+                img="https://randomuser.me/api/portraits/lego/5.jpg"
+                subtitle="Sean C Davis"
+              />
+            </TimeTableTimeSlot>
+
+            <TimeTableTimeSlot time="12:00pm - 1:00pm">
+              <TimeTableLectureItem
+                title="Responsive Rendering with Next.js"
+                img="https://randomuser.me/api/portraits/lego/8.jpg"
+                subtitle="Armando Gonzalez"
+              />
+            </TimeTableTimeSlot>
+          </TimeTableDay>
+        </div>
+      </div>
     </Container>
   )
 }
 
-export default CoursePage
+export default TimeTable
 
 const Container = styled.div`
   display: flex;
