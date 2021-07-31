@@ -88,6 +88,21 @@ const Container = styled.div`
   flex-direction: column;
   min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
 
+  .section-container {
+    padding: 4rem;
+    a {
+      color: #ffffff;
+    }
+  }
+
+  .schedule-container {
+    overflow: auto;
+  }
+
+  .schedule-stage__wrapper {
+    display: inline-block;
+  }
+
   @media ${device.min.md} {
     margin-left: ${({ theme }) => theme.asideWidthLeft};
   }

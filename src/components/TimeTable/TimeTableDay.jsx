@@ -26,6 +26,20 @@ const DayContainer = styled.section`
     content: '';
     width: 4rem;
   }
+
+  &:nth-child(1) > .schedule-stage__title > h3 {
+    background: red;
+    background: linear-gradient(to right, #eb3349, #f45c43);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  &:nth-child(3) > .schedule-stage__title > h3 {
+    background: red;
+    background: linear-gradient(to right, #1d976c, #93f9b9);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 `
 
 const DayTitle = styled.div`
@@ -47,17 +61,3 @@ const Timings = styled.div`
   grid-auto-flow: column;
   grid-gap: 2rem;
 `
-
-// .schedule-stage:nth-child(1) > .schedule-stage__title > h3 {
-// 	background: red;
-// 	background: linear-gradient(to right, #eb3349, #f45c43);
-// 	-webkit-background-clip: text;
-// 	-webkit-text-fill-color: transparent;
-// }
-
-// .schedule-stage:nth-child(3) > .schedule-stage__title > h3 {
-// 	background: red;
-// 	background: linear-gradient(to right, #1d976c, #93f9b9);
-// 	-webkit-background-clip: text;
-// 	-webkit-text-fill-color: transparent;
-// }

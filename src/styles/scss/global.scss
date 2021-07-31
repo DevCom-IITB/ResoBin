@@ -6,16 +6,17 @@
   font-family: 'Montserrat', sans-serif;
 
   &::-webkit-scrollbar-thumb {
+    border-radius: 0.5rem;
     background-color: inherit;
   }
 
   &::-webkit-scrollbar {
     width: 0.375rem;
+    height: 0.375rem;
   }
 
   &:hover {
     &::-webkit-scrollbar-thumb {
-      border-radius: 0.5rem;
       background-color: #90909065;
     }
   }
@@ -23,12 +24,7 @@
 
 body {
   &::-webkit-scrollbar-thumb {
-    border-radius: 0.5rem;
     background-color: #90909065;
-  }
-
-  &::-webkit-scrollbar {
-    width: 0.375rem;
   }
 }
 
