@@ -1,0 +1,171 @@
+/*************************
+ * LAYOUT
+ *************************/
+.track-slot {
+  display: none;
+}
+
+.session {
+  margin-bottom: 1em;
+}
+
+@media screen and (min-width: 700px) {
+  .schedule {
+    display: grid;
+  }
+
+  /* a background for the sticky tracks */
+  .schedule::after {
+    content: '';
+    position: sticky;
+    top: 3rem;
+    z-index: 999;
+    display: block;
+    grid-row: tracks;
+    grid-column: track-1 / -1;
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+
+  .track-slot {
+    position: sticky;
+    top: 3rem; /* otherwise seeing a gap above in at least Firefox. */
+    z-index: 1000;
+    display: block;
+    padding: 10px 5px 5px;
+  }
+  .session {
+    margin: 0;
+  }
+}
+
+.schedule {
+  /* Gridlines will need to be "named" in 24hr time
+     Switch '1fr' to 'auto' if height of slot shouldnt be proportional to lecture length */
+
+  grid-template-rows:
+    [tracks] auto
+    [time-0830] 1fr
+    [time-0900] 1fr
+    [time-0930] 1fr
+    [time-1000] 1fr
+    [time-1030] 1fr
+    [time-1100] 1fr
+    [time-1130] 1fr
+    [time-1200] 1fr
+    [time-1230] 1fr
+    /* lunch break */
+    [time-1400] 1fr
+    [time-1430] 1fr
+    [time-1500] 1fr
+    [time-1530] 1fr
+    [time-1600] 1fr
+    [time-1630] 1fr
+    [time-1700] 1fr
+    /* evening break */
+    [time-1730] 1fr
+    [time-1800] 1fr
+    [time-1830] 1fr
+    [time-1900] 1fr
+    [time-1930] 1fr
+    [time-2000] 1fr
+    [time-2030] 1fr;
+  grid-template-columns:
+    [times] 2.5rem
+    [track-1-start] 1fr
+    [track-1-end track-2-start] 1fr
+    [track-2-end track-3-start] 1fr
+    [track-3-end track-4-start] 1fr
+    [track-4-end track-5-start] 1fr
+    [track-5-end];
+  grid-gap: 1rem;
+}
+
+/*************************
+ * VISUAL STYLES
+ *************************/
+
+.text {
+  max-width: 750px;
+  margin: 0 auto 50px;
+  font-size: 18px;
+}
+
+.meta {
+  font-style: italic;
+  color: #555555;
+}
+.meta a {
+  color: #555555;
+}
+
+hr {
+  margin: 40px 0;
+}
+
+.session {
+  padding: 0.5em;
+  border-radius: 2px;
+  font-size: 14px;
+}
+
+.title,
+.time-slot {
+  margin: 0;
+  font-size: 1em;
+}
+
+body {
+  counter-reset: session;
+  counter-reset: session-count;
+}
+.title::before {
+  content: 'Session #' counter(session-count) ': ';
+  counter-increment: session-count;
+}
+
+.track-slot,
+.time-slot {
+  font-size: 0.75em;
+  font-weight: bold;
+}
+
+span {
+  display: block;
+}
+
+.track-1 {
+  color: #ffffff;
+  background: linear-gradient(to right, #00b09b, #96c93d);
+}
+
+.track-2 {
+  color: #ffffff;
+  background: linear-gradient(to right, #000428, #004e92);
+}
+
+.track-3 {
+  color: #ffffff;
+  background: linear-gradient(to right, #cb356b, #bd3f32);
+}
+
+.track-4 {
+  color: #ffffff;
+  background: linear-gradient(to right, #f2994a, #f2c94c);
+}
+
+/* background: linear-gradient(to right, #36d1dc, #5b86e5)
+  background: linear-gradient(to right, #834d9b, #d04ed6)
+  background: linear-gradient(to right, #fffc00, #fffc00); */
+
+.track-many {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #000000;
+  background: #cccccc;
+}
+
+ins {
+  text-decoration: none;
+  background-color: #ddffdd;
+}
