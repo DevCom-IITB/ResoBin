@@ -1,11 +1,12 @@
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components/macro'
 
-import {
-  TimeTableLectureItem,
-  TimeTableDay,
-  TimeTableTimeSlot,
-} from 'components/TimeTable'
+// import {
+//   TimeTableLectureItem,
+//   TimeTableDay,
+//   TimeTableTimeSlot,
+// } from 'components/TimeTable'
+import TimeTableV2 from 'components/TimeTable/v2/TimeTable'
 import { device } from 'styles/responsive'
 
 const TimeTable = ({ match }) => {
@@ -20,7 +21,7 @@ const TimeTable = ({ match }) => {
       </Helmet>
       <h1>Time Table</h1>
 
-      <div className="schedule-container">
+      {/* <div className="schedule-container">
         <div className="schedule-stage__wrapper">
           <TimeTableDay title="Stage X">
             <TimeTableTimeSlot time="8:00am - 9:00am">
@@ -76,7 +77,8 @@ const TimeTable = ({ match }) => {
             </TimeTableTimeSlot>
           </TimeTableDay>
         </div>
-      </div>
+      </div> */}
+      <TimeTableV2 />
     </Container>
   )
 }
@@ -88,7 +90,7 @@ const Container = styled.div`
   flex-direction: column;
   min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
 
-  .section-container {
+  /* .section-container {
     padding: 4rem;
     a {
       color: #ffffff;
@@ -101,7 +103,7 @@ const Container = styled.div`
 
   .schedule-stage__wrapper {
     display: inline-block;
-  }
+  } */
 
   @media ${device.min.md} {
     margin-left: ${({ theme }) => theme.asideWidthLeft};

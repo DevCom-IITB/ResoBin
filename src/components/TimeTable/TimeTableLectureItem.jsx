@@ -63,3 +63,27 @@ const AuthorWrapper = styled.div`
     }
   }
 `
+
+const backgroundColor = (theme) => styled`
+  .green {
+    background: linear-gradient(to right, #00b09b, #96c93d)
+  }
+  .orange {
+    background: linear-gradient(to right, #f2994a, #f2c94c)
+  }
+  .red {
+    background: linear-gradient(to right, #cb356b, #bd3f32)
+  }
+  .yellow {
+    background: linear-gradient(to right, #fffc00, #fffc00)
+  }
+  .blue {
+    background: linear-gradient(to right, #36d1dc, #5b86e5)
+  }
+  .pink {
+    background: linear-gradient(to right, #834d9b, #d04ed6)
+  }
+  .black {
+    background: linear-gradient(to right, #000428, #004e92)
+  }
+`
