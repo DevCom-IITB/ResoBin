@@ -1,12 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components/macro'
 
-// import {
-//   TimeTableLectureItem,
-//   TimeTableDay,
-//   TimeTableTimeSlot,
-// } from 'components/TimeTable'
-import TimeTableV2 from 'components/TimeTable/v2/TimeTable'
+import { TimeTableContainer } from 'components/TimeTable'
 import { device } from 'styles/responsive'
 
 const TimeTable = ({ match }) => {
@@ -16,11 +11,12 @@ const TimeTable = ({ match }) => {
         <title>TimeTable - ResoBin</title>
         <meta
           property="description"
-          content="IIT B time table for selected courses"
+          content="IIT Bombay time table for selected courses"
         />
       </Helmet>
+
       <h1>Time Table</h1>
-      <TimeTableV2 />
+      <TimeTableContainer />
     </Container>
   )
 }
