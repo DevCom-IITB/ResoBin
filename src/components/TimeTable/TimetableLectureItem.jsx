@@ -37,7 +37,7 @@ const colors = (num) => {
 }
 
 const GridItem = styled.div`
-  grid-row: time-${({ row }) => row.start.id} / time-${({ row }) => row.end.id};
+  grid-row: ${({ row }) => row.start.id} / ${({ row }) => row.end.id};
   grid-column: track-${({ track }) => track.id}-start;
   color: ${({ theme }) => theme.textColor};
   background: white;

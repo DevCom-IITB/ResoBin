@@ -1,16 +1,16 @@
-import { tracks, rows } from './timeTableData'
-import TimeTableLectureItem from './TimeTableLectureItem'
+import { tracks, rows } from './timetableData'
+import TimetableLectureItem from './TimetableLectureItem'
 
 const TimeTableSelectedCourses = () => {
   return (
     <>
-      <TimeTableLectureItem
+      <TimetableLectureItem
         title="CL 152"
         track={tracks[0]}
         row={{ start: rows[0], end: rows[2] }}
       />
 
-      <TimeTableLectureItem
+      <TimetableLectureItem
         title="EE 101"
         track={tracks[2]}
         row={{ start: rows[1], end: rows[3] }}
