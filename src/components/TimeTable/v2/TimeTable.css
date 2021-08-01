@@ -1,6 +1,3 @@
-/*************************
- * LAYOUT
- *************************/
 .track-slot {
   display: none;
 }
@@ -18,13 +15,7 @@
   }
 }
 
-/* .schedule > * {
-  background-color: green;
-} */
-
-/*************************
- * VISUAL STYLES
- *************************/
+/* * */
 
 .text {
   max-width: 750px;

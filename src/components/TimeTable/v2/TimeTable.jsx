@@ -2,6 +2,7 @@ import styled from 'styled-components/macro'
 
 import './TimeTable.css'
 import { tracks, rows } from './timeTableData'
+import TimeTableLectureItem from './TimeTableLectureItem'
 
 const TrackHeader = ({ id, title }) => {
   return (
@@ -26,26 +27,15 @@ const RowHeader = ({ id, title }) => {
   )
 }
 
-// const LectureItem = ({ track, rows, children }) => {
-//   return (
-//     <div
-//       className="session session-1 track-1"
-//       style={{ gridColumn: 'track-1', gridRow: 'time-0830 / time-0930' }}
-//     >
-//       {children}
-//     </div>
-//   )
-// }
-
 const TimeTable = () => {
   return (
     <Container>
       {tracks.map(({ id, title }, index) => (
-        <TrackHeader id={id} title={title} />
+        <TrackHeader key={id} id={id} title={title} />
       ))}
 
       {rows.map(({ id, title }, index) => (
-        <RowHeader id={id} title={title} />
+        <RowHeader key={id} id={id} title={title} />
       ))}
 
       {tracks.map((track, i) =>
@@ -56,7 +46,7 @@ const TimeTable = () => {
                 gridRow: `time-${rows[j].id} / time-${rows[j].id}`,
                 gridColumn: `track-${track.id}`,
                 background: (i + j) % 2 ? '#cfcfcf' : '#e2e2e2',
-                height: '2rem',
+                minHeight: '1.5rem',
               }}
               key={row.id}
             />
@@ -72,16 +62,17 @@ const TimeTable = () => {
         <span className="time">8:30 - 9:30</span>
       </div>
 
-      <div
-        className="session track-4"
-        style={{
-          gridColumn: 'track-4-start',
-          gridRow: 'time-0930 / time-1030',
-        }}
-      >
-        <h3 className="title">EE 101</h3>
-        <span className="time">9:30 - 10:30</span>
-      </div>
+      <TimeTableLectureItem
+        title="EE 101"
+        track={tracks[2]}
+        row={{ start: rows[1], end: rows[3] }}
+      />
+
+      <TimeTableLectureItem
+        title="EE 101"
+        track={tracks[2]}
+        row={{ start: rows[1], end: rows[3] }}
+      />
     </Container>
   )
 }
