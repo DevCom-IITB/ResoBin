@@ -1,12 +1,6 @@
 import styled from 'styled-components/macro'
 
 const TimeTableLectureItem = ({ title, track, row }) => {
-  // const style = {
-  //   gridColumn: `track-${track.id}-start`,
-  //   gridRow: `time-${row.start.id} / time-${row.end.id}`,
-  //   background: 'white',
-  // }
-
   return (
     <GridItem row={row} track={track}>
       <Container id={track.id}>
@@ -45,13 +39,13 @@ const colors = (num) => {
 const GridItem = styled.div`
   grid-row: time-${({ row }) => row.start.id} / time-${({ row }) => row.end.id};
   grid-column: track-${({ track }) => track.id}-start;
+  color: ${({ theme }) => theme.textColor};
   background: white;
 `
 
 const Container = styled.div`
   padding: 0.25rem 0.5rem;
   border-radius: 0.5rem;
-  color: ${({ theme }) => theme.textColor};
   background: ${({ id }) => colors(id)};
   cursor: pointer;
   transition: all 200ms ease-out;

@@ -1,0 +1,33 @@
+export const tracks = [
+  { id: '1', title: 'Monday' },
+  { id: '2', title: 'Tuesday' },
+  { id: '3', title: 'Wednesday' },
+  { id: '4', title: 'Thursday' },
+  { id: '5', title: 'Friday' },
+]
+
+export const rows = [
+  { id: '0830', title: '08:30 am' },
+  { id: '0900', title: '09:00 am' },
+  { id: '0930', title: '09:30 am' },
+  { id: '1000', title: '10:00 am' },
+  { id: '1030', title: '10:30 am' },
+  { id: '1100', title: '11:00 am' },
+  { id: '1130', title: '11:30 am' },
+  { id: '1200', title: '12:00 pm' },
+  { id: '1230', title: '12:30 pm' },
+  { id: '1400', title: '14:00 pm' },
+  { id: '1430', title: '14:30 pm' },
+  { id: '1500', title: '15:00 pm' },
+  { id: '1530', title: '15:30 pm' },
+  { id: '1600', title: '16:00 pm' },
+  { id: '1630', title: '16:30 pm' },
+  { id: '1700', title: '17:00 pm' },
+  { id: '1730', title: '17:30 pm' },
+  { id: '1800', title: '18:00 pm' },
+  { id: '1830', title: '18:30 pm' },
+  { id: '1900', title: '19:00 pm' },
+  { id: '1930', title: '19:30 pm' },
+  { id: '2000', title: '20:00 pm' },
+  { id: '2030', title: '20:30 pm' },
+]
