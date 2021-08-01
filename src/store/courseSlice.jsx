@@ -75,10 +75,12 @@ export const selectCourseListByCourseCode = (courseCode) =>
     courseList.filter((course) => courseCodeToSlug(course.Code) === courseCode)
   )
 
-// code: 'CL152'  ->  slots: ['1A', '1B', '1C']
+// code: 'CL 152'  ->  slots: ['1A', '1B', '1C']
 export const selectCourseSlotsByCourseCode = (courseCode) =>
-  createSelector(selectCourseSlots, (courseList) =>
-    courseList.filter((course) => courseCodeToSlug(course.Code) === courseCode)
+  createSelector(selectCourseSlots, (courseSlotList) =>
+    courseSlotList.filter(
+      (course) => courseCodeToSlug(course.Code) === courseCode
+    )
   )
 
 export default courseSlice.reducer
