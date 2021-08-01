@@ -122,7 +122,7 @@ const CourseItemMain = ({ data: courseData }) => {
 
   const favouriteClick = () => {
     setFavourite(!favourite)
-    dispatch(addFavourite(courseData.Code))
+    dispatch(addFavourite({ id: courseData.Code, code: courseData.Code }))
   }
 
   return (

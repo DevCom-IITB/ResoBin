@@ -8,9 +8,13 @@ export const timetableAdapter = createEntityAdapter()
 const userSlice = createSlice({
   name: 'user',
 
+  // initialState: {
+  //   favourites: [],
+  //   timetable: [],
+  // },
   initialState: {
-    favourites: [],
-    timetable: [],
+    favourites: favouritesAdapter.getInitialState(),
+    timetable: timetableAdapter.getInitialState(),
   },
 
   reducers: {

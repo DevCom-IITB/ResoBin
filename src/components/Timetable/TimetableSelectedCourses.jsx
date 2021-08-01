@@ -1,7 +1,12 @@
+// import { useSelector } from 'react-redux'
+
+// import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
+
 import { tracks, rows } from './timetableData'
 import TimetableLectureItem from './TimetableLectureItem'
 
 const TimetableSelectedCourses = () => {
+  // const courseCode = useSelector(selectCourseSlotsByCourseCode)
   return (
     <>
       <TimetableLectureItem
