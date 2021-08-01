@@ -15,7 +15,7 @@ const Contribute = lazy(() => import('pages/Contribute'))
 const Contact = lazy(() => import('pages/Contact'))
 const Favourites = lazy(() => import('pages/Favourites'))
 const Settings = lazy(() => import('pages/Settings'))
-const TimeTable = lazy(() => import('pages/TimeTable'))
+const TimeTable = lazy(() => import('pages/Timetable'))
 
 // authentication necessary for all routes
 export const DashboardRoutes = () => {

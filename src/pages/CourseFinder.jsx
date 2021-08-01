@@ -9,6 +9,7 @@ import { LoaderAnimation } from 'components/shared'
 import { toastError } from 'components/toast'
 import {
   getCourseList,
+  getCourseSlots,
   selectChecksum,
   selectCourseAPILoading,
   updateChecksum,
@@ -37,6 +38,7 @@ const CourseFinder = () => {
           if (data.checksum !== prevChecksum) {
             dispatch(updateChecksum(data))
             dispatch(getCourseList())
+            dispatch(getCourseSlots())
           }
           return setLoading(false)
         })

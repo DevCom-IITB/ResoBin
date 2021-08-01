@@ -1,7 +1,7 @@
 import { tracks, rows } from './timetableData'
 import TimetableLectureItem from './TimetableLectureItem'
 
-const TimeTableSelectedCourses = () => {
+const TimetableSelectedCourses = () => {
   return (
     <>
       <TimetableLectureItem
@@ -19,4 +19,4 @@ const TimeTableSelectedCourses = () => {
   )
 }
 
-export default TimeTableSelectedCourses
+export default TimetableSelectedCourses

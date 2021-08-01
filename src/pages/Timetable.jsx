@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components/macro'
 
-import { TimetableContainer } from 'components/TimeTable'
+import { TimetableContainer } from 'components/Timetable'
 import { device } from 'styles/responsive'
 
 const TimeTable = ({ match }) => {

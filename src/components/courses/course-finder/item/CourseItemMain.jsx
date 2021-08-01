@@ -3,11 +3,13 @@ import {
   BookmarkOutline as Bookmark,
 } from '@styled-icons/zondicons'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
 
 import ParseDescription from 'components/courses/course-finder/ParseDescription'
 import { coursePageUrl } from 'paths'
+import { addFavourite } from 'store/userSlice'
 import { device, fontSize } from 'styles/responsive'
 
 const Container = styled.div`
@@ -116,9 +118,11 @@ const StyledFavourite = styled(({ Icon, className, ...props }) => {
 
 const CourseItemMain = ({ data: courseData }) => {
   const [favourite, setFavourite] = useState(false)
+  const dispatch = useDispatch()
 
   const favouriteClick = () => {
     setFavourite(!favourite)
+    dispatch(addFavourite(courseData.Code))
   }
 
   return (
