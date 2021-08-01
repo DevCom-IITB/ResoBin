@@ -5,17 +5,14 @@
   display: none;
 }
 
-.session {
-  margin-bottom: 1em;
-}
-
 @media screen and (min-width: 700px) {
-  .schedule {
+  /* .schedule {
     display: grid;
-  }
+  } */
 
   /* a background for the sticky tracks */
-  .schedule::after {
+
+  /* .schedule::after {
     content: '';
     position: sticky;
     top: 3rem;
@@ -24,11 +21,11 @@
     grid-row: tracks;
     grid-column: track-1 / -1;
     background-color: rgba(255, 255, 255, 0.9);
-  }
+  } */
 
   .track-slot {
     position: sticky;
-    top: 3rem; /* otherwise seeing a gap above in at least Firefox. */
+    top: 3rem;
     z-index: 1000;
     display: block;
     padding: 10px 5px 5px;
@@ -38,10 +35,8 @@
   }
 }
 
+/*
 .schedule {
-  /* Gridlines will need to be "named" in 24hr time
-     Switch '1fr' to 'auto' if height of slot shouldnt be proportional to lecture length */
-
   grid-template-rows:
     [tracks] auto
     [time-0830] 1fr
@@ -53,7 +48,7 @@
     [time-1130] 1fr
     [time-1200] 1fr
     [time-1230] 1fr
-    /* lunch break */
+
     [time-1400] 1fr
     [time-1430] 1fr
     [time-1500] 1fr
@@ -61,7 +56,7 @@
     [time-1600] 1fr
     [time-1630] 1fr
     [time-1700] 1fr
-    /* evening break */
+
     [time-1730] 1fr
     [time-1800] 1fr
     [time-1830] 1fr
@@ -77,8 +72,13 @@
     [track-3-end track-4-start] 1fr
     [track-4-end track-5-start] 1fr
     [track-5-end];
-  grid-gap: 1rem;
+  grid-gap: 0.25rem;
+
+  background: #d7d7d7;
 }
+.schedule > * {
+  background-color: green;
+} */
 
 /*************************
  * VISUAL STYLES
@@ -103,8 +103,8 @@ hr {
 }
 
 .session {
-  padding: 0.5em;
-  border-radius: 2px;
+  padding: 0.25rem;
+  border-radius: 8px;
   font-size: 14px;
 }
 
@@ -112,15 +112,6 @@ hr {
 .time-slot {
   margin: 0;
   font-size: 1em;
-}
-
-body {
-  counter-reset: session;
-  counter-reset: session-count;
-}
-.title::before {
-  content: 'Session #' counter(session-count) ': ';
-  counter-increment: session-count;
 }
 
 .track-slot,
