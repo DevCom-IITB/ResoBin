@@ -9,13 +9,10 @@ import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
 import { device, fontSize } from 'styles/responsive'
 
 const CourseItemMain = ({ data: courseData }) => {
-  const dispatch = useDispatch()
-
   const favourite = useSelector(selectFavouriteStatus(courseData.Code))
 
-  const favouriteClick = () => {
-    dispatch(updateFavourite(courseData.Code))
-  }
+  const dispatch = useDispatch()
+  const favouriteClick = () => dispatch(updateFavourite(courseData.Code))
 
   return (
     <Container>

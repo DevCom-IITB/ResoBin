@@ -1,9 +1,9 @@
 import styled from 'styled-components/macro'
 
-const TimeTableLectureItem = ({ title, track, row }) => {
+const TimeTableLectureItem = ({ id, title, track, row }) => {
   return (
     <GridItem row={row} track={track}>
-      <Container id={track.id}>
+      <Container id={id}>
         <h3>{title}</h3>
         <span>
           {row.start.title} - {row.end.title}
@@ -17,24 +17,26 @@ export default TimeTableLectureItem
 
 const colors = (num) => {
   switch (num) {
-    case '1':
+    case 0:
+      return 'linear-gradient(to right, #7e7c00, #fffc00)'
+    case 1:
       return 'linear-gradient(to right, #00b09b, #96c93d)'
-    case '2':
+    case 2:
       return 'linear-gradient(to right, #000428, #004e92)'
-    case '3':
+    case 3:
       return 'linear-gradient(to right, #cb356b, #bd3f32)'
-    case '4':
+    case 4:
       return 'linear-gradient(to right, #f2994a, #f2c94c)'
-    case '5':
+    case 5:
       return 'linear-gradient(to right, #36d1dc, #5b86e5)'
-    case '6':
+    case 6:
       return 'linear-gradient(to right, #834d9b, #d04ed6)'
-    case '7':
-      return 'linear-gradient(to right, #fffc00, #fffc00)'
     default:
       return 'linear-gradient(to right, #666666, #aaaaaa)'
   }
 }
+
+// const colors = []
 
 const GridItem = styled.div`
   grid-row: ${({ row }) => row.start.id} / ${({ row }) => row.end.id};
@@ -44,6 +46,7 @@ const GridItem = styled.div`
 `
 
 const Container = styled.div`
+  height: 100%;
   padding: 0.25rem 0.5rem;
   border-radius: 0.5rem;
   background: ${({ id }) => colors(id)};

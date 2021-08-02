@@ -1,25 +1,32 @@
-// import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-// import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
+import { selectAllFavourites } from 'store/userSlice'
 
-import { tracks, rows } from './timetableData'
-import TimetableLectureItem from './TimetableLectureItem'
+import TimetableCourseItem from './TimetableCourseItem'
+
+const selectedCourses = [
+  'CL 232',
+  'CL 305',
+  'CL 319',
+  'CL 324',
+  // 'CL 333',
+  'EE 101',
+  'CS 663',
+  'IE 643',
+]
 
 const TimetableSelectedCourses = () => {
-  // const courseCode = useSelector(selectCourseSlotsByCourseCode)
+  // const selectedCourses = useSelector(selectAllFavourites)
+
   return (
     <>
-      <TimetableLectureItem
-        title="CL 152"
-        track={tracks[0]}
-        row={{ start: rows[0], end: rows[2] }}
-      />
-
-      <TimetableLectureItem
-        title="EE 101"
-        track={tracks[2]}
-        row={{ start: rows[1], end: rows[3] }}
-      />
+      {selectedCourses.map((courseCode, idx) => (
+        <TimetableCourseItem
+          key={courseCode}
+          id={idx}
+          courseCode={courseCode}
+        />
+      ))}
     </>
   )
 }
