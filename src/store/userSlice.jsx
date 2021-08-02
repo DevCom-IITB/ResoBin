@@ -1,41 +1,35 @@
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
-
-// ? inbuilt support for CRUD
-export const favouritesAdapter = createEntityAdapter()
-export const timetableAdapter = createEntityAdapter()
+import { createSlice, createSelector } from '@reduxjs/toolkit'
 
 // ? reducer
 const userSlice = createSlice({
   name: 'user',
 
-  // initialState: {
-  //   favourites: [],
-  //   timetable: [],
-  // },
   initialState: {
-    favourites: favouritesAdapter.getInitialState(),
-    timetable: timetableAdapter.getInitialState(),
+    favourites: [],
+    timetable: [],
   },
 
   reducers: {
-    addFavourite: favouritesAdapter.addOne,
-    removeFavourite: favouritesAdapter.removeOne,
-
-    addCourseToTimetable: timetableAdapter.addOne,
-    removeCourseFromTimetable: timetableAdapter.removeOne,
+    // remove favourite if in list else add to list
+    updateFavourite({ favourites }, { payload }) {
+      const index = favourites.indexOf(payload)
+      if (index === -1) favourites.push(payload)
+      else favourites.splice(index, 1)
+    },
   },
 })
 
 // ? actions
-export const {
-  addFavourite,
-  removeFavourite,
-  addCourseToTimetable,
-  removeCourseFromTimetable,
-} = userSlice.actions
+export const { updateFavourite } = userSlice.actions
 
 // ? selectors
-export const selectFavourites = (state) => state.user.favourites
-export const selectTimetable = (state) => state.user.favourites
+// * get all favourites
+export const selectAllFavourites = (state) => state.user.favourites
+
+// * get if a course is a favourite or not
+export const selectFavouriteStatus = (courseCode) =>
+  createSelector(selectAllFavourites, (favourite) => {
+    return favourite.indexOf(courseCode) !== -1
+  })
 
 export default userSlice.reducer

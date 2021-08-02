@@ -10,10 +10,7 @@ import {
   persistStore,
 } from 'redux-persist'
 
-import {
-  // reducer,
-  persistedReducer,
-} from './combineReducers'
+import { persistedReducer } from './combineReducers'
 
 const middleware = getDefaultMiddleware({
   serializableCheck: {
