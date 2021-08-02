@@ -1,25 +1,27 @@
 import { useSelector } from 'react-redux'
 
+import { cols, rows } from 'data/timetableLayoutData'
+import slots from 'data/timetableSlotData'
 import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
 
-import { cols, rows, slots } from './timetableData'
-import TimetableLectureItem from './TimetableLectureItem'
+import TimetableCourseLectureItem from './TimetableCourseLectureItem'
 
-const TimetableCourseItem = ({ id, courseCode }) => {
-  console.log(courseCode)
+// * id refers to the color of the timetable item
+const TimetableCourseItem = ({ courseCode, colorCode = 0 }) => {
+  // console.log(courseCode)
   let courseSlots = useSelector(selectCourseSlotsByCourseCode(courseCode))
   if (!courseSlots) return null
   courseSlots = courseSlots.map((slot) => slots[slot])
 
   return (
     <>
-      {courseSlots.map(({ row, track }) => (
-        <TimetableLectureItem
-          key={track}
-          id={id}
+      {courseSlots.map(({ row, col }) => (
+        <TimetableCourseLectureItem
+          key={col}
+          colorCode={colorCode}
           title={courseCode}
-          track={cols[track - 1]}
-          row={{ start: rows[row.start], end: rows[row.end] }}
+          gridCol={cols[col - 1]}
+          gridRow={{ start: rows[row.start], end: rows[row.end] }}
         />
       ))}
     </>

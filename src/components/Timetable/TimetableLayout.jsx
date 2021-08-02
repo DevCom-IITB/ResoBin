@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 
-import { cols, rows } from './timetableData'
+import { cols, rows } from './timetableLayoutData'
 
 const ColHeader = ({ id, title }) => (
   <TrackContainer aria-hidden="true" id={id}>
@@ -12,9 +12,9 @@ const RowHeader = ({ id, title }) => (
   <RowContainer id={id}>{title}</RowContainer>
 )
 
-const TimetableLayout = () => {
+const TimetableLayout = ({ children }) => {
   return (
-    <>
+    <Container>
       {cols.map(({ id, title }, index) => (
         <ColHeader key={id} id={id} title={title} />
       ))}
@@ -28,11 +28,39 @@ const TimetableLayout = () => {
           <TimetableFillerItem key={row.id} row={row} col={col} j={j} />
         ))
       )}
-    </>
+
+      {children}
+    </Container>
   )
 }
 
 export default TimetableLayout
+
+// * grid data is loaded from timetableData.jsx
+// * switch '1fr' to 'auto' if height of slot shouldnt be proportional to lecture length
+
+const Container = styled.div`
+  display: grid;
+  grid-template-rows:
+    [tracks] auto
+    ${rows.map(({ id, title }, index) => `[${id}] 1fr `)};
+  grid-template-columns:
+    [times] 4rem
+    ${cols.map(({ id, title }, index) => `[${id}] 1fr `)};
+  grid-column-gap: 2px;
+  background: white;
+
+  &::after {
+    content: '';
+    position: sticky;
+    top: 3rem;
+    z-index: 999;
+    display: block;
+    grid-row: tracks;
+    grid-column: track-1 / -1;
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+`
 
 const TrackContainer = styled.span`
   display: none;
