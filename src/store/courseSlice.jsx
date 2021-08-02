@@ -77,10 +77,15 @@ export const selectCourseListByCourseCode = (courseCode) =>
 
 // code: 'CL 152'  ->  slots: ['1A', '1B', '1C']
 export const selectCourseSlotsByCourseCode = (courseCode) =>
-  createSelector(selectCourseSlots, (courseSlotList) =>
-    courseSlotList.filter(
-      (course) => courseCodeToSlug(course.Code) === courseCode
+  createSelector(selectCourseSlots, (courseSlotList) => {
+    const results = courseSlotList.filter(
+      (course) => course.Code === courseCode
     )
-  )
+    if (results.length === 1) return results[0].Slot
+
+    console.log('Multiple matches found for course code:', courseCode)
+    if (Array.isArray(results[0].Slot)) return results[0].Slot
+    return [results[0].Slot]
+  })
 
 export default courseSlice.reducer
