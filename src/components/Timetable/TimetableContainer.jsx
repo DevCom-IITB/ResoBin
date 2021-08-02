@@ -1,37 +1,37 @@
+// import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { tracks, rows } from './timetableData'
-import { TrackHeader, RowHeader } from './TimetableHeaders'
-import TimetableSelectedCourses from './TimetableSelectedCourses'
+// import { selectAllFavourites } from 'store/userSlice'
+
+import TimetableCourseItem from './TimetableCourseItem'
+import { rows } from './timetableData'
+import TimetableLayout from './TimetableLayout'
+
+const selectedCourses = [
+  'CL 232',
+  'CL 305',
+  'CL 319',
+  'CL 324',
+  // 'CL 333',
+  'EE 101',
+  'CS 663',
+  'IE 643',
+]
 
 const TimetableContainer = () => {
+  // const selectedCourses = useSelector(selectAllFavourites)
+
   return (
     <Container>
-      {tracks.map(({ id, title }, index) => (
-        <TrackHeader key={id} id={id} title={title} />
+      <TimetableLayout />
+
+      {selectedCourses.map((courseCode, idx) => (
+        <TimetableCourseItem
+          key={courseCode}
+          id={idx}
+          courseCode={courseCode}
+        />
       ))}
-
-      {rows.map(({ id, title }, index) => (
-        <RowHeader key={id} id={id} title={title} />
-      ))}
-
-      {tracks.map((track, i) =>
-        rows.map((row, j) => {
-          return (
-            <div
-              style={{
-                gridRow: `${rows[j].id} / ${rows[j].id}`,
-                gridColumn: `track-${track.id}`,
-                background: j % 2 ? '#cfcfcf' : '#e2e2e2',
-                minHeight: '1.5rem',
-              }}
-              key={row.id}
-            />
-          )
-        })
-      )}
-
-      <TimetableSelectedCourses />
     </Container>
   )
 }

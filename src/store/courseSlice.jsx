@@ -13,7 +13,7 @@ export const getCourseList = createAsyncThunk(
 export const getCourseSlots = createAsyncThunk(
   'courses/getCourseSlots',
   async () =>
-    axios.get('https://run.mocky.io/v3/2f78426f-0704-48e3-89a1-c1487f2c8a2a')
+    axios.get('https://run.mocky.io/v3/108c5a12-32e4-424a-bbc3-98f7ecd983d8')
 )
 
 // ? reducer
@@ -81,11 +81,11 @@ export const selectCourseSlotsByCourseCode = (courseCode) =>
     const results = courseSlotList.filter(
       (course) => course.Code === courseCode
     )
-    if (results.length === 1) return results[0].Slot
+
+    if (results.length === 1) return results[0] && results[0].Slot
 
     console.log('Multiple matches found for course code:', courseCode)
-    if (Array.isArray(results[0].Slot)) return results[0].Slot
-    return [results[0].Slot]
+    return results[0] && results[0].Slot
   })
 
 export default courseSlice.reducer

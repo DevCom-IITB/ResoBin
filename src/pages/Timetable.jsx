@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components/macro'
 
+import { PageHeading, PageTitle } from 'components/shared'
 import { TimetableContainer } from 'components/Timetable'
 import { device } from 'styles/responsive'
 
@@ -15,7 +16,10 @@ const TimeTable = ({ match }) => {
         />
       </Helmet>
 
-      <h1>Time Table</h1>
+      <PageHeading>
+        <PageTitle>Timetable</PageTitle>
+      </PageHeading>
+
       <TimetableContainer />
     </Container>
   )
