@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux'
 
 import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
 
-import { tracks, rows, slots } from './timetableData'
+import { cols, rows, slots } from './timetableData'
 import TimetableLectureItem from './TimetableLectureItem'
 
 const TimetableCourseItem = ({ id, courseCode }) => {
@@ -18,7 +18,7 @@ const TimetableCourseItem = ({ id, courseCode }) => {
           key={track}
           id={id}
           title={courseCode}
-          track={tracks[track - 1]}
+          track={cols[track - 1]}
           row={{ start: rows[row.start], end: rows[row.end] }}
         />
       ))}

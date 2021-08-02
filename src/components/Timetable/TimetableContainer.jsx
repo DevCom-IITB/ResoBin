@@ -4,7 +4,7 @@ import styled from 'styled-components/macro'
 // import { selectAllFavourites } from 'store/userSlice'
 
 import TimetableCourseItem from './TimetableCourseItem'
-import { rows } from './timetableData'
+import { cols, rows } from './timetableData'
 import TimetableLayout from './TimetableLayout'
 
 const selectedCourses = [
@@ -48,12 +48,7 @@ const Container = styled.div`
     ${rows.map(({ id, title }, index) => `[${id}] 1fr `)};
   grid-template-columns:
     [times] 4rem
-    [track-1-start] 1fr
-    [track-1-end track-2-start] 1fr
-    [track-2-end track-3-start] 1fr
-    [track-3-end track-4-start] 1fr
-    [track-4-end track-5-start] 1fr
-    [track-5-end];
+    ${cols.map(({ id, title }, index) => `[${id}] 1fr `)};
   grid-column-gap: 2px;
   background: white;
 

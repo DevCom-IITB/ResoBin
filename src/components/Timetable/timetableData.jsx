@@ -1,9 +1,9 @@
-export const tracks = [
-  { id: '1', title: 'Monday' },
-  { id: '2', title: 'Tuesday' },
-  { id: '3', title: 'Wednesday' },
-  { id: '4', title: 'Thursday' },
-  { id: '5', title: 'Friday' },
+export const cols = [
+  { id: 'track-1', title: 'Monday' },
+  { id: 'track-2', title: 'Tuesday' },
+  { id: 'track-3', title: 'Wednesday' },
+  { id: 'track-4', title: 'Thursday' },
+  { id: 'track-5', title: 'Friday' },
 ]
 
 export const rows = [

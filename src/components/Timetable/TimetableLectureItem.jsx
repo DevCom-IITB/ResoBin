@@ -40,7 +40,7 @@ const colors = (num) => {
 
 const GridItem = styled.div`
   grid-row: ${({ row }) => row.start.id} / ${({ row }) => row.end.id};
-  grid-column: track-${({ track }) => track.id}-start;
+  grid-column: ${({ track }) => track.id};
   color: ${({ theme }) => theme.textColor};
   background: white;
 `
