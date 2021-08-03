@@ -22,14 +22,15 @@ const TimetableContainer = () => {
 
   return (
     <TimetableLayout>
-      {/* {selectedCourses.map((courseCode, idx) => (
+      {selectedCourses.map((courseCode, idx) => (
         <TimetableCourseItem
           key={courseCode}
           colorCode={idx}
           courseCode={courseCode}
         />
-      ))} */}
-      <CurrentTime />
+      ))}
+
+      <CurrentTime mode="vertical" />
     </TimetableLayout>
   )
 }
