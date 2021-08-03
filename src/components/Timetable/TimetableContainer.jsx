@@ -1,7 +1,10 @@
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { selectAllTimetable, selectAllFavourites } from 'store/userSlice'
+import {
+  // selectAllTimetable,
+  selectAllFavourites,
+} from 'store/userSlice'
 
 import CurrentTime from './CurrentTime'
 import TimetableCourseItem from './TimetableCourseItem'
@@ -41,5 +44,5 @@ const TimetableContainer = () => {
 export default TimetableContainer
 
 const Container = styled.div`
-  margin: 1rem 0.75rem;
+  margin: 0.5rem 0.75rem;
 `

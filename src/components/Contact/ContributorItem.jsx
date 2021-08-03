@@ -1,7 +1,6 @@
 import { Avatar, Card, Skeleton } from 'antd'
+import { rgba } from 'polished'
 import styled from 'styled-components/macro'
-
-import { HEX2RGBA } from 'helpers'
 
 export const ContributorItem = ({ name, avatar, url, contributions }) => {
   return (
@@ -30,7 +29,7 @@ const StyledCard = styled(Card)`
   .ant-card-body {
     margin: 0.75rem 0;
     border-radius: ${({ theme }) => theme.borderRadius};
-    background-color: ${({ theme }) => HEX2RGBA(theme.darksecondary, 30)};
+    background-color: ${({ theme }) => rgba(theme.darksecondary, 0.3)};
   }
 
   &.ant-card-hoverable {

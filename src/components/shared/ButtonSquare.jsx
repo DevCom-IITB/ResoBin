@@ -1,6 +1,5 @@
+import { rgba } from 'polished'
 import styled from 'styled-components/macro'
-
-import { HEX2RGBA } from 'helpers'
 
 const ButtonSquare = styled.button`
   height: 1.75rem;
@@ -19,7 +18,7 @@ const ButtonSquare = styled.button`
   }
 
   &:active {
-    box-shadow: inset 0 0 5px ${HEX2RGBA('#000', 40)};
+    box-shadow: inset 0 0 5px ${rgba('#000', 0.4)};
   }
 `
 

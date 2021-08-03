@@ -1,10 +1,10 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import { Search } from '@styled-icons/heroicons-outline'
 import { Input } from 'antd'
+import { rgba } from 'polished'
 import styled from 'styled-components/macro'
 
 import { FilterDropdown } from 'components/filter'
-import { HEX2RGBA } from 'helpers'
 import { device } from 'styles/responsive'
 
 const SearchContainer = styled.div`
@@ -18,9 +18,9 @@ const SearchContainer = styled.div`
   padding: 0 0.75rem;
   background: linear-gradient(
     0deg,
-    ${({ theme }) => HEX2RGBA(theme.primary, 0)} 0%,
-    ${({ theme }) => HEX2RGBA(theme.primary, 0)} 30%,
-    ${({ theme }) => HEX2RGBA(theme.primary, 100)} 50%
+    ${({ theme }) => rgba(theme.primary, 0)} 0%,
+    ${({ theme }) => rgba(theme.primary, 0)} 30%,
+    ${({ theme }) => rgba(theme.primary, 1)} 50%
   );
 
   @media ${device.min.lg} {

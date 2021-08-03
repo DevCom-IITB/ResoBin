@@ -1,3 +1,4 @@
+import { rgba } from 'polished'
 import styled from 'styled-components/macro'
 
 import { cols, rows } from 'data/timetable'
@@ -42,10 +43,10 @@ export default TimetableLayout
 const Container = styled.div`
   display: grid;
   grid-template-rows:
-    [tracks] auto
+    [tracks] 2rem
     ${rows.map(({ id, title }, index) => `[${id}] 1fr `)};
   grid-template-columns:
-    [times] 4rem
+    [times] 3.5rem
     ${cols.map(({ id, title }, index) => `[${id}] 1fr `)};
   padding: 1rem;
   border-radius: 0.5rem;
@@ -55,11 +56,10 @@ const Container = styled.div`
     content: '';
     position: sticky;
     top: 3rem;
-    z-index: 999;
-    display: block;
+    z-index: 0;
     grid-row: tracks;
-    grid-column: track-1 / -1;
-    background-color: rgba(255, 255, 255, 0.9);
+    grid-column: 1 / -1;
+    background-color: ${rgba('white', 0.9)};
   }
 
   > div {
@@ -71,8 +71,10 @@ const ColContainer = styled.span`
   display: none;
   grid-row: tracks;
   grid-column: ${({ id }) => id};
-  font-size: 0.75em;
+  font-size: 0.75rem;
+  font-weight: 500;
   text-align: center;
+  text-transform: uppercase;
 
   @media screen and (min-width: 700px) {
     position: sticky;
@@ -80,19 +82,19 @@ const ColContainer = styled.span`
     z-index: 20;
     display: block;
     padding: 10px 5px 5px;
-    background: white;
   }
 `
 
 const RowContainer = styled.span`
   position: relative;
   top: -0.375rem;
-  right: 0.5rem;
+  right: 0.75rem;
   display: flex;
   justify-content: flex-end;
   grid-row: ${({ id }) => id};
   grid-column: times;
-  font-size: 0.75em;
+  font-size: 0.5rem;
+  font-family: 'Roboto', monospace;
 `
 
 const TimetableFillerItem = styled.div`
