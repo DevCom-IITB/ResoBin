@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux'
+import styled from 'styled-components/macro'
 
-import { selectAllTimetable } from 'store/userSlice'
+import { selectAllTimetable, selectAllFavourites } from 'store/userSlice'
 
 import CurrentTime from './CurrentTime'
 import TimetableCourseItem from './TimetableCourseItem'
@@ -11,28 +12,34 @@ import TimetableLayout from './TimetableLayout'
 //   'CL305',
 //   'CL319',
 //   'CL324',
-//   'CL 333',
 //   'EE101',
 //   'CS663',
 //   'IE643',
+//   'CL 333',
 // ]
 
 const TimetableContainer = () => {
-  const selectedCourses = useSelector(selectAllTimetable)
+  const selectedCourses = useSelector(selectAllFavourites)
 
   return (
-    <TimetableLayout>
-      {selectedCourses.map((courseCode, idx) => (
-        <TimetableCourseItem
-          key={courseCode}
-          colorCode={idx}
-          courseCode={courseCode}
-        />
-      ))}
+    <Container>
+      <TimetableLayout>
+        {selectedCourses.map((courseCode, idx) => (
+          <TimetableCourseItem
+            key={courseCode}
+            colorCode={idx}
+            courseCode={courseCode}
+          />
+        ))}
 
-      <CurrentTime mode="vertical" />
-    </TimetableLayout>
+        <CurrentTime mode="vertical" />
+      </TimetableLayout>
+    </Container>
   )
 }
 
 export default TimetableContainer
+
+const Container = styled.div`
+  margin: 1rem 0.75rem;
+`

@@ -3,9 +3,9 @@ import styled from 'styled-components/macro'
 import { cols, rows } from 'data/timetable'
 
 const ColHeader = ({ id, title }) => (
-  <TrackContainer aria-hidden="true" id={id}>
+  <ColContainer aria-hidden="true" id={id}>
     {title}
-  </TrackContainer>
+  </ColContainer>
 )
 
 const RowHeader = ({ id, title }) => (
@@ -19,9 +19,9 @@ const TimetableLayout = ({ children }) => {
         <ColHeader key={id} id={id} title={title} />
       ))}
 
-      {rows.map(({ id, title }, index) => (
-        <RowHeader key={id} id={id} title={title} />
-      ))}
+      {rows.map(({ id, title }, index) =>
+        index % 2 ? <RowHeader key={id} id={id} title={title} /> : null
+      )}
 
       {cols.map((col, i) =>
         rows.map((row, j) => (
@@ -47,7 +47,8 @@ const Container = styled.div`
   grid-template-columns:
     [times] 4rem
     ${cols.map(({ id, title }, index) => `[${id}] 1fr `)};
-  grid-column-gap: 2px;
+  padding: 1rem;
+  border-radius: 0.5rem;
   background: white;
 
   &::after {
@@ -60,36 +61,42 @@ const Container = styled.div`
     grid-column: track-1 / -1;
     background-color: rgba(255, 255, 255, 0.9);
   }
+
+  > div {
+    box-shadow: inset -1px -1px 0 #eceff1;
+  }
 `
 
-const TrackContainer = styled.span`
+const ColContainer = styled.span`
   display: none;
   grid-row: tracks;
   grid-column: ${({ id }) => id};
   font-size: 0.75em;
-  font-weight: bold;
+  text-align: center;
 
   @media screen and (min-width: 700px) {
     position: sticky;
     top: 3rem;
-    z-index: 1000;
+    z-index: 20;
     display: block;
     padding: 10px 5px 5px;
+    background: white;
   }
 `
 
 const RowContainer = styled.span`
+  position: relative;
+  top: -0.375rem;
+  right: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
   grid-row: ${({ id }) => id};
   grid-column: times;
-  margin: 0;
-  font-size: 1rem;
   font-size: 0.75em;
-  font-weight: bold;
 `
 
 const TimetableFillerItem = styled.div`
   grid-row: ${({ row }) => row.id};
   grid-column: ${({ col }) => col.id};
   min-height: 1.5rem;
-  background: ${({ j }) => (j % 2 ? '#cfcfcf' : '#e2e2e2')};
 `

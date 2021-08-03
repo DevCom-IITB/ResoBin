@@ -82,12 +82,12 @@ export const selectCourseListByCourseCode = (courseCode) =>
 
     switch (matches.length) {
       case 0:
-        toastError('Course:', courseCode, 'does not exist')
+        toastError(`Course: ${courseCode} does not exist`)
         return null
       case 1:
         return matches[0]
       default:
-        toastError('Multiple matches found for course code:', courseCode)
+        toastError(`Multiple matches found for course code: ${courseCode}`)
         return matches[0]
     }
   })
@@ -101,12 +101,12 @@ export const selectCourseSlotsByCourseCode = (courseCode) =>
 
     switch (matches.length) {
       case 0:
-        toastError('Course', courseCode, 'is not running this semester')
+        toastError(`Course: ${courseCode} is not running this semester`)
         return null
       case 1:
         return matches[0].Slot
       default:
-        toastError('Multiple matches found for course code:', courseCode)
+        toastError(`Multiple matches found for course code: ${courseCode}`)
         return matches[0].Slot
     }
   })

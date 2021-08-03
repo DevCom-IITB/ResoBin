@@ -19,7 +19,6 @@ export default CurrentTime
 
 const Container = styled.div`
   position: relative;
-  z-index: 100;
   grid-row: ${({ row }) => row};
   grid-column: ${({ column }) => column};
   width: ${({ mode }) => (mode === 'vertical' ? '100%' : '0')};
@@ -38,7 +37,7 @@ const Circle = styled.div`
   width: calc(${({ diameter }) => diameter});
   height: calc(${({ diameter }) => diameter});
   border-radius: 50%;
-  background: ${({ theme }) => theme.logo};
+  background: #44475a;
 `
 
 const Line = styled.div`
@@ -52,5 +51,5 @@ const Line = styled.div`
   width: ${({ mode, thickness }) => (mode !== 'vertical' ? thickness : '100%')};
   height: ${({ mode, thickness }) =>
     mode === 'vertical' ? thickness : '100%'};
-  background: ${({ theme }) => theme.logo};
+  background: #44475a;
 `

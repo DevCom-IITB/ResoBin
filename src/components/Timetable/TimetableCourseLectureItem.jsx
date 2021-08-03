@@ -1,15 +1,15 @@
 import { Tooltip } from 'antd'
-import styled from 'styled-components/macro'
+import { darken } from 'polished'
+import styled, { css } from 'styled-components/macro'
 
-import { colorPicker } from 'styles'
+import { colorPicker, makeGradient } from 'styles/utils'
 
 const TimeTableLectureItem = ({ colorCode, courseData, gridCol, gridRow }) => {
   return (
     <GridItem row={gridRow} col={gridCol}>
-      <Tooltip title={courseData.Title}>
-        <Item colorCode={colorCode}>
-          <h3>{courseData.Code}</h3>
-
+      <Tooltip title={courseData && courseData.Title}>
+        <Item id={colorCode}>
+          <h3>{courseData && courseData.Code}</h3>
           <span>
             {gridRow.start.title} - {gridRow.end.title}
           </span>
@@ -25,16 +25,22 @@ const GridItem = styled.div`
   grid-row: ${({ row }) => row.start.id} / ${({ row }) => row.end.id};
   grid-column: ${({ col }) => col.id};
   color: ${({ theme }) => theme.textColor};
-  background: white;
+`
+
+const getTile = (color) => css`
+  border-left: 4px solid ${darken(0.2, color)};
+  color: ${darken(0.7, color)};
+  background: ${makeGradient(color)};
 `
 
 const Item = styled.div`
   height: 100%;
   padding: 0.25rem 0.5rem;
   border-radius: 0.5rem;
-  background: ${({ colorCode }) => colorPicker(colorCode)};
   cursor: pointer;
   transition: all 200ms ease-out;
+
+  ${({ id }) => getTile(colorPicker(id))}
 
   & > h3 {
     font-size: 1rem;
