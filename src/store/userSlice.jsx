@@ -16,6 +16,13 @@ const userSlice = createSlice({
       if (index === -1) favourites.push(payload)
       else favourites.splice(index, 1)
     },
+
+    // params: (state, action)
+    updateTimetable({ timetable }, { payload }) {
+      const index = timetable.indexOf(payload)
+      if (index === -1) timetable.push(payload)
+      else timetable.splice(index, 1)
+    },
   },
 })
 
@@ -25,6 +32,7 @@ export const { updateFavourite } = userSlice.actions
 // ? selectors
 // * get all favourites
 export const selectAllFavourites = (state) => state.user.favourites
+export const selectAllTimetable = (state) => state.user.timetable
 
 // * get if a course is a favourite or not
 export const selectFavouriteStatus = (courseCode) =>

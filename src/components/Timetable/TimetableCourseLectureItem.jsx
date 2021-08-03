@@ -1,3 +1,4 @@
+import { Tooltip } from 'antd'
 import styled from 'styled-components/macro'
 
 import { colorPicker } from 'styles'
@@ -5,13 +6,15 @@ import { colorPicker } from 'styles'
 const TimeTableLectureItem = ({ colorCode, title, gridCol, gridRow }) => {
   return (
     <GridItem row={gridRow} col={gridCol}>
-      <Item colorCode={colorCode}>
-        <h3>{title}</h3>
+      <Tooltip title={title}>
+        <Item colorCode={colorCode}>
+          <h3>{title}</h3>
 
-        <span>
-          {gridRow.start.title} - {gridRow.end.title}
-        </span>
-      </Item>
+          <span>
+            {gridRow.start.title} - {gridRow.end.title}
+          </span>
+        </Item>
+      </Tooltip>
     </GridItem>
   )
 }
