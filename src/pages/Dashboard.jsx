@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
+import { courseChecksumAPI } from 'api/courses'
 import { Menu } from 'components/menu'
 import { LoaderAnimation } from 'components/shared'
 import { toastError } from 'components/toast'
@@ -28,7 +29,7 @@ const Dashboard = () => {
   useEffect(() => {
     const getChecksum = async (prevChecksum) =>
       axios
-        .get('https://run.mocky.io/v3/636b71c3-8b79-424b-b946-9ad314441c9f')
+        .get(courseChecksumAPI)
         .then(({ data }) => {
           if (data.checksum !== prevChecksum) {
             dispatch(updateChecksum(data))

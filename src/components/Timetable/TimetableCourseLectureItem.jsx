@@ -3,12 +3,12 @@ import styled from 'styled-components/macro'
 
 import { colorPicker } from 'styles'
 
-const TimeTableLectureItem = ({ colorCode, title, gridCol, gridRow }) => {
+const TimeTableLectureItem = ({ colorCode, courseData, gridCol, gridRow }) => {
   return (
     <GridItem row={gridRow} col={gridCol}>
-      <Tooltip title={title}>
+      <Tooltip title={courseData.Title}>
         <Item colorCode={colorCode}>
-          <h3>{title}</h3>
+          <h3>{courseData.Code}</h3>
 
           <span>
             {gridRow.start.title} - {gridRow.end.title}

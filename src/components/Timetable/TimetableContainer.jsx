@@ -1,24 +1,24 @@
-// import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-// import { selectAllFavourites } from 'store/userSlice'
+import { selectAllTimetable } from 'store/userSlice'
 
 import CurrentTime from './CurrentTime'
 import TimetableCourseItem from './TimetableCourseItem'
 import TimetableLayout from './TimetableLayout'
 
-const selectedCourses = [
-  'CL 232',
-  'CL 305',
-  'CL 319',
-  'CL 324',
-  // 'CL 333',
-  'EE 101',
-  'CS 663',
-  'IE 643',
-]
+// const selectedCourses = [
+//   'CL232',
+//   'CL305',
+//   'CL319',
+//   'CL324',
+//   'CL 333',
+//   'EE101',
+//   'CS663',
+//   'IE643',
+// ]
 
 const TimetableContainer = () => {
-  // const selectedCourses = useSelector(selectAllFavourites)
+  const selectedCourses = useSelector(selectAllTimetable)
 
   return (
     <TimetableLayout>

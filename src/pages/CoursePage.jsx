@@ -14,13 +14,13 @@ import { device } from 'styles/responsive'
 const CoursePage = ({ match }) => {
   const location = useLocation()
   const { courseCode } = useParams()
-  const courseMatches = useSelector(selectCourseListByCourseCode(courseCode))
 
-  if (courseMatches.length !== 1) return <Redirect to="/404" />
-  const courseData = courseMatches[0]
+  const courseData = useSelector(selectCourseListByCourseCode(courseCode))
+
+  if (courseData === null) return <Redirect to="/404" />
   const title = `${courseData.Code}: ${courseData.Title}`
 
-  // redirect to canonical URL (eg: courses/CL152/introduction-to-chemical-engineering)
+  // redirect to canonical URL (eg: /courses/CL152/introduction-to-chemical-engineering)
   const canonicalUrl = coursePageUrl(courseData.Code, courseData.Title)
   if (match.url !== canonicalUrl)
     return <Redirect to={{ ...location, pathname: canonicalUrl }} />
