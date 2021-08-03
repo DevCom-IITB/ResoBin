@@ -2,6 +2,7 @@
 
 // import { selectAllFavourites } from 'store/userSlice'
 
+import CurrentTime from './CurrentTime'
 import TimetableCourseItem from './TimetableCourseItem'
 import TimetableLayout from './TimetableLayout'
 
@@ -21,13 +22,14 @@ const TimetableContainer = () => {
 
   return (
     <TimetableLayout>
-      {selectedCourses.map((courseCode, idx) => (
+      {/* {selectedCourses.map((courseCode, idx) => (
         <TimetableCourseItem
           key={courseCode}
           colorCode={idx}
           courseCode={courseCode}
         />
-      ))}
+      ))} */}
+      <CurrentTime />
     </TimetableLayout>
   )
 }

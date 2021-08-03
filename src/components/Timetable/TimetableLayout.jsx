@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 
-import { cols, rows } from './timetableLayoutData'
+import { cols, rows } from 'data/timetable'
 
 const ColHeader = ({ id, title }) => (
   <TrackContainer aria-hidden="true" id={id}>

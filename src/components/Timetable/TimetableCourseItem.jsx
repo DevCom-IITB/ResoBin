@@ -1,7 +1,6 @@
 import { useSelector } from 'react-redux'
 
-import { cols, rows } from 'data/timetableLayoutData'
-import slots from 'data/timetableSlotData'
+import { cols, rows, slots } from 'data/timetable'
 import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
 
 import TimetableCourseLectureItem from './TimetableCourseLectureItem'

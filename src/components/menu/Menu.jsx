@@ -2,6 +2,7 @@ import {
   BookOpen,
   CloudUpload,
   Cog,
+  Calendar,
   Home,
   Bookmark as BookmarkOutline,
 } from '@styled-icons/heroicons-outline'
@@ -55,17 +56,25 @@ const Menu = () => {
     <Container>
       <MenuItem exact title="Home" icon={Home} iconSize={iconSize} to="/" />
       <MenuItem
+        title="Timetable"
+        icon={Calendar}
+        iconSize={iconSize}
+        to="/timetable"
+      />
+      <MenuItem
         title="Courses"
         icon={BookOpen}
         iconSize={iconSize}
         to="/courses"
       />
-      <MenuItem
-        title="Contribute"
-        icon={CloudUpload}
-        iconSize={iconSize}
-        to="/contribute"
-      />
+      {isDesktop && (
+        <MenuItem
+          title="Contribute"
+          icon={CloudUpload}
+          iconSize={iconSize}
+          to="/contribute"
+        />
+      )}
 
       {isDesktop && <Divider margin="1rem 0" />}
       {isDesktop && <ProfileImgItem title="Laxman D." src={ProfileImage} />}
