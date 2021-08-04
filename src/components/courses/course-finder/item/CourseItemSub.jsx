@@ -3,7 +3,6 @@ import { Button, Badge } from 'antd'
 import { useSelector } from 'react-redux'
 import styled, { css } from 'styled-components/macro'
 
-// import { ButtonSquare } from 'components/shared'
 import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
@@ -70,9 +69,8 @@ const Spring = styled.span`
   ${Pil}
 `
 
-const CourseItemSub = ({ courseData }) => {
-  const { Semester: sem } = courseData
-  const isRunning = useSelector(selectCourseSlotsByCourseCode(courseData.Code))
+const CourseItemSub = ({ code, sem }) => {
+  const isRunning = useSelector(selectCourseSlotsByCourseCode(code))
   const reviewCount = 2
   const resourceCount = 2
 
@@ -106,9 +104,6 @@ const CourseItemSub = ({ courseData }) => {
         >
           Reviews ({reviewCount})
         </StyledButton>
-        {/* <ButtonSquare type="button" style={buttonStyle}>
-          Resources
-        </ButtonSquare> */}
       </OptionsGroup>
     </Container>
   )
@@ -130,7 +125,5 @@ const StyledButton = styled(Button)`
   &:hover {
     border: 2px solid ${({ theme }) => theme.textColor};
     color: ${({ theme }) => theme.textColor};
-
-    /* background: #0000003e; */
   }
 `

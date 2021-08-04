@@ -12,26 +12,7 @@ import {
 } from 'components/shared'
 import { device } from 'styles/responsive'
 
-const Container = styled.div`
-  width: 100%;
-  @media ${device.min.lg} {
-    padding-right: ${({ theme }) => theme.asideWidthRight};
-    transition: padding-right 200ms ease-in;
-  }
-`
-
-const Results = styled.span`
-  opacity: 80%;
-  font-size: 1rem;
-  font-weight: 600;
-  color: ${({ theme }) => theme.darksecondary};
-`
-
-const List = styled.ul`
-  margin: 0 0.75rem;
-`
-
-const CourseList = ({ courseCodes, loading = false }) => {
+const CourseList = ({ title, courseCodes, loading = false }) => {
   const location = useLocation()
   const history = useHistory()
 
@@ -56,7 +37,7 @@ const CourseList = ({ courseCodes, loading = false }) => {
   return (
     <Container>
       <PageHeading>
-        <PageTitle>Courses</PageTitle>
+        <PageTitle>{title}</PageTitle>
         <Results>{count}&nbsp;results found</Results>
       </PageHeading>
 
@@ -95,3 +76,22 @@ const CourseList = ({ courseCodes, loading = false }) => {
 }
 
 export default CourseList
+
+const Container = styled.div`
+  width: 100%;
+  @media ${device.min.lg} {
+    padding-right: ${({ theme }) => theme.asideWidthRight};
+    transition: padding-right 200ms ease-in;
+  }
+`
+
+const Results = styled.span`
+  opacity: 80%;
+  font-size: 1rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.darksecondary};
+`
+
+const List = styled.ul`
+  margin: 0 0.75rem;
+`

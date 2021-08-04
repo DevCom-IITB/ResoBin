@@ -13,10 +13,6 @@ import { searchAsync } from 'helpers'
 import { selectCourseList } from 'store/courseSlice'
 import { breakpoints } from 'styles/responsive'
 
-const Container = styled.div`
-  width: 100%;
-`
-
 const searchFields = ['Code', 'Title', 'Description']
 
 const CourseBody = () => {
@@ -103,6 +99,7 @@ const CourseBody = () => {
       />
 
       <CourseList
+        title="Courses"
         courseCodes={courseDataFiltered.map((course) => course.Code)}
         loading={loadingResults}
       />
@@ -111,3 +108,7 @@ const CourseBody = () => {
 }
 
 export default CourseBody
+
+const Container = styled.div`
+  width: 100%;
+`
