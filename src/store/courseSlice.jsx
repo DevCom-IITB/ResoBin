@@ -101,7 +101,7 @@ export const selectCourseSlotsByCourseCode = (courseCode) =>
 
     switch (matches.length) {
       case 0:
-        toastError(`Course: ${courseCode} is not running this semester`)
+        // toastError(`Course: ${courseCode} is not running this semester`)
         return null
       case 1:
         return matches[0].Slot

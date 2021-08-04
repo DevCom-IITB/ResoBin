@@ -1,6 +1,10 @@
+import { DocumentText, ChatAlt2 } from '@styled-icons/heroicons-outline'
+import { Button, Badge } from 'antd'
+import { useSelector } from 'react-redux'
 import styled, { css } from 'styled-components/macro'
 
-import { ButtonSquare } from 'components/shared'
+// import { ButtonSquare } from 'components/shared'
+import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`
@@ -33,12 +37,11 @@ const SemesterGroup = styled.div`
 
 const OptionsGroup = styled.div`
   ${GroupBase}
-
   /* Activate below styles between device width sm and md and also lg onwards */
   @media ${device.min.sm} and ${device.max.md}, ${device.min.xl} {
     flex-direction: column;
     justify-content: space-between;
-    height: 6.5rem;
+    height: 4rem;
   }
 `
 
@@ -54,53 +57,80 @@ const Pil = css`
   font-size: 0.75rem;
   font-weight: 700;
   color: ${({ theme }) => theme.darksecondary};
+  cursor: ${({ active }) => (active ? 'pointer' : 'not-allowed')};
 `
 
 const Autumn = styled.span`
-  ${Pil}
-
   background-color: #fec400;
+  ${Pil}
 `
 
 const Spring = styled.span`
-  ${Pil}
-
   background-color: #29cc97;
+  ${Pil}
 `
 
-const buttonStyle = {
-  fontSize: '0.75rem',
-  width: '100%',
-  height: '1.5rem',
-}
-
-const CourseItemSub = ({ data }) => {
-  const { Semester: sem } = data
+const CourseItemSub = ({ data: courseData }) => {
+  const { Semester: sem } = courseData
+  const isRunning = useSelector(selectCourseSlotsByCourseCode(courseData.Code))
+  const reviewCount = 2
+  const resourceCount = 2
 
   return (
     <Container>
       <Title>Semester</Title>
       <SemesterGroup>
-        <Autumn active={sem && sem.includes('Autumn')}>Autumn</Autumn>
+        <Autumn active={isRunning}>Autumn</Autumn>
         <Spring active={sem && sem.includes('Spring')}>Spring</Spring>
       </SemesterGroup>
 
       <Title>Study material</Title>
       <OptionsGroup>
-        <ButtonSquare type="button" style={buttonStyle}>
-          Textbook
-        </ButtonSquare>
+        <StyledButton
+          // type="primary"
+          shape="round"
+          icon={<DocumentText size="18" style={{ marginRight: '0.5rem' }} />}
+          size="medium"
+          ghost
+        >
+          {/* <Badge count={5}> */}
+          Resources ({resourceCount}){/* </Badge> */}
+        </StyledButton>
 
-        <ButtonSquare type="button" style={buttonStyle}>
-          Notes
-        </ButtonSquare>
-
-        <ButtonSquare type="button" style={buttonStyle}>
-          Papers
-        </ButtonSquare>
+        <StyledButton
+          shape="round"
+          // type="primary"
+          icon={<ChatAlt2 size="18" style={{ marginRight: '0.5rem' }} />}
+          size="medium"
+          ghost
+        >
+          Reviews ({reviewCount})
+        </StyledButton>
+        {/* <ButtonSquare type="button" style={buttonStyle}>
+          Resources
+        </ButtonSquare> */}
       </OptionsGroup>
     </Container>
   )
 }
 
 export default CourseItemSub
+
+const StyledButton = styled(Button)`
+  display: flex;
+
+  /* justify-content: center; */
+  align-items: center;
+  width: 8.25rem;
+  height: 1.75rem;
+  padding: 0 1rem;
+  border: 2px solid ${({ theme }) => theme.textColorInactive};
+  color: ${({ theme }) => theme.textColorInactive};
+
+  &:hover {
+    border: 2px solid ${({ theme }) => theme.textColor};
+    color: ${({ theme }) => theme.textColor};
+
+    /* background: #0000003e; */
+  }
+`
