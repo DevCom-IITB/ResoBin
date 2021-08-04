@@ -12,31 +12,12 @@ import {
 } from 'components/shared'
 import { device } from 'styles/responsive'
 
-const Container = styled.div`
-  width: 100%;
-  @media ${device.min.lg} {
-    padding-right: ${({ theme }) => theme.asideWidthRight};
-    transition: padding-right 200ms ease-in;
-  }
-`
-
-const Results = styled.span`
-  opacity: 80%;
-  font-size: 1rem;
-  font-weight: 600;
-  color: ${({ theme }) => theme.darksecondary};
-`
-
-const List = styled.ul`
-  margin: 0 0.75rem;
-`
-
-const CourseList = ({ courses, loading = false }) => {
+const CourseList = ({ title, courseCodes, loading = false }) => {
   const location = useLocation()
   const history = useHistory()
 
   // pagination
-  const count = courses ? courses.length : 0
+  const count = courseCodes ? courseCodes.length : 0
   const perPage = 10
 
   const searchParams = new URLSearchParams(location.search)
@@ -56,7 +37,7 @@ const CourseList = ({ courses, loading = false }) => {
   return (
     <Container>
       <PageHeading>
-        <PageTitle>Courses</PageTitle>
+        <PageTitle>{title}</PageTitle>
         <Results>{count}&nbsp;results found</Results>
       </PageHeading>
 
@@ -66,14 +47,14 @@ const CourseList = ({ courses, loading = false }) => {
 
         <TransitionGroup>
           {!loading &&
-            paginate(courses).map((data) => (
+            paginate(courseCodes).map((Code) => (
               <CSSTransition
-                key={data.Code}
+                key={Code}
                 timeout={200}
                 unmountOnExit
                 classNames="course_item"
               >
-                <CourseItem data={data} />
+                <CourseItem courseCode={Code} />
               </CSSTransition>
             ))}
         </TransitionGroup>
@@ -95,3 +76,22 @@ const CourseList = ({ courses, loading = false }) => {
 }
 
 export default CourseList
+
+const Container = styled.div`
+  width: 100%;
+  @media ${device.min.lg} {
+    padding-right: ${({ theme }) => theme.asideWidthRight};
+    transition: padding-right 200ms ease-in;
+  }
+`
+
+const Results = styled.span`
+  opacity: 80%;
+  font-size: 1rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.darksecondary};
+`
+
+const List = styled.ul`
+  margin: 0 0.75rem;
+`

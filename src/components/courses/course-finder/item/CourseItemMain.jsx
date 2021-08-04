@@ -1,14 +1,43 @@
-import {
-  Bookmark as BookmarkFill,
-  BookmarkOutline as Bookmark,
-} from '@styled-icons/zondicons'
-import { useState } from 'react'
+import { Bookmark, BookmarkOutline } from '@styled-icons/zondicons'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
 
 import ParseDescription from 'components/courses/course-finder/ParseDescription'
 import { coursePageUrl } from 'paths'
+import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
 import { device, fontSize } from 'styles/responsive'
+
+const CourseItemMain = ({ courseData }) => {
+  const favourite = useSelector(selectFavouriteStatus(courseData.Code))
+
+  const dispatch = useDispatch()
+  const favouriteClick = () => dispatch(updateFavourite(courseData.Code))
+
+  return (
+    <Container>
+      <SubTitle>
+        <Department>{courseData.Department}</Department>
+        <CreditContainer>{courseData.TotalCredits}</CreditContainer>
+        <StyledFavourite
+          Icon={favourite ? Bookmark : BookmarkOutline}
+          onClick={favouriteClick}
+        />
+      </SubTitle>
+
+      <Title to={coursePageUrl(courseData.Code, courseData.Title)}>
+        <CourseCode>{courseData.Code}</CourseCode>
+        <CourseTitle>{courseData.Title}</CourseTitle>
+      </Title>
+
+      <CourseDescription>
+        <ParseDescription>{courseData.Description}</ParseDescription>
+      </CourseDescription>
+    </Container>
+  )
+}
+
+export default CourseItemMain
 
 const Container = styled.div`
   width: 100%;
@@ -113,35 +142,3 @@ const StyledFavourite = styled(({ Icon, className, ...props }) => {
     width: 1.125rem;
   }
 `
-
-const CourseItemMain = ({ data: courseData }) => {
-  const [favourite, setFavourite] = useState(false)
-
-  const favouriteClick = () => {
-    setFavourite(!favourite)
-  }
-
-  return (
-    <Container>
-      <SubTitle>
-        <Department>{courseData.Department}</Department>
-        <CreditContainer>{courseData.TotalCredits}</CreditContainer>
-        <StyledFavourite
-          Icon={favourite ? BookmarkFill : Bookmark}
-          onClick={favouriteClick}
-        />
-      </SubTitle>
-
-      <Title to={coursePageUrl(courseData.Code, courseData.Title)}>
-        <CourseCode>{courseData.Code}</CourseCode>
-        <CourseTitle>{courseData.Title}</CourseTitle>
-      </Title>
-
-      <CourseDescription>
-        <ParseDescription>{courseData.Description}</ParseDescription>
-      </CourseDescription>
-    </Container>
-  )
-}
-
-export default CourseItemMain

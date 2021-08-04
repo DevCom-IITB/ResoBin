@@ -10,10 +10,7 @@ import {
   persistStore,
 } from 'redux-persist'
 
-import {
-  // reducer,
-  persistedReducer,
-} from './combineReducers'
+import { persistedReducer } from './combineReducers'
 
 const middleware = getDefaultMiddleware({
   serializableCheck: {
@@ -29,7 +26,6 @@ if (process.env.NODE_ENV === 'development') middleware.push(logger)
 
 export const store = configureStore({
   reducer: persistedReducer,
-
   devTools: process.env.NODE_ENV === 'development',
   middleware,
   preloadedState: {},

@@ -1,19 +1,40 @@
 import { Skeleton } from 'antd'
+import { rgba } from 'polished'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import {
   CourseItemMain,
   CourseItemSub,
 } from 'components/courses/course-finder/item'
-import { HEX2RGBA } from 'helpers'
+import { selectCourseListByCourseCode } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
-export const CourseItem = (props) => {
+export const CourseItemLoading = ({ active }) =>
+  active && <StyledSkeleton active />
+
+const StyledSkeleton = styled(Skeleton)`
+  width: 100%;
+  margin: 1rem 0;
+
+  .ant-skeleton-content {
+    padding: 1.5rem 1rem;
+    border-radius: 0.5rem;
+    background: ${({ theme }) => rgba(theme.darksecondary, 0.8)};
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.2);
+  }
+`
+
+export const CourseItem = ({ courseCode }) => {
+  const courseData = useSelector(selectCourseListByCourseCode(courseCode))
+
   return (
-    <Container>
-      <CourseItemMain {...props} />
-      <CourseItemSub {...props} />
-    </Container>
+    courseData && (
+      <Container>
+        <CourseItemMain courseData={courseData} />
+        <CourseItemSub code={courseData.Code} sem={courseData.Semester} />
+      </Container>
+    )
   )
 }
 
@@ -51,20 +72,5 @@ const Container = styled.li`
   /* responsiveness */
   @media ${device.min.sm} and ${device.max.md}, ${device.min.xl} {
     display: flex;
-  }
-`
-
-export const CourseItemLoading = ({ active }) =>
-  active && <StyledSkeleton active />
-
-const StyledSkeleton = styled(Skeleton)`
-  width: 100%;
-  margin: 1rem 0;
-
-  .ant-skeleton-content {
-    padding: 1.5rem 1rem;
-    border-radius: 0.5rem;
-    background: ${({ theme }) => HEX2RGBA(theme.darksecondary, 80)};
-    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.2);
   }
 `

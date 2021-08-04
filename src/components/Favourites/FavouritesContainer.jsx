@@ -6,27 +6,18 @@ import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { CourseList, CourseSearch } from 'components/courses/course-finder'
-import { FilterAside, FilterFloatButton } from 'components/filter'
+import { PageHeading, PageTitle } from 'components/shared'
+// import { FilterAside, FilterFloatButton } from 'components/filter'
 import { toastError } from 'components/toast'
-import { useViewportContext } from 'context/ViewportContext'
+// import { useViewportContext } from 'context/ViewportContext'
 import { searchAsync } from 'helpers'
-import { selectCourseList } from 'store/courseSlice'
-import { breakpoints } from 'styles/responsive'
+// import { selectCourseListByCourseCode } from 'store/courseSlice'
+import { selectAllFavourites } from 'store/userSlice'
+// import { breakpoints } from 'styles/responsive'
 
 const searchFields = ['Code', 'Title', 'Description']
 
-const CourseBody = () => {
-  // ? responsive layout state
-  const { width } = useViewportContext()
-
-  // ? show or hide dropdown filters state
-  const [showFilter, setShowFilter] = useState(false)
-
-  // ? total cached course data
-  const courseData = useSelector(selectCourseList)
-
-  // ? filtered course data
-
+const FavouritesContainer = () => {
   const location = useLocation()
   const history = useHistory()
   const queryString = new URLSearchParams(location.search)
@@ -51,6 +42,7 @@ const CourseBody = () => {
   }
 
   const [courseDataFiltered, setCourseDataFiltered] = useState([])
+  const favouriteCourses = useSelector(selectAllFavourites)
 
   // ? search input state
   const handleChange = (event) => setSearch(event.currentTarget.value)
@@ -76,11 +68,11 @@ const CourseBody = () => {
   useEffect(() => {
     setLoadingSearchResults(true)
     searchCoursesDebounced({
-      dataSrc: courseData,
+      dataSrc: favouriteCourses,
       dataKeys: searchFields,
       keywords: search,
     })
-  }, [courseData, search, searchCoursesDebounced])
+  }, [favouriteCourses, search, searchCoursesDebounced])
 
   return (
     <Container>
@@ -88,26 +80,20 @@ const CourseBody = () => {
         loading={loadingResults}
         value={search}
         onChange={handleChange}
-        showFilter={width < breakpoints.lg && showFilter}
+        showFilter={false}
         filterState={null}
       />
 
-      <FilterAside showFilter={width >= breakpoints.lg} />
-      <FilterFloatButton
-        showFilter={showFilter}
-        setShowFilter={setShowFilter}
-      />
-
       <CourseList
-        title="Courses"
-        courseCodes={courseDataFiltered.map((course) => course.Code)}
+        title="Favourites"
+        courseCodes={favouriteCourses}
         loading={loadingResults}
       />
     </Container>
   )
 }
 
-export default CourseBody
+export default FavouritesContainer
 
 const Container = styled.div`
   width: 100%;
