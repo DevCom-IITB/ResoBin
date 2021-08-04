@@ -8,7 +8,7 @@ import { coursePageUrl } from 'paths'
 import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
 import { device, fontSize } from 'styles/responsive'
 
-const CourseItemMain = ({ data: courseData }) => {
+const CourseItemMain = ({ courseData }) => {
   const favourite = useSelector(selectFavouriteStatus(courseData.Code))
 
   const dispatch = useDispatch()

@@ -70,7 +70,7 @@ const Spring = styled.span`
   ${Pil}
 `
 
-const CourseItemSub = ({ data: courseData }) => {
+const CourseItemSub = ({ courseData }) => {
   const { Semester: sem } = courseData
   const isRunning = useSelector(selectCourseSlotsByCourseCode(courseData.Code))
   const reviewCount = 2

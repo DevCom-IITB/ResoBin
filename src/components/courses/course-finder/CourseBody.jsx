@@ -102,7 +102,10 @@ const CourseBody = () => {
         setShowFilter={setShowFilter}
       />
 
-      <CourseList courses={courseDataFiltered} loading={loadingResults} />
+      <CourseList
+        courseCodes={courseDataFiltered.map((course) => course.Code)}
+        loading={loadingResults}
+      />
     </Container>
   )
 }

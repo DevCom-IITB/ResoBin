@@ -1,19 +1,25 @@
 import { Skeleton } from 'antd'
 import { rgba } from 'polished'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import {
   CourseItemMain,
   CourseItemSub,
 } from 'components/courses/course-finder/item'
+import { selectCourseListByCourseCode } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
-export const CourseItem = (props) => {
+export const CourseItem = ({ courseCode }) => {
+  const courseData = useSelector(selectCourseListByCourseCode(courseCode))
+
   return (
-    <Container>
-      <CourseItemMain {...props} />
-      <CourseItemSub {...props} />
-    </Container>
+    courseData && (
+      <Container>
+        <CourseItemMain courseData={courseData} />
+        <CourseItemSub courseData={courseData} />
+      </Container>
+    )
   )
 }
 

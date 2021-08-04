@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components/macro'
 
-import { CourseBody } from 'components/courses/course-finder'
+import { FavouritesContainer } from 'components/Favourites'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`
@@ -21,7 +21,7 @@ const Favourites = () => {
         <meta name="description" content="Your favourite courses" />
       </Helmet>
 
-      <CourseBody />
+      <FavouritesContainer />
     </Container>
   )
 }

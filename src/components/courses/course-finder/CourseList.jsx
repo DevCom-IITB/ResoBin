@@ -31,12 +31,12 @@ const List = styled.ul`
   margin: 0 0.75rem;
 `
 
-const CourseList = ({ courses, loading = false }) => {
+const CourseList = ({ courseCodes, loading = false }) => {
   const location = useLocation()
   const history = useHistory()
 
   // pagination
-  const count = courses ? courses.length : 0
+  const count = courseCodes ? courseCodes.length : 0
   const perPage = 10
 
   const searchParams = new URLSearchParams(location.search)
@@ -66,14 +66,14 @@ const CourseList = ({ courses, loading = false }) => {
 
         <TransitionGroup>
           {!loading &&
-            paginate(courses).map((data) => (
+            paginate(courseCodes).map((Code) => (
               <CSSTransition
-                key={data.Code}
+                key={Code}
                 timeout={200}
                 unmountOnExit
                 classNames="course_item"
               >
-                <CourseItem data={data} />
+                <CourseItem courseCode={Code} />
               </CSSTransition>
             ))}
         </TransitionGroup>
