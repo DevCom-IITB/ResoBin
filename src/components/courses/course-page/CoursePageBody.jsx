@@ -8,6 +8,7 @@ import {
   Button,
   Input,
   List,
+  Tabs,
 } from 'antd'
 import styled from 'styled-components/macro'
 
@@ -109,46 +110,55 @@ const CoursePageBody = ({ courseData }) => {
       </Row>
       <Divider />
 
-      <Divider
-        style={{ backgroundColor: '#ffffff', margin: '1rem 0', opacity: 0.5 }}
-      />
-      <SubHeaderText>Course Reviews</SubHeaderText>
-      <Divider
-        style={{ backgroundColor: '#ffffff', margin: '1rem 0', opacity: 0.5 }}
-      />
-
-      <List
-        className="comment-list"
-        dataSource={data}
-        renderItem={(item) => (
-          <li>
-            <Comment
-              actions={item.actions}
-              author={item.author}
-              avatar={item.avatar}
-              content={item.content}
-              datetime={item.datetime}
-            />
-          </li>
-        )}
-      />
-      <Comment
-        avatar={
-          <Avatar
-            style={{ backgroundColor: 'blueviolet' }}
-            src="https://bsmedia.business-standard.com/_media/bs/img/article/2020-06/20/full/1592642838-4944.jpg"
-            alt="Bill Gates"
+      <Tabs
+        defaultActiveKey="1"
+        centered
+        size="large"
+        style={{
+          color: `${({ theme }) => theme.textColor}`,
+          fontWeight: 600,
+          fontSize: '24px',
+        }}
+        type="card"
+      >
+        <TabPane tab={`Reviews (${data.length})`} key="1">
+          <List
+            className="comment-list"
+            dataSource={data}
+            renderItem={(item) => (
+              <li>
+                <Comment
+                  actions={item.actions}
+                  author={item.author}
+                  avatar={item.avatar}
+                  content={item.content}
+                  datetime={item.datetime}
+                />
+              </li>
+            )}
           />
-        }
-        content={
-          // Functions to be called using states
-          <Editor
-            onChange={() => {}}
-            onSubmit={() => {}}
-            value="Write a course review"
+          <Comment
+            avatar={
+              <Avatar
+                style={{ backgroundColor: 'blueviolet' }}
+                src="https://bsmedia.business-standard.com/_media/bs/img/article/2020-06/20/full/1592642838-4944.jpg"
+                alt="Bill Gates"
+              />
+            }
+            content={
+              // Functions to be called using states
+              <Editor
+                onChange={() => {}}
+                onSubmit={() => {}}
+                value="Write a course review"
+              />
+            }
           />
-        }
-      />
+        </TabPane>
+        <TabPane tab="Resources" key="2">
+          Resources
+        </TabPane>
+      </Tabs>
     </Container>
   )
 }
@@ -230,6 +240,8 @@ const Editor = ({ onChange, onSubmit, value }) => (
     </Form.Item>
   </>
 )
+
+const { TabPane } = Tabs
 
 // Sample data
 
