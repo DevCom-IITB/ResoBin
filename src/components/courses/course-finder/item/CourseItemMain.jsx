@@ -1,4 +1,6 @@
 import { Bookmark, BookmarkOutline } from '@styled-icons/zondicons'
+import { Button, Tooltip } from 'antd'
+import { darken } from 'polished'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
@@ -18,11 +20,25 @@ const CourseItemMain = ({ courseData }) => {
     <Container>
       <SubTitle>
         <Department>{courseData.Department}</Department>
-        <CreditContainer>{courseData.TotalCredits}</CreditContainer>
-        <StyledFavourite
+
+        <RightIcons>
+          <CreditContainer>{courseData.TotalCredits}</CreditContainer>
+
+          <Tooltip title="Bookmark">
+            <StyledButton shape="circle" onClick={favouriteClick} ghost>
+              {favourite ? (
+                <Bookmark size="24" />
+              ) : (
+                <BookmarkOutline size="24" />
+              )}
+            </StyledButton>
+          </Tooltip>
+        </RightIcons>
+
+        {/* <StyledFavourite
           Icon={favourite ? Bookmark : BookmarkOutline}
           onClick={favouriteClick}
-        />
+        /> */}
       </SubTitle>
 
       <Title to={coursePageUrl(courseData.Code, courseData.Title)}>
@@ -101,6 +117,12 @@ const Department = styled.span`
   }
 `
 
+const RightIcons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`
+
 const CourseDescription = styled.p`
   margin: 0.75rem 0;
   font-size: ${fontSize.static.md};
@@ -110,35 +132,49 @@ const CourseDescription = styled.p`
 `
 
 const CreditContainer = styled.span`
-  position: absolute;
-  right: 1.75rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1rem;
-  height: 1rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 1rem;
   border-radius: 50%;
-  font-size: ${fontSize.responsive.sm};
-  font-weight: 700;
+  font-size: ${fontSize.responsive.lg};
+  font-weight: 600;
   color: ${({ theme }) => theme.darksecondary};
   background: white;
   box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.6);
 
   @media ${device.min.md} {
-    width: 1.125rem;
-    height: 1.125rem;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 `
 
-const StyledFavourite = styled(({ Icon, className, ...props }) => {
-  return <Icon {...props} className={className} />
-})`
-  position: absolute;
-  right: 0;
-  width: 1rem;
-  color: ${({ theme }) => theme.textColor};
-  cursor: pointer;
-  @media ${device.min.md} {
-    width: 1.125rem;
+const StyledButton = styled(Button)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+
+  &:hover {
+    color: ${({ theme }) => darken(0.3, theme.textColor)};
+  }
+
+  &:focus {
+    color: ${({ theme }) => theme.textColor};
   }
 `
+
+// const StyledFavourite = styled(({ Icon, className, ...props }) => {
+//   return <Icon {...props} className={className} />
+// })`
+//   position: absolute;
+//   right: 0;
+//   width: 1rem;
+//   color: ${({ theme }) => theme.textColor};
+//   cursor: pointer;
+//   @media ${device.min.md} {
+//     width: 1.125rem;
+//   }
+// `
