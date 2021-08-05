@@ -20,6 +20,8 @@ export const colorPicker = (id) => {
       return '#ff5555'
     case 6:
       return '#50fa7b'
+    case 7:
+      return '#6877fa'
     default:
       return '#6272a4'
   }

@@ -9,45 +9,54 @@ import ParseDescription from 'components/courses/course-finder/ParseDescription'
 import { coursePageUrl } from 'paths'
 import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
 import { device, fontSize } from 'styles/responsive'
+import { colorPicker } from 'styles/utils'
+
+const departmentList = [
+  'Aerospace Engineering',
+  'Applied Geophysics',
+  'Applied Statistics and Informatics',
+]
 
 const CourseItemMain = ({ courseData }) => {
-  const favourite = useSelector(selectFavouriteStatus(courseData.Code))
+  const {
+    Code: code,
+    TotalCredits: totalCredits,
+    Department: department,
+    Title: title,
+    Description: description,
+  } = courseData
+
+  const favourite = useSelector(selectFavouriteStatus(code))
 
   const dispatch = useDispatch()
-  const favouriteClick = () => dispatch(updateFavourite(courseData.Code))
+  const favouriteClick = () => dispatch(updateFavourite(code))
 
   return (
     <Container>
       <SubTitle>
-        <Department>{courseData.Department}</Department>
+        <DepartmentContainer
+          style={{ color: colorPicker(departmentList.indexOf(department)) }}
+        >
+          {department}
+        </DepartmentContainer>
 
         <RightIcons>
-          <CreditContainer>{courseData.TotalCredits}</CreditContainer>
-
+          <CreditContainer>{totalCredits}</CreditContainer>
           <Tooltip title="Bookmark">
             <StyledButton shape="circle" onClick={favouriteClick} ghost>
-              {favourite ? (
-                <Bookmark size="24" />
-              ) : (
-                <BookmarkOutline size="24" />
-              )}
+              {favourite ? <Bookmark /> : <BookmarkOutline />}
             </StyledButton>
           </Tooltip>
         </RightIcons>
-
-        {/* <StyledFavourite
-          Icon={favourite ? Bookmark : BookmarkOutline}
-          onClick={favouriteClick}
-        /> */}
       </SubTitle>
 
-      <Title to={coursePageUrl(courseData.Code, courseData.Title)}>
-        <CourseCode>{courseData.Code}</CourseCode>
-        <CourseTitle>{courseData.Title}</CourseTitle>
-      </Title>
+      <TitleContainer to={coursePageUrl(code, title)}>
+        <CourseCode>{code}</CourseCode>
+        <CourseTitle>{title}</CourseTitle>
+      </TitleContainer>
 
       <CourseDescription>
-        <ParseDescription>{courseData.Description}</ParseDescription>
+        <ParseDescription>{description}</ParseDescription>
       </CourseDescription>
     </Container>
   )
@@ -63,7 +72,7 @@ const Container = styled.div`
   }
 `
 
-const Title = styled(Link)`
+const TitleContainer = styled(Link)`
   display: inline;
 `
 
@@ -71,7 +80,7 @@ const CourseHeader = css`
   display: inline;
   color: ${({ theme }) => theme.textColor};
 
-  ${Title}:hover & {
+  ${TitleContainer}:hover & {
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-underline-offset: 1.5px;
@@ -101,7 +110,7 @@ const SubTitle = styled.div`
   margin-bottom: 0.5rem;
 `
 
-const Department = styled.span`
+const DepartmentContainer = styled.span`
   display: inline-block;
   overflow: hidden;
   width: calc(100% - 3.75rem);
@@ -157,6 +166,14 @@ const StyledButton = styled(Button)`
   align-items: center;
   border: 0;
 
+  > svg {
+    width: 1.125rem;
+
+    @media ${device.min.md} {
+      width: 1.25rem;
+    }
+  }
+
   &:hover {
     color: ${({ theme }) => darken(0.3, theme.textColor)};
   }
@@ -165,16 +182,3 @@ const StyledButton = styled(Button)`
     color: ${({ theme }) => theme.textColor};
   }
 `
-
-// const StyledFavourite = styled(({ Icon, className, ...props }) => {
-//   return <Icon {...props} className={className} />
-// })`
-//   position: absolute;
-//   right: 0;
-//   width: 1rem;
-//   color: ${({ theme }) => theme.textColor};
-//   cursor: pointer;
-//   @media ${device.min.md} {
-//     width: 1.125rem;
-//   }
-// `
