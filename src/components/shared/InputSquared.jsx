@@ -1,6 +1,5 @@
+import { rgba } from 'polished'
 import styled, { css } from 'styled-components/macro'
-
-import { HEX2RGBA } from 'helpers'
 
 const sharedStyles = css`
   box-sizing: border-box;
@@ -9,12 +8,12 @@ const sharedStyles = css`
   width: 100%;
   padding: 0.375rem 1rem;
   margin: 0 auto 1rem auto;
-  border: 1px solid ${({ theme }) => HEX2RGBA(theme.textColor, 40)};
+  border: 1px solid ${({ theme }) => rgba(theme.textColor, 0.4)};
   border-radius: 0.25rem;
   outline: 0;
   font-size: 1rem;
   color: ${({ theme }) => theme.activeMenu};
-  background-color: ${({ theme }) => HEX2RGBA(theme.textColor, 20)};
+  background-color: ${({ theme }) => rgba(theme.textColor, 0.2)};
   transition-duration: 100ms;
 
   &:hover {

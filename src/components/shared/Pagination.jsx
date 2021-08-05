@@ -1,7 +1,6 @@
 import { Pagination } from 'antd'
+import { rgba } from 'polished'
 import styled, { css } from 'styled-components/macro'
-
-import { HEX2RGBA } from 'helpers'
 
 const baseShape = css`
   display: flex;
@@ -16,7 +15,7 @@ const baseShape = css`
   background-color: transparent;
 
   &:hover {
-    background: ${({ theme }) => HEX2RGBA(theme.darksecondary, 10)};
+    background: ${({ theme }) => rgba(theme.darksecondary, 0.1)};
   }
 `
 
@@ -45,7 +44,7 @@ const StyledPagination = styled(Pagination)`
     font-weight: 600;
 
     &-active {
-      border: 2px solid ${({ theme }) => HEX2RGBA(theme.darksecondary, 70)};
+      border: 2px solid ${({ theme }) => rgba(theme.darksecondary, 0.7)};
     }
 
     a {

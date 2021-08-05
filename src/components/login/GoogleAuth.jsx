@@ -1,8 +1,8 @@
+import { rgba } from 'polished'
 import styled from 'styled-components/macro'
 
 import Google from 'assets/svgs/g-normal.svg'
 import { Divider } from 'components/shared'
-import { HEX2RGBA } from 'helpers'
 
 const GoogleContainer = styled.button`
   box-sizing: border-box;
@@ -25,7 +25,7 @@ const GoogleContainer = styled.button`
 
   &:active {
     opacity: 90%;
-    box-shadow: inset 0 0 2px ${HEX2RGBA('#000', 40)};
+    box-shadow: inset 0 0 2px ${rgba('#000', 0.4)};
   }
 `
 
