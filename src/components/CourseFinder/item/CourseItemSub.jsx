@@ -1,48 +1,51 @@
-import { CalendarPlus } from '@styled-icons/bootstrap'
+// import { CalendarMinus, CalendarPlus } from '@styled-icons/bootstrap'
 import { DocumentText, ChatAlt2 } from '@styled-icons/heroicons-outline'
 import { Button, Tabs } from 'antd'
 import { darken, lighten, rgba } from 'polished'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
+import { selectTimetableStatus, updateTimetable } from 'store/userSlice'
 
 import CourseWorkload from './CourseWorkload'
 
-const SemesterItem = () => {
-  // const { Semester } = useSelector(state => state.courseSlice)
-  const contains = true
+const SemesterItem = ({ courseCode, semester }) => {
+  const dispatch = useDispatch()
+  const status = useSelector(selectTimetableStatus({ courseCode, semester }))
+  const handleClick = () => dispatch(updateTimetable({ courseCode, semester }))
 
   return (
     <StyledButton
-      icon={<CalendarPlus size="18" style={{ marginRight: '0.5rem' }} />}
       size="medium"
       type="primary"
-      style={{ marginBottom: '1rem' }}
+      active={status}
+      onClick={handleClick}
     >
-      {contains ? 'Remove' : 'Add to timetable'}
+      {status ? 'Remove' : 'Add to timetable'}
     </StyledButton>
   )
 }
 
+// ? semester = ['autumn', 'spring']
 const CourseItemSub = ({ courseData }) => {
   const { Code: code, Structure } = courseData
   const isRunning = useSelector(selectCourseSlotsByCourseCode(code))
   const reviewCount = 2
   const resourceCount = 2
 
-  const semTabInitialValue = isRunning ? '1' : null
+  const semTabInitialValue = isRunning ? 'autumn' : null
 
   return (
     <>
       {semTabInitialValue ? (
         <StyledTabs defaultActiveKey={semTabInitialValue}>
-          <Tabs.TabPane tab="Autumn" disabled={!isRunning} key="1">
-            <SemesterItem />
+          <Tabs.TabPane tab="Autumn" disabled={!isRunning} key="autumn">
+            <SemesterItem courseCode={code} semester="autumn" />
           </Tabs.TabPane>
 
-          <Tabs.TabPane tab="Spring" key="2" disabled>
-            <SemesterItem />
+          <Tabs.TabPane tab="Spring" key="spring" disabled>
+            <SemesterItem semester="spring" />
           </Tabs.TabPane>
         </StyledTabs>
       ) : (
@@ -159,7 +162,10 @@ const StyledButton = styled(Button)`
     box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.1);
   }
 
-  .ant-btn-primary {
+  &.ant-btn-primary {
+    margin-bottom: 1rem;
+    background-color: ${({ active, theme }) =>
+      lighten(active ? 0.4 : 0, theme.darksecondary)};
   }
 `
 
