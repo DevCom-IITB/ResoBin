@@ -1,111 +1,45 @@
+import { AppleOutlined, AndroidOutlined } from '@ant-design/icons'
+import { CalendarPlus } from '@styled-icons/bootstrap'
 import { DocumentText, ChatAlt2 } from '@styled-icons/heroicons-outline'
-import { Button, Badge } from 'antd'
+import { Button, Radio, Tabs } from 'antd'
+import { darken, rgba } from 'polished'
 import { useSelector } from 'react-redux'
 import styled, { css } from 'styled-components/macro'
 
 import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
-const Container = styled.div`
-  display: block;
-  min-width: 10rem;
-  text-align: center;
-`
-
-const Title = styled.span`
-  display: block;
-  margin: 0 0 0.5rem;
-  font-size: 0.8rem;
-  font-weight: 400;
-  letter-spacing: 1.5px;
-  color: ${({ theme }) => theme.textColor};
-`
-
-const GroupBase = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 0.75rem;
-  gap: 5%;
-`
-
-const SemesterGroup = styled.div`
-  ${GroupBase}
-`
-
-const OptionsGroup = styled.div`
-  ${GroupBase}
-  /* Activate below styles between device width sm and md and also lg onwards */
-  @media ${device.min.sm} and ${device.max.md}, ${device.min.xl} {
-    flex-direction: column;
-    justify-content: space-between;
-    height: 4rem;
-  }
-`
-
-const Pil = css`
-  display: flex;
-  opacity: ${({ active }) => (active ? '100%' : '30%')};
-  justify-content: center;
-  align-items: center;
-  width: 5rem;
-  height: 1.5rem;
-  margin: 0;
-  border-radius: 100px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.darksecondary};
-  cursor: ${({ active }) => (active ? 'pointer' : 'not-allowed')};
-`
-
-const Autumn = styled.span`
-  background-color: #fec400;
-  ${Pil}
-`
-
-const Spring = styled.span`
-  background-color: #29cc97;
-  ${Pil}
-`
-
 const CourseItemSub = ({ code, sem }) => {
   const isRunning = useSelector(selectCourseSlotsByCourseCode(code))
   const reviewCount = 2
   const resourceCount = 2
 
+  const onSemChange = ({ target }) => console.log(target.value)
+
+  const semTabInitialValue = isRunning ? '1' : '2'
+
   return (
-    <Container>
-      <Title>Semester</Title>
-      <SemesterGroup>
-        <Autumn active={isRunning}>Autumn</Autumn>
-        <Spring active={sem && sem.includes('Spring')}>Spring</Spring>
-      </SemesterGroup>
+    <>
+      <StyledTabs defaultActiveKey={semTabInitialValue}>
+        <Tabs.TabPane tab="Autumn" disabled={!isRunning} key="1">
+          <StyledButton
+            icon={<CalendarPlus size="18" style={{ marginRight: '0.5rem' }} />}
+            size="medium"
+          >
+            Add to autumn
+          </StyledButton>
+        </Tabs.TabPane>
 
-      <Title>Study material</Title>
-      <OptionsGroup>
-        <StyledButton
-          // type="primary"
-          shape="round"
-          icon={<DocumentText size="18" style={{ marginRight: '0.5rem' }} />}
-          size="medium"
-          ghost
-        >
-          {/* <Badge count={5}> */}
-          Resources ({resourceCount}){/* </Badge> */}
-        </StyledButton>
-
-        <StyledButton
-          shape="round"
-          // type="primary"
-          icon={<ChatAlt2 size="18" style={{ marginRight: '0.5rem' }} />}
-          size="medium"
-          ghost
-        >
-          Reviews ({reviewCount})
-        </StyledButton>
-      </OptionsGroup>
-    </Container>
+        <Tabs.TabPane tab="Spring" key="2">
+          <StyledButton
+            icon={<CalendarPlus size="18" style={{ marginRight: '0.5rem' }} />}
+            size="medium"
+          >
+            Add to spring
+          </StyledButton>
+        </Tabs.TabPane>
+      </StyledTabs>
+    </>
   )
 }
 
@@ -116,14 +50,69 @@ const StyledButton = styled(Button)`
 
   /* justify-content: center; */
   align-items: center;
-  width: 8.25rem;
+  width: 100%;
   height: 1.75rem;
   padding: 0 1rem;
-  border: 2px solid ${({ theme }) => theme.textColorInactive};
+  border-radius: 0.5rem;
   color: ${({ theme }) => theme.textColorInactive};
+
+  /* border: 2px solid ${({ theme }) => theme.textColorInactive}; */
 
   &:hover {
     border: 2px solid ${({ theme }) => theme.textColor};
     color: ${({ theme }) => theme.textColor};
+  }
+`
+
+const StyledTabs = styled(Tabs)`
+  color: ${({ theme }) => theme.textColor};
+
+  .ant-tabs-nav {
+    height: 1.75rem;
+  }
+
+  .ant-tabs-ink-bar {
+    height: 0;
+    background: ${({ theme }) => theme.textColor};
+  }
+
+  .ant-tabs-tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+    padding: 0;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    font-size: 0.75rem;
+    & + .ant-tabs-tab {
+      margin: 0;
+    }
+
+    .ant-tabs-tab-btn {
+      color: ${({ theme }) => theme.textColor};
+    }
+
+    &-active {
+      color: ${({ theme }) => theme.textColor};
+      background: ${({ theme }) => theme.darksecondary};
+    }
+
+    &-disabled {
+      .ant-tabs-tab-btn,
+      .ant-tabs-tab-btn:active {
+        color: ${({ theme }) => rgba(theme.textColor, 0.2)};
+      }
+    }
+
+    &:not(.ant-tabs-tab-disabled) {
+      &:hover {
+        color: ${({ theme }) => darken(0.2, theme.textColor)};
+      }
+
+      &:not(.ant-tabs-tab-active):hover {
+        background: ${rgba('#000000', 0.15)};
+      }
+    }
   }
 `
