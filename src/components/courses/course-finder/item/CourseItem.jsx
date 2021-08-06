@@ -35,7 +35,7 @@ export const CourseItem = ({ courseCode }) => {
           <CourseItemMain courseData={courseData} />
         </Main>
         <Sub>
-          <CourseItemSub code={courseData.Code} sem={courseData.Semester} />
+          <CourseItemSub courseData={courseData} />
         </Sub>
       </Container>
     )
@@ -87,12 +87,9 @@ const Container = styled.li`
 const Main = styled.div`
   grid-area: item-main;
   width: 100%;
-
-  @media ${device.min.sm} and ${device.max.md}, ${device.min.xl} {
-    padding-right: 1rem;
-  }
 `
 
 const Sub = styled.div`
   grid-area: item-sub;
+  min-width: 10rem;
 `
