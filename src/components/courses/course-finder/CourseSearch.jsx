@@ -7,6 +7,32 @@ import styled from 'styled-components/macro'
 import { FilterDropdown } from 'components/filter'
 import { device } from 'styles/responsive'
 
+// Disable filter will disable the filter entirely, show filter will trigger on/off animation
+const CourseSearch = ({
+  value,
+  onChange,
+  showFilter,
+  filterState,
+  loading = false,
+}) => (
+  <SearchContainer>
+    <FilterDropdown filterState={filterState} showFilter={showFilter} />
+    {showFilter && <Overlay />}
+
+    <StyledInput
+      size="large"
+      placeholder="course code, name or description"
+      allowClear
+      maxLength={100}
+      onChange={onChange}
+      value={value}
+      prefix={<StyledIcon Icon={loading ? LoadingOutlined : Search} />}
+    />
+  </SearchContainer>
+)
+
+export default CourseSearch
+
 const SearchContainer = styled.div`
   position: sticky;
   top: 3rem;
@@ -44,28 +70,28 @@ const StyledIcon = styled(({ Icon, className, ...props }) => {
   color: ${({ theme }) => theme.darksecondary};
 `
 
-// Disable filter will disable the filter entirely, show filter will trigger on/off animation
-const CourseSearch = ({
-  value,
-  onChange,
-  showFilter,
-  filterState,
-  loading = false,
-}) => (
-  <SearchContainer>
-    <FilterDropdown filterState={filterState} showFilter={showFilter} />
-    {showFilter && <Overlay />}
+const StyledInput = styled(Input)`
+  &.ant-input-affix-wrapper {
+    z-index: 10;
+    height: 2rem;
+    padding: 0 0.75rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.3);
 
-    <Input
-      size="large"
-      placeholder="course code, name or description"
-      allowClear
-      maxLength={100}
-      onChange={onChange}
-      value={value}
-      prefix={<StyledIcon Icon={loading ? LoadingOutlined : Search} />}
-    />
-  </SearchContainer>
-)
+    .ant-input {
+      padding: 0 0.25rem;
+      font-size: 0.875rem;
+      font-weight: 400;
+    }
+  }
 
-export default CourseSearch
+  .anticon {
+    display: flex;
+    align-items: center;
+
+    &.anticon-close-circle > svg {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+`
