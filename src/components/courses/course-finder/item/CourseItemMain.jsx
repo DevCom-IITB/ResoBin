@@ -32,7 +32,7 @@ const CourseItemMain = ({ courseData }) => {
   const favouriteClick = () => dispatch(updateFavourite(code))
 
   return (
-    <Container>
+    <>
       <SubTitle>
         <DepartmentContainer
           style={{ color: colorPicker(departmentList.indexOf(department)) }}
@@ -58,19 +58,11 @@ const CourseItemMain = ({ courseData }) => {
       <CourseDescription>
         <ParseDescription>{description}</ParseDescription>
       </CourseDescription>
-    </Container>
+    </>
   )
 }
 
 export default CourseItemMain
-
-const Container = styled.div`
-  width: 100%;
-
-  @media ${device.min.sm} and ${device.max.md}, ${device.min.xl} {
-    margin-right: 1rem;
-  }
-`
 
 const TitleContainer = styled(Link)`
   display: inline;
