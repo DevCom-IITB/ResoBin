@@ -5,11 +5,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
 
-import ParseDescription from 'components/courses/course-finder/ParseDescription'
 import { coursePageUrl } from 'paths'
 import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
 import { device, fontSize } from 'styles/responsive'
 import { colorPicker } from 'styles/utils'
+
+import ParseDescription from '../ParseDescription'
 
 const departmentList = [
   'Aerospace Engineering',

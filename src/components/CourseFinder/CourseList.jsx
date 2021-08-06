@@ -1,9 +1,8 @@
-// import { Pagination } from 'antd'
 import { useLocation, useHistory } from 'react-router-dom'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components/macro'
 
-import { CourseItem, CourseItemLoading } from 'components/courses/course-finder'
+import { CourseItem, CourseItemLoading } from 'components/CourseFinder'
 import {
   PageHeading,
   PageTitle,

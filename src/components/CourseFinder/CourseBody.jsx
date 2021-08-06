@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { CourseList, CourseSearch } from 'components/courses/course-finder'
+import { CourseList, CourseSearch } from 'components/CourseFinder'
 import { FilterAside, FilterFloatButton } from 'components/filter'
 import { toastError } from 'components/toast'
 import { useViewportContext } from 'context/ViewportContext'

@@ -3,12 +3,11 @@ import { rgba } from 'polished'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import {
-  CourseItemMain,
-  CourseItemSub,
-} from 'components/courses/course-finder/item'
 import { selectCourseListByCourseCode } from 'store/courseSlice'
 import { device } from 'styles/responsive'
+
+import CourseItemMain from './CourseItemMain'
+import CourseItemSub from './CourseItemSub'
 
 export const CourseItemLoading = ({ active }) =>
   active && <StyledSkeleton active />
