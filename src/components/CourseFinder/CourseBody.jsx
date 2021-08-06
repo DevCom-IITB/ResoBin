@@ -34,14 +34,14 @@ const CourseBody = () => {
   const [search, setSearch] = useState(queryString.get('q') || '')
 
   const setQueryString = (query) => {
-    // No change
+    // ? No change
     if (query === (queryString.get('q') || '')) return
 
-    // update query string or clear query string if query is empty
+    // ? update query string or clear query string if query is empty
     if (query) queryString.set('q', query)
     else queryString.delete('q')
 
-    // reset pagination
+    // ? reset pagination
     queryString.delete('p')
 
     history.push({

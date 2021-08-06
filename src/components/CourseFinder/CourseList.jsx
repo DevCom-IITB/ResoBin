@@ -60,7 +60,7 @@ const CourseList = ({ title, courseCodes, loading = false }) => {
       </List>
 
       {!loading && (
-        <Pagination
+        <StyledPagination
           defaultPageSize={perPage}
           defaultCurrent={pageNo}
           responsive
@@ -93,4 +93,11 @@ const Results = styled.span`
 
 const List = styled.ul`
   margin: 0 0.75rem;
+`
+
+const StyledPagination = styled(Pagination)`
+  .anticon {
+    display: flex;
+    align-items: center;
+  }
 `

@@ -85,13 +85,8 @@ const StyledInput = styled(Input)`
     }
   }
 
-  .anticon {
-    display: flex;
-    align-items: center;
-
-    &.anticon-close-circle > svg {
-      width: 1rem;
-      height: 1rem;
-    }
+  .anticon-close-circle > svg {
+    width: 0.875rem;
+    height: 0.875rem;
   }
 `

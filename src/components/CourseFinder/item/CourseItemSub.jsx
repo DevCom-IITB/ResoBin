@@ -1,5 +1,8 @@
-// import { CalendarMinus, CalendarPlus } from '@styled-icons/bootstrap'
-import { DocumentText, ChatAlt2 } from '@styled-icons/heroicons-outline'
+import {
+  DocumentText,
+  ChatAlt2,
+  Calendar,
+} from '@styled-icons/heroicons-outline'
 import { Button, Tabs } from 'antd'
 import { darken, lighten, rgba } from 'polished'
 import { useSelector, useDispatch } from 'react-redux'
@@ -20,6 +23,7 @@ const SemesterItem = ({ courseCode, semester }) => {
       size="medium"
       type="primary"
       active={status}
+      icon={<Calendar size="18" style={{ marginRight: '0.5rem' }} />}
       onClick={handleClick}
     >
       {status ? 'Remove' : 'Add to timetable'}
@@ -166,6 +170,11 @@ const StyledButton = styled(Button)`
     margin-bottom: 1rem;
     background-color: ${({ active, theme }) =>
       lighten(active ? 0.4 : 0, theme.darksecondary)};
+
+    &:hover {
+      background: ${({ active, theme }) =>
+        lighten(active ? 0.45 : 0.4, theme.darksecondary)};
+    }
   }
 `
 

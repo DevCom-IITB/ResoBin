@@ -1,33 +1,20 @@
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import {
-  // selectAllTimetable,
-  selectAllFavourites,
-} from 'store/userSlice'
+import { selectAllTimetable } from 'store/userSlice'
 
 import CurrentTime from './CurrentTime'
 import TimetableCourseItem from './TimetableCourseItem'
 import TimetableLayout from './TimetableLayout'
 
-// const selectedCourses = [
-//   'CL232',
-//   'CL305',
-//   'CL319',
-//   'CL324',
-//   'EE101',
-//   'CS663',
-//   'IE643',
-//   'CL 333',
-// ]
-
 const TimetableContainer = () => {
-  const selectedCourses = useSelector(selectAllFavourites)
+  const selectedCourses = useSelector(selectAllTimetable)
+  const sem = 'autumn'
 
   return (
     <Container>
       <TimetableLayout>
-        {selectedCourses.map((courseCode, idx) => (
+        {selectedCourses[sem].map((courseCode, idx) => (
           <TimetableCourseItem
             key={courseCode}
             colorCode={idx}
