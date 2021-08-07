@@ -90,5 +90,5 @@ const Main = styled.div`
 
 const Sub = styled.div`
   grid-area: item-sub;
-  min-width: 10rem;
+  width: 10rem;
 `

@@ -12,6 +12,7 @@ import { colorPicker } from 'styles/utils'
 
 import ParseDescription from '../ParseDescription'
 
+// ! Fetch from elastic search server
 const departmentList = [
   'Aerospace Engineering',
   'Applied Geophysics',
@@ -42,7 +43,9 @@ const CourseItemMain = ({ courseData }) => {
         </DepartmentContainer>
 
         <RightIcons>
-          <CreditContainer>{totalCredits}</CreditContainer>
+          <CreditContainer small={totalCredits > 9}>
+            {totalCredits}
+          </CreditContainer>
           <Tooltip title="Bookmark">
             <StyledButton shape="circle" onClick={favouriteClick} ghost>
               {favourite ? <Bookmark /> : <BookmarkOutline />}
@@ -141,7 +144,8 @@ const CreditContainer = styled.span`
   height: 1.25rem;
   margin-right: 1rem;
   border-radius: 50%;
-  font-size: ${fontSize.responsive.lg};
+  font-size: ${({ small }) =>
+    small ? fontSize.responsive.xs : fontSize.responsive.lg};
   font-weight: 600;
   color: ${({ theme }) => theme.darksecondary};
   background: white;

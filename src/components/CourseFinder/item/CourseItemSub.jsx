@@ -6,8 +6,10 @@ import {
 import { Button, Tabs } from 'antd'
 import { darken, lighten, rgba } from 'polished'
 import { useSelector, useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
+import { coursePageUrl } from 'paths'
 import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
 import { selectTimetableStatus, updateTimetable } from 'store/userSlice'
 
@@ -20,7 +22,6 @@ const SemesterItem = ({ courseCode, semester }) => {
 
   return (
     <StyledButton
-      size="medium"
       type="primary"
       active={status}
       icon={<Calendar size="18" style={{ marginRight: '0.5rem' }} />}
@@ -33,7 +34,7 @@ const SemesterItem = ({ courseCode, semester }) => {
 
 // ? semester = ['autumn', 'spring']
 const CourseItemSub = ({ courseData }) => {
-  const { Code: code, Structure } = courseData
+  const { Code: code, Structure: structure, Title: title } = courseData
   const isRunning = useSelector(selectCourseSlotsByCourseCode(code))
   const reviewCount = 2
   const resourceCount = 2
@@ -58,26 +59,24 @@ const CourseItemSub = ({ courseData }) => {
         </Title>
       )}
 
-      <Title>Workload</Title>
-      <CourseWorkload workload={Structure} />
+      <CourseWorkload workload={structure} />
 
-      <StyledButton
-        shape="round"
-        icon={<DocumentText size="18" style={{ marginRight: '0.5rem' }} />}
-        size="medium"
-        // ghost
-      >
-        Resources ({resourceCount})
-      </StyledButton>
-
-      <StyledButton
-        shape="round"
-        icon={<ChatAlt2 size="18" style={{ marginRight: '0.5rem' }} />}
-        size="medium"
-        // ghost
-      >
-        Reviews ({reviewCount})
-      </StyledButton>
+      <Link to={`${coursePageUrl(code, title)}#reviews`}>
+        <StyledButton
+          shape="round"
+          icon={<ChatAlt2 size="18" style={{ marginRight: '0.5rem' }} />}
+        >
+          Reviews ({reviewCount})
+        </StyledButton>
+      </Link>
+      <Link to={`${coursePageUrl(code, title)}#resources`}>
+        <StyledButton
+          shape="round"
+          icon={<DocumentText size="18" style={{ marginRight: '0.5rem' }} />}
+        >
+          Resources ({resourceCount})
+        </StyledButton>
+      </Link>
     </>
   )
 }
