@@ -53,7 +53,7 @@ const ParseDescription = ({ children: text }) => {
         : displayText}
 
       <ReadMoreText onClick={toggleReadMore}>
-        {isReadMore ? '...show more' : '\u00a0show less'}
+        {isReadMore ? '... show more' : '\u00a0show less'}
       </ReadMoreText>
     </Span>
   )
