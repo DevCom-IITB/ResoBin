@@ -1,6 +1,4 @@
 import { Bookmark, BookmarkOutline } from '@styled-icons/zondicons'
-import { Button, Tooltip } from 'antd'
-import { darken } from 'polished'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'

@@ -36,7 +36,7 @@ const FavouritesContainer = () => {
     })
   }
 
-  const [courseDataFiltered, setCourseDataFiltered] = useState([])
+  const [, setCourseDataFiltered] = useState([])
   const favouriteCourses = useSelector(selectAllFavourites)
 
   // ? search input state
