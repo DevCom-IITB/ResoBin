@@ -1,4 +1,3 @@
-// import { Checkbox } from 'components/shared'
 import { X } from '@styled-icons/heroicons-outline'
 import { Checkbox } from 'antd'
 import { Fragment } from 'react'
@@ -23,11 +22,14 @@ const Header = styled.div`
   color: white;
 `
 
+// ! multiple issues in this component, try and fix all asap
 const FilterItem = ({ data: groupData }) => {
   const location = useLocation()
   const history = useHistory()
-  const queryString = new URLSearchParams(location.search)
   const param = groupData.id
+
+  const queryString = new URLSearchParams(location.search)
+  const currentValues = queryString.get(param)
 
   const setQueryString = (query) => {
     // ? No change
@@ -46,7 +48,7 @@ const FilterItem = ({ data: groupData }) => {
     })
   }
 
-  const onChange = (checkedValues) => setQueryString(checkedValues)
+  const onChange = (checkedValues) => setQueryString(checkedValues.sort())
   const clearAllFilters = () => setQueryString('')
 
   return (
@@ -61,15 +63,37 @@ const FilterItem = ({ data: groupData }) => {
         />
       </Header>
 
-      <Checkbox.Group onChange={onChange}>
+      <StyledCheckboxGroup onChange={onChange} defaultValue={currentValues}>
         {groupData.Options.map((optionData) => (
           <Checkbox key={optionData.id} value={optionData.id}>
             {optionData.Label}
           </Checkbox>
         ))}
-      </Checkbox.Group>
+      </StyledCheckboxGroup>
     </>
   )
 }
 
 export default FilterItem
+
+const StyledCheckboxGroup = styled(Checkbox.Group)`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 0.5rem;
+  margin-bottom: 2rem;
+  gap: 1rem;
+
+  .ant-checkbox-wrapper {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: ${({ theme }) => theme.textColor};
+  }
+
+  .ant-checkbox-checked {
+    .ant-checkbox-inner {
+      border-color: ${({ theme }) => theme.logo};
+      background: ${({ theme }) => theme.logo};
+    }
+  }
+`
