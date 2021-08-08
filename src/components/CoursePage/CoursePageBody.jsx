@@ -170,7 +170,7 @@ const Container = styled.div`
   margin: 0 0.75rem 0.75rem;
   border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.textColor};
-  background: ${({ theme }) => theme.darksecondary};
+  background: ${({ theme }) => theme.secondary};
 
   @media ${device.max.md} {
     margin: 1rem 0.75rem;

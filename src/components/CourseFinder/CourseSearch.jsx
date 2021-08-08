@@ -74,7 +74,7 @@ const StyledInput = styled(Input)`
   height: 2rem;
   padding: 0 0.75rem;
   border: 0;
-  border-bottom: 3px solid ${({ theme }) => theme.darksecondary};
+  border-bottom: 2px solid ${({ theme }) => theme.darksecondary};
   border-radius: 0.5rem;
   background: ${({ theme }) => theme.secondary};
   box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.2), 0 5px 0.5rem rgba(0, 0, 0, 0.2);

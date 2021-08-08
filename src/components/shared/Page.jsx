@@ -12,3 +12,9 @@ export const PageTitle = styled.span`
   font-weight: 700;
   color: ${({ theme }) => theme.primary};
 `
+
+export const PageSubtitle = styled.span`
+  font-size: 1rem;
+  font-weight: 500;
+  color: ${({ theme }) => theme.primary};
+`

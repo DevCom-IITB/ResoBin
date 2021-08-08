@@ -1,5 +1,4 @@
 import { Skeleton } from 'antd'
-import { rgba } from 'polished'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
@@ -19,7 +18,7 @@ const StyledSkeleton = styled(Skeleton)`
   .ant-skeleton-content {
     padding: 1.5rem 1rem;
     border-radius: 0.5rem;
-    background: ${({ theme }) => rgba(theme.darksecondary, 0.8)};
+    background: ${({ theme }) => theme.secondary};
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.2);
   }
 `

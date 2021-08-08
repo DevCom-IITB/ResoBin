@@ -50,20 +50,20 @@ const Container = styled.div`
     ${cols.map(({ id, title }, index) => `[${id}] 1fr `)};
   padding: 1rem;
   border-radius: 0.5rem;
-  background: white;
+  background: ${({ theme }) => theme.secondary};
 
   &::after {
     content: '';
     position: sticky;
-    top: 3rem;
+    top: calc(3rem - 1px);
     z-index: 0;
     grid-row: tracks;
     grid-column: 1 / -1;
-    background-color: ${rgba('white', 0.9)};
+    background-color: ${({ theme }) => rgba(theme.secondary, 0.95)};
   }
 
   > div {
-    box-shadow: inset -1px -1px 0 #eceff1;
+    box-shadow: inset -1px -1px 0 ${({ theme }) => rgba(theme.primary, 0.1)};
   }
 `
 
@@ -75,6 +75,7 @@ const ColContainer = styled.span`
   font-weight: 500;
   text-align: center;
   text-transform: uppercase;
+  color: ${({ theme }) => theme.textColor};
 
   @media screen and (min-width: 700px) {
     position: sticky;
@@ -95,6 +96,7 @@ const RowContainer = styled.span`
   grid-column: times;
   font-size: 0.5rem;
   font-family: 'Roboto', monospace;
+  color: ${({ theme }) => theme.textColor};
 `
 
 const TimetableFillerItem = styled.div`
