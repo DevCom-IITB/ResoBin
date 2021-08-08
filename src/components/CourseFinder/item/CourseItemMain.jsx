@@ -149,7 +149,6 @@ const CreditContainer = styled.span`
   font-weight: 600;
   color: ${({ theme }) => theme.darksecondary};
   background: white;
-  box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.6);
 
   @media ${device.min.md} {
     width: 1.5rem;
