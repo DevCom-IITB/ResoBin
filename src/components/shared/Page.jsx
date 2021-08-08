@@ -10,5 +10,5 @@ export const PageHeading = styled.h3`
 export const PageTitle = styled.span`
   font-size: 1.5rem;
   font-weight: 700;
-  color: ${({ theme }) => theme.darksecondary};
+  color: ${({ theme }) => theme.primary};
 `

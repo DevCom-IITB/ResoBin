@@ -44,9 +44,9 @@ const SearchContainer = styled.div`
   padding: 0 0.75rem;
   background: linear-gradient(
     0deg,
-    ${({ theme }) => rgba(theme.primary, 0)} 0%,
-    ${({ theme }) => rgba(theme.primary, 0)} 30%,
-    ${({ theme }) => rgba(theme.primary, 1)} 50%
+    ${({ theme }) => rgba(theme.darksecondary, 0)} 0%,
+    ${({ theme }) => rgba(theme.darksecondary, 0)} 30%,
+    ${({ theme }) => rgba(theme.darksecondary, 1)} 50%
   );
 
   @media ${device.min.lg} {
@@ -65,28 +65,35 @@ const Overlay = styled.div`
 const StyledIcon = styled(({ Icon, className, ...props }) => {
   return <Icon {...props} className={className} />
 })`
-  opacity: 0.5;
   width: 1rem;
-  color: ${({ theme }) => theme.darksecondary};
+  color: lightgray;
 `
 
 const StyledInput = styled(Input)`
-  &.ant-input-affix-wrapper {
-    z-index: 10;
-    height: 2rem;
-    padding: 0 0.75rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  height: 2rem;
+  padding: 0 0.75rem;
+  border: 0;
+  border-bottom: 3px solid ${({ theme }) => theme.darksecondary};
+  border-radius: 0.5rem;
+  background: ${({ theme }) => theme.secondary};
+  box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.2), 0 5px 0.5rem rgba(0, 0, 0, 0.2);
 
-    .ant-input {
-      padding: 0 0.25rem;
-      font-size: 0.875rem;
-      font-weight: 400;
-    }
+  .ant-input {
+    padding: 0 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: lightgray;
+    background: ${({ theme }) => theme.secondary};
   }
 
   .anticon-close-circle > svg {
     width: 0.875rem;
     height: 0.875rem;
+    color: lightgray;
+  }
+
+  &:not(.ant-input-affix-wrapper-disabled):hover {
+    border-color: ${({ theme }) => theme.darksecondary};
   }
 `

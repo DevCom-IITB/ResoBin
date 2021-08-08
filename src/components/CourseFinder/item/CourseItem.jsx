@@ -77,10 +77,7 @@ const Container = styled.li`
     transition: opacity 100ms, transform 100ms;
   }
 
-  /* responsiveness */
-  @media ${device.min.sm} and ${device.max.md}, ${device.min.xl} {
-    display: flex;
-  }
+  /* @media ${device.min.sm} and ${device.max.md}, ${device.min.xl} {} */
 `
 
 const Main = styled.div`
