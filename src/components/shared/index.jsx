@@ -1,3 +1,4 @@
+export { default as ButtonIcon } from './ButtonIcon'
 export { default as ButtonSquare } from './ButtonSquare'
 export { default as Checkbox } from './Checkbox'
 export { default as Divider } from './Divider'

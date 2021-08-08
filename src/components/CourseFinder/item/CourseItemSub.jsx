@@ -1,11 +1,14 @@
 import {
-  DocumentText,
   ChatAlt,
   Calendar,
   ChevronDown,
+  DocumentText,
+  Flag,
+  Plus,
 } from '@styled-icons/heroicons-outline'
 import { Button, Dropdown, Menu, Tabs } from 'antd'
 import { darken, lighten, rgba } from 'polished'
+import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
@@ -42,15 +45,30 @@ const CourseItemSub = ({ courseData }) => {
 
   const semTabInitialValue = isRunning ? 'autumn' : null
 
-  const handleMenuClick = (e) => {
-    console.log('click', e)
+  const [requestReviewCount, setRequestReviewCount] = useState(0)
+
+  const handleMenuClick = ({ key }) => {
+    switch (key) {
+      case 'request':
+        if (requestReviewCount === 0) setRequestReviewCount((e) => e + 1)
+        break
+
+      case 'create':
+        break
+
+      default:
+        break
+    }
   }
 
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="1">1st item</Menu.Item>
-      <Menu.Item key="2">2nd item</Menu.Item>
-      <Menu.Item key="3">3rd item</Menu.Item>
+      <Menu.Item key="request" icon={<Flag size="16" />}>
+        Request
+      </Menu.Item>
+      <Menu.Item key="create" icon={<Plus size="16" />}>
+        Create
+      </Menu.Item>
     </Menu>
   )
 

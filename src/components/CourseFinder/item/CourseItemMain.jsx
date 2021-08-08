@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
 
+import { ButtonIcon } from 'components/shared'
 import { coursePageUrl } from 'paths'
 import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
 import { device, fontSize } from 'styles/responsive'
@@ -46,11 +47,13 @@ const CourseItemMain = ({ courseData }) => {
           <CreditContainer small={totalCredits > 9}>
             {totalCredits}
           </CreditContainer>
-          <Tooltip title="Bookmark">
-            <StyledButton shape="circle" onClick={favouriteClick} ghost>
-              {favourite ? <Bookmark /> : <BookmarkOutline />}
-            </StyledButton>
-          </Tooltip>
+
+          <ButtonIcon
+            tooltip="Bookmark"
+            onClick={favouriteClick}
+            size="lg"
+            Icon={favourite ? Bookmark : BookmarkOutline}
+          />
         </RightIcons>
       </SubTitle>
 
@@ -153,28 +156,5 @@ const CreditContainer = styled.span`
   @media ${device.min.md} {
     width: 1.5rem;
     height: 1.5rem;
-  }
-`
-
-const StyledButton = styled(Button)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 0;
-
-  > svg {
-    width: 1.125rem;
-
-    @media ${device.min.md} {
-      width: 1.25rem;
-    }
-  }
-
-  &:hover {
-    color: ${({ theme }) => darken(0.3, theme.textColor)};
-  }
-
-  &:focus {
-    color: ${({ theme }) => theme.textColor};
   }
 `

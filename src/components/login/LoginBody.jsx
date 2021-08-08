@@ -47,7 +47,7 @@ const LoginBody = ({ onChange, onSubmit, user }) => {
   // const [rememberMe, setRememberMe] = useState(false)
   const handleClick = ({ target }) => {
     // setRememberMe(target.checked)
-    console.log(target)
+    // console.log(target)
   }
 
   return (
