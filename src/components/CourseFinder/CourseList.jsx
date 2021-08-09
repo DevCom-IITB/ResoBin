@@ -1,14 +1,14 @@
-// import { Pagination } from 'antd'
 import { useLocation, useHistory } from 'react-router-dom'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components/macro'
 
-import { CourseItem, CourseItemLoading } from 'components/courses/course-finder'
+import { CourseItem, CourseItemLoading } from 'components/CourseFinder'
 import {
   PageHeading,
   PageTitle,
   NotFoundSearch,
   Pagination,
+  PageSubtitle,
 } from 'components/shared'
 import { device } from 'styles/responsive'
 
@@ -38,7 +38,7 @@ const CourseList = ({ title, courseCodes, loading = false }) => {
     <Container>
       <PageHeading>
         <PageTitle>{title}</PageTitle>
-        <Results>{count}&nbsp;results found</Results>
+        <PageSubtitle>{count}&nbsp;results found</PageSubtitle>
       </PageHeading>
 
       <List>
@@ -83,13 +83,6 @@ const Container = styled.div`
     padding-right: ${({ theme }) => theme.asideWidthRight};
     transition: padding-right 200ms ease-in;
   }
-`
-
-const Results = styled.span`
-  opacity: 80%;
-  font-size: 1rem;
-  font-weight: 600;
-  color: ${({ theme }) => theme.darksecondary};
 `
 
 const List = styled.ul`

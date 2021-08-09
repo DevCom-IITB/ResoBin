@@ -47,26 +47,30 @@ const StyledBreadcrumb = styled(Breadcrumb)`
   align-items: center;
   height: 3rem;
   margin: 0 1.5rem;
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 1rem;
 
   & > span {
     display: flex;
+  }
+
+  .ant-breadcrumb-separator {
+    color: ${({ theme }) => theme.textColor};
   }
 
   .ant-breadcrumb-link {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: 500;
-    color: ${({ theme }) => theme.darksecondary};
+    color: ${({ theme }) => theme.primary};
 
     a {
       display: flex;
       align-items: center;
+      color: ${({ theme }) => theme.textColor};
 
       &:hover {
-        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 1px;
       }
     }
   }

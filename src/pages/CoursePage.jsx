@@ -3,10 +3,7 @@ import { useSelector } from 'react-redux'
 import { Redirect, useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import {
-  CoursePageBody,
-  CoursePageBreadcrumbs,
-} from 'components/courses/course-page'
+import { CoursePageBody, CoursePageBreadcrumbs } from 'components/CoursePage'
 import { coursePageUrl } from 'paths'
 import { selectCourseListByCourseCode } from 'store/courseSlice'
 import { device } from 'styles/responsive'

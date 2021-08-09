@@ -14,6 +14,7 @@ const Container = styled.div`
   width: 100%;
   height: 3rem;
   background: ${({ theme }) => theme.darksecondary};
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 `
 
 const Term = styled.span`

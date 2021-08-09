@@ -1,127 +1,133 @@
 [
   {
-    "id": 0,
+    "id": "sem",
     "FilterTitle": "Offered in",
     "Options": [
       {
-        "id": 0,
-        "Label": "Spring Semester",
+        "id": "aut",
+        "Label": "Autumn Semester",
         "Type": "Checkbox"
       },
       {
-        "id": 1,
-        "Label": "Autumn Semester",
+        "id": "spr",
+        "Label": "Spring Semester",
         "Type": "Checkbox"
       }
     ]
   },
   {
-    "id": 1,
+    "id": "cred",
     "FilterTitle": "Credits",
     "Options": [
       {
-        "id": 0,
+        "id": 3,
         "Label": "3",
         "Type": "Checkbox"
       },
       {
-        "id": 1,
+        "id": 4,
         "Label": "4",
         "Type": "Checkbox"
       },
       {
-        "id": 2,
+        "id": 5,
+        "Label": "5",
+        "Type": "Checkbox"
+      },
+      {
+        "id": 6,
         "Label": "6",
         "Type": "Checkbox"
       },
       {
-        "id": 3,
+        "id": 8,
         "Label": "8",
+        "Type": "Checkbox"
+      },
+      {
+        "id": "9+",
+        "Label": "9+",
         "Type": "Checkbox"
       }
     ]
   },
   {
-    "id": 2,
+    "id": "lvl",
     "FilterTitle": "Level",
     "Options": [
       {
-        "id": 0,
+        "id": 100,
         "Label": "100",
         "Type": "Checkbox"
       },
       {
-        "id": 1,
+        "id": 200,
         "Label": "200",
         "Type": "Checkbox"
       },
       {
-        "id": 2,
+        "id": 300,
         "Label": "300",
         "Type": "Checkbox"
       },
       {
-        "id": 3,
+        "id": 400,
         "Label": "400",
         "Type": "Checkbox"
       },
       {
-        "id": 4,
+        "id": 500,
         "Label": "500",
         "Type": "Checkbox"
       },
       {
-        "id": 5,
+        "id": 600,
         "Label": "600",
         "Type": "Checkbox"
       },
       {
-        "id": 6,
+        "id": 700,
         "Label": "700",
         "Type": "Checkbox"
       },
       {
-        "id": 7,
+        "id": 800,
         "Label": "800",
         "Type": "Checkbox"
       }
     ]
   },
   {
-    "id": 3,
+    "id": "dept",
     "FilterTitle": "Department",
     "Type": "Checkbox",
     "Options": [
       {
-        "id": 0,
+        "id": "AE",
         "Label": "Aerospace Engineering"
       },
       {
-        "id": 1,
+        "id": "GP",
         "Label": "Applied Geophysics"
       },
       {
-        "id": 2,
-        "Label": "Chemical Engineering"
-      },
-      {
-        "id": 3,
+        "id": "SI",
         "Label": "Applied Statistics and Informatics"
       },
       {
-        "id": 4,
+        "id": "BB",
         "Label": "Biosciences & Bioengineering"
       },
       {
-        "id": 5,
+        "id": "CL",
         "Label": "Chemical Engineering"
       },
       {
-        "id": 6,
+        "id": "CH",
         "Label": "Chemistry"
       },
       {
-        "id": 7,
+        "id": "CE",
         "Label": "Civil Engineering"
       },
       {

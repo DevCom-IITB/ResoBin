@@ -1,8 +1,10 @@
-// import { Checkbox } from 'components/shared'
 import { X } from '@styled-icons/heroicons-outline'
 import { Checkbox } from 'antd'
 import { Fragment } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
+
+import { ButtonIcon } from 'components/shared'
 
 const Title = styled.span`
   display: inline-block;
@@ -20,27 +22,78 @@ const Header = styled.div`
   color: white;
 `
 
-const FilterItem = ({ data: groupData, index }) => {
-  const onChange = (checkedValues) => {
-    console.log(checkedValues)
+// ! multiple issues in this component, try and fix all asap
+const FilterItem = ({ data: groupData }) => {
+  const location = useLocation()
+  const history = useHistory()
+  const param = groupData.id
+
+  const queryString = new URLSearchParams(location.search)
+  const currentValues = queryString.get(param)
+
+  const setQueryString = (query) => {
+    // ? No change
+    if (query === (queryString.get(param) || '')) return
+
+    // ? update query string or clear query string if query is empty
+    if (query) queryString.set(param, query)
+    else queryString.delete(param)
+
+    // ? reset pagination
+    queryString.delete('p')
+
+    history.push({
+      pathname: location.pathname,
+      search: `?${queryString.toString()}`,
+    })
   }
 
+  const onChange = (checkedValues) => setQueryString(checkedValues.sort())
+  const clearAllFilters = () => setQueryString('')
+
   return (
-    <Fragment key={index}>
+    <>
       <Header>
         <Title>{groupData.FilterTitle}</Title>
-        <X style={{ cursor: 'pointer', width: '1rem' }} />
+        <ButtonIcon
+          tooltip="Bookmark"
+          onClick={clearAllFilters}
+          size="xs"
+          Icon={X}
+        />
       </Header>
 
-      <Checkbox.Group onChange={onChange}>
+      <StyledCheckboxGroup onChange={onChange} defaultValue={currentValues}>
         {groupData.Options.map((optionData) => (
-          <Checkbox key={optionData.id} value={optionData.Label}>
+          <Checkbox key={optionData.id} value={optionData.id}>
             {optionData.Label}
           </Checkbox>
         ))}
-      </Checkbox.Group>
-    </Fragment>
+      </StyledCheckboxGroup>
+    </>
   )
 }
 
 export default FilterItem
+
+const StyledCheckboxGroup = styled(Checkbox.Group)`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 0.5rem;
+  margin-bottom: 2rem;
+  gap: 1rem;
+
+  .ant-checkbox-wrapper {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: ${({ theme }) => theme.textColor};
+  }
+
+  .ant-checkbox-checked {
+    .ant-checkbox-inner {
+      border-color: ${({ theme }) => theme.logo};
+      background: ${({ theme }) => theme.logo};
+    }
+  }
+`

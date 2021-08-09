@@ -1,5 +1,5 @@
 import { InboxOutlined } from '@ant-design/icons'
-import { Upload, message } from 'antd'
+import { Upload } from 'antd'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
 
@@ -61,7 +61,7 @@ const FileList = (props) => {
     )
     formData.append('file', selectedFile)
 
-    console.log(data.formvalues.resourcetype)
+    // console.log(data.formvalues.resourcetype)
     // #  axios.post(UPLOAD_URL, formData)
     // .then((res) => {
     //      alert("File Upload success");

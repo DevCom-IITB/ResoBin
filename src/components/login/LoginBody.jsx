@@ -1,6 +1,5 @@
 import { LockPassword, User } from '@styled-icons/remix-line'
 import { Checkbox } from 'antd'
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
@@ -47,7 +46,6 @@ const LoginBody = ({ onChange, onSubmit, user }) => {
   // const [rememberMe, setRememberMe] = useState(false)
   const handleClick = ({ target }) => {
     // setRememberMe(target.checked)
-    console.log(target)
   }
 
   return (

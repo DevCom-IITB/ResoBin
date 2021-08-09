@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components/macro'
 
-import { CourseBody } from 'components/courses/course-finder'
+import { CourseBody } from 'components/CourseFinder'
 import { device } from 'styles/responsive'
 
 // ? get course list from the backend when user opens the app

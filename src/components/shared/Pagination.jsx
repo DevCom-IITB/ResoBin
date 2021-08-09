@@ -15,7 +15,7 @@ const baseShape = css`
   background-color: transparent;
 
   &:hover {
-    background: ${({ theme }) => rgba(theme.darksecondary, 0.1)};
+    background: ${({ theme }) => rgba(theme.primary, 0.1)};
   }
 `
 
@@ -33,7 +33,7 @@ const StyledPagination = styled(Pagination)`
     .ant-pagination-item-link {
       ${baseShape}
 
-      color: inherit;
+      color: ${({ theme }) => theme.primary};
       background-color: transparent;
     }
   }
@@ -44,13 +44,13 @@ const StyledPagination = styled(Pagination)`
     font-weight: 600;
 
     &-active {
-      border: 2px solid ${({ theme }) => rgba(theme.darksecondary, 0.7)};
+      border: 2px solid ${({ theme }) => rgba(theme.primary, 0.7)};
     }
 
     a {
       font-size: 1rem;
       font-weight: 600;
-      color: ${({ theme }) => theme.darksecondary};
+      color: ${({ theme }) => theme.primary};
     }
   }
 
@@ -60,7 +60,7 @@ const StyledPagination = styled(Pagination)`
 
     .ant-pagination-item-link-icon {
       font-size: 0.75rem;
-      color: ${({ theme }) => theme.darksecondary};
+      color: ${({ theme }) => theme.primary};
     }
 
     .ant-pagination-item-ellipsis {
@@ -69,8 +69,13 @@ const StyledPagination = styled(Pagination)`
       right: 0;
       left: -4px;
       font-size: 0.75rem;
-      color: ${({ theme }) => theme.darksecondary};
+      color: ${({ theme }) => theme.primary};
     }
+  }
+
+  .anticon {
+    display: flex;
+    align-items: center;
   }
 `
 

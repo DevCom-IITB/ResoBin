@@ -1,16 +1,10 @@
-import { useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-const LogoContainer = styled.button`
+const LogoContainer = styled(Link)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: transparent;
-
-  &:enabled {
-    cursor: pointer;
-  }
 `
 
 const Title = styled.div`
@@ -22,23 +16,17 @@ const Title = styled.div`
 `
 
 const Underline = styled.div`
-  width: 96%;
+  width: 97%;
   height: calc(${({ size }) => size} / 9);
   margin-bottom: 7px;
   background: ${({ theme }) => theme.logo};
 `
 
-const ResoBinLogo = ({ size }) => {
-  const { isAuthenticated } = useSelector((state) => state.auth)
-  const history = useHistory()
-  const redirectHome = () => history.push('/')
-
-  return (
-    <LogoContainer onClick={redirectHome} disabled={!isAuthenticated}>
-      <Title size={size}>ResoBin</Title>
-      <Underline size={size} />
-    </LogoContainer>
-  )
-}
+const ResoBinLogo = ({ size }) => (
+  <LogoContainer to="/">
+    <Title size={size}>ResoBin</Title>
+    <Underline size={size} />
+  </LogoContainer>
+)
 
 export default ResoBinLogo

@@ -5,15 +5,10 @@ import { useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { CourseList, CourseSearch } from 'components/courses/course-finder'
-import { PageHeading, PageTitle } from 'components/shared'
-// import { FilterAside, FilterFloatButton } from 'components/filter'
+import { CourseList, CourseSearch } from 'components/CourseFinder'
 import { toastError } from 'components/toast'
-// import { useViewportContext } from 'context/ViewportContext'
 import { searchAsync } from 'helpers'
-// import { selectCourseListByCourseCode } from 'store/courseSlice'
 import { selectAllFavourites } from 'store/userSlice'
-// import { breakpoints } from 'styles/responsive'
 
 const searchFields = ['Code', 'Title', 'Description']
 
@@ -41,7 +36,7 @@ const FavouritesContainer = () => {
     })
   }
 
-  const [courseDataFiltered, setCourseDataFiltered] = useState([])
+  const [, setCourseDataFiltered] = useState([])
   const favouriteCourses = useSelector(selectAllFavourites)
 
   // ? search input state
