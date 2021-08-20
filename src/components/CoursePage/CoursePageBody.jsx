@@ -1,13 +1,11 @@
-import { Col, Divider, Row, Tabs } from 'antd'
+import { Col, Divider, Row } from 'antd'
 import styled from 'styled-components/macro'
 
 import { device, fontSize } from 'styles/responsive'
 
-import CourseReviews from './CourseReview'
+import CoursePageBottomTabs from './CoursePageBottomTabs'
 
 const CoursePageBody = ({ courseData }) => {
-  const reviewCount = 2
-
   return (
     <Container>
       <CourseCode>{courseData.Code}</CourseCode>
@@ -43,24 +41,7 @@ const CoursePageBody = ({ courseData }) => {
       </Row>
       <Divider />
 
-      <Tabs
-        defaultActiveKey="1"
-        centered
-        size="large"
-        style={{
-          color: `${({ theme }) => theme.textColor}`,
-          fontWeight: 600,
-          fontSize: '24px',
-        }}
-        type="card"
-      >
-        <Tabs.TabPane tab={`Reviews (${reviewCount})`} key="1">
-          <CourseReviews />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Resources" key="2">
-          Resources
-        </Tabs.TabPane>
-      </Tabs>
+      <CoursePageBottomTabs />
     </Container>
   )
 }
