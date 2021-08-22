@@ -9,29 +9,27 @@ const CoursePageBottomTabs = () => {
   const tabInitialValue = 'reviews'
 
   return (
-    <>
-      <Tabs
-        tabHeight="2.25rem"
-        tabWidth="7.5rem"
-        defaultActiveKey={tabInitialValue}
+    <Tabs
+      tabHeight="2.25rem"
+      tabWidth="7.5rem"
+      defaultActiveKey={tabInitialValue}
+    >
+      <Tabs.TabPane
+        key="reviews"
+        tab={`Reviews (${reviewCount})`}
+        disabled={false}
       >
-        <Tabs.TabPane
-          key="reviews"
-          tab={`Reviews (${reviewCount})`}
-          disabled={false}
-        >
-          <CoursePageReviewsContainer />
-        </Tabs.TabPane>
+        <CoursePageReviewsContainer />
+      </Tabs.TabPane>
 
-        <Tabs.TabPane
-          key="resources"
-          tab={`Resources (${resourceCount})`}
-          disabled={false}
-        >
-          <CoursePageResourcesContainer />
-        </Tabs.TabPane>
-      </Tabs>
-    </>
+      <Tabs.TabPane
+        key="resources"
+        tab={`Resources (${resourceCount})`}
+        disabled={false}
+      >
+        <CoursePageResourcesContainer />
+      </Tabs.TabPane>
+    </Tabs>
   )
 }
 

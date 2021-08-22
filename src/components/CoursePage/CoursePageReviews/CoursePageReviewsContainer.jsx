@@ -4,7 +4,8 @@ import {
   LikeFilled,
   LikeOutlined,
 } from '@ant-design/icons'
-import { Avatar, Comment, Tooltip } from 'antd'
+import { PencilAlt, UserAdd } from '@styled-icons/heroicons-outline'
+import { Avatar, Button, Comment, Tooltip } from 'antd'
 import moment from 'moment'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
@@ -58,9 +59,28 @@ const CoursePageReviewsContainer = () => {
     <span key="comment-basic-reply-to">Reply to</span>,
   ]
 
+  const [write, setWrite] = useState(false)
+  const toggleWrite = () => setWrite(!write)
+
+  const handleReviewRequest = (e) => {
+    console.log(e)
+  }
+
   return (
     <>
-      <CoursePageReviewsNew />
+      <ReviewOptions>
+        <Button type="primary" onClick={toggleWrite}>
+          <PencilAlt size="22" style={{ marginRight: '0.5rem' }} />
+          Write
+        </Button>
+
+        <Button type="button" onClick={handleReviewRequest}>
+          <UserAdd size="22" style={{ marginRight: '0.5rem' }} />
+          Request
+        </Button>
+      </ReviewOptions>
+
+      {write && <CoursePageReviewsNew />}
 
       {reviewsData.map(({ author, avatar, content }) => (
         <Comment
@@ -96,3 +116,8 @@ const CoursePageReviewsContainer = () => {
 }
 
 export default CoursePageReviewsContainer
+
+const ReviewOptions = styled.div`
+  display: flex;
+  gap: 1rem;
+`
