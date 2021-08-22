@@ -55,6 +55,7 @@ export const ButtonDropdown = styled(Dropdown.Button)`
 export const ButtonSwitch = styled(Button)`
   ${ButtonStyles}
 
+  width: initial;
   padding: 0 1rem;
   margin-top: 0.5rem;
   border-radius: 0.5rem;

@@ -10,6 +10,8 @@ import moment from 'moment'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
 
+import { ButtonDropdown, ButtonSwitch } from 'components/shared/Buttons/Button'
+
 import reviewsData from './__mock__/reviewsData'
 import CoursePageReviewsNew from './CoursePageReviewsNew'
 
@@ -60,11 +62,10 @@ const CoursePageReviewsContainer = () => {
   ]
 
   const [write, setWrite] = useState(false)
-  const toggleWrite = () => setWrite(!write)
+  const toggleWrite = () => setWrite((v) => !v)
+  const [reviewStatus, setReviewStatus] = useState(false)
 
-  const handleReviewRequest = (e) => {
-    console.log(e)
-  }
+  const handleReviewRequest = () => setReviewStatus((v) => !v)
 
   return (
     <>
@@ -74,10 +75,20 @@ const CoursePageReviewsContainer = () => {
           Write
         </Button>
 
-        <Button type="button" onClick={handleReviewRequest}>
-          <UserAdd size="22" style={{ marginRight: '0.5rem' }} />
-          Request
-        </Button>
+        <ButtonSwitch
+          type="primary"
+          active={!reviewStatus}
+          onClick={handleReviewRequest}
+        >
+          {reviewStatus ? (
+            <>
+              <UserAdd size="18" style={{ marginRight: '0.5rem' }} />
+              Request
+            </>
+          ) : (
+            'Cancel request'
+          )}
+        </ButtonSwitch>
       </ReviewOptions>
 
       {write && <CoursePageReviewsNew />}
