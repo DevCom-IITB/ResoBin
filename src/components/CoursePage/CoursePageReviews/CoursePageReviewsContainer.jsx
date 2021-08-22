@@ -61,19 +61,27 @@ const CoursePageReviewsContainer = () => {
     <span key="comment-basic-reply-to">Reply to</span>,
   ]
 
-  const [write, setWrite] = useState(false)
-  const toggleWrite = () => setWrite((v) => !v)
+  const [writeStatus, setWriteStatus] = useState(false)
+  const toggleWrite = () => setWriteStatus((v) => !v)
   const [reviewStatus, setReviewStatus] = useState(false)
 
   const handleReviewRequest = () => setReviewStatus((v) => !v)
 
+  // ! make write review button primary
+
   return (
     <>
       <ReviewOptions>
-        <Button type="primary" onClick={toggleWrite}>
-          <PencilAlt size="22" style={{ marginRight: '0.5rem' }} />
-          Write
-        </Button>
+        <ButtonSwitch type="primary" active={writeStatus} onClick={toggleWrite}>
+          {!writeStatus ? (
+            <>
+              <PencilAlt size="18" style={{ marginRight: '0.5rem' }} />
+              Write
+            </>
+          ) : (
+            <>Cancel review</>
+          )}
+        </ButtonSwitch>
 
         <ButtonSwitch
           type="primary"
@@ -86,12 +94,12 @@ const CoursePageReviewsContainer = () => {
               Request
             </>
           ) : (
-            'Cancel request'
+            <>Cancel request</>
           )}
         </ButtonSwitch>
       </ReviewOptions>
 
-      {write && <CoursePageReviewsNew />}
+      {writeStatus && <CoursePageReviewsNew />}
 
       {reviewsData.map(({ author, avatar, content }) => (
         <Comment

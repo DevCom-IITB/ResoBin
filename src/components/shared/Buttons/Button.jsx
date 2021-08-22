@@ -59,6 +59,7 @@ export const ButtonSwitch = styled(Button)`
   padding: 0 1rem;
   margin-top: 0.5rem;
   border-radius: 0.5rem;
+  box-shadow: 0 0 0.25rem 0.25rem rgba(0, 0, 0, 0.1);
 
   &.ant-btn-primary {
     margin-bottom: 1rem;
