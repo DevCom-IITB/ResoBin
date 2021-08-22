@@ -6,14 +6,14 @@ import {
   Flag,
   Plus,
 } from '@styled-icons/heroicons-outline'
-import { Button, Dropdown, Menu } from 'antd'
-import { lighten } from 'polished'
+import { Menu } from 'antd'
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import styled, { css } from 'styled-components/macro'
+import styled from 'styled-components/macro'
 
 import { Tabs } from 'components/shared'
+import { ButtonDropdown, ButtonSwitch } from 'components/shared/Buttons/Button'
 import { coursePageUrl } from 'paths'
 import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
 import { selectTimetableStatus, updateTimetable } from 'store/userSlice'
@@ -26,14 +26,14 @@ const SemesterItem = ({ courseCode, semester }) => {
   const handleClick = () => dispatch(updateTimetable({ courseCode, semester }))
 
   return (
-    <StyledButton
+    <ButtonSwitch
       type="primary"
       active={status}
       icon={<Calendar size="18" style={{ marginRight: '0.5rem' }} />}
       onClick={handleClick}
     >
       {status ? 'Remove' : 'Add to timetable'}
-    </StyledButton>
+    </ButtonSwitch>
   )
 }
 
@@ -51,7 +51,7 @@ const CourseItemSub = ({ courseData }) => {
   const handleMenuClick = ({ key }) => {
     switch (key) {
       case 'request':
-        if (requestReviewCount === 0) setRequestReviewCount((e) => e + 1)
+        if (requestReviewCount === 0) setRequestReviewCount((v) => v + 1)
         break
 
       case 'create':
@@ -97,93 +97,24 @@ const CourseItemSub = ({ courseData }) => {
 
       <CourseWorkload workload={structure} />
 
-      <StyledDropdown icon={<ChevronDown size="18" />} overlay={menu}>
+      <ButtonDropdown icon={<ChevronDown size="18" />} overlay={menu}>
         <Link to={`${coursePageUrl(code, title)}#reviews`}>
           <ChatAlt size="18" style={{ marginRight: '0.5rem' }} />
           Reviews ({reviewCount})
         </Link>
-      </StyledDropdown>
+      </ButtonDropdown>
 
-      <StyledDropdown icon={<ChevronDown size="18" />} overlay={menu}>
+      <ButtonDropdown icon={<ChevronDown size="18" />} overlay={menu}>
         <Link to={`${coursePageUrl(code, title)}#resources`}>
           <DocumentText size="18" style={{ marginRight: '0.5rem' }} />
           Resources ({resourceCount})
         </Link>
-      </StyledDropdown>
+      </ButtonDropdown>
     </>
   )
 }
 
 export default CourseItemSub
-
-const ButtonStyles = css`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 1.75rem;
-  padding-left: 1rem;
-  border: 0;
-  font-size: 0.75rem;
-  color: ${({ theme }) => theme.textColor};
-  background: ${({ theme }) => theme.darksecondary};
-
-  &:active,
-  &:focus {
-    color: ${({ theme }) => theme.textColor};
-    background: ${({ theme }) => theme.darksecondary};
-  }
-
-  &:hover {
-    color: ${({ theme }) => theme.textColor};
-    background: ${({ theme }) => lighten(0.4, theme.darksecondary)};
-    box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.1);
-  }
-`
-
-const StyledDropdown = styled(Dropdown.Button)`
-  width: 100%;
-  margin-top: 0.5rem;
-
-  .ant-btn {
-    ${ButtonStyles}
-
-    &:first-child:not(:last-child) {
-      border-top-left-radius: 0.5rem;
-      border-bottom-left-radius: 0.5rem;
-    }
-  }
-
-  .ant-dropdown-trigger {
-    display: flex;
-    justify-content: center;
-    width: 2rem;
-    padding: 0;
-
-    &:last-child:not(:first-child) {
-      border-top-right-radius: 0.5rem;
-      border-bottom-right-radius: 0.5rem;
-    }
-  }
-`
-
-const StyledButton = styled(Button)`
-  ${ButtonStyles}
-
-  padding: 0 1rem;
-  margin-top: 0.5rem;
-  border-radius: 0.5rem;
-
-  &.ant-btn-primary {
-    margin-bottom: 1rem;
-    background-color: ${({ active, theme }) =>
-      lighten(active ? 0.4 : 0, theme.darksecondary)};
-
-    &:hover {
-      background: ${({ active, theme }) =>
-        lighten(active ? 0.45 : 0.4, theme.darksecondary)};
-    }
-  }
-`
 
 const Title = styled.span`
   display: block;
