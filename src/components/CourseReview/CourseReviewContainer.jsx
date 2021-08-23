@@ -5,7 +5,7 @@ import {
   LikeOutlined,
 } from '@ant-design/icons'
 import { PencilAlt, UserAdd } from '@styled-icons/heroicons-outline'
-import { Avatar, Button, Comment, Tooltip } from 'antd'
+import { Avatar, Comment, Tooltip } from 'antd'
 import moment from 'moment'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
@@ -13,7 +13,7 @@ import styled from 'styled-components/macro'
 import { ButtonDropdown, ButtonSwitch } from 'components/shared/Buttons/Button'
 
 import reviewsData from './__mock__/reviewsData'
-import CoursePageReviewsNew from './CoursePageReviewsNew'
+import CourseReviewAdd from './CourseReviewAdd'
 
 const CommentHeader = styled.p`
   font-weight: 600;
@@ -99,7 +99,7 @@ const CoursePageReviewsContainer = () => {
         </ButtonSwitch>
       </ReviewOptions>
 
-      {writeStatus && <CoursePageReviewsNew />}
+      {writeStatus && <CourseReviewAdd />}
 
       {reviewsData.map(({ author, avatar, content }) => (
         <Comment

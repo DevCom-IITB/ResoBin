@@ -1,5 +1,4 @@
-import { SettingOutlined } from '@ant-design/icons'
-import { Collapse, Select, Form, Button, Input } from 'antd'
+import { Form, Button, Input } from 'antd'
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -71,10 +70,10 @@ const AddReviewContainer = styled.div`
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
 `
 
-const StyledTextArea = styled(Input.TextArea)`
-  .ant-input {
-  }
-`
+// const StyledTextArea = styled(Input.TextArea)`
+//   .ant-input {
+//   }
+// `
 
 const PreviewContainer = styled.div`
   padding: 16px;
