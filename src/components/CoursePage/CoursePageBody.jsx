@@ -3,8 +3,6 @@ import styled from 'styled-components/macro'
 
 import { device, fontSize } from 'styles/responsive'
 
-import CoursePageBottomTabs from './CoursePageBottomTabs'
-
 const CoursePageBody = ({ courseData }) => {
   return (
     <Container>
@@ -39,9 +37,6 @@ const CoursePageBody = ({ courseData }) => {
           <CenterText>{courseData.TotalCredits}</CenterText>
         </Col>
       </Row>
-      <Divider />
-
-      <CoursePageBottomTabs />
     </Container>
   )
 }
