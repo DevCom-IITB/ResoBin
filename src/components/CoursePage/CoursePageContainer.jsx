@@ -23,7 +23,6 @@ const CoursePageContainer = ({ courseData }) => {
 
       <Container>
         <Tabs
-          affix
           tabheight="2.25rem"
           tabwidth="7.5rem"
           defaultActiveKey={hash.split('#')[1]}

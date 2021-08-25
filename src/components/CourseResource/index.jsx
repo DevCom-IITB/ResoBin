@@ -1,2 +1,2 @@
-/* eslint-disable import/prefer-default-export */
 export { default as CourseResourceContainer } from './CourseResourceContainer'
+export { default as CourseResourceUploadModal } from './CourseResourceUploadModal'
