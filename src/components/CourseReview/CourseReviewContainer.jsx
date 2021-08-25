@@ -10,7 +10,7 @@ import moment from 'moment'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
 
-import { ButtonDropdown, ButtonSwitch } from 'components/shared/Buttons/Button'
+import { ButtonSwitch } from 'components/shared/Buttons/Button'
 
 import reviewsData from './__mock__/reviewsData'
 import CourseReviewAdd from './CourseReviewAdd'
@@ -26,7 +26,7 @@ const CommentText = styled.p`
   color: ${({ theme }) => theme.header};
 `
 
-const CoursePageReviewsContainer = () => {
+const CourseReviewsContainer = () => {
   const [likes, setLikes] = useState(0)
   const [dislikes, setDislikes] = useState(0)
   const [action, setAction] = useState(null)
@@ -72,7 +72,11 @@ const CoursePageReviewsContainer = () => {
   return (
     <>
       <ReviewOptions>
-        <ButtonSwitch type="primary" active={writeStatus} onClick={toggleWrite}>
+        <ButtonSwitch
+          type="primary"
+          active={writeStatus ? 1 : 0}
+          onClick={toggleWrite}
+        >
           {!writeStatus ? (
             <>
               <PencilAlt size="18" style={{ marginRight: '0.5rem' }} />
@@ -85,10 +89,10 @@ const CoursePageReviewsContainer = () => {
 
         <ButtonSwitch
           type="primary"
-          active={!reviewStatus}
+          active={reviewStatus ? 1 : 0}
           onClick={handleReviewRequest}
         >
-          {reviewStatus ? (
+          {!reviewStatus ? (
             <>
               <UserAdd size="18" style={{ marginRight: '0.5rem' }} />
               Request
@@ -103,6 +107,7 @@ const CoursePageReviewsContainer = () => {
 
       {reviewsData.map(({ author, avatar, content }) => (
         <Comment
+          key={`${author} - ${content}`}
           actions={actions}
           author={
             <a href="google">
@@ -134,7 +139,7 @@ const CoursePageReviewsContainer = () => {
   )
 }
 
-export default CoursePageReviewsContainer
+export default CourseReviewsContainer
 
 const ReviewOptions = styled.div`
   display: flex;

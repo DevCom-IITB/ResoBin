@@ -76,8 +76,8 @@ const CourseItemSub = ({ courseData }) => {
     <>
       {semTabInitialValue ? (
         <Tabs
-          tabHeight="1.75rem"
-          tabWidth="5rem"
+          tabheight="1.75rem"
+          tabwidth="5rem"
           defaultActiveKey={semTabInitialValue}
         >
           <Tabs.TabPane key="autumn" tab="Autumn" disabled={!isRunning}>

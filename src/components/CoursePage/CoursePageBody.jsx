@@ -5,7 +5,7 @@ import { device, fontSize } from 'styles/responsive'
 
 const CoursePageBody = ({ courseData }) => {
   return (
-    <Container>
+    <Container id="details">
       <CourseCode>{courseData.Code}</CourseCode>
       <CourseTitle>{courseData.Title}</CourseTitle>
       <CourseDepartment>

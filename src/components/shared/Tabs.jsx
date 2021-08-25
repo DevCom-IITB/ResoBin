@@ -18,8 +18,8 @@ const StyledTabs = styled(Tabs)`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: ${({ tabWidth }) => tabWidth};
-    height: ${({ tabHeight }) => tabHeight};
+    width: ${({ tabwidth }) => tabwidth};
+    height: ${({ tabheight }) => tabheight};
     padding: 0;
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
