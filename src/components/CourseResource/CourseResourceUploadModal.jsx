@@ -2,7 +2,18 @@ import { Modal, Button } from 'antd'
 import { useState } from 'react'
 import { Plus } from 'styled-icons/heroicons-outline'
 
-const formats = ['pdf', 'docx', 'rtf', 'jpg', 'jpeg', 'png', 'txt']
+import CourseResourceUploadItem from './CourseResourceUploadItem'
+
+const fileTypes = ['pdf', 'docx', 'rtf', 'jpg', 'jpeg', 'png', 'txt']
+
+const file = {
+  id: 1,
+  name: '',
+  type: '',
+  size: 0,
+  lastModified: '',
+  path: '',
+}
 
 const MultiFileUpload = ({ visible, setVisible }) => {
   const [uploading, setUploading] = useState(false)
@@ -18,6 +29,12 @@ const MultiFileUpload = ({ visible, setVisible }) => {
 
   const handleCancel = () => setVisible(false)
 
+  const fileList = []
+
+  const newFile = () => {
+    fileList.push(file)
+  }
+
   return (
     <Modal
       title="Contribute resources"
@@ -27,20 +44,32 @@ const MultiFileUpload = ({ visible, setVisible }) => {
       onOk={handleOk}
       confirmLoading={uploading}
       onCancel={handleCancel}
+      width="50rem"
+      style={{ top: '3rem' }}
     >
-      <div>
-        <h1>My documents</h1>
+      <h1>My documents</h1>
 
-        <p>
-          Please upload documents only in the following formats:
-          <br />
-          {formats.map((format) => (
-            <code key={format}> {format}</code>
-          ))}
-        </p>
+      <p style={{ marginBottom: '1.5rem' }}>
+        Please upload documents only in the following formats:
+        <br />
+        {fileTypes.map((format) => (
+          <code key={format}> {format}</code>
+        ))}
+      </p>
 
-        <Button icon={<Plus size="18" />}>Add new</Button>
-      </div>
+      {fileList.map((fileItem) => (
+        <CourseResourceUploadItem
+          key={fileItem.name}
+          file={fileItem}
+          uploading={uploading}
+        />
+      ))}
+
+      <CourseResourceUploadItem fileTypes={fileTypes} />
+
+      <Button icon={<Plus size="18" />} onClick={newFile}>
+        Add new
+      </Button>
     </Modal>
   )
 }
