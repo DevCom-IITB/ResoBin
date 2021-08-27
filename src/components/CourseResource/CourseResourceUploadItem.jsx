@@ -1,48 +1,26 @@
-// import { Input } from 'antd'
-import { Button } from 'antd'
+import { Button, Popconfirm } from 'antd'
 import styled from 'styled-components/macro'
-import { X } from 'styled-icons/heroicons-outline'
+import { X, ExclamationCircle } from 'styled-icons/heroicons-outline'
 
 // acceptable file types
-const fileTypes = [
-  { type: 'pdf', icon: 'https://image.flaticon.com/icons/svg/179/179483.svg' },
-  { type: 'docx', icon: 'https://image.flaticon.com/icons/svg/281/281760.svg' },
-  { type: 'rtf', icon: 'https://image.flaticon.com/icons/svg/136/136539.svg' },
-  { type: 'png', icon: 'https://image.flaticon.com/icons/svg/136/136523.svg' },
-  { type: 'jpg', icon: 'https://image.flaticon.com/icons/svg/136/136524.svg' },
-  { type: 'jpeg', icon: 'https://image.flaticon.com/icons/svg/136/136524.svg' },
-  { type: 'txt', icon: 'https://image.flaticon.com/icons/svg/136/136538.svg' },
-  { type: '*', icon: 'https://image.flaticon.com/icons/svg/136/136549.svg' },
-]
+// const fileTypes = [
+//   { type: 'pdf', icon: 'https://image.flaticon.com/icons/svg/179/179483.svg' },
+//   { type: 'docx', icon: 'https://image.flaticon.com/icons/svg/281/281760.svg' },
+//   { type: 'rtf', icon: 'https://image.flaticon.com/icons/svg/136/136539.svg' },
+//   { type: 'png', icon: 'https://image.flaticon.com/icons/svg/136/136523.svg' },
+//   { type: 'jpg', icon: 'https://image.flaticon.com/icons/svg/136/136524.svg' },
+//   { type: 'jpeg', icon: 'https://image.flaticon.com/icons/svg/136/136524.svg' },
+//   { type: 'txt', icon: 'https://image.flaticon.com/icons/svg/136/136538.svg' },
+//   { type: '*', icon: 'https://image.flaticon.com/icons/svg/136/136549.svg' },
+// ]
 
-const readURL = (input) => {
-  console.log(input)
-}
+// const readURL = (input) => {
+//   console.log(input)
+// }
 
 const CourseResourceUploadItem = () => {
   return (
     <>
-      {/* <Input placeholder="Title" />
-      <Input.TextArea placeholder="Description" /> */}
-
-      {/* <UploadBox>
-        <img
-          src="https://image.flaticon.com/icons/svg/136/136549.svg"
-          className="icon"
-          alt="icon"
-          width="30px"
-        />
-        <span className="upl" id="upload">
-          Upload document
-        </span>
-        <input
-          type="file"
-          className="upload up"
-          id="up"
-          // onChange={readURL(this)}
-        />
-      </UploadBox> */}
-
       <ItemContainer>
         <UploadBox>
           {/* <div className="docErr">Please upload valid file</div> */}
@@ -70,18 +48,28 @@ const CourseResourceUploadItem = () => {
           placeholder="Title"
         />
 
-        <Button
-          shape="circle"
-          type="text"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginLeft: '1rem',
-          }}
-          icon={<X size="30" />}
-          size="large"
-        />
+        <Popconfirm
+          title="Are you sure?"
+          icon={
+            <ExclamationCircle
+              style={{ position: 'absolute', width: '0.8rem', color: 'red' }}
+            />
+          }
+        >
+          <Button
+            shape="circle"
+            type="text"
+            danger
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginLeft: '1rem',
+            }}
+            icon={<X size="24" />}
+            size="large"
+          />
+        </Popconfirm>
       </ItemContainer>
     </>
   )
