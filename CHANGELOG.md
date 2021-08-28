@@ -6,14 +6,19 @@
 
 ## Homepage
 
-Fav => MA 105, ME 113, PH 107
+### Content
 
 1. Review / Review's Comments pe likes / comments
-XYZ liked your comment
-XYZ commented on your comment
+Example:
+
+* XYZ liked your comment
+* XYZ commented on your comment
 
 2. Updates on fav courses
-Someone posted new review / material to ABC course (ABC has been fav)
+
+
+
+Example: Someone posted new review / material to ABC course (ABC has been fav)
 
 3. Your material / review request has been met, link to the content
 

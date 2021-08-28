@@ -1,5 +1,6 @@
 import { Button, Popconfirm } from 'antd'
 import { useState } from 'react'
+import { Document, Page, pdfjs } from 'react-pdf'
 import styled from 'styled-components/macro'
 import { X, ExclamationCircle } from 'styled-icons/heroicons-outline'
 
@@ -17,7 +18,7 @@ const CourseResourceUploadItem = () => {
 
     // ? invalid file type
     if (!type) {
-      setStatus('invalid')
+      setStatus('error')
       return
     }
 
@@ -27,12 +28,18 @@ const CourseResourceUploadItem = () => {
     setFileIcon(icon)
 
     const reader = new FileReader()
-    reader.onload = (event) => {
-      console.log(event)
-      // const src = event?.target?.result
-      // console.log(src)
-      // setPreview(src)
+    reader.readAsDataURL(file)
+
+    reader.onloadend = () => {
+      const base64 = reader.result
     }
+
+    // reader.onload = (event) => {
+    // console.log(event)
+    // const src = event?.target?.result
+    // console.log(src)
+    // setPreview(src)
+    // }
 
     // // reader.readAsDataURL(fileName)
     // // } else {
@@ -42,7 +49,7 @@ const CourseResourceUploadItem = () => {
 
   return (
     <>
-      <ItemContainer>
+      <ItemContainer status={status}>
         <UploadBox>
           {/* <div className="docErr">Please upload valid file</div> */}
           <img src={fileIcon} className="icon" alt="icon" />
@@ -85,8 +92,10 @@ export default CourseResourceUploadItem
 const ItemContainer = styled.div`
   display: flex;
   align-items: center;
-  height: 3rem;
   margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  background-color: ${({ status }) =>
+    status === 'error' ? '#ffeeee' : '#ffffff'};
 `
 
 const Input = styled.input`
@@ -99,6 +108,7 @@ const Input = styled.input`
   border-bottom: 1px solid lightgray;
   border-radius: 0;
   font-size: 0.875rem;
+  background-color: transparent;
   box-shadow: none;
 
   &:focus {
