@@ -1,5 +1,5 @@
 // ? acceptable file types
-const fileTypes = [
+export const fileTypes = [
   {
     type: 'application/pdf',
     extention: 'pdf',
@@ -35,11 +35,27 @@ const fileTypes = [
     extention: 'txt',
     icon: 'https://image.flaticon.com/icons/svg/136/136538.svg',
   },
-  {
-    type: '*',
-    extention: '*',
-    icon: 'https://image.flaticon.com/icons/svg/136/136549.svg',
-  },
 ]
+
+export const defaultFileType = {
+  type: null,
+  extention: null,
+  icon: 'https://image.flaticon.com/icons/svg/136/136549.svg',
+}
+
+export const getFileDetails = (file) => {
+  if (!file) return defaultFileType
+
+  const { name, type } = file
+  const extention = name.split('.').pop()
+  const { icon } =
+    fileTypes.find((fileType) => fileType.type === type) || defaultFileType
+
+  return {
+    type,
+    extention,
+    icon,
+  }
+}
 
 export default fileTypes

@@ -3,29 +3,37 @@ import { useState } from 'react'
 import styled from 'styled-components/macro'
 import { X, ExclamationCircle } from 'styled-icons/heroicons-outline'
 
-import fileTypes from './__mock__/fileTypes'
+import { defaultFileType, getFileDetails } from './__mock__/fileTypes'
 
 const CourseResourceUploadItem = () => {
   const [fileName, setFileName] = useState('Upload document')
-  const [fileIcon, setFileIcon] = useState(fileTypes[''])
+  const [fileIcon, setFileIcon] = useState(defaultFileType.icon)
+
+  const [status, setStatus] = useState(null)
 
   const readURL = (e) => {
-    setFileName(e.target.files[0].name)
-    setFileIcon(fileTypes[e.target.files[0].type] || fileTypes[''])
-    // const fileName = e.target.files[0]?.name
-    // if (!fileName) return
+    const file = e.target.files[0]
+    const { type, icon } = getFileDetails(file)
 
-    // const fileType = fileName.split('.').pop().toLowerCase()
+    // ? invalid file type
+    if (!type) {
+      setStatus('invalid')
+      return
+    }
 
-    // console.log(e)
-    // // if (fileTypes.includes(fileType)) {
-    // const reader = new FileReader()
-    // reader.onload = (event) => {
-    //   console.log(event)
-    //   const src = event?.target?.result
-    //   console.log(src)
-    //   // setPreview(src)
-    // }
+    setStatus('valid')
+
+    setFileName(file.name)
+    setFileIcon(icon)
+
+    const reader = new FileReader()
+    reader.onload = (event) => {
+      console.log(event)
+      // const src = event?.target?.result
+      // console.log(src)
+      // setPreview(src)
+    }
+
     // // reader.readAsDataURL(fileName)
     // // } else {
     // // console.log('invalid file type')
@@ -103,8 +111,6 @@ const Input = styled.input`
 const UploadBox = styled.div`
   position: relative;
   display: flex;
-
-  /* overflow: hidden; */
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
