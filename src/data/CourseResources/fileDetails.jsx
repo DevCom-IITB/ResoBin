@@ -37,25 +37,25 @@ export const fileTypes = [
   },
 ]
 
-export const defaultFileType = {
+export const defaultFile = {
+  name: 'Upload document',
   type: null,
   extention: null,
   icon: 'https://image.flaticon.com/icons/svg/136/136549.svg',
+  isValid: false,
 }
 
 export const getFileDetails = (file) => {
-  if (!file) return defaultFileType
-
+  if (!file) return defaultFile
   const { name, type } = file
-  const extention = name.split('.').pop()
-  const { icon } =
-    fileTypes.find((fileType) => fileType.type === type) || defaultFileType
+  const fileType = fileTypes.find((item) => item.type === type)
+  if (!fileType) return { ...defaultFile, name }
 
   return {
+    name,
     type,
-    extention,
-    icon,
+    extention: name.split('.').pop().toLowerCase(),
+    icon: fileType.icon,
+    isValid: true,
   }
 }
-
-export default fileTypes
