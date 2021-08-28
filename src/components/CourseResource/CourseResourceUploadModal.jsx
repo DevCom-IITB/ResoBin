@@ -47,11 +47,10 @@ const MultiFileUpload = ({ visible, setVisible }) => {
       width="50rem"
       style={{ top: '3rem' }}
     >
-      <h1>My documents</h1>
+      <h1>Upload</h1>
 
-      <p style={{ marginBottom: '1.5rem' }}>
+      <p style={{ fontSize: '0.875rem', marginBottom: '1.5rem' }}>
         Please upload documents only in the following formats:
-        <br />
         {fileTypes.map((format) => (
           <code key={format}> {format}</code>
         ))}

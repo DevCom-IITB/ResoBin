@@ -32,7 +32,7 @@ const CoursePageContainer = ({ courseData }) => {
             tab={`Reviews (${reviewCount})`}
             disabled={false}
           >
-            <CourseReviewContainer ref={reviews} />
+            <CourseReviewContainer />
           </Tabs.TabPane>
 
           <Tabs.TabPane
@@ -41,7 +41,7 @@ const CoursePageContainer = ({ courseData }) => {
             disabled={false}
             id="resources"
           >
-            <CourseResourceContainer ref={resources} />
+            <CourseResourceContainer />
           </Tabs.TabPane>
         </Tabs>
       </Container>

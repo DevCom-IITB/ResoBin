@@ -1,52 +1,49 @@
 import { Button, Popconfirm } from 'antd'
+import { useState } from 'react'
 import styled from 'styled-components/macro'
 import { X, ExclamationCircle } from 'styled-icons/heroicons-outline'
 
-// acceptable file types
-// const fileTypes = [
-//   { type: 'pdf', icon: 'https://image.flaticon.com/icons/svg/179/179483.svg' },
-//   { type: 'docx', icon: 'https://image.flaticon.com/icons/svg/281/281760.svg' },
-//   { type: 'rtf', icon: 'https://image.flaticon.com/icons/svg/136/136539.svg' },
-//   { type: 'png', icon: 'https://image.flaticon.com/icons/svg/136/136523.svg' },
-//   { type: 'jpg', icon: 'https://image.flaticon.com/icons/svg/136/136524.svg' },
-//   { type: 'jpeg', icon: 'https://image.flaticon.com/icons/svg/136/136524.svg' },
-//   { type: 'txt', icon: 'https://image.flaticon.com/icons/svg/136/136538.svg' },
-//   { type: '*', icon: 'https://image.flaticon.com/icons/svg/136/136549.svg' },
-// ]
-
-// const readURL = (input) => {
-//   console.log(input)
-// }
+import fileTypes from './__mock__/fileTypes'
 
 const CourseResourceUploadItem = () => {
+  const [fileName, setFileName] = useState('Upload document')
+  const [fileIcon, setFileIcon] = useState(fileTypes[''])
+
+  const readURL = (e) => {
+    setFileName(e.target.files[0].name)
+    setFileIcon(fileTypes[e.target.files[0].type] || fileTypes[''])
+    // const fileName = e.target.files[0]?.name
+    // if (!fileName) return
+
+    // const fileType = fileName.split('.').pop().toLowerCase()
+
+    // console.log(e)
+    // // if (fileTypes.includes(fileType)) {
+    // const reader = new FileReader()
+    // reader.onload = (event) => {
+    //   console.log(event)
+    //   const src = event?.target?.result
+    //   console.log(src)
+    //   // setPreview(src)
+    // }
+    // // reader.readAsDataURL(fileName)
+    // // } else {
+    // // console.log('invalid file type')
+    // // }
+  }
+
   return (
     <>
       <ItemContainer>
         <UploadBox>
           {/* <div className="docErr">Please upload valid file</div> */}
-          <img
-            src="https://image.flaticon.com/icons/svg/136/136549.svg"
-            className="icon"
-            alt="icon"
-          />
+          <img src={fileIcon} className="icon" alt="icon" />
 
-          <span className="upl" id="upload">
-            Upload document
-          </span>
-          <input
-            type="file"
-            className="upload up"
-            id="up"
-            onChange="readURL(this);"
-          />
+          <span id="upload">{fileName}</span>
+          <input type="file" className="upload up" id="up" onChange={readURL} />
         </UploadBox>
 
-        <Input
-          type="text"
-          className="form-control"
-          name=""
-          placeholder="Title"
-        />
+        <Input type="text" name="" placeholder="Title" />
 
         <Popconfirm
           title="Are you sure?"
@@ -87,10 +84,11 @@ const ItemContainer = styled.div`
 const Input = styled.input`
   width: 100%;
   height: 2.5rem;
+  padding: 0.5rem;
   margin-bottom: 0;
   margin-left: 1rem;
   border: none;
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid lightgray;
   border-radius: 0;
   font-size: 0.875rem;
   box-shadow: none;
@@ -105,17 +103,23 @@ const Input = styled.input`
 const UploadBox = styled.div`
   position: relative;
   display: flex;
+
+  /* overflow: hidden; */
   justify-content: space-between;
   align-items: center;
-  height: 3rem;
-  padding: 0 0.75rem;
-  border: 1px solid #777777;
+  padding: 0.5rem;
+  border: 1px solid lightgray;
   border-radius: 0.5rem;
+  text-overflow: ellipsis;
   white-space: nowrap;
   color: #777777;
   background-color: transparent;
   cursor: pointer;
   gap: 0.5rem;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
 
   img {
     width: 1.5rem;
