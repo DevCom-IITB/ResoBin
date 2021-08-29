@@ -43,6 +43,20 @@ export const defaultFile = {
   extention: null,
   icon: 'https://image.flaticon.com/icons/svg/136/136549.svg',
   isValid: false,
+  size: null,
+}
+
+const printSize = (_size) => {
+  const sizes = ['Bytes', 'KB', 'MB', 'GB']
+  let i = 0
+  let size = _size
+
+  while (size > 900) {
+    size /= 1024
+    i += 1
+  }
+
+  return `${Math.round(size * 100) / 100} ${sizes[i]}`
 }
 
 export const getFileDetails = (file) => {
@@ -57,5 +71,6 @@ export const getFileDetails = (file) => {
     extention: name.split('.').pop().toLowerCase(),
     icon: fileType.icon,
     isValid: true,
+    size: printSize(file.size),
   }
 }

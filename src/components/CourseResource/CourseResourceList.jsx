@@ -1,4 +1,4 @@
-import sample from './__mock__/sample.pdf'
+import sample from './.temp/sample.pdf'
 import PDFViewer from './PDFViewer'
 
 const CourseResourceList = () => {

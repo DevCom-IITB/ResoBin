@@ -1,19 +1,18 @@
 import { Modal, Button } from 'antd'
+import { nanoid } from 'nanoid'
 import { useState } from 'react'
+import styled from 'styled-components/macro'
 import { Plus } from 'styled-icons/heroicons-outline'
+
+import { fileTypes } from 'data/CourseResources'
 
 import CourseResourceUploadItem from './CourseResourceUploadItem'
 
-const fileTypes = ['pdf', 'docx', 'rtf', 'jpg', 'jpeg', 'png', 'txt']
-
-const file = {
-  id: 1,
-  name: '',
-  type: '',
-  size: 0,
-  lastModified: '',
-  path: '',
-}
+const createFileItem = (title = '', file = null) => ({
+  id: nanoid(),
+  title,
+  file,
+})
 
 const MultiFileUpload = ({ visible, setVisible }) => {
   const [uploading, setUploading] = useState(false)
@@ -29,15 +28,14 @@ const MultiFileUpload = ({ visible, setVisible }) => {
 
   const handleCancel = () => setVisible(false)
 
-  const fileList = []
+  const [fileList, setFileList] = useState([createFileItem()])
 
-  const newFile = () => {
-    fileList.push(file)
-  }
+  const addNewFile = () =>
+    setFileList((prevItems) => [...prevItems, createFileItem()])
 
   return (
-    <Modal
-      title="Contribute resources"
+    <StyledModal
+      title={<h2>Contribute resources</h2>}
       maskClosable={false}
       visible={visible}
       okText="Upload"
@@ -45,32 +43,48 @@ const MultiFileUpload = ({ visible, setVisible }) => {
       confirmLoading={uploading}
       onCancel={handleCancel}
       width="50rem"
-      style={{ top: '3rem' }}
     >
-      <h1>Upload</h1>
-
-      <p style={{ fontSize: '0.875rem', marginBottom: '1.5rem' }}>
+      <p style={{ fontSize: '0.875rem', marginBottom: '0.25rem' }}>
         Please upload documents only in the following formats:
-        {fileTypes.map((format) => (
-          <code key={format}> {format}</code>
+        {fileTypes.map(({ extention }) => (
+          <code key={extention}> {extention}</code>
         ))}
       </p>
 
-      {fileList.map((fileItem) => (
-        <CourseResourceUploadItem
-          key={fileItem.name}
-          file={fileItem}
-          uploading={uploading}
-        />
-      ))}
+      <FileList>
+        {fileList.map((fileItem) => (
+          <CourseResourceUploadItem
+            key={fileItem.name}
+            file={fileItem}
+            uploading={uploading}
+          />
+        ))}
+      </FileList>
 
-      <CourseResourceUploadItem fileTypes={fileTypes} />
-
-      <Button icon={<Plus size="18" />} onClick={newFile}>
+      <Button
+        style={{ marginTop: '0.5rem' }}
+        icon={<Plus size="18" />}
+        onClick={addNewFile}
+      >
         Add new
       </Button>
-    </Modal>
+    </StyledModal>
   )
 }
 
 export default MultiFileUpload
+
+const FileList = styled.div`
+  display: flex;
+  overflow-y: auto;
+  flex-direction: column;
+  height: 21rem;
+  padding: 1rem 0;
+  gap: 1rem;
+`
+
+const StyledModal = styled(Modal)`
+  top: 3rem;
+  overflow-y: hidden;
+  max-height: calc(100% - 4rem);
+`

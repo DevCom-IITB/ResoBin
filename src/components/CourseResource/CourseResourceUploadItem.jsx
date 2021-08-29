@@ -13,25 +13,21 @@ const ToolTipTitle = () => (
 )
 
 const CourseResourceUploadItem = () => {
-  const [fileName, setFileName] = useState(defaultFile.name)
-  const [fileIcon, setFileIcon] = useState(defaultFile.icon)
+  const [fileDetails, setFileDetails] = useState(defaultFile)
   const [status, setStatus] = useState(null)
 
   const readURL = (e) => {
     const file = e.target.files[0]
-    const { name, icon, isValid } = getFileDetails(file)
+    const { isValid } = getFileDetails(file)
+    setFileDetails(getFileDetails(file))
 
     // ? invalid file selected
     if (!isValid) {
       setStatus('error')
-      setFileName(name)
-      setFileIcon(defaultFile.icon)
       return
     }
 
     setStatus('loading')
-    setFileName(name)
-    setFileIcon(icon)
 
     const reader = new FileReader()
     reader.readAsDataURL(file)
@@ -54,8 +50,11 @@ const CourseResourceUploadItem = () => {
         title={<ToolTipTitle />}
       >
         <UploadBox>
-          <img src={fileIcon} className="icon" alt="icon" />
-          <span id="upload">{fileName}</span>
+          <img src={fileDetails.icon} className="icon" alt="icon" />
+          <h3 id="upload">
+            {fileDetails.name}
+            <small>{` (${Math.floor(150000 / 1024)} KB)`}</small>
+          </h3>
           <input type="file" className="upload up" id="up" onChange={readURL} />
         </UploadBox>
       </Tooltip>
@@ -101,7 +100,6 @@ const TooltipContainer = styled.div`
 const ItemContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
   border-radius: 0.5rem;
   background-color: white;
 `

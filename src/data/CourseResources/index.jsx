@@ -1,1 +1,1 @@
-export { getFileDetails, defaultFile } from './fileDetails'
+export { getFileDetails, defaultFile, fileTypes } from './fileDetails'
