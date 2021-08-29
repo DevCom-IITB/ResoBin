@@ -12,9 +12,14 @@ const ToolTipTitle = () => (
   </TooltipContainer>
 )
 
-const CourseResourceUploadItem = () => {
+const CourseResourceUploadItem = ({
+  file: fileItem,
+  onChange: handleChange,
+  onDelete: handleDelete,
+}) => {
   const [fileDetails, setFileDetails] = useState(defaultFile)
   const [status, setStatus] = useState(null)
+  const [popoverVisible, setPopoverVisible] = useState(false)
 
   const readURL = (e) => {
     const file = e.target.files[0]
@@ -26,6 +31,8 @@ const CourseResourceUploadItem = () => {
       setStatus('error')
       return
     }
+
+    handleChange()
 
     setStatus('loading')
 
@@ -39,6 +46,25 @@ const CourseResourceUploadItem = () => {
 
     reader.onerror = () => {
       setStatus('error')
+    }
+  }
+
+  const deleteFileItem = () => {
+    setPopoverVisible(false)
+    handleDelete(fileItem.id)
+  }
+
+  const handleVisibleChange = (visible) => {
+    if (!visible) {
+      setPopoverVisible(false)
+      return
+    }
+
+    // default item, no need for popover
+    if (fileDetails === defaultFile) {
+      deleteFileItem()
+    } else {
+      setPopoverVisible(true)
     }
   }
 
@@ -65,9 +91,14 @@ const CourseResourceUploadItem = () => {
         title="Are you sure?"
         icon={
           <ExclamationCircle
-            style={{ position: 'absolute', width: '0.8rem', color: 'red' }}
+            style={{ position: 'absolute', top: '6px', color: 'red' }}
+            size="16"
           />
         }
+        visible={popoverVisible}
+        onVisibleChange={handleVisibleChange}
+        onConfirm={deleteFileItem}
+        onCancel={() => setPopoverVisible(false)}
       >
         <Button
           shape="circle"
@@ -101,7 +132,8 @@ const ItemContainer = styled.div`
   display: flex;
   align-items: center;
   border-radius: 0.5rem;
-  background-color: white;
+
+  /* background-color: ${({ theme }) => theme.secondary}; */
 `
 
 const Input = styled.input`

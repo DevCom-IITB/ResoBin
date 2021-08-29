@@ -1,6 +1,6 @@
 import { Modal, Button } from 'antd'
 import { nanoid } from 'nanoid'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Plus } from 'styled-icons/heroicons-outline'
 
@@ -8,30 +8,41 @@ import { fileTypes } from 'data/CourseResources'
 
 import CourseResourceUploadItem from './CourseResourceUploadItem'
 
-const createFileItem = (title = '', file = null) => ({
-  id: nanoid(),
-  title,
-  file,
-})
-
-const MultiFileUpload = ({ visible, setVisible }) => {
+const CourseResourceUploadModal = ({ visible, setVisible }) => {
+  const [fileList, setFileList] = useState([])
   const [uploading, setUploading] = useState(false)
 
-  const handleOk = () => {
+  const handleModalCancel = () => setVisible(false)
+  const handleModalOk = () => {
     setUploading(true)
-
     setTimeout(() => {
       setVisible(false)
       setUploading(false)
     }, 2000)
   }
 
-  const handleCancel = () => setVisible(false)
+  const createFileItem = (title = '', file = null) => ({
+    id: nanoid(),
+    title,
+    file,
+  })
 
-  const [fileList, setFileList] = useState([createFileItem()])
-
-  const addNewFile = () =>
+  const handleFileItemAdd = () =>
     setFileList((prevItems) => [...prevItems, createFileItem()])
+
+  const handleFileItemDelete = (id) =>
+    setFileList((prevItems) => prevItems.filter((item) => item.id !== id))
+
+  const handleFileItemChange = (id, fileItem) =>
+    setFileList((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id ? { ...item, ...fileItem } : item
+      )
+    )
+
+  useEffect(() => {
+    if (fileList.length === 0) handleFileItemAdd()
+  }, [handleFileItemAdd, fileList])
 
   return (
     <StyledModal
@@ -39,9 +50,9 @@ const MultiFileUpload = ({ visible, setVisible }) => {
       maskClosable={false}
       visible={visible}
       okText="Upload"
-      onOk={handleOk}
+      onOk={handleModalOk}
       confirmLoading={uploading}
-      onCancel={handleCancel}
+      onCancel={handleModalCancel}
       width="50rem"
     >
       <p style={{ fontSize: '0.875rem', marginBottom: '0.25rem' }}>
@@ -54,9 +65,11 @@ const MultiFileUpload = ({ visible, setVisible }) => {
       <FileList>
         {fileList.map((fileItem) => (
           <CourseResourceUploadItem
-            key={fileItem.name}
+            key={fileItem.id}
             file={fileItem}
-            uploading={uploading}
+            onChange={handleFileItemChange}
+            onDelete={handleFileItemDelete}
+            // uploading={uploading}
           />
         ))}
       </FileList>
@@ -64,7 +77,7 @@ const MultiFileUpload = ({ visible, setVisible }) => {
       <Button
         style={{ marginTop: '0.5rem' }}
         icon={<Plus size="18" />}
-        onClick={addNewFile}
+        onClick={handleFileItemAdd}
       >
         Add new
       </Button>
@@ -72,7 +85,7 @@ const MultiFileUpload = ({ visible, setVisible }) => {
   )
 }
 
-export default MultiFileUpload
+export default CourseResourceUploadModal
 
 const FileList = styled.div`
   display: flex;
@@ -87,4 +100,9 @@ const StyledModal = styled(Modal)`
   top: 3rem;
   overflow-y: hidden;
   max-height: calc(100% - 4rem);
+  border-radius: 0.5rem;
+
+  /* .ant-modal-body {
+    background-color: ${({ theme }) => theme.darksecondary};
+  } */
 `
