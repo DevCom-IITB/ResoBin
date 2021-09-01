@@ -51,6 +51,7 @@ const CourseItemMain = ({ courseData }) => {
             onClick={favouriteClick}
             size="lg"
             Icon={favourite ? Bookmark : BookmarkOutline}
+            hoverstyle={{ color: 'white' }}
           />
         </RightIcons>
       </SubTitle>

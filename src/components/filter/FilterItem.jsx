@@ -58,8 +58,10 @@ const FilterItem = ({ data: groupData }) => {
         <ButtonIcon
           tooltip="Bookmark"
           onClick={clearAllFilters}
-          size="xs"
-          Icon={X}
+          size="lg"
+          icon={<X size="18" />}
+          defaultstyle={{ color: '#ff5050' }}
+          hoverstyle={{ color: 'red' }}
         />
       </Header>
 

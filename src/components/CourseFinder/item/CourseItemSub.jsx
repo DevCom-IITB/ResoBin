@@ -27,7 +27,7 @@ const SemesterItem = ({ courseCode, semester }) => {
 
   return (
     <ButtonSwitch
-      active={status}
+      active={status ? 1 : 0}
       icon={<Calendar size="18" style={{ marginRight: '0.5rem' }} />}
       onClick={handleClick}
     >

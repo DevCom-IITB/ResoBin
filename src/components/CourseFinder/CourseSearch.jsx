@@ -70,7 +70,7 @@ const StyledIcon = styled(({ Icon, className, ...props }) => {
 `
 
 const StyledInput = styled(Input)`
-  z-index: 10;
+  z-index: 10 !important;
   height: 2rem;
   padding: 0 0.75rem;
   border: 0;
