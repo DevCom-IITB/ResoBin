@@ -1,4 +1,4 @@
-import { Button, Popconfirm, Tooltip } from 'antd'
+import { Popconfirm, Tooltip } from 'antd'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
 import { X, ExclamationCircle } from 'styled-icons/heroicons-outline'
@@ -42,7 +42,7 @@ const CourseResourceUploadItem = ({
     reader.readAsDataURL(file)
 
     reader.onloadend = () => {
-      const base64 = reader.result
+      // const base64 = reader.result
       setStatus('success')
     }
 
@@ -100,20 +100,11 @@ const CourseResourceUploadItem = ({
         onConfirm={deleteFileItem}
         onCancel={() => setPopoverVisible(false)}
       >
-        {/* <Button
-          shape="circle"
-          type="text"
-          danger
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginLeft: '1rem',
-          }}
+        <ButtonIcon
           icon={<X size="20" />}
-          size="large"
-        /> */}
-        <ButtonIcon size="lg" icon={<X />} style={{ color: 'red' }} />
+          color="red"
+          defaultstyle={{ color: '#ff5050', marginLeft: '1rem' }}
+        />
       </Popconfirm>
     </ItemContainer>
   )
@@ -169,14 +160,7 @@ const UploadBox = styled.div`
   padding: 0.5rem;
   border: 1px solid lightgray;
   border-radius: 0.5rem;
-  color: ${({ status }) => {
-    switch (status) {
-      case 'success':
-        return '#000000'
-      default:
-        return '#777777'
-    }
-  }};
+  color: ${({ status }) => (status === 'success' ? '#000000' : '#777777')};
   background-color: transparent;
   gap: 0.5rem;
 

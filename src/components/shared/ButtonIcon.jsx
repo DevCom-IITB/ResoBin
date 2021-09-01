@@ -9,16 +9,17 @@ const ButtonIconContainer = ({
   onClick,
   defaultstyle = {},
   hoverstyle = {},
-  size = 'lg',
   tooltip = null,
+  color = null,
 }) => {
   const ButtonIcon = (
     <StyledButton
       shape="circle"
-      ghost
+      type="text"
       icon={icon}
       onClick={onClick}
-      size={size}
+      size="large"
+      color={color}
       defaultstyle={defaultstyle}
       hoverstyle={hoverstyle}
     >
@@ -42,6 +43,7 @@ const StyledButton = styled(Button)`
   justify-content: center;
   align-items: center;
   border: 0;
+  color: ${({ color, theme }) => color || theme.textColor};
   ${({ defaultstyle }) => defaultstyle};
 
   > svg {
@@ -49,10 +51,12 @@ const StyledButton = styled(Button)`
   }
 
   &:hover {
+    color: ${({ color, theme }) => color || theme.textColor};
+    background: rgba(0, 0, 0, 0.1);
     ${({ hoverstyle }) => hoverstyle};
   }
 
   &:focus {
-    color: ${({ theme }) => theme.textColor};
+    color: ${({ color, theme }) => color || theme.textColor};
   }
 `

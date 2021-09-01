@@ -47,11 +47,12 @@ const CourseItemMain = ({ courseData }) => {
           </CreditContainer>
 
           <ButtonIcon
-            tooltip="Bookmark"
+            tooltip="Add to favorites"
             onClick={favouriteClick}
-            size="lg"
-            icon={favourite ? <Bookmark /> : <BookmarkOutline />}
-            hoverstyle={{ color: 'white' }}
+            icon={
+              favourite ? <Bookmark size="30" /> : <BookmarkOutline size="30" />
+            }
+            color="white"
           />
         </RightIcons>
       </SubTitle>
