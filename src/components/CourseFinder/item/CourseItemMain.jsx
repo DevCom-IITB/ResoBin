@@ -50,7 +50,7 @@ const CourseItemMain = ({ courseData }) => {
             tooltip="Bookmark"
             onClick={favouriteClick}
             size="lg"
-            Icon={favourite ? Bookmark : BookmarkOutline}
+            icon={favourite ? <Bookmark /> : <BookmarkOutline />}
             hoverstyle={{ color: 'white' }}
           />
         </RightIcons>

@@ -1,6 +1,6 @@
 import { Modal, Button } from 'antd'
 import { nanoid } from 'nanoid'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Plus } from 'styled-icons/heroicons-outline'
 
@@ -27,8 +27,9 @@ const CourseResourceUploadModal = ({ visible, setVisible }) => {
     file,
   })
 
-  const handleFileItemAdd = () =>
+  const handleFileItemAdd = useCallback(() => {
     setFileList((prevItems) => [...prevItems, createFileItem()])
+  }, [])
 
   const handleFileItemDelete = (id) =>
     setFileList((prevItems) => prevItems.filter((item) => item.id !== id))

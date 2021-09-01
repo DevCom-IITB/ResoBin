@@ -3,6 +3,7 @@ import { useState } from 'react'
 import styled from 'styled-components/macro'
 import { X, ExclamationCircle } from 'styled-icons/heroicons-outline'
 
+import { ButtonIcon } from 'components/shared'
 import { defaultFile, getFileDetails } from 'data/CourseResources'
 
 const ToolTipTitle = () => (
@@ -28,11 +29,12 @@ const CourseResourceUploadItem = ({
 
     // ? invalid file selected
     if (!isValid) {
-      setStatus('error')
+      if (!file) setStatus(null)
+      else setStatus('error')
       return
     }
 
-    handleChange()
+    // handleChange()
 
     setStatus('loading')
 
@@ -60,30 +62,28 @@ const CourseResourceUploadItem = ({
       return
     }
 
-    // default item, no need for popover
-    if (fileDetails === defaultFile) {
-      deleteFileItem()
-    } else {
-      setPopoverVisible(true)
-    }
+    // Show popover only if user has made changes
+    if (fileDetails === defaultFile) deleteFileItem()
+    else setPopoverVisible(true)
   }
 
   return (
     <ItemContainer>
-      <Tooltip
+      <StyledTooltip
         color="white"
         visible={status === 'error'}
         title={<ToolTipTitle />}
       >
-        <UploadBox>
+        <UploadBox status={status}>
           <img src={fileDetails.icon} className="icon" alt="icon" />
           <h3 id="upload">
             {fileDetails.name}
-            <small>{` (${Math.floor(150000 / 1024)} KB)`}</small>
+            <br />
+            {fileDetails.size && <small>{` (${fileDetails.size})`}</small>}
           </h3>
           <input type="file" className="upload up" id="up" onChange={readURL} />
         </UploadBox>
-      </Tooltip>
+      </StyledTooltip>
 
       <Input type="text" name="" placeholder="Title" />
 
@@ -100,7 +100,7 @@ const CourseResourceUploadItem = ({
         onConfirm={deleteFileItem}
         onCancel={() => setPopoverVisible(false)}
       >
-        <Button
+        {/* <Button
           shape="circle"
           type="text"
           danger
@@ -110,15 +110,20 @@ const CourseResourceUploadItem = ({
             justifyContent: 'center',
             marginLeft: '1rem',
           }}
-          icon={<X size="24" />}
+          icon={<X size="20" />}
           size="large"
-        />
+        /> */}
+        <ButtonIcon size="lg" icon={<X />} style={{ color: 'red' }} />
       </Popconfirm>
     </ItemContainer>
   )
 }
 
 export default CourseResourceUploadItem
+
+const StyledTooltip = styled(Tooltip)`
+  cursor: pointer;
+`
 
 const TooltipContainer = styled.div`
   display: flex;
@@ -159,20 +164,24 @@ const Input = styled.input`
 const UploadBox = styled.div`
   position: relative;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  width: 20rem;
   padding: 0.5rem;
   border: 1px solid lightgray;
   border-radius: 0.5rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #777777;
+  color: ${({ status }) => {
+    switch (status) {
+      case 'success':
+        return '#000000'
+      default:
+        return '#777777'
+    }
+  }};
   background-color: transparent;
   gap: 0.5rem;
 
   &:hover {
     background-color: #f5f5f5;
-    cursor: pointer;
   }
 
   img {
@@ -190,5 +199,6 @@ const UploadBox = styled.div`
     opacity: 0;
     width: 100%;
     height: 100%;
+    cursor: pointer;
   }
 `
