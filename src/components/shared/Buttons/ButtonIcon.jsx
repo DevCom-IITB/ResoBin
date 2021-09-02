@@ -6,33 +6,29 @@ import { fontSize } from 'styles/responsive'
 const ButtonIconContainer = ({
   children,
   icon,
-  onClick,
-  defaultstyle = {},
-  hoverstyle = {},
   tooltip = null,
   color = null,
+  defaultstyle = {},
+  hoverstyle = {},
+  onClick,
 }) => {
-  const ButtonIcon = (
-    <StyledButton
-      shape="circle"
-      type="text"
-      icon={icon}
-      onClick={onClick}
-      size="large"
-      color={color}
-      defaultstyle={defaultstyle}
-      hoverstyle={hoverstyle}
-    >
-      {children}
-    </StyledButton>
-  )
-
-  return tooltip ? (
-    <Tooltip zIndex={5} title={tooltip}>
-      {ButtonIcon}
-    </Tooltip>
-  ) : (
-    ButtonIcon
+  return (
+    <>
+      <Tooltip title={tooltip}>
+        <StyledButton
+          shape="circle"
+          type="text"
+          icon={icon}
+          onClick={onClick}
+          size="large"
+          color={color}
+          defaultstyle={defaultstyle}
+          hoverstyle={hoverstyle}
+        >
+          {children}
+        </StyledButton>
+      </Tooltip>
+    </>
   )
 }
 

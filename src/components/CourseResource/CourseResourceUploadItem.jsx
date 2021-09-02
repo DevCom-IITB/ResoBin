@@ -1,9 +1,9 @@
-import { Popconfirm, Tooltip } from 'antd'
+import { Tooltip } from 'antd'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
 import { X, ExclamationCircle } from 'styled-icons/heroicons-outline'
 
-import { ButtonIcon } from 'components/shared'
+import { ButtonIconDanger } from 'components/shared/Buttons'
 import { defaultFile, getFileDetails } from 'data/CourseResources'
 
 const ToolTipTitle = () => (
@@ -20,7 +20,6 @@ const CourseResourceUploadItem = ({
 }) => {
   const [fileDetails, setFileDetails] = useState(defaultFile)
   const [status, setStatus] = useState(null)
-  const [popoverVisible, setPopoverVisible] = useState(false)
 
   const readURL = (e) => {
     const file = e.target.files[0]
@@ -52,19 +51,7 @@ const CourseResourceUploadItem = ({
   }
 
   const deleteFileItem = () => {
-    setPopoverVisible(false)
     handleDelete(fileItem.id)
-  }
-
-  const handleVisibleChange = (visible) => {
-    if (!visible) {
-      setPopoverVisible(false)
-      return
-    }
-
-    // Show popover only if user has made changes
-    if (fileDetails === defaultFile) deleteFileItem()
-    else setPopoverVisible(true)
   }
 
   return (
@@ -84,28 +71,15 @@ const CourseResourceUploadItem = ({
           <input type="file" className="upload up" id="up" onChange={readURL} />
         </UploadBox>
       </StyledTooltip>
-
       <Input type="text" name="" placeholder="Title" />
 
-      <Popconfirm
-        title="Are you sure?"
-        icon={
-          <ExclamationCircle
-            style={{ position: 'absolute', top: '6px', color: 'red' }}
-            size="16"
-          />
-        }
-        visible={popoverVisible}
-        onVisibleChange={handleVisibleChange}
+      <ButtonIconDanger
+        icon={<X size="20" />}
+        popover={fileDetails !== defaultFile}
+        popoverTitle="Discard this upload?"
         onConfirm={deleteFileItem}
-        onCancel={() => setPopoverVisible(false)}
-      >
-        <ButtonIcon
-          icon={<X size="20" />}
-          color="red"
-          defaultstyle={{ color: '#ff5050', marginLeft: '1rem' }}
-        />
-      </Popconfirm>
+        defaultstyle={{ marginLeft: '1rem' }}
+      />
     </ItemContainer>
   )
 }
