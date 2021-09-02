@@ -1,6 +1,6 @@
 import { X } from '@styled-icons/heroicons-outline'
 import { Checkbox } from 'antd'
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
@@ -29,16 +29,18 @@ const FilterItem = ({ data: groupData }) => {
   const param = groupData.id
 
   const queryString = new URLSearchParams(location.search)
-  const currentValues = queryString.get(param)
 
-  const setQueryString = (query) => {
-    // ? No change
-    if (query === (queryString.get(param) || '')) return
+  const [filterValue, setFilterValue] = useState(queryString.get(param))
 
-    // ? update query string or clear query string if query is empty
-    if (query) queryString.set(param, query)
+  const setQueryString = (values) => {
+    // ? no change
+    if (values === queryString.get(param)) return
+
+    setFilterValue(values)
+
+    // ? remove empty query from url to keep it clean
+    if (values?.length) queryString.set(param, values)
     else queryString.delete(param)
-
     // ? reset pagination
     queryString.delete('p')
 
@@ -49,7 +51,6 @@ const FilterItem = ({ data: groupData }) => {
   }
 
   const onChange = (checkedValues) => setQueryString(checkedValues.sort())
-  const clearFilter = () => setQueryString('')
 
   return (
     <>
@@ -57,12 +58,12 @@ const FilterItem = ({ data: groupData }) => {
         <Title>{groupData.FilterTitle}</Title>
         <ButtonIconDanger
           tooltip="Clear"
-          onClick={clearFilter}
+          onClick={() => setQueryString([])}
           icon={<X size="18" />}
         />
       </Header>
 
-      <StyledCheckboxGroup onChange={onChange} defaultValue={currentValues}>
+      <StyledCheckboxGroup onChange={onChange} value={filterValue}>
         {groupData.Options.map((optionData) => (
           <Checkbox key={optionData.id} value={optionData.id}>
             {optionData.Label}
