@@ -4,7 +4,7 @@ import { Fragment } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { ButtonIcon } from 'components/shared'
+import { ButtonIconDanger } from 'components/shared/Buttons'
 
 const Title = styled.span`
   display: inline-block;
@@ -49,18 +49,16 @@ const FilterItem = ({ data: groupData }) => {
   }
 
   const onChange = (checkedValues) => setQueryString(checkedValues.sort())
-  const clearAllFilters = () => setQueryString('')
+  const clearFilter = () => setQueryString('')
 
   return (
     <>
       <Header>
         <Title>{groupData.FilterTitle}</Title>
-        <ButtonIcon
+        <ButtonIconDanger
           tooltip="Clear"
-          onClick={clearAllFilters}
+          onClick={clearFilter}
           icon={<X size="18" />}
-          color="red"
-          defaultstyle={{ color: '#ff5050' }}
         />
       </Header>
 

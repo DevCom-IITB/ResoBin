@@ -1,7 +1,16 @@
-import { Button, Tooltip } from 'antd'
+import { Button, Popconfirm, Tooltip } from 'antd'
+import { useState } from 'react'
 import styled from 'styled-components/macro'
+import { ExclamationCircle } from 'styled-icons/heroicons-outline'
 
 import { fontSize } from 'styles/responsive'
+
+const defaultPopoverIcon = (
+  <ExclamationCircle
+    style={{ position: 'absolute', top: '6px', color: 'red' }}
+    size="16"
+  />
+)
 
 const ButtonIconContainer = ({
   children,
@@ -11,15 +20,42 @@ const ButtonIconContainer = ({
   defaultstyle = {},
   hoverstyle = {},
   onClick,
+
+  // ? popover props
+  popover = false,
+  popoverIcon = defaultPopoverIcon,
+  popoverTitle = 'Are you sure?',
+  onConfirm = null,
+  onCancel = () => {},
 }) => {
+  const [popoverVisible, setPopoverVisible] = useState(false)
+
+  const handleVisibleChange = (visible) => {
+    if (!visible) {
+      setPopoverVisible(false)
+      return
+    }
+
+    if (popover) setPopoverVisible(true)
+    else if (onConfirm) onConfirm()
+    else onClick()
+  }
+
   return (
-    <>
+    <Popconfirm
+      title={popoverTitle}
+      icon={popoverIcon}
+      visible={popoverVisible}
+      onVisibleChange={handleVisibleChange}
+      onConfirm={onConfirm || onClick}
+      onCancel={onCancel}
+      okText="Yes"
+    >
       <Tooltip title={tooltip}>
         <StyledButton
           shape="circle"
           type="text"
           icon={icon}
-          onClick={onClick}
           size="large"
           color={color}
           defaultstyle={defaultstyle}
@@ -28,9 +64,17 @@ const ButtonIconContainer = ({
           {children}
         </StyledButton>
       </Tooltip>
-    </>
+    </Popconfirm>
   )
 }
+
+export const ButtonIconDanger = ({ defaultstyle, color, ...props }) => (
+  <ButtonIconContainer
+    {...props}
+    color={color || 'red'}
+    defaultstyle={{ color: '#ff5050', ...defaultstyle }}
+  />
+)
 
 export default ButtonIconContainer
 

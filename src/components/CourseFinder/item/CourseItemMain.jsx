@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
 
-import { ButtonIcon } from 'components/shared'
+import { ButtonIcon } from 'components/shared/Buttons'
 import { coursePageUrl } from 'paths'
 import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
 import { device, fontSize } from 'styles/responsive'
@@ -49,6 +49,8 @@ const CourseItemMain = ({ courseData }) => {
           <ButtonIcon
             tooltip="Add to favorites"
             onClick={favouriteClick}
+            popover={favourite}
+            popoverTitle="Remove from favorites?"
             icon={
               favourite ? <Bookmark size="30" /> : <BookmarkOutline size="30" />
             }

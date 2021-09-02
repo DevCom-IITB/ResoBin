@@ -77,7 +77,7 @@ const CourseResourceUploadItem = ({
         icon={<X size="20" />}
         popover={fileDetails !== defaultFile}
         popoverTitle="Discard this upload?"
-        onConfirm={deleteFileItem}
+        onClick={deleteFileItem}
         defaultstyle={{ marginLeft: '1rem' }}
       />
     </ItemContainer>
