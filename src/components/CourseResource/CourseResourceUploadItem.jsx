@@ -39,14 +39,14 @@ const CourseResourceUploadItem = ({
       formData.append('description', 'Default description')
       formData.append('tag', 'Resource')
 
-      courseResourceUpload(formData, (event) => {
+      const onUploadProgress = (event) =>
         setProgress(Math.round((100 * event.loaded) / event.total))
+
+      courseResourceUpload(formData, onUploadProgress).catch(() => {
+        setProgress(0)
+        setStatus('error')
+        setFileDetails(defaultFile)
       })
-        .then((response) => console.log(response.data.message))
-        .catch(() => {
-          setProgress(0)
-          console.log('Could not upload the file!')
-        })
     },
     [title]
   )
