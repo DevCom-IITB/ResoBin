@@ -1,8 +1,10 @@
-import { Tooltip } from 'antd'
-import { useState } from 'react'
+import { Progress, Tooltip } from 'antd'
+import { useCallback, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components/macro'
 import { X, ExclamationCircle } from 'styled-icons/heroicons-outline'
 
+import { courseResourceUpload } from 'api/courseResources'
 import { ButtonIconDanger } from 'components/shared/Buttons'
 import { defaultFile, getFileDetails } from 'data/CourseResources'
 
@@ -20,35 +22,53 @@ const CourseResourceUploadItem = ({
 }) => {
   const [fileDetails, setFileDetails] = useState(defaultFile)
   const [status, setStatus] = useState(null)
+  const [title, setTitle] = useState('')
+  const [progress, setProgress] = useState(0)
 
-  const readURL = (e) => {
-    const file = e.target.files[0]
-    const { isValid } = getFileDetails(file)
-    setFileDetails(getFileDetails(file))
-
-    // ? invalid file selected
-    if (!isValid) {
-      if (!file) setStatus(null)
-      else setStatus('error')
-      return
-    }
-
-    // handleChange()
-
-    setStatus('loading')
-
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-
-    reader.onloadend = () => {
-      // const base64 = reader.result
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      const file = acceptedFiles[0]
+      setFileDetails(getFileDetails(file))
       setStatus('success')
-    }
+      // handleChange(file)
+      setTitle(file.name.split('.').slice(0, -1).join('.'))
 
-    reader.onerror = () => {
-      setStatus('error')
-    }
-  }
+      const formData = new FormData()
+      formData.append('file', file, file.name)
+      formData.append('title', title)
+      formData.append('description', 'Default description')
+      formData.append('tag', 'Resource')
+
+      courseResourceUpload(formData, (event) => {
+        setProgress(Math.round((100 * event.loaded) / event.total))
+      })
+        .then((response) => console.log(response.data.message))
+        .catch(() => {
+          setProgress(0)
+          console.log('Could not upload the file!')
+        })
+    },
+    [title]
+  )
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: 'application/pdf',
+    maxFiles: 2,
+    onDrop,
+    // onDragEnter: () => setStatus('active'),
+    // onDragLeave: () => setStatus('inactive'),
+    // onDragOver: () => setStatus('active'),
+  })
+
+  // const reader = new FileReader()
+  // reader.readAsDataURL(file)
+  // reader.onloadend = () => {
+  //   const base64 = reader.result
+  //   setStatus('success')
+  // }
+  // reader.onerror = () => {
+  //   setStatus('error')
+  // }
 
   const deleteFileItem = () => {
     handleDelete(fileItem.id)
@@ -61,17 +81,31 @@ const CourseResourceUploadItem = ({
         visible={status === 'error'}
         title={<ToolTipTitle />}
       >
-        <UploadBox status={status}>
+        <UploadBox {...getRootProps()} status={status}>
           <img src={fileDetails.icon} className="icon" alt="icon" />
-          <h3 id="upload">
+
+          <h3>
             {fileDetails.name}
             <br />
             {fileDetails.size && <small>{` (${fileDetails.size})`}</small>}
           </h3>
-          <input type="file" className="upload up" id="up" onChange={readURL} />
+
+          {/* File input */}
+          <input {...getInputProps()} />
         </UploadBox>
+
+        {progress > 0 && progress < 100 && (
+          <Progress size="small" percent={progress} />
+        )}
       </StyledTooltip>
-      <Input type="text" name="" placeholder="Title" />
+
+      <Input
+        type="text"
+        name="uploadTitle"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
 
       <ButtonIconDanger
         icon={<X size="20" />}
@@ -100,10 +134,7 @@ const TooltipContainer = styled.div`
 
 const ItemContainer = styled.div`
   display: flex;
-  align-items: center;
   border-radius: 0.5rem;
-
-  /* background-color: ${({ theme }) => theme.secondary}; */
 `
 
 const Input = styled.input`
@@ -127,12 +158,11 @@ const Input = styled.input`
 `
 
 const UploadBox = styled.div`
-  position: relative;
   display: flex;
   align-items: center;
-  width: 20rem;
+  width: 12rem;
   padding: 0.5rem;
-  border: 1px solid lightgray;
+  border: 2px dashed lightgray;
   border-radius: 0.5rem;
   color: ${({ status }) => (status === 'success' ? '#000000' : '#777777')};
   background-color: transparent;
@@ -148,15 +178,5 @@ const UploadBox = styled.div`
 
   span {
     font-size: 0.75rem;
-  }
-
-  input {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
   }
 `

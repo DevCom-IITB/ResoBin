@@ -1,6 +1,6 @@
 import { X } from '@styled-icons/heroicons-outline'
 import { Checkbox } from 'antd'
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
@@ -22,7 +22,6 @@ const Header = styled.div`
   color: white;
 `
 
-// ! multiple issues in this component, try and fix all asap
 const FilterItem = ({ data: groupData }) => {
   const location = useLocation()
   const history = useHistory()
@@ -32,25 +31,26 @@ const FilterItem = ({ data: groupData }) => {
 
   const [filterValue, setFilterValue] = useState(queryString.get(param))
 
-  const setQueryString = (values) => {
-    // ? no change
-    if (values === queryString.get(param)) return
+  const handleChange = (checkedValues) => setFilterValue(checkedValues.sort())
 
-    setFilterValue(values)
+  useEffect(() => {
+    // ? update url only if needed
+    const currentSearch = new URLSearchParams(location.search)
+    if (filterValue !== currentSearch.get(param)) {
+      // ? reset pagination
+      currentSearch.delete('p')
 
-    // ? remove empty query from url to keep it clean
-    if (values?.length) queryString.set(param, values)
-    else queryString.delete(param)
-    // ? reset pagination
-    queryString.delete('p')
+      // ? remove empty query from url to keep it clean
+      if (filterValue?.length) {
+        currentSearch.set(param, filterValue)
+      } else {
+        currentSearch.delete(param)
+      }
 
-    history.push({
-      pathname: location.pathname,
-      search: `?${queryString.toString()}`,
-    })
-  }
-
-  const onChange = (checkedValues) => setQueryString(checkedValues.sort())
+      history.push({ search: currentSearch.toString() })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterValue])
 
   return (
     <>
@@ -58,12 +58,12 @@ const FilterItem = ({ data: groupData }) => {
         <Title>{groupData.FilterTitle}</Title>
         <ButtonIconDanger
           tooltip="Clear"
-          onClick={() => setQueryString([])}
+          onClick={() => setFilterValue([])}
           icon={<X size="18" />}
         />
       </Header>
 
-      <StyledCheckboxGroup onChange={onChange} value={filterValue}>
+      <StyledCheckboxGroup onChange={handleChange} value={filterValue}>
         {groupData.Options.map((optionData) => (
           <Checkbox key={optionData.id} value={optionData.id}>
             {optionData.Label}
