@@ -6,7 +6,6 @@
     "type": "git",
     "url": "https://github.com/relaxxpls/resobin.git"
   },
-  "proxy": "http://localhost:8000",
   "license": "MIT",
   "scripts": {
     "start": "react-scripts start",
