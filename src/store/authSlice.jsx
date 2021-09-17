@@ -10,10 +10,7 @@ const initialState = {
 export const loginAction = createAsyncThunk(
   'auth/login',
   async ({ code, redir }) => {
-    await axiosAuth.get(`/login?code=${code}redir=${redir}`)
-    // rememberMe
-    //   ? localStorage.setItem('TOKEN_KEY', 'token')
-    //   : sessionStorage.setItem('TOKEN_KEY', 'token')
+    await axiosAuth.get(`/login?code=${code}`)
   }
 )
 
@@ -38,8 +35,6 @@ const authSlice = createSlice({
   initialState,
   extraReducers: {
     [loginAction.fulfilled]: (state, { payload }) => {
-      console.log(payload)
-      state.isAuthenticated = true
       state.loading = false
     },
     [loginAction.pending]: (state) => {
