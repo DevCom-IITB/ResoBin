@@ -1,63 +1,38 @@
 import { Button } from 'antd'
-import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
-import { Redirect, useLocation } from 'react-router-dom'
+import { Redirect } from 'react-router'
 import styled from 'styled-components/macro'
 
-import LoginURL, { SSO } from 'api/auth'
 import { LoaderAnimation } from 'components/shared'
-import { toastError } from 'components/toast'
-import { CSRFToken } from 'helpers'
-import { loginAction } from 'store/authSlice'
+import { logoutAction } from 'store/authSlice'
 import { fontSize } from 'styles/responsive'
 
-const Login = () => {
-  const location = useLocation()
+const Logout = () => {
   const dispatch = useDispatch()
   const { isAuthenticated, loading } = useSelector((state) => state.auth)
-  const [redirect, setRedirect] = useState(null)
 
-  useEffect(() => {
-    if (isAuthenticated) setRedirect('/')
-
-    const queryString = new URLSearchParams(location.search)
-
-    const error = queryString.get('error')
-    if (error) {
-      toastError(`Error: ${error}`)
-      setRedirect('/login')
-    }
-
-    const code = queryString.get('code')
-    if (code) {
-      dispatch(loginAction({ code, redir: SSO.REDIRECT_URI }))
-      setRedirect('/login')
-    }
-  }, [dispatch, location, isAuthenticated])
-
-  if (redirect) return <Redirect to={redirect} />
-
-  const redirectLogin = () => {
-    window.location.href = LoginURL
+  const handleLogout = async () => {
+    dispatch(logoutAction())
   }
+
+  if (!isAuthenticated) return <Redirect to="/login" />
 
   return (
     <>
       <Helmet>
-        <title>Log In - ResoBin</title>
+        <title>Logout - ResoBin</title>
         <meta name="description" content="Login to continue" />
       </Helmet>
-      <CSRFToken />
 
       {loading && <LoaderAnimation fixed />}
 
       <PageContainer>
         <BoxContainer>
-          <h4>Login to Your Account</h4>
+          <h4>Are you sure you want to logout?</h4>
 
-          <StyledButton type="primary" onClick={redirectLogin}>
-            Login with SSO
+          <StyledButton type="primary" onClick={handleLogout}>
+            Logout
           </StyledButton>
         </BoxContainer>
       </PageContainer>
@@ -65,7 +40,7 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Logout
 
 const PageContainer = styled.div`
   display: flex;

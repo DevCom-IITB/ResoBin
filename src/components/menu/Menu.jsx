@@ -8,12 +8,13 @@ import {
 } from '@styled-icons/heroicons-outline'
 import { ContactSupport } from '@styled-icons/material-outlined'
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import ProfileImage from 'assets/images/ProfileImg_Laxman.jpg'
 import { MenuItem, ProfileImgItem } from 'components/menu'
 import { Divider } from 'components/shared'
 import { useViewportContext } from 'context/ViewportContext'
+import { selectUserProfile } from 'store/authSlice'
 import { device, breakpoints } from 'styles/responsive'
 
 const Container = styled.nav`
@@ -46,6 +47,8 @@ const Menu = () => {
   const { width } = useViewportContext()
   const [isDesktop, setIsDesktop] = useState(true)
 
+  const profile = useSelector(selectUserProfile)
+
   useEffect(() => {
     setIsDesktop(width >= breakpoints.md)
   }, [width])
@@ -77,7 +80,12 @@ const Menu = () => {
       )}
 
       {isDesktop && <Divider margin="1rem 0" />}
-      {isDesktop && <ProfileImgItem title="Laxman D." src={ProfileImage} />}
+      {isDesktop && (
+        <ProfileImgItem
+          title={profile.name.split(' ')[0]}
+          src={profile.profile_picture}
+        />
+      )}
 
       <MenuItem
         title="Favourites"

@@ -10,6 +10,7 @@ import { toastError } from 'components/toast'
 import PageTransition from 'hoc/PageTransition'
 import { useScrollToTop } from 'hooks'
 import { DashboardRoutes } from 'routes'
+import { getProfileAction, selectAuthLoading } from 'store/authSlice'
 import {
   getCourseList,
   getCourseSlots,
@@ -27,10 +28,14 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // ? Fetch user profile
+    dispatch(getProfileAction())
+
     const getChecksum = async (prevChecksum) =>
       axios
         .get(courseChecksumAPI)
         .then(({ data }) => {
+          // TODO: This is a hack to get the menu to update
           if (data.checksum !== prevChecksum) {
             dispatch(updateChecksum(data))
             dispatch(getCourseList())
@@ -46,9 +51,12 @@ const Dashboard = () => {
     getChecksum(checksum)
   }, [checksum, dispatch])
 
-  const loadingAPI = useSelector(selectCourseAPILoading)
+  const loadingAPI = [
+    useSelector(selectCourseAPILoading),
+    useSelector(selectAuthLoading),
+  ]
 
-  return loadingAPI || loading ? (
+  return loadingAPI.includes(true) || loading ? (
     <LoaderAnimation fixed />
   ) : (
     <>
