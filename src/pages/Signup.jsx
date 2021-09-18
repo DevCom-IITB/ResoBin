@@ -8,7 +8,7 @@ import { Header } from 'components/header'
 import { LoaderAnimation } from 'components/shared'
 import { SignupBody } from 'components/signup'
 import { CSRFToken } from 'helpers'
-import { signupAction } from 'store/authSlice'
+// import { signupAction } from 'store/authSlice'
 import { fontSize } from 'styles/responsive'
 
 const Container = styled.div`
@@ -82,7 +82,7 @@ const Signup = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    if (validCheck(user)) dispatch(signupAction(user))
+    // if (validCheck(user)) dispatch(signupAction(user))
   }
 
   if (isAuthenticated) return <Redirect to="/dashboard" />

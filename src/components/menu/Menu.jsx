@@ -82,8 +82,8 @@ const Menu = () => {
       {isDesktop && <Divider margin="1rem 0" />}
       {isDesktop && (
         <ProfileImgItem
-          title={profile.name.split(' ')[0]}
-          src={profile.profile_picture}
+          title={profile?.name?.split(' ')?.[0]}
+          src={profile?.profile_picture}
         />
       )}
 
