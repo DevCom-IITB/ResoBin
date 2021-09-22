@@ -17,6 +17,7 @@ export const reducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['auth'],
 }
 
 export const persistedReducer = persistReducer(persistConfig, reducer)

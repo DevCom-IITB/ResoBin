@@ -1,10 +1,11 @@
 import { Progress, Tooltip } from 'antd'
 import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
+import { useParams } from 'react-router'
 import styled from 'styled-components/macro'
 import { X, ExclamationCircle } from 'styled-icons/heroicons-outline'
 
-import { courseResourceUpload } from 'api/courseResources'
+import { API } from 'api'
 import { ButtonIconDanger } from 'components/shared/Buttons'
 import { defaultFile, getFileDetails } from 'data/CourseResources'
 
@@ -24,9 +25,10 @@ const CourseResourceUploadItem = ({
   const [status, setStatus] = useState(null)
   const [title, setTitle] = useState('')
   const [progress, setProgress] = useState(0)
+  const { courseCode } = useParams()
 
   const onDrop = useCallback(
-    (acceptedFiles) => {
+    async (acceptedFiles) => {
       const file = acceptedFiles[0]
       setFileDetails(getFileDetails(file))
       setStatus('success')
@@ -42,13 +44,19 @@ const CourseResourceUploadItem = ({
       const onUploadProgress = (event) =>
         setProgress(Math.round((100 * event.loaded) / event.total))
 
-      courseResourceUpload(formData, onUploadProgress).catch(() => {
+      try {
+        await API.courses.createCourseResource({
+          payload: formData,
+          code: courseCode,
+          onUploadProgress,
+        })
+      } catch {
         setProgress(0)
         setStatus('error')
         setFileDetails(defaultFile)
-      })
+      }
     },
-    [title]
+    [title, courseCode]
   )
 
   const { getRootProps, getInputProps } = useDropzone({

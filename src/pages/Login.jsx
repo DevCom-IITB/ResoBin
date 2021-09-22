@@ -5,11 +5,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Redirect, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import LoginURL, { SSO } from 'api/auth'
+import { LoginURL, SSO } from 'api'
 import { LoaderAnimation } from 'components/shared'
 import { toastError } from 'components/toast'
 import { CSRFToken } from 'helpers'
-import { loginAction } from 'store/authSlice'
+import { getAuthStatusAction, loginAction } from 'store/authSlice'
 import { fontSize } from 'styles/responsive'
 
 const Login = () => {
@@ -19,6 +19,7 @@ const Login = () => {
   const [redirect, setRedirect] = useState(null)
 
   useEffect(() => {
+    if (isAuthenticated === null) dispatch(getAuthStatusAction())
     if (isAuthenticated) setRedirect('/')
 
     const queryString = new URLSearchParams(location.search)
