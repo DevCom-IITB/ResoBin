@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
+import { API } from 'api'
 import { toastError } from 'components/toast'
-import { axiosAuth } from 'helpers'
 
 const initialState = {
-  isAuthenticated: false,
+  isAuthenticated: null,
   loading: false,
   profile: {},
 }
@@ -12,8 +12,9 @@ const initialState = {
 export const loginAction = createAsyncThunk(
   'auth/login',
   async ({ code, redir }) => {
+    const params = { code, redir }
     try {
-      return await axiosAuth.get(`/login?code=${code}&redir=${redir}`)
+      return await API.accounts.login({ params })
     } catch (error) {
       toastError(error.message)
       return Promise.reject(error)
@@ -23,18 +24,23 @@ export const loginAction = createAsyncThunk(
 
 export const logoutAction = createAsyncThunk('auth/logout', async () => {
   try {
-    return await axiosAuth.get('/logout')
+    return await API.accounts.logout()
   } catch (error) {
     toastError(error.message)
     return Promise.reject(error)
   }
 })
 
+export const getAuthStatusAction = createAsyncThunk(
+  'auth/getAuthStatusAction',
+  API.accounts.authenticate
+)
+
 export const getProfileAction = createAsyncThunk(
   'auth/getProfile',
   async () => {
     try {
-      return await axiosAuth.get('/accounts/profile')
+      return await API.accounts.getProfile()
     } catch (error) {
       toastError(error.message)
       return Promise.reject(error)
@@ -42,41 +48,47 @@ export const getProfileAction = createAsyncThunk(
   }
 )
 
-// export const checkAuthAction = createAsyncThunk('auth/checkAuth', async () =>
-//   axiosAuth.get('/accounts/authenticated')
-// )
-
-// export const deleteAccAction = createAsyncThunk(
-//   'auth/deleteAcc',
-//   async (data) => axiosAuth.delete('/accounts/delete')
-// )
+export const deleteProfileAction = createAsyncThunk(
+  'auth/deleteProfile',
+  API.accounts.deleteProfile
+)
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   extraReducers: {
     [loginAction.fulfilled]: (state, { payload }) => {
-      state.loading = false
       state.isAuthenticated = true
+      state.loading = false
     },
     [loginAction.pending]: (state) => {
       state.loading = true
     },
     [loginAction.rejected]: (state) => {
       state.loading = false
-      state.isAuthenticated = false
     },
 
     [logoutAction.fulfilled]: (state, action) => {
-      state.loading = false
       state.isAuthenticated = false
+      state.loading = false
     },
     [logoutAction.pending]: (state) => {
       state.loading = true
     },
     [logoutAction.rejected]: (state) => {
       state.loading = false
+    },
+
+    [getAuthStatusAction.fulfilled]: (state, { payload }) => {
+      state.isAuthenticated = true
+      state.loading = false
+    },
+    [getAuthStatusAction.pending]: (state) => {
+      state.loading = true
+    },
+    [getAuthStatusAction.rejected]: (state) => {
       state.isAuthenticated = false
+      state.loading = false
     },
 
     [getProfileAction.fulfilled]: (state, { payload }) => {
