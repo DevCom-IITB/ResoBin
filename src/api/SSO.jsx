@@ -6,6 +6,4 @@ export const SSO = {
   RESPONSE_TYPE: 'code',
 }
 
-const LoginURL = `${SSO.HOST}?client_id=${SSO.CLIENT_ID}&response_type=${SSO.RESPONSE_TYPE}&scope=${SSO.SCOPE}&redirect_uri=${SSO.REDIRECT_URI}`
-
-export default LoginURL
+export const LoginURL = `${SSO.HOST}?client_id=${SSO.CLIENT_ID}&response_type=${SSO.RESPONSE_TYPE}&scope=${SSO.SCOPE}&redirect_uri=${SSO.REDIRECT_URI}`
