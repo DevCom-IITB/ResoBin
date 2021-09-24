@@ -1,73 +1,70 @@
-import {
-  DislikeFilled,
-  DislikeOutlined,
-  LikeFilled,
-  LikeOutlined,
-} from '@ant-design/icons'
 import { PencilAlt, UserAdd } from '@styled-icons/heroicons-outline'
-import { Avatar, Comment, Tooltip } from 'antd'
-import moment from 'moment'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router'
 import styled from 'styled-components/macro'
 
+import { API } from 'api'
 import { ButtonSwitch } from 'components/shared/Buttons/Button'
 
-import reviewsData from './__mock__/reviewsData'
 import CourseReviewAdd from './CourseReviewAdd'
+import CourseReviewItem from './CourseReviewItem'
 
-const CommentHeader = styled.p`
-  font-weight: 600;
-  color: ${({ theme }) => theme.header};
-`
+const nestComments = (commentsList) => {
+  const commentsMap = {}
+  commentsList.forEach((comment) => {
+    commentsMap[comment.id] = comment
+  })
 
-const CommentText = styled.p`
-  width: 80%;
-  font-weight: 400;
-  color: ${({ theme }) => theme.header};
-`
+  commentsList.forEach((comment) => {
+    if (comment.parentId !== null) {
+      if (commentsMap[comment.parentId].replies === undefined)
+        commentsMap[comment.parentId].replies = []
+      commentsMap[comment.parentId].replies.push(comment)
+    }
+  })
 
+  return commentsList.filter((comment) => comment.parentId === null)
+}
+
+// TODO: make write review button primary
 const CourseReviewsContainer = () => {
-  const [likes, setLikes] = useState(0)
-  const [dislikes, setDislikes] = useState(0)
-  const [action, setAction] = useState(null)
+  const [reviewsData, setReviewsData] = useState([])
+  const { courseCode } = useParams()
 
-  const like = () => {
-    setLikes(1)
-    setDislikes(0)
-    setAction('liked')
-  }
+  useEffect(() => {
+    const fetchReviews = async () => {
+      let response = await API.courses.getReviewListByCourse({
+        code: courseCode,
+      })
+      response = response.data.map(
+        ({
+          id,
+          user_profile: author,
+          body,
+          votes_count: votes,
+          timestamp,
+          parent: parentId,
+        }) => ({
+          id,
+          author,
+          body,
+          votes,
+          timestamp,
+          parentId,
+        })
+      )
+      response = nestComments(response)
+      setReviewsData(response)
+    }
 
-  const dislike = () => {
-    setLikes(0)
-    setDislikes(1)
-    setAction('disliked')
-  }
-
-  const actions = [
-    <Tooltip key="comment-basic-like" title="Like">
-      <button type="button" onClick={like}>
-        {action === 'liked' ? <LikeFilled /> : <LikeOutlined />}
-        <span className="comment-action">{likes}</span>
-      </button>
-    </Tooltip>,
-
-    <Tooltip key="comment-basic-dislike" title="Dislike">
-      <button type="button" onClick={dislike}>
-        {action === 'disliked' ? <DislikeFilled /> : <DislikeOutlined />}
-        <span className="comment-action">{dislikes}</span>
-      </button>
-    </Tooltip>,
-
-    <span key="comment-basic-reply-to">Reply to</span>,
-  ]
+    fetchReviews()
+  }, [courseCode])
 
   const [writeStatus, setWriteStatus] = useState(false)
   const toggleWrite = () => setWriteStatus((v) => !v)
   const [reviewStatus, setReviewStatus] = useState(false)
 
   const handleReviewRequest = () => setReviewStatus((v) => !v)
-
-  // ! make write review button primary
 
   return (
     <>
@@ -105,35 +102,8 @@ const CourseReviewsContainer = () => {
 
       {writeStatus && <CourseReviewAdd />}
 
-      {reviewsData.map(({ author, avatar, content }) => (
-        <Comment
-          key={`${author} - ${content}`}
-          actions={actions}
-          author={
-            <a href="google">
-              <CommentHeader>{author}</CommentHeader>
-            </a>
-          }
-          avatar={<Avatar src={avatar.src} alt={avatar.alt} />}
-          content={<CommentText>{content}</CommentText>}
-          datetime={
-            <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-              <CommentHeader>{moment().fromNow()}</CommentHeader>
-            </Tooltip>
-          }
-        >
-          <Comment
-            actions={actions}
-            author={<a href="google">{author}</a>}
-            avatar={<Avatar src={avatar.src} alt={avatar.alt} />}
-            content={<p>{content}</p>}
-            datetime={
-              <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-                <span>{moment().fromNow()}</span>
-              </Tooltip>
-            }
-          />
-        </Comment>
+      {reviewsData.map((review) => (
+        <CourseReviewItem key={review.id} depth={0} {...review} />
       ))}
     </>
   )
