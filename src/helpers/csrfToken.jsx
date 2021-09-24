@@ -10,7 +10,7 @@ const CSRFToken = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await API.accounts.CSRFToken()
+        await API.auth.csrftoken()
       } catch (error) {
         toastError(error.message)
       }

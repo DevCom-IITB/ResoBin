@@ -14,7 +14,7 @@ export const loginAction = createAsyncThunk(
   async ({ code, redir }) => {
     const params = { code, redir }
     try {
-      return await API.accounts.login({ params })
+      return await API.auth.login({ params })
     } catch (error) {
       toastError(error.message)
       return Promise.reject(error)
@@ -24,7 +24,7 @@ export const loginAction = createAsyncThunk(
 
 export const logoutAction = createAsyncThunk('auth/logout', async () => {
   try {
-    return await API.accounts.logout()
+    return await API.auth.logout()
   } catch (error) {
     toastError(error.message)
     return Promise.reject(error)
@@ -33,14 +33,14 @@ export const logoutAction = createAsyncThunk('auth/logout', async () => {
 
 export const getAuthStatusAction = createAsyncThunk(
   'auth/getAuthStatusAction',
-  API.accounts.authenticate
+  API.auth.authenticate
 )
 
 export const getProfileAction = createAsyncThunk(
   'auth/getProfile',
   async () => {
     try {
-      return await API.accounts.getProfile()
+      return await API.profile.read()
     } catch (error) {
       toastError(error.message)
       return Promise.reject(error)
@@ -50,7 +50,7 @@ export const getProfileAction = createAsyncThunk(
 
 export const deleteProfileAction = createAsyncThunk(
   'auth/deleteProfile',
-  API.accounts.deleteProfile
+  API.profile.delete
 )
 
 const authSlice = createSlice({
@@ -92,7 +92,7 @@ const authSlice = createSlice({
     },
 
     [getProfileAction.fulfilled]: (state, { payload }) => {
-      state.profile = payload.data.profile
+      state.profile = payload.data
       state.loading = false
     },
     [getProfileAction.pending]: (state) => {

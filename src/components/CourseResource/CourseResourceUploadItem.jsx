@@ -37,6 +37,7 @@ const CourseResourceUploadItem = ({
 
       const formData = new FormData()
       formData.append('file', file, file.name)
+      formData.append('code', courseCode)
       formData.append('title', title)
       formData.append('description', 'Default description')
       formData.append('tag', 'Resource')
@@ -45,9 +46,8 @@ const CourseResourceUploadItem = ({
         setProgress(Math.round((100 * event.loaded) / event.total))
 
       try {
-        await API.courses.createCourseResource({
+        await API.resources.create({
           payload: formData,
-          code: courseCode,
           onUploadProgress,
         })
       } catch {
