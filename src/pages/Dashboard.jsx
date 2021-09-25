@@ -14,6 +14,8 @@ import { getProfileAction, selectAuthLoading } from 'store/authSlice'
 import {
   getCourseList,
   getCourseSlots,
+  getResourceTags,
+  getDepartmentList,
   selectChecksum,
   selectCourseAPILoading,
   updateChecksum,
@@ -30,6 +32,8 @@ const Dashboard = () => {
   useEffect(() => {
     // ? Fetch user profile
     dispatch(getProfileAction())
+    dispatch(getResourceTags())
+    dispatch(getDepartmentList())
 
     const getChecksum = async (prevChecksum) =>
       axios

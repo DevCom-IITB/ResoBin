@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
+import { API } from 'api'
 import { courseListAPI, courseSlotListAPI } from 'api/courses'
 import { toastError } from 'components/toast'
 
@@ -15,6 +16,16 @@ export const getCourseSlots = createAsyncThunk(
   async () => axios.get(courseSlotListAPI)
 )
 
+export const getDepartmentList = createAsyncThunk(
+  'courses/getDepartmentList',
+  API.departments.list
+)
+
+export const getResourceTags = createAsyncThunk(
+  'courses/getResourceTags',
+  API.resources.tags.list
+)
+
 // ? reducer
 const courseSlice = createSlice({
   name: 'course',
@@ -25,6 +36,10 @@ const courseSlice = createSlice({
     loading: false,
     checksum: '',
     lastUpdated: '',
+    departments: [],
+    resources: {
+      tags: [],
+    },
   },
 
   reducers: {
@@ -63,6 +78,30 @@ const courseSlice = createSlice({
     [getCourseSlots.rejected]: (state) => {
       state.loading = false
     },
+
+    [getResourceTags.fulfilled]: (state, { payload }) => {
+      state.resources = {
+        tags: payload.data,
+      }
+      state.loading = false
+    },
+    [getResourceTags.pending]: (state) => {
+      state.loading = true
+    },
+    [getResourceTags.rejected]: (state) => {
+      state.loading = false
+    },
+
+    [getDepartmentList.fulfilled]: (state, { payload }) => {
+      state.departments = payload.data
+      state.loading = false
+    },
+    [getDepartmentList.pending]: (state) => {
+      state.loading = true
+    },
+    [getDepartmentList.rejected]: (state) => {
+      state.loading = false
+    },
   },
 })
 
@@ -74,6 +113,8 @@ export const selectCourseList = (state) => state.course.list
 export const selectCourseAPILoading = (state) => state.course.loading
 export const selectChecksum = (state) => state.course.checksum
 export const selectCourseSlots = (state) => state.course.slots
+export const selectResourceTags = (state) => state.course.resources.tags
+export const selectDepartments = (state) => state.course.departments
 
 // https://stackoverflow.com/questions/62545632/how-to-pass-an-additional-argument-to-useselector
 export const selectCourseListByCourseCode = (courseCode) =>

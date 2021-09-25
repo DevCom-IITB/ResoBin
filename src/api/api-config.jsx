@@ -30,11 +30,11 @@ export const API = {
 
   // * Courses endpoints
   courses: {
-    getCourseList: async () => APIInstance.get('/courses'),
-    getCourseDetail: async ({ code }) => APIInstance.get(`/courses/${code}`),
-    getResourceListByCourse: async ({ code }) =>
+    list: async () => APIInstance.get('/courses'),
+    detail: async ({ code }) => APIInstance.get(`/courses/${code}`),
+    listResources: async ({ code }) =>
       APIInstance.get(`/courses/${code}/resources`),
-    getReviewListByCourse: async ({ code }) =>
+    listReviews: async ({ code }) =>
       APIInstance.get(`/courses/${code}/reviews`),
   },
 
@@ -54,6 +54,10 @@ export const API = {
         onUploadProgress,
       }),
     delete: async ({ id }) => APIInstance.delete(`/resources/${id}`),
+
+    tags: {
+      list: async () => APIInstance.get(`/resources/tags`),
+    },
   },
 
   // * Reviews endpoints
@@ -67,9 +71,8 @@ export const API = {
 
   // * Departments endpoints
   departments: {
-    getDepartmentList: async () => APIInstance.get('/departments'),
-    getDepartmentDetail: async ({ slug }) =>
-      APIInstance.get(`/departments/${slug}`),
+    list: async () => APIInstance.get('/departments'),
+    detail: async ({ slug }) => APIInstance.get(`/departments/${slug}`),
   },
 
   // * Developer stats endpoints

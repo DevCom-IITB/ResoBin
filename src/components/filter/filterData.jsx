@@ -36,9 +36,6 @@ const MultiSelect = () => {
       // loading
       // maxTagCount={1}
       // listHeight="6rem"
-      dropdownAlign={{
-        overflow: { adjustY: 0 },
-      }}
       getPopupContainer={(trigger) => trigger.parentNode}
     >
       {remainingDept.map((item) => (

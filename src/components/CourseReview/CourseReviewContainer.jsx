@@ -33,7 +33,7 @@ const CourseReviewsContainer = () => {
 
   useEffect(() => {
     const fetchReviews = async () => {
-      let response = await API.courses.getReviewListByCourse({
+      let response = await API.courses.listReviews({
         code: courseCode,
       })
       response = response.data.map(
@@ -100,7 +100,11 @@ const CourseReviewsContainer = () => {
         </ButtonSwitch>
       </ReviewOptions>
 
-      {writeStatus && <CourseReviewAdd />}
+      <CourseReviewAdd
+        visible={writeStatus}
+        course={courseCode}
+        parent={null}
+      />
 
       {reviewsData.map((review) => (
         <CourseReviewItem key={review.id} depth={0} {...review} />
