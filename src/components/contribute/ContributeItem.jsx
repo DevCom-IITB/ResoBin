@@ -1,11 +1,11 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { Input, Progress, Select, Tooltip } from 'antd'
+import { Button, Input, Progress, Select, Tooltip } from 'antd'
 import { rgba } from 'polished'
 import { useDropzone } from 'react-dropzone'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
-import { X, ExclamationCircle } from 'styled-icons/heroicons-outline'
+import { X, ExclamationCircle, Upload } from 'styled-icons/heroicons-outline'
 
+import { API } from 'api'
 import { ButtonIconDanger } from 'components/shared/Buttons'
 import { defaultFile, fileTypes, getFileDetails } from 'data/CourseResources'
 import { selectResourceTags, selectCourseListMinified } from 'store/courseSlice'
@@ -39,38 +39,50 @@ const CourseResourceUploadItem = ({
     }
   }
 
-  const upload = () => {}
-  // const formData = new FormData()
-  // formData.append('file', file, file.name)
-  // formData.append('course', courseCode)
-  // formData.append('title', title)
-  // formData.append('description', 'Default description')
-  // formData.append('tag', 'Resource')
-  // const onUploadProgress = (event) =>
-  //   updateFileItem({
-  //     progress: Math.round((100 * event.loaded) / event.total),
-  //   })
-  // try {
-  //   const response = await API.resources.create({
-  //     payload: formData,
-  //     onUploadProgress,
-  //   })
-  //   const res = {
-  //     id: '8fa6908b-4aab-4baa-9163-23b23d86c84d',
-  //     file: 'http://localhost:8000/media/resources/AE102/8fa6908b-4aab-4baa-9163-23b23d86c84d_Tut2_CL305_190020044.pdf',
-  //     title: 'Tut2_CL305_190020044',
-  //     description: 'Default description',
-  //     tags: [],
-  //     timestamp: '2021-09-25T05:53:56.893921+05:30',
-  //   }
-  //   console.log(response)
-  // } catch {
-  //   updateFileItem({ status: 'error', progress: 0 })
-  //   setFileDetails(defaultFile)
-  // }
+  const onUploadProgress = (event) =>
+    updateFileItem({
+      progress: Math.round((100 * event.loaded) / event.total),
+    })
+
+  const isValid = (fileDetails) => {
+    if (fileDetails.status === 'success') return true
+    return false
+  }
+
+  const handleUpload = async () => {
+    updateFileItem({ status: 'uploading' })
+
+    if (!isValid(fileItem)) {
+      updateFileItem({ status: 'error' })
+      return
+    }
+
+    const formData = new FormData()
+    formData.append('file', fileItem.file, fileItem.file.name)
+    formData.append('title', fileItem.details.title)
+    formData.append('course', fileItem.details.course)
+    formData.append('description', fileItem.details.description)
+    formData.append('tag', fileItem.details.tags)
+
+    try {
+      const response = await API.resources.create({
+        payload: formData,
+        onUploadProgress,
+      })
+      const { id, timestamp, url } = response.data
+
+      updateFileItem({
+        status: 'uploaded',
+        response: { id, timestamp, url },
+      })
+    } catch (error) {
+      console.log(error)
+      updateFileItem({ status: 'error', progress: 0 })
+    }
+  }
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: fileTypes.map(({ type }) => type),
+    accept: fileTypes.map((file) => file.type),
     maxFiles: 1,
     onDrop,
     // onDragEnter: () => setStatus('active'),
@@ -79,11 +91,15 @@ const CourseResourceUploadItem = ({
   })
 
   const handleDelete = async () => {
-    // try {
-    //   await API.resources.delete({ id: fileItem.id })
-    // } catch {
-    //   updateFileItem({ status: 'error', progress: 0 })
-    // }
+    if (fileItem.status === 'uploaded') {
+      try {
+        await API.resources.delete({ id: fileItem.response.id })
+      } catch (error) {
+        console.log(error)
+        updateFileItem({ status: 'error', progress: 0 })
+        return
+      }
+    }
 
     deleteFileItem(fileItem.id)
   }
@@ -188,6 +204,15 @@ const CourseResourceUploadItem = ({
             })
           }
         />
+
+        <Button
+          style={{ marginTop: '0.5rem' }}
+          icon={<Upload size="18" />}
+          onClick={handleUpload}
+          loading={fileItem.status === 'uploading'}
+        >
+          Upload
+        </Button>
       </DetailsForm>
 
       <ButtonIconDanger
