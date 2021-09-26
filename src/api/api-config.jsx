@@ -15,7 +15,7 @@ export const APIInstance = axios.create({
 export const API = {
   auth: {
     // * Authentication endpoints
-    login: async (payload) => APIInstance.get('/accounts/login', payload),
+    login: async ({ params }) => APIInstance.get('/accounts/login', { params }),
     logout: async () => APIInstance.get('/accounts/logout'),
     authenticate: async () => APIInstance.get('/accounts/authenticate'),
     csrftoken: async () => APIInstance.get('/accounts/csrftoken'),
@@ -24,13 +24,14 @@ export const API = {
   // * User profile endpoints
   profile: {
     read: async () => APIInstance.get('/accounts/profile'),
-    update: async (payload) => APIInstance.put('/accounts/profile', payload),
+    update: async ({ payload }) =>
+      APIInstance.put('/accounts/profile', payload),
     delete: async () => APIInstance.delete('/accounts/profile'),
   },
 
   // * Courses endpoints
   courses: {
-    list: async () => APIInstance.get('/courses'),
+    list: async ({ params }) => APIInstance.get('/courses', { params }),
     detail: async ({ code }) => APIInstance.get(`/courses/${code}`),
     listResources: async ({ code }) =>
       APIInstance.get(`/courses/${code}/resources`),

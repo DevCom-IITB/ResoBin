@@ -150,6 +150,26 @@ const CourseResourceUploadItem = ({
     console.log('Tags:', value)
   }
 
+  const [courseOptions, setCourseOptions] = useState([])
+
+  useEffect(() => {
+    const getData = async () =>
+      API.courses
+        .list({
+          params: { fields: 'code,title', page_size: 0 },
+        })
+        .then((res) =>
+          res.data.map((course) => ({
+            label: `${course.code}: ${course.title}`,
+            value: course.code,
+          }))
+        )
+        .then((res) => setCourseOptions(res))
+        .catch((error) => console.log(error))
+
+    getData()
+  }, [])
+
   return (
     <ItemContainer>
       <StyledTooltip
@@ -200,7 +220,7 @@ const CourseResourceUploadItem = ({
           // filterOption={(input, option) =>
           //   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           // }
-          options={tagOptions}
+          options={courseOptions}
         />
 
         <Select
