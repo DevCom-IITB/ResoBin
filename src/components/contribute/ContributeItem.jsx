@@ -1,17 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Input, Progress, Select, Tooltip } from 'antd'
 import { rgba } from 'polished'
-import { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router'
 import styled from 'styled-components/macro'
 import { X, ExclamationCircle } from 'styled-icons/heroicons-outline'
 
-import { API } from 'api'
 import { ButtonIconDanger } from 'components/shared/Buttons'
 import { defaultFile, fileTypes, getFileDetails } from 'data/CourseResources'
-import { selectResourceTags } from 'store/courseSlice'
+import { selectResourceTags, selectCourseListMinified } from 'store/courseSlice'
 
 const ToolTipTitle = () => (
   <TooltipContainer>
@@ -25,70 +22,34 @@ const CourseResourceUploadItem = ({
   updateFileItem,
   deleteFileItem,
 }) => {
-  const [fileDetails, setFileDetails] = useState(defaultFile)
-  const [status, setStatus] = useState(null)
-  const [title, setTitle] = useState('')
-  const [progress, setProgress] = useState(0)
-  const { courseCode } = useParams()
-
-  const reset = () => {
-    setFileDetails(defaultFile)
-    setStatus(null)
-    setTitle('')
-    setProgress(0)
-  }
-
   // ? If no file is valid, reset the file list item
-  const onDrop = useCallback(
-    (acceptedFiles) =>
-      acceptedFiles.length === 0
-        ? reset()
-        : updateFileItem({ file: acceptedFiles[0] }),
-    [updateFileItem]
-  )
-
-  useEffect(() => {
-    if (fileItem.file) {
-      const details = getFileDetails(fileItem.file)
-
+  const onDrop = (acceptedFiles) => {
+    if (acceptedFiles.length === 0) {
       updateFileItem({
-        details: {
-          ...fileItem.details,
-          course: courseCode,
-          title: details.title,
-        },
+        file: null,
+        status: 'error',
+        details: defaultFile,
       })
     } else {
       updateFileItem({
-        details: {
-          icon: defaultFile.icon,
-          title: '',
-          description: '',
-          tags: [],
-          size: defaultFile.type,
-          type: defaultFile.type,
-        },
+        file: acceptedFiles[0],
+        status: 'success',
+        details: getFileDetails(acceptedFiles[0]),
       })
     }
-  }, [fileItem.file])
+  }
 
-  // setFileDetails(getFileDetails(file))
-
-  // updateInList({ ...fileItem, file })
-  // setStatus('success')
-
-  // setTitle(file.name.split('.').slice(0, -1).join('.'))
-
+  const upload = () => {}
   // const formData = new FormData()
   // formData.append('file', file, file.name)
   // formData.append('course', courseCode)
   // formData.append('title', title)
   // formData.append('description', 'Default description')
   // formData.append('tag', 'Resource')
-
   // const onUploadProgress = (event) =>
-  //   setProgress(Math.round((100 * event.loaded) / event.total))
-
+  //   updateFileItem({
+  //     progress: Math.round((100 * event.loaded) / event.total),
+  //   })
   // try {
   //   const response = await API.resources.create({
   //     payload: formData,
@@ -102,11 +63,9 @@ const CourseResourceUploadItem = ({
   //     tags: [],
   //     timestamp: '2021-09-25T05:53:56.893921+05:30',
   //   }
-
   //   console.log(response)
   // } catch {
-  //   setProgress(0)
-  //   setStatus('error')
+  //   updateFileItem({ status: 'error', progress: 0 })
   //   setFileDetails(defaultFile)
   // }
 
@@ -119,24 +78,12 @@ const CourseResourceUploadItem = ({
     // onDragOver: () => setStatus('active'),
   })
 
-  // const reader = new FileReader()
-  // reader.readAsDataURL(file)
-  // reader.onloadend = () => {
-  //   const base64 = reader.result
-  //   setStatus('success')
-  // }
-  // reader.onerror = () => {
-  //   setStatus('error')
-  // }
-
   const handleDelete = async () => {
-    try {
-      await API.resources.delete({ id: fileItem.id })
-    } catch {
-      setProgress(0)
-      setStatus('error')
-      setFileDetails(defaultFile)
-    }
+    // try {
+    //   await API.resources.delete({ id: fileItem.id })
+    // } catch {
+    //   updateFileItem({ status: 'error', progress: 0 })
+    // }
 
     deleteFileItem(fileItem.id)
   }
@@ -146,52 +93,37 @@ const CourseResourceUploadItem = ({
     value: tag,
   }))
 
-  const handleChange = (value) => {
-    console.log('Tags:', value)
-  }
-
-  const [courseOptions, setCourseOptions] = useState([])
-
-  useEffect(() => {
-    const getData = async () =>
-      API.courses
-        .list({
-          params: { fields: 'code,title', page_size: 0 },
-        })
-        .then((res) =>
-          res.data.map((course) => ({
-            label: `${course.code}: ${course.title}`,
-            value: course.code,
-          }))
-        )
-        .then((res) => setCourseOptions(res))
-        .catch((error) => console.log(error))
-
-    getData()
-  }, [])
+  const courseOptions = useSelector(selectCourseListMinified)?.map(
+    ({ code, title }) => ({
+      label: `${code}: ${title}`,
+      value: code,
+    })
+  )
 
   return (
     <ItemContainer>
       <StyledTooltip
         color="white"
-        visible={status === 'error'}
+        visible={fileItem.status === 'error'}
         title={<ToolTipTitle />}
       >
-        <UploadBox {...getRootProps()} status={status}>
-          <img src={fileDetails.icon} className="icon" alt="icon" />
+        <UploadBox {...getRootProps()} status={fileItem.status}>
+          <img src={fileItem.details.icon} className="icon" alt="icon" />
 
           <h3>
-            {fileDetails.name}
+            {fileItem.details.name}
             <br />
-            {fileDetails.size && <small>{` (${fileDetails.size})`}</small>}
+            {fileItem.details.size && (
+              <small>{` (${fileItem.details.size})`}</small>
+            )}
           </h3>
 
           {/* File input */}
           <input {...getInputProps()} />
         </UploadBox>
 
-        {progress > 0 && progress < 100 && (
-          <Progress size="small" percent={progress} />
+        {fileItem.progress > 0 && fileItem.progress < 100 && (
+          <Progress size="small" percent={fileItem.progress} />
         )}
       </StyledTooltip>
 
@@ -200,42 +132,67 @@ const CourseResourceUploadItem = ({
           type="text"
           name="uploadTitle"
           placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={fileItem.details.title}
+          onChange={(e) =>
+            updateFileItem({
+              details: {
+                ...fileItem.details,
+                title: e.target.value,
+              },
+            })
+          }
         />
 
         <Input.TextArea
           autoSize={{ minRows: 1, maxRows: 10 }}
           placeholder="Description"
+          value={fileItem.details.description}
+          onChange={(e) =>
+            updateFileItem({
+              details: {
+                ...fileItem.details,
+                description: e.target.value,
+              },
+            })
+          }
         />
 
         <Select
           showSearch
           placeholder="Course"
-          // optionFilterProp="children"
-          onChange={handleChange}
-          // onFocus={onFocus}
-          // onBlur={onBlur}
-          // onSearch={onSearch}
-          // filterOption={(input, option) =>
-          //   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          // }
           options={courseOptions}
+          value={fileItem.details.course}
+          onChange={(value) =>
+            updateFileItem({
+              details: {
+                ...fileItem.details,
+                course: value,
+              },
+            })
+          }
         />
 
         <Select
           mode="tags"
           placeholder="Add tags"
-          onChange={handleChange}
           showArrow
           tokenSeparators={[',']}
           options={tagOptions}
+          value={fileItem.details.tags}
+          onChange={(values) =>
+            updateFileItem({
+              details: {
+                ...fileItem.details,
+                tags: values,
+              },
+            })
+          }
         />
       </DetailsForm>
 
       <ButtonIconDanger
         icon={<X size="20" />}
-        popover={fileDetails !== defaultFile}
+        popover={fileItem.details !== defaultFile}
         popoverTitle="Discard this upload?"
         onClick={handleDelete}
         defaultstyle={{ marginLeft: '0.5rem' }}
@@ -270,7 +227,7 @@ const ItemContainer = styled.div`
 const UploadBox = styled.div`
   display: flex;
   align-items: center;
-  width: 9rem;
+  width: 12rem;
   height: 100%;
   padding: 0.5rem;
 
