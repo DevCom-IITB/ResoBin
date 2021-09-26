@@ -14,7 +14,7 @@ import styled from 'styled-components/macro'
 import { MenuItem, ProfileImgItem } from 'components/menu'
 import { Divider } from 'components/shared'
 import { useViewportContext } from 'context/ViewportContext'
-import { selectUserProfile } from 'store/authSlice'
+import { selectUserProfile } from 'store/userSlice'
 import { device, breakpoints } from 'styles/responsive'
 
 const Container = styled.nav`

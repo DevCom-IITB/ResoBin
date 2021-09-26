@@ -10,16 +10,18 @@ import { toastError } from 'components/toast'
 import PageTransition from 'hoc/PageTransition'
 import { useScrollToTop } from 'hooks'
 import { DashboardRoutes } from 'routes'
-import { getProfileAction, selectAuthLoading } from 'store/authSlice'
+import { selectAuthLoading } from 'store/authSlice'
 import {
   getCourseList,
   getCourseSlots,
   getResourceTags,
   getDepartmentList,
+  getCourseListMinified,
   selectChecksum,
   selectCourseAPILoading,
   updateChecksum,
 } from 'store/courseSlice'
+import { getProfileAction } from 'store/userSlice'
 
 const Dashboard = () => {
   useScrollToTop()
@@ -34,6 +36,7 @@ const Dashboard = () => {
     dispatch(getProfileAction())
     dispatch(getResourceTags())
     dispatch(getDepartmentList())
+    dispatch(getCourseListMinified())
 
     const getChecksum = async (prevChecksum) =>
       axios

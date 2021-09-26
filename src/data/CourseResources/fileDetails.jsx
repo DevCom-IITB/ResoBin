@@ -25,11 +25,15 @@ export const fileTypes = [
 
 export const defaultFile = {
   name: 'Upload document',
+  title: null,
+  description: null,
+  tags: [],
   type: null,
   extention: null,
   icon: 'https://image.flaticon.com/icons/svg/136/136549.svg',
   isValid: false,
   size: null,
+  course: null,
 }
 
 const printSize = (_size) => {
@@ -45,6 +49,12 @@ const printSize = (_size) => {
   return `${Math.round(size * 100) / 100} ${sizes[i]}`
 }
 
+const getTitle = (fileName) =>
+  fileName
+    .replace(/\.[^/.]+$/, '')
+    .replace(/[\W_]+/g, ' ')
+    .trim()
+
 export const getFileDetails = (file) => {
   if (!file) return defaultFile
   const { name, type } = file
@@ -52,7 +62,9 @@ export const getFileDetails = (file) => {
   if (!fileType) return { ...defaultFile, name }
 
   return {
+    ...defaultFile,
     name,
+    title: getTitle(name),
     type,
     extention: name.split('.').pop().toLowerCase(),
     icon: fileType.icon,
