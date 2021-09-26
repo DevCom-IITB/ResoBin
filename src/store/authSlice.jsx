@@ -36,18 +36,6 @@ export const getAuthStatusAction = createAsyncThunk(
   API.auth.authenticate
 )
 
-export const getProfileAction = createAsyncThunk(
-  'auth/getProfile',
-  async () => {
-    try {
-      return await API.profile.read()
-    } catch (error) {
-      toastError(error.message)
-      return Promise.reject(error)
-    }
-  }
-)
-
 export const deleteProfileAction = createAsyncThunk(
   'auth/deleteProfile',
   API.profile.delete
@@ -90,21 +78,9 @@ const authSlice = createSlice({
       state.isAuthenticated = false
       state.loading = false
     },
-
-    [getProfileAction.fulfilled]: (state, { payload }) => {
-      state.profile = payload.data
-      state.loading = false
-    },
-    [getProfileAction.pending]: (state) => {
-      state.loading = true
-    },
-    [getProfileAction.rejected]: (state) => {
-      state.loading = false
-    },
   },
 })
 
-export const selectUserProfile = (state) => state.auth.profile
 export const selectAuthLoading = (state) => state.auth.loading
 
 export default authSlice.reducer

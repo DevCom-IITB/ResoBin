@@ -26,12 +26,21 @@ export const getResourceTags = createAsyncThunk(
   API.resources.tags.list
 )
 
+export const getCourseListMinified = createAsyncThunk(
+  'courses/getCourseListMinified',
+  () =>
+    API.courses.list({
+      params: { fields: 'code,title', page_size: 0 },
+    })
+)
+
 // ? reducer
 const courseSlice = createSlice({
   name: 'course',
 
   initialState: {
     list: [],
+    listMinified: [],
     slots: [],
     loading: false,
     checksum: '',
@@ -102,6 +111,17 @@ const courseSlice = createSlice({
     [getDepartmentList.rejected]: (state) => {
       state.loading = false
     },
+
+    [getCourseListMinified.fulfilled]: (state, { payload }) => {
+      state.listMinified = payload.data
+      state.loading = false
+    },
+    [getCourseListMinified.pending]: (state) => {
+      state.loading = true
+    },
+    [getCourseListMinified.rejected]: (state) => {
+      state.loading = false
+    },
   },
 })
 
@@ -115,6 +135,7 @@ export const selectChecksum = (state) => state.course.checksum
 export const selectCourseSlots = (state) => state.course.slots
 export const selectResourceTags = (state) => state.course.resources.tags
 export const selectDepartments = (state) => state.course.departments
+export const selectCourseListMinified = (state) => state.course.listMinified
 
 // https://stackoverflow.com/questions/62545632/how-to-pass-an-additional-argument-to-useselector
 export const selectCourseListByCourseCode = (courseCode) =>

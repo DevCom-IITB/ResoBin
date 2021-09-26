@@ -1,10 +1,18 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit'
+import { createSlice, createSelector, createAsyncThunk } from '@reduxjs/toolkit'
+
+import { API } from 'api'
+
+export const getProfileAction = createAsyncThunk(
+  'user/getProfileAction',
+  API.profile.read
+)
 
 // ? reducer
 const userSlice = createSlice({
   name: 'user',
 
   initialState: {
+    details: {},
     favourites: [],
     timetable: {
       autumn: [],
@@ -30,6 +38,20 @@ const userSlice = createSlice({
       else state.timetable[semester].splice(index, 1)
     },
   },
+
+  extraReducers: {
+    [getProfileAction.fulfilled]: (state, { payload }) => {
+      state.favourites = payload.data.favorite_courses
+      state.details = payload.data
+      state.loading = false
+    },
+    [getProfileAction.pending]: (state) => {
+      state.loading = true
+    },
+    [getProfileAction.rejected]: (state) => {
+      state.loading = false
+    },
+  },
 })
 
 // ? actions
@@ -37,6 +59,7 @@ export const { updateFavourite, updateTimetable } = userSlice.actions
 
 // ? selectors
 // * get all favourites
+export const selectUserProfile = (state) => state.user.details
 export const selectAllFavourites = (state) => state.user.favourites
 export const selectAllTimetable = (state) => state.user.timetable
 
