@@ -36,7 +36,7 @@ const CourseReviewsContainer = () => {
       let response = await API.courses.listReviews({
         code: courseCode,
       })
-      response = response.data.map(
+      response = response.map(
         ({
           id,
           user_profile: author,

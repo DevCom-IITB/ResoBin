@@ -69,7 +69,7 @@ const CourseResourceUploadItem = ({
         payload: formData,
         onUploadProgress,
       })
-      const { id, timestamp, url } = response.data
+      const { id, timestamp, url } = response
 
       updateFileItem({
         status: 'uploaded',
