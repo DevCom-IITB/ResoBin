@@ -1,5 +1,9 @@
 import axios from 'axios'
 
+import { toastError } from 'components/toast'
+// import { store } from 'store'
+// import { logoutAction } from 'store/authSlice'
+
 export const APIInstance = axios.create({
   baseURL: 'http://localhost:8000/api',
   headers: {
@@ -10,6 +14,18 @@ export const APIInstance = axios.create({
   xsrfHeaderName: 'X-CSRFToken',
   withCredentials: true,
 })
+
+APIInstance.interceptors.response.use(
+  (response) => response.data,
+  (error) => {
+    // if (error.response.status === 401) {
+    //   persistor.dispatch(logoutAction())
+    // }
+    console.log(error)
+    // toastError(error.message)
+    return Promise.reject(error.response.data)
+  }
+)
 
 // ? API endpoints
 export const API = {

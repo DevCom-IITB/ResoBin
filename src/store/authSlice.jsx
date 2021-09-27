@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { API } from 'api'
-import { toastError } from 'components/toast'
 
 const initialState = {
   isAuthenticated: null,
@@ -9,27 +8,12 @@ const initialState = {
   profile: {},
 }
 
-export const loginAction = createAsyncThunk(
-  'auth/login',
-  async ({ code, redir }) => {
-    const params = { code, redir }
-    try {
-      return await API.auth.login({ params })
-    } catch (error) {
-      toastError(error.message)
-      return Promise.reject(error)
-    }
-  }
-)
+export const loginAction = createAsyncThunk('auth/loginAction', API.auth.login)
 
-export const logoutAction = createAsyncThunk('auth/logout', async () => {
-  try {
-    return await API.auth.logout()
-  } catch (error) {
-    toastError(error.message)
-    return Promise.reject(error)
-  }
-})
+export const logoutAction = createAsyncThunk(
+  'auth/logoutAction',
+  API.auth.logout
+)
 
 export const getAuthStatusAction = createAsyncThunk(
   'auth/getAuthStatusAction',

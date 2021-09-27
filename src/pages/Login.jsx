@@ -32,7 +32,8 @@ const Login = () => {
 
     const code = queryString.get('code')
     if (code) {
-      dispatch(loginAction({ code, redir: SSO.REDIRECT_URI }))
+      const params = { code, redir: SSO.REDIRECT_URI }
+      dispatch(loginAction({ params }))
       setRedirect('/login')
     }
   }, [dispatch, location, isAuthenticated])

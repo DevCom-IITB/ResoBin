@@ -7,29 +7,42 @@ export const getProfileAction = createAsyncThunk(
   API.profile.read
 )
 
+export const updateProfileAction = createAsyncThunk(
+  'user/updateProfileAction',
+  API.profile.update
+)
+
 // ? reducer
 const userSlice = createSlice({
   name: 'user',
 
   initialState: {
-    details: {},
-    favourites: [],
+    profile: {},
+    favoriteCourses: [],
     timetable: {
       autumn: [],
       spring: [],
+    },
+    reviews: {
+      contributed: [],
+      requested: [],
+      voted: [],
+    },
+    resources: {
+      contributed: [],
+      requested: [],
     },
   },
 
   reducers: {
     // remove favourite if in list else add to list
     updateFavourite(state, { payload }) {
-      const index = state.favourites.indexOf(payload)
+      const index = state.favoriteCourses.indexOf(payload)
 
-      if (index === -1) state.favourites.push(payload)
-      else state.favourites.splice(index, 1)
+      if (index === -1) state.favoriteCourses.push(payload)
+      else state.favoriteCourses.splice(index, 1)
     },
 
-    // params: (state, action)
     updateTimetable(state, { payload }) {
       const { courseCode, semester } = payload
       const index = state.timetable[semester].indexOf(courseCode)
@@ -41,8 +54,24 @@ const userSlice = createSlice({
 
   extraReducers: {
     [getProfileAction.fulfilled]: (state, { payload }) => {
-      state.favourites = payload.data.favorite_courses
-      state.details = payload.data
+      state.profile = {
+        id: payload.id,
+        name: payload.name,
+        email: payload.email,
+        ldap: payload.ldap,
+        picture: payload.profile_picture,
+        department: payload.department,
+      }
+      state.favoriteCourses = payload.favorite_courses
+      state.reviews = {
+        contributed: payload.reviews_written,
+        requested: payload.reviews_requested,
+        voted: payload.reviews_voted,
+      }
+      state.resources = {
+        contributed: payload.resources_posted,
+        requested: payload.resources_requested,
+      }
       state.loading = false
     },
     [getProfileAction.pending]: (state) => {
@@ -60,14 +89,14 @@ export const { updateFavourite, updateTimetable } = userSlice.actions
 // ? selectors
 // * get all favourites
 export const selectUserProfile = (state) => state.user.details
-export const selectAllFavourites = (state) => state.user.favourites
+export const selectAllFavourites = (state) => state.user.favoriteCourses
 export const selectAllTimetable = (state) => state.user.timetable
 
 // * get if a course is a favourite or not
 export const selectFavouriteStatus = (courseCode) =>
   createSelector(
     selectAllFavourites,
-    (favourite) => favourite.indexOf(courseCode) !== -1
+    (favoriteCourse) => favoriteCourse.indexOf(courseCode) !== -1
   )
 
 export const selectTimetableStatus = ({ courseCode, semester }) =>

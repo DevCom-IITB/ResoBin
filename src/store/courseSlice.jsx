@@ -90,7 +90,7 @@ const courseSlice = createSlice({
 
     [getResourceTags.fulfilled]: (state, { payload }) => {
       state.resources = {
-        tags: payload.data,
+        tags: payload,
       }
       state.loading = false
     },
@@ -102,7 +102,7 @@ const courseSlice = createSlice({
     },
 
     [getDepartmentList.fulfilled]: (state, { payload }) => {
-      state.departments = payload.data
+      state.departments = payload
       state.loading = false
     },
     [getDepartmentList.pending]: (state) => {
@@ -113,7 +113,7 @@ const courseSlice = createSlice({
     },
 
     [getCourseListMinified.fulfilled]: (state, { payload }) => {
-      state.listMinified = payload.data
+      state.listMinified = payload
       state.loading = false
     },
     [getCourseListMinified.pending]: (state) => {
