@@ -1,23 +1,44 @@
 import { Button } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useHistory, useParams } from 'react-router'
 
-import CourseResourceList from './CourseResourceList'
-import CourseResourceUploadModal from './CourseResourceUploadModal'
+import { API } from 'api'
 
 const CoursePageResourcesContainer = () => {
-  const [visible, setVisible] = useState(false)
-  const showModal = () => setVisible(true)
+  const [resources, setResources] = useState([])
+  const { courseCode } = useParams()
+  const history = useHistory()
+
+  useEffect(() => {
+    const getResources = async () => {
+      const response = await API.courses.listResources({ code: courseCode })
+      setResources(response)
+    }
+
+    getResources()
+  }, [courseCode])
+
+  const redirectContribute = () => {
+    history.push(`/contribute?course=${courseCode}`)
+  }
 
   return (
     <>
       <h1>Course Resources</h1>
 
-      <Button type="primary" onClick={showModal}>
+      <Button type="primary" onClick={redirectContribute}>
         Upload resources
       </Button>
-      <CourseResourceUploadModal visible={visible} setVisible={setVisible} />
 
-      <CourseResourceList />
+      {resources.map((resource) => (
+        <div key={resource.id}>
+          <h2>
+            <a href={resource.file}>{resource.title}</a>
+          </h2>
+          <p>{resource.description}</p>
+        </div>
+      ))}
+      {/* <CourseResourceItem /> */}
     </>
   )
 }

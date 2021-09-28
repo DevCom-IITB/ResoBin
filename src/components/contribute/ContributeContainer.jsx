@@ -1,13 +1,15 @@
-import {
-  // Modal,
-  Button,
-} from 'antd'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Button } from 'antd'
 import { nanoid } from 'nanoid'
 import { useCallback, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 import { Plus } from 'styled-icons/heroicons-outline'
 
+import { API } from 'api'
 import { PageHeading, PageTitle } from 'components/shared'
+import { defaultFile, fileTypes } from 'data/CourseResources'
+import { selectUserProfile } from 'store/userSlice'
 import { device } from 'styles/responsive'
 
 import ContributeItem from './ContributeItem'
@@ -15,23 +17,35 @@ import ContributeItem from './ContributeItem'
 const defaultFileItem = () => ({
   id: nanoid(),
   status: null,
+  progress: 0,
   file: null,
-  details: {},
+  details: defaultFile,
 })
 
-const CourseResourceUploadModal = ({ visible, setVisible }) => {
+const ContributeContainer = ({ visible, setVisible }) => {
   const [fileList, setFileList] = useState([defaultFileItem()])
+  const { resourcesPosted } = useSelector(selectUserProfile)
+  const [myResources, setMyResources] = useState([])
+
+  useEffect(() => {
+    resourcesPosted.forEach(async (id) => {
+      const response = await API.resources.read({ id })
+      setMyResources((prev) => [...prev, response])
+    })
+  }, [])
+  // const [uploading, setUploading] = useState(false)
 
   const createFileItem = useCallback(() => {
     setFileList((prevItems) => [...prevItems, defaultFileItem()])
   }, [])
 
-  const updateFileItem = (id) => (fileItem) =>
+  const updateFileItem = (id) => (fileItem) => {
     setFileList((prevItems) =>
       prevItems.map((item) =>
         item.id === id ? { ...item, ...fileItem } : item
       )
     )
+  }
 
   const deleteFileItem = (id) => () => {
     if (fileList.length === 1) createFileItem()
@@ -43,6 +57,12 @@ const CourseResourceUploadModal = ({ visible, setVisible }) => {
       <PageHeading>
         <PageTitle>Contribute</PageTitle>
       </PageHeading>
+      <PageTitle style={{ padding: '1.5rem', fontSize: '1rem' }}>
+        Please upload documents only in the following formats:
+        {fileTypes.map(({ extention }) => (
+          <code key={extention}> {extention}</code>
+        ))}
+      </PageTitle>
 
       <FileList>
         {fileList.map((fileItem) => (
@@ -63,11 +83,20 @@ const CourseResourceUploadModal = ({ visible, setVisible }) => {
       >
         Add new
       </Button>
+
+      {myResources.map((resource) => (
+        <div key={resource.id} style={{ color: 'white', padding: '1rem' }}>
+          <h3>
+            <a href={resource.file}>{resource.title}</a>
+          </h3>
+          <p>{resource.description}</p>
+        </div>
+      ))}
     </Container>
   )
 }
 
-export default CourseResourceUploadModal
+export default ContributeContainer
 
 const Container = styled.div`
   min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
