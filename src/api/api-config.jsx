@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 import { toastError } from 'components/toast'
+import { camelizeKeys, snakeizeKeys } from 'helpers/transformKeys'
 // import { store } from 'store'
 // import { logoutAction } from 'store/authSlice'
 
@@ -15,13 +16,27 @@ export const APIInstance = axios.create({
   withCredentials: true,
 })
 
-APIInstance.interceptors.response.use(
-  (response) => response.data,
+APIInstance.interceptors.request.use(
+  (request) => {
+    if (request.headers['Content-Type'] === 'application/json')
+      return { ...request, data: snakeizeKeys(request.data) }
+
+    return request
+  },
   (error) => {
-    // if (error.response.status === 401) {
-    //   persistor.dispatch(logoutAction())
-    // }
-    console.log(error)
+    console.log('Request error', error)
+    return Promise.reject(error)
+  }
+)
+
+APIInstance.interceptors.response.use(
+  (response) => camelizeKeys(response.data),
+  (error) => {
+    if (error.response.status === 401) {
+      toastError('Please login again')
+      // persistor.dispatch(logoutAction())
+    }
+    console.log('Response error', error)
     // toastError(error.message)
     return Promise.reject(error.response.data)
   }

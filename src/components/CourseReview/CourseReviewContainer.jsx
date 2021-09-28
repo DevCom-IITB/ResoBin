@@ -16,14 +16,14 @@ const nestComments = (commentsList) => {
   })
 
   commentsList.forEach((comment) => {
-    if (comment.parentId !== null) {
-      if (commentsMap[comment.parentId].replies === undefined)
-        commentsMap[comment.parentId].replies = []
-      commentsMap[comment.parentId].replies.push(comment)
+    if (comment.parent !== null) {
+      if (commentsMap[comment.parent].replies === undefined)
+        commentsMap[comment.parent].replies = []
+      commentsMap[comment.parent].replies.push(comment)
     }
   })
 
-  return commentsList.filter((comment) => comment.parentId === null)
+  return commentsList.filter((comment) => comment.parent === null)
 }
 
 // TODO: make write review button primary
@@ -36,23 +36,7 @@ const CourseReviewsContainer = () => {
       let response = await API.courses.listReviews({
         code: courseCode,
       })
-      response = response.map(
-        ({
-          id,
-          user_profile: author,
-          body,
-          votes_count: votes,
-          timestamp,
-          parent: parentId,
-        }) => ({
-          id,
-          author,
-          body,
-          votes,
-          timestamp,
-          parentId,
-        })
-      )
+
       response = nestComments(response)
       setReviewsData(response)
     }

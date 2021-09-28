@@ -1,14 +1,15 @@
 import { LikeFilled, LikeOutlined } from '@ant-design/icons'
 import { Avatar, Comment, Tooltip } from 'antd'
+import DOMPurify from 'dompurify'
 import moment from 'moment'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
 
 const CourseReviewItem = ({
   id,
-  author,
+  userProfile,
   body,
-  votes,
+  votesCount,
   timestamp,
   replies,
   depth,
@@ -39,11 +40,17 @@ const CourseReviewItem = ({
       actions={actions}
       author={
         <a href="google">
-          <CommentHeader>{author.name}</CommentHeader>
+          <CommentHeader>{userProfile.name}</CommentHeader>
         </a>
       }
-      avatar={<Avatar src={author.profile_picture} alt="Profile pictuure" />}
-      content={<CommentText>{body}</CommentText>}
+      avatar={
+        <Avatar src={userProfile.profile_picture} alt="Profile pictuure" />
+      }
+      content={
+        <CommentText
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(body) }}
+        />
+      }
       datetime={
         <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
           <CommentHeader>{moment().fromNow()}</CommentHeader>
@@ -64,7 +71,7 @@ const CommentHeader = styled.p`
   color: ${({ theme }) => theme.header};
 `
 
-const CommentText = styled.p`
+const CommentText = styled.div`
   width: 80%;
   font-weight: 400;
   color: ${({ theme }) => theme.header};
