@@ -12,25 +12,31 @@ export const updateProfileAction = createAsyncThunk(
   API.profile.update
 )
 
+export const deleteProfileAction = createAsyncThunk(
+  'user/deleteProfileAction',
+  API.profile.delete
+)
+
 // ? reducer
 const userSlice = createSlice({
   name: 'user',
 
   initialState: {
-    profile: {},
+    id: null,
+    name: null,
+    email: null,
+    ldapId: null,
+    profilePicture: null,
+    department: null,
     favoriteCourses: [],
+    reviewsWritten: [],
+    reviewsRequested: [],
+    reviewsVoted: [],
+    resourcesPosted: [],
+    resourcesRequested: [],
     timetable: {
       autumn: [],
       spring: [],
-    },
-    reviews: {
-      contributed: [],
-      requested: [],
-      voted: [],
-    },
-    resources: {
-      contributed: [],
-      requested: [],
     },
   },
 
@@ -52,35 +58,85 @@ const userSlice = createSlice({
     },
   },
 
-  extraReducers: {
-    [getProfileAction.fulfilled]: (state, { payload }) => {
-      state.profile = {
-        id: payload.id,
-        name: payload.name,
-        email: payload.email,
-        ldap: payload.ldap,
-        picture: payload.profile_picture,
-        department: payload.department,
-      }
-      state.favoriteCourses = payload.favorite_courses
-      state.reviews = {
-        contributed: payload.reviews_written,
-        requested: payload.reviews_requested,
-        voted: payload.reviews_voted,
-      }
-      state.resources = {
-        contributed: payload.resources_posted,
-        requested: payload.resources_requested,
-      }
-      state.loading = false
-    },
-    [getProfileAction.pending]: (state) => {
-      state.loading = true
-    },
-    [getProfileAction.rejected]: (state) => {
-      state.loading = false
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getProfileAction.fulfilled, (state, { payload }) => {
+        state.id = payload.id
+        state.name = payload.name
+        state.email = payload.email
+        state.ldapId = payload.ldapId
+        state.profilePicture = payload.profilePicture
+        state.department = payload.department
+        state.favoriteCourses = payload.favoriteCourses
+        state.reviewsWritten = payload.reviewsWritten
+        state.reviewsRequested = payload.reviewsRequested
+        state.reviewsVoted = payload.reviewsVoted
+        state.resourcesPosted = payload.resourcesPosted
+        state.resourcesRequested = payload.resourcesRequested
+        state.loading = false
+      })
+      // .addCase(getProfileAction.loading, (state) => {
+      //   state.loading = true
+      // })
+      .addCase(getProfileAction.rejected, (state) => {
+        state.loading = false
+      })
+      .addMatcher(
+        (action) => action.type.endsWith('pending'),
+        (state) => {
+          state.loading = true
+        }
+      )
   },
+
+  //     // state.profile = {
+  //     //   id: payload.id,
+  //     //   name: payload.name,
+  //     //   email: payload.email,
+  //     //   ldap: payload.ldap,
+  //     //   picture: payload.profilePicture,
+  //     //   department: payload.department,
+  //     // }
+  //     // state.favoriteCourses = payload.favorite_courses
+  //     // state.reviews = {
+  //     //   contributed: payload.reviews_written,
+  //     //   requested: payload.reviews_requested,
+  //     //   voted: payload.reviews_voted,
+  //     // }
+  //     // state.resources = {
+  //     //   contributed: payload.resources_posted,
+  //     //   requested: payload.resources_requested,
+  //     // }
+
+  //   [updateProfileAction.fulfilled]: (state, { payload }) => {
+  //     state = payload
+  //     // state.profile = {
+  //     //   id: payload.id,
+  //     //   name: payload.name,
+  //     //   email: payload.email,
+  //     //   ldap: payload.ldap,
+  //     //   picture: payload.profile_picture,
+  //     //   department: payload.department,
+  //     // }
+  //     // state.favoriteCourses = payload.favorite_courses
+  //     // state.reviews = {
+  //     //   contributed: payload.reviews_written,
+  //     //   requested: payload.reviews_requested,
+  //     //   voted: payload.reviews_voted,
+  //     // }
+  //     // state.resources = {
+  //     //   contributed: payload.resources_posted,
+  //     //   requested: payload.resources_requested,
+  //     // }
+  //     state.loading = false
+  //   },
+  //   [updateProfileAction.pending]: (state) => {
+  //     state.loading = true
+  //   },
+  //   [updateProfileAction.rejected]: (state) => {
+  //     state.loading = false
+  //   },
+  // },
 })
 
 // ? actions
@@ -88,14 +144,15 @@ export const { updateFavourite, updateTimetable } = userSlice.actions
 
 // ? selectors
 // * get all favourites
-export const selectUserProfile = (state) => state.user.details
-export const selectAllFavourites = (state) => state.user.favoriteCourses
+export const selectUserProfile = (state) => state.user
+export const selectUserLoading = (state) => state.user.loading
+export const selectFavouriteCourses = (state) => state.user.favoriteCourses
 export const selectAllTimetable = (state) => state.user.timetable
 
 // * get if a course is a favourite or not
 export const selectFavouriteStatus = (courseCode) =>
   createSelector(
-    selectAllFavourites,
+    selectFavouriteCourses,
     (favoriteCourse) => favoriteCourse.indexOf(courseCode) !== -1
   )
 
