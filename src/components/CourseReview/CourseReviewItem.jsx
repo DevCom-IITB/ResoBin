@@ -1,13 +1,18 @@
 import { LikeFilled, LikeOutlined } from '@ant-design/icons'
-import { Avatar, Comment, Tooltip } from 'antd'
+import { Button, Comment, Tooltip } from 'antd'
 import { format, formatDistance } from 'date-fns'
 import DOMPurify from 'dompurify'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
 
-const CourseReviewItem = ({ content, depth }) => {
+import StyledAvatar from 'components/shared/Avatar'
+
+import CourseReviewAdd from './CourseReviewAdd'
+
+const CourseReviewItem = ({ content, course, depth }) => {
   const [action, setAction] = useState(null)
   const [likes, setLikes] = useState(0)
+  const [likeStatus, setLikeStatus] = useState(false)
 
   const like = () => {
     setLikes(1)
@@ -17,28 +22,38 @@ const CourseReviewItem = ({ content, depth }) => {
   const actions = [
     <Tooltip key="comment-basic-like" title="Like">
       <button type="button" onClick={like}>
-        {action === 'liked' ? <LikeFilled /> : <LikeOutlined />}
+        {likeStatus ? <LikeFilled /> : <LikeOutlined />}
         <span className="comment-action">{likes}</span>
       </button>
     </Tooltip>,
   ]
 
+  const openReply = () => {
+    // setAction('replied')
+    console.log('Reply clicked')
+  }
+
   if (depth < 2)
-    actions.push(<span key="comment-basic-reply-to">Reply to</span>)
+    actions.push(
+      <Button type="link" onClick={openReply} key="comment-basic-reply-to">
+        Reply to
+      </Button>
+    )
 
   return (
     <Comment
       key={content?.id}
       actions={actions}
       author={
-        <a href="google">
-          <CommentHeader>{content?.userProfile.name}</CommentHeader>
+        <a href={`/profile/${content?.userProfile?.ldapId}`}>
+          <CommentHeader>{content?.userProfile?.name}</CommentHeader>
         </a>
       }
       avatar={
-        <Avatar
+        <StyledAvatar
+          size="2rem"
           src={content?.userProfile.profilePicture}
-          alt="Profile pictuure"
+          alt="Profile picture"
         />
       }
       content={
@@ -50,16 +65,23 @@ const CourseReviewItem = ({ content, depth }) => {
       }
       datetime={
         <Tooltip title={format(new Date(content.timestamp), 'dd.MM.yyyy')}>
-          <CommentHeader>
+          <CommentSubHeader>
             {formatDistance(new Date(content.timestamp), new Date(), {
               addSuffix: true,
             })}
-          </CommentHeader>
+          </CommentSubHeader>
         </Tooltip>
       }
     >
+      <CourseReviewAdd visible course={course} parent={null} />
+
       {content?.children?.map((child) => (
-        <CourseReviewItem key={child.id} content={child} depth={depth + 1} />
+        <CourseReviewItem
+          key={child.id}
+          content={child}
+          course={course}
+          depth={depth + 1}
+        />
       ))}
     </Comment>
   )
@@ -68,8 +90,19 @@ const CourseReviewItem = ({ content, depth }) => {
 export default CourseReviewItem
 
 const CommentHeader = styled.p`
+  font-size: 0.75rem;
   font-weight: 600;
   color: ${({ theme }) => theme.header};
+
+  &:hover {
+    color: ${({ theme }) => theme.header};
+  }
+`
+
+const CommentSubHeader = styled.p`
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: ${({ theme }) => theme.textColorInactive};
 `
 
 const CommentText = styled.div`
