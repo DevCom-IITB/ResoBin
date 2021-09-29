@@ -1,84 +1,137 @@
-import { Form, Button, Input } from 'antd'
+import { Form, Button, Avatar, Comment } from 'antd'
 import { useState } from 'react'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-const CoursePageReviewsContainer = () => {
-  const [comment, setComment] = useState('')
-  const handleChange = (e) => setComment(e.target.value)
+import { API } from 'api'
+import { selectUserProfile } from 'store/userSlice'
 
-  const handleSubmit = () => {
-    // this.setState({
-    //   submitting: true,
-    // })
-    // setTimeout(() => {
-    //   this.setState({
-    //     submitting: false,
-    //     value: '',
-    //     comments: [
-    //       ...this.state.comments,
-    //       {
-    //         author: 'Han Solo',
-    //         avatar:
-    //           'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    //         content: <p>{this.state.value}</p>,
-    //         datetime: ,
-    //       },
-    //     ],
-    //   })
-    // }, 1000)
+const CourseReviewAdd = ({ visible, course, parent }) => {
+  const [comment, setComment] = useState('')
+  const [loading, setLoading] = useState(false)
+  // const handleChange = (e) => setComment(e.target.value)
+  const handleChange = (value) => setComment(value)
+
+  const profile = useSelector(selectUserProfile)
+
+  const handleSubmit = async () => {
+    console.log(comment)
+    setLoading(true)
+    const payload = {
+      course,
+      parent,
+      body: comment,
+      status: false,
+    }
+
+    try {
+      await API.reviews.create({ payload })
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setLoading(false)
+      setComment('')
+    }
   }
 
+  const formats = [
+    'header',
+    'font',
+    'size',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'indent',
+    'link',
+  ]
+
+  // const modules = {
+  //   toolbar: [
+  //     [{ header: '1' }, { header: '2' }, { font: [] }],
+  //     [{ size: [] }],
+  //     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+  //     [
+  //       { list: 'ordered' },
+  //       { list: 'bullet' },
+  //       { indent: '-1' },
+  //       { indent: '+1' },
+  //     ],
+  //     ['link', 'image', 'video'],
+  //     ['clean'],
+  //   ],
+  //   clipboard: {
+  //     // toggle to add extra line breaks when pasting HTML:
+  //     matchVisual: false,
+  //   },
+  // }
+
   return (
-    <AddReviewContainer>
-      <span>Your review</span>
-      <Form.Item>
-        <Input.TextArea
-          autoSize={{ minRows: 5, maxRows: 20 }}
-          rows={4}
-          onChange={handleChange}
-          value={comment}
+    visible && (
+      <AddReviewContainer>
+        <Comment
+          avatar={<Avatar src={profile.profilePicture} alt="Profile picture" />}
+          content={
+            <ReactQuill
+              theme="snow"
+              // modules={modules}
+              formats={formats}
+              bounds=".root"
+              placeholder="Write a review"
+              value={comment}
+              onChange={handleChange}
+            />
+          }
         />
-      </Form.Item>
-
-      <span>Preview</span>
-      <PreviewContainer>
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {comment || '*Nothing to preview*'}
-        </ReactMarkdown>
-      </PreviewContainer>
-
-      <Form.Item>
-        <Button
-          htmlType="submit"
-          // loading={submitting}
-          onClick={handleSubmit}
-          type="primary"
-        >
-          Add Comment
-        </Button>
-      </Form.Item>
-    </AddReviewContainer>
+        <Form.Item>
+          <Button
+            htmlType="submit"
+            // loading={submitting}
+            onClick={handleSubmit}
+            type="primary"
+          >
+            Add Comment
+          </Button>
+        </Form.Item>
+      </AddReviewContainer>
+    )
   )
 }
 
-export default CoursePageReviewsContainer
+export default CourseReviewAdd
 
 const AddReviewContainer = styled.div`
-  border-radius: 0.5rem;
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
-`
+  color: #000000;
 
-// const StyledTextArea = styled(Input.TextArea)`
-//   .ant-input {
-//   }
-// `
+  .quill {
+    border: 1px solid #000000;
+    border-radius: 0.5rem;
+    background-color: ${({ theme }) => theme.textColor};
+    box-shadow: 0 0 1rem 4px rgba(0, 0, 0, 0.2);
+  }
 
-const PreviewContainer = styled.div`
-  padding: 16px;
-  margin-bottom: 16px;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  background: ${({ theme }) => theme.darksecondary};
+  .ql-toolbar.ql-snow {
+    display: block;
+    border: none;
+    border-bottom: 1px solid #000000;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    background: #eaecec;
+  }
+
+  .ql-container.ql-snow {
+    border: none;
+    border-top: 1px solid #000000;
+  }
+
+  .ql-editor {
+    overflow-y: scroll;
+    height: 5rem;
+    resize: vertical;
+  }
 `

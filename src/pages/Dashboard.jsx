@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -56,7 +57,7 @@ const Dashboard = () => {
 
     setLoading(true)
     getChecksum(checksum)
-  }, [checksum, dispatch])
+  }, [])
 
   const loadingAPI = [
     useSelector(selectCourseAPILoading),
