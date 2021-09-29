@@ -1,10 +1,13 @@
 import { PencilAlt, UserAdd } from '@styled-icons/heroicons-outline'
-import { useEffect, useState } from 'react'
+import { Divider } from 'antd'
+import { Fragment, useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
+import { LoaderAnimation } from 'components/shared'
 import { ButtonSwitch } from 'components/shared/Buttons/Button'
+import { toastError } from 'components/toast'
 
 import CourseReviewAdd from './CourseReviewAdd'
 import CourseReviewItem from './CourseReviewItem'
@@ -17,9 +20,9 @@ const nestComments = (commentsList) => {
 
   commentsList.forEach((comment) => {
     if (comment.parent !== null) {
-      if (commentsMap[comment.parent].replies === undefined)
-        commentsMap[comment.parent].replies = []
-      commentsMap[comment.parent].replies.push(comment)
+      if (commentsMap[comment.parent].children === undefined)
+        commentsMap[comment.parent].children = []
+      commentsMap[comment.parent].children.push(comment)
     }
   })
 
@@ -30,15 +33,22 @@ const nestComments = (commentsList) => {
 const CourseReviewsContainer = () => {
   const [reviewsData, setReviewsData] = useState([])
   const { courseCode } = useParams()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchReviews = async () => {
-      let response = await API.courses.listReviews({
-        code: courseCode,
-      })
-
-      response = nestComments(response)
-      setReviewsData(response)
+      setLoading(true)
+      try {
+        let response = await API.courses.listReviews({
+          code: courseCode,
+        })
+        response = nestComments(response)
+        setReviewsData(response)
+      } catch (error) {
+        toastError(error)
+      } finally {
+        setLoading(false)
+      }
     }
 
     fetchReviews()
@@ -50,7 +60,9 @@ const CourseReviewsContainer = () => {
 
   const handleReviewRequest = () => setReviewStatus((v) => !v)
 
-  return (
+  return loading ? (
+    <LoaderAnimation />
+  ) : (
     <>
       <ReviewOptions>
         <ButtonSwitch
@@ -91,7 +103,10 @@ const CourseReviewsContainer = () => {
       />
 
       {reviewsData.map((review) => (
-        <CourseReviewItem key={review.id} depth={0} {...review} />
+        <Fragment key={review.id}>
+          <CourseReviewItem content={review} depth={0} />
+          <StyledDivider />
+        </Fragment>
       ))}
     </>
   )
@@ -102,4 +117,9 @@ export default CourseReviewsContainer
 const ReviewOptions = styled.div`
   display: flex;
   gap: 1rem;
+`
+
+const StyledDivider = styled(Divider)`
+  margin: 1rem 0;
+  background-color: rgba(255, 255, 255, 0.2);
 `

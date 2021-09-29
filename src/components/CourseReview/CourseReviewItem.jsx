@@ -1,19 +1,11 @@
 import { LikeFilled, LikeOutlined } from '@ant-design/icons'
 import { Avatar, Comment, Tooltip } from 'antd'
+import { format, formatDistance } from 'date-fns'
 import DOMPurify from 'dompurify'
-import moment from 'moment'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
 
-const CourseReviewItem = ({
-  id,
-  userProfile,
-  body,
-  votesCount,
-  timestamp,
-  replies,
-  depth,
-}) => {
+const CourseReviewItem = ({ content, depth }) => {
   const [action, setAction] = useState(null)
   const [likes, setLikes] = useState(0)
 
@@ -36,29 +28,38 @@ const CourseReviewItem = ({
 
   return (
     <Comment
-      key={id}
+      key={content?.id}
       actions={actions}
       author={
         <a href="google">
-          <CommentHeader>{userProfile.name}</CommentHeader>
+          <CommentHeader>{content?.userProfile.name}</CommentHeader>
         </a>
       }
       avatar={
-        <Avatar src={userProfile.profile_picture} alt="Profile pictuure" />
+        <Avatar
+          src={content?.userProfile.profilePicture}
+          alt="Profile pictuure"
+        />
       }
       content={
         <CommentText
-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(body) }}
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(content?.body),
+          }}
         />
       }
       datetime={
-        <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-          <CommentHeader>{moment().fromNow()}</CommentHeader>
+        <Tooltip title={format(new Date(content.timestamp), 'dd.MM.yyyy')}>
+          <CommentHeader>
+            {formatDistance(new Date(content.timestamp), new Date(), {
+              addSuffix: true,
+            })}
+          </CommentHeader>
         </Tooltip>
       }
     >
-      {replies?.map((reply) => (
-        <CourseReviewItem key={reply.id} depth={depth + 1} {...reply} />
+      {content?.children?.map((child) => (
+        <CourseReviewItem key={child.id} content={child} depth={depth + 1} />
       ))}
     </Comment>
   )
