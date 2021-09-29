@@ -1,4 +1,4 @@
-import { PencilAlt, UserAdd } from '@styled-icons/heroicons-outline'
+import { UserAdd } from '@styled-icons/heroicons-outline'
 import { Divider } from 'antd'
 import { Fragment, useEffect, useState } from 'react'
 import { useParams } from 'react-router'
@@ -54,8 +54,6 @@ const CourseReviewsContainer = () => {
     fetchReviews()
   }, [courseCode])
 
-  const [writeStatus, setWriteStatus] = useState(false)
-  const toggleWrite = () => setWriteStatus((v) => !v)
   const [reviewStatus, setReviewStatus] = useState(false)
 
   const handleReviewRequest = () => setReviewStatus((v) => !v)
@@ -65,21 +63,6 @@ const CourseReviewsContainer = () => {
   ) : (
     <>
       <ReviewOptions>
-        <ButtonSwitch
-          type="primary"
-          active={writeStatus ? 1 : 0}
-          onClick={toggleWrite}
-        >
-          {!writeStatus ? (
-            <>
-              <PencilAlt size="18" style={{ marginRight: '0.5rem' }} />
-              Write
-            </>
-          ) : (
-            <>Cancel review</>
-          )}
-        </ButtonSwitch>
-
         <ButtonSwitch
           type="primary"
           active={reviewStatus ? 1 : 0}
@@ -96,15 +79,11 @@ const CourseReviewsContainer = () => {
         </ButtonSwitch>
       </ReviewOptions>
 
-      <CourseReviewAdd
-        visible={writeStatus}
-        course={courseCode}
-        parent={null}
-      />
+      <CourseReviewAdd visible course={courseCode} parent={null} />
 
       {reviewsData.map((review) => (
         <Fragment key={review.id}>
-          <CourseReviewItem content={review} depth={0} />
+          <CourseReviewItem content={review} course={courseCode} depth={0} />
           <StyledDivider />
         </Fragment>
       ))}
