@@ -1,4 +1,5 @@
-import { Form, Button, Avatar, Comment } from 'antd'
+import { Button, Comment } from 'antd'
+import DOMPurify from 'dompurify'
 import { useState } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
@@ -6,6 +7,7 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
+import StyledAvatar from 'components/shared/Avatar'
 import { selectUserProfile } from 'store/userSlice'
 
 const CourseReviewAdd = ({ visible, course, parent }) => {
@@ -17,12 +19,11 @@ const CourseReviewAdd = ({ visible, course, parent }) => {
   const profile = useSelector(selectUserProfile)
 
   const handleSubmit = async () => {
-    console.log(comment)
     setLoading(true)
     const payload = {
       course,
       parent,
-      body: comment,
+      body: DOMPurify.sanitize(comment),
       status: false,
     }
 
@@ -75,29 +76,30 @@ const CourseReviewAdd = ({ visible, course, parent }) => {
     visible && (
       <AddReviewContainer>
         <Comment
-          avatar={<Avatar src={profile.profilePicture} alt="Profile picture" />}
+          avatar={
+            <StyledAvatar
+              size="2rem"
+              src={profile.profilePicture}
+              alt="Profile picture"
+            />
+          }
           content={
             <ReactQuill
-              theme="snow"
-              // modules={modules}
-              formats={formats}
-              bounds=".root"
               placeholder="Write a review"
               value={comment}
               onChange={handleChange}
             />
           }
         />
-        <Form.Item>
-          <Button
-            htmlType="submit"
-            // loading={submitting}
-            onClick={handleSubmit}
-            type="primary"
-          >
-            Add Comment
-          </Button>
-        </Form.Item>
+
+        <Button
+          htmlType="submit"
+          loading={loading}
+          onClick={handleSubmit}
+          type="primary"
+        >
+          Add Comment
+        </Button>
       </AddReviewContainer>
     )
   )
@@ -106,6 +108,7 @@ const CourseReviewAdd = ({ visible, course, parent }) => {
 export default CourseReviewAdd
 
 const AddReviewContainer = styled.div`
+  margin-bottom: 1rem;
   color: #000000;
 
   .quill {

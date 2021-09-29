@@ -13,33 +13,35 @@ import CourseReviewAdd from './CourseReviewAdd'
 
 const CourseReviewItem = ({ content, course, depth }) => {
   const [likeStatus, setLikeStatus] = useState(false)
+  const [likeCount, setLikeCount] = useState(content.votesCount)
   const [showReply, setShowReply] = useState(false)
 
   const like = () => {
+    setLikeCount(likeStatus ? likeCount - 1 : likeCount + 1)
     setLikeStatus((prev) => !prev)
   }
+  const showReplyForm = () => setShowReply((prev) => !prev)
 
   const actions = [
-    <LikeContainer>
-      <ButtonIcon
-        onClick={like}
-        icon={
-          likeStatus ? <HeartFilled size="20" /> : <HeartOutlined size="20" />
-        }
-        color="white"
-      />
-      <span>{content.votesCount || 0}</span>
-    </LikeContainer>,
-  ]
+    <ButtonIcon
+      key="comment-like"
+      shape="round"
+      color="white"
+      size="middle"
+      icon={
+        likeStatus ? <HeartFilled size="18" /> : <HeartOutlined size="18" />
+      }
+      onClick={like}
+    >
+      <LikeCount>{likeCount}</LikeCount>
+    </ButtonIcon>,
 
-  const openReply = () => setShowReply((prev) => !prev)
-
-  if (depth < 2)
-    actions.push(
-      <Button type="link" onClick={openReply} key="comment-basic-reply-to">
-        Reply to
+    depth < 4 && (
+      <Button key="comment-reply" type="link" onClick={showReplyForm}>
+        Reply
       </Button>
-    )
+    ),
+  ]
 
   return (
     <StyledComment
@@ -102,17 +104,14 @@ const StyledComment = styled(Comment)`
   .ant-comment-actions {
     display: flex;
     align-items: center;
+    height: 1.75rem;
   }
 `
 
-const LikeContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 1rem;
-  font-size: 1rem;
-  color: ${({ theme }) => theme.textColorInactive};
-  gap: 0.25rem;
+const LikeCount = styled.span`
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  color: ${({ theme }) => theme.textColor};
 `
 
 const CommentHeader = styled.h2`
