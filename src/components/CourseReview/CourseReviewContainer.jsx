@@ -30,6 +30,13 @@ const nestComments = (commentsList) => {
   return commentsList.filter((comment) => comment.parent === null)
 }
 
+const recursiveApply = (array, callback) =>
+  callback(array).map((item) =>
+    item?.children?.length
+      ? { ...item, children: recursiveApply(item.children, callback) }
+      : item
+  )
+
 const CourseReviewsContainer = () => {
   const [reviewsData, setReviewsData] = useState([])
   const { courseCode } = useParams()
@@ -60,17 +67,21 @@ const CourseReviewsContainer = () => {
 
   const handleUpdateContent = ({ id, payload }) => {
     if (id === null) {
-      // ? create content
+      // ? create review
       setReviewsData((_reviewsData) => _reviewsData.concat([payload]))
     } else if (payload === null) {
-      // ? delete content
+      // ? delete review / reply
       setReviewsData((_reviewsData) =>
-        _reviewsData.filter((review) => id !== review.id)
+        recursiveApply(_reviewsData, (array) =>
+          array.filter((review) => id !== review.id)
+        )
       )
     } else {
-      // ? update content
+      // ? update review / reply
       setReviewsData((_reviewsData) =>
-        _reviewsData.map((review) => (id !== review.id ? review : payload))
+        recursiveApply(_reviewsData, (array) =>
+          array.map((review) => (id !== review.id ? review : payload))
+        )
       )
     }
   }

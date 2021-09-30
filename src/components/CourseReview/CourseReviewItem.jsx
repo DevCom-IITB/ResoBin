@@ -63,7 +63,10 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
           status: false,
         },
       })
-      const payload = { ...content, children: [...content.children, response] }
+
+      const payload = content
+      if (payload?.children) payload.children.push(response)
+      else payload.children = [response]
 
       updateContent({ id: content.id, payload })
       setAction(null)
@@ -149,7 +152,12 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       <ReviewEditor visible={action === 'reply'} onSubmit={handleCreateChild} />
 
       {content?.children?.map((child) => (
-        <CourseReviewItem key={child.id} content={child} depth={depth + 1} />
+        <CourseReviewItem
+          key={child.id}
+          content={child}
+          updateContent={updateContent}
+          depth={depth + 1}
+        />
       ))}
     </StyledComment>
   )

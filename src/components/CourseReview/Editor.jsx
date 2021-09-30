@@ -1,81 +1,71 @@
 import { Button, Comment } from 'antd'
-import DOMPurify from 'dompurify'
 import { useState } from 'react'
 import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { API } from 'api'
 import StyledAvatar from 'components/shared/Avatar'
 import { selectUserProfile } from 'store/userSlice'
 
-export const Editor = ({ visible, course, parent }) => {
-  const [comment, setComment] = useState('')
+const formats = [
+  'header',
+  'font',
+  'size',
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'blockquote',
+  'list',
+  'bullet',
+  'indent',
+  'link',
+]
+
+// const modules = {
+//   toolbar: [
+//     [{ header: '1' }, { header: '2' }, { font: [] }],
+//     [{ size: [] }],
+//     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+//     [
+//       { list: 'ordered' },
+//       { list: 'bullet' },
+//       { indent: '-1' },
+//       { indent: '+1' },
+//     ],
+//     ['link', 'image', 'video'],
+//     ['clean'],
+//   ],
+//   clipboard: {
+//     // toggle to add extra line breaks when pasting HTML:
+//     matchVisual: false,
+//   },
+// }
+
+export const Editor = ({ visible, onSubmit, initialValue = '' }) => {
+  const [content, setContent] = useState(initialValue)
   const [loading, setLoading] = useState(false)
-  const handleChange = (value) => setComment(value)
+  const handleChange = (value) => setContent(value)
 
   const handleSubmit = async () => {
     setLoading(true)
-    const payload = {
-      course,
-      parent,
-      body: DOMPurify.sanitize(comment),
-      status: false,
-    }
-
     try {
-      await API.reviews.create({ payload })
-    } catch (err) {
-      console.log(err)
+      await onSubmit(content)
+    } catch (error) {
+      console.error(error)
     } finally {
       setLoading(false)
-      setComment('')
     }
   }
-
-  // const formats = [
-  //   'header',
-  //   'font',
-  //   'size',
-  //   'bold',
-  //   'italic',
-  //   'underline',
-  //   'strike',
-  //   'blockquote',
-  //   'list',
-  //   'bullet',
-  //   'indent',
-  //   'link',
-  // ]
-
-  // const modules = {
-  //   toolbar: [
-  //     [{ header: '1' }, { header: '2' }, { font: [] }],
-  //     [{ size: [] }],
-  //     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-  //     [
-  //       { list: 'ordered' },
-  //       { list: 'bullet' },
-  //       { indent: '-1' },
-  //       { indent: '+1' },
-  //     ],
-  //     ['link', 'image', 'video'],
-  //     ['clean'],
-  //   ],
-  //   clipboard: {
-  //     // toggle to add extra line breaks when pasting HTML:
-  //     matchVisual: false,
-  //   },
-  // }
 
   return (
     visible && (
       <>
         <StyledReactQuill
           placeholder="Write a review"
-          value={comment}
+          value={content}
           onChange={handleChange}
+          formats={formats}
         />
 
         <StyledButton
@@ -84,14 +74,14 @@ export const Editor = ({ visible, course, parent }) => {
           onClick={handleSubmit}
           type="primary"
         >
-          Add Comment
+          Submit
         </StyledButton>
       </>
     )
   )
 }
 
-export const ReviewEditor = ({ visible, course, parent }) => {
+export const ReviewEditor = ({ visible, initialValue, onSubmit }) => {
   const profile = useSelector(selectUserProfile)
 
   return (
@@ -104,7 +94,9 @@ export const ReviewEditor = ({ visible, course, parent }) => {
             alt="Profile picture"
           />
         }
-        content={<Editor visible course={course} parent={parent} />}
+        content={
+          <Editor visible onSubmit={onSubmit} initialValue={initialValue} />
+        }
       />
     )
   )
@@ -135,7 +127,6 @@ const StyledReactQuill = styled(ReactQuill)`
 
   .ql-editor {
     overflow-y: scroll;
-    height: 5rem;
     resize: vertical;
   }
 `
