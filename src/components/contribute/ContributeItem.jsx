@@ -2,6 +2,7 @@ import { Button, Input, Progress, Select, Tooltip } from 'antd'
 import { rgba } from 'polished'
 import { useDropzone } from 'react-dropzone'
 import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router'
 import styled from 'styled-components/macro'
 import { X, ExclamationCircle, Upload } from 'styled-icons/heroicons-outline'
 
@@ -22,6 +23,10 @@ const CourseResourceUploadItem = ({
   updateFileItem,
   deleteFileItem,
 }) => {
+  const location = useLocation()
+  const queryString = new URLSearchParams(location.search)
+  const course = queryString.get('course')
+
   // ? If no file is valid, reset the file list item
   const onDrop = (acceptedFiles) => {
     if (acceptedFiles.length === 0) {
@@ -178,6 +183,7 @@ const CourseResourceUploadItem = ({
           placeholder="Course"
           options={courseOptions}
           value={fileItem.details.course}
+          defaultValue={course}
           onChange={(value) =>
             updateFileItem({
               details: {

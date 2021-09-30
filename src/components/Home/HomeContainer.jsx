@@ -15,7 +15,7 @@ const HomeContainer = () => {
 
 export default HomeContainer
 
-const Container = styled.li`
+const Container = styled.ul`
   width: 100%;
   padding: 1rem;
 `

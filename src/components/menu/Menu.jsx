@@ -70,20 +70,19 @@ const Menu = () => {
         iconSize={iconSize}
         to="/courses"
       />
-      {isDesktop && (
-        <MenuItem
-          title="Contribute"
-          icon={CloudUpload}
-          iconSize={iconSize}
-          to="/contribute"
-        />
-      )}
+
+      <MenuItem
+        title="Contribute"
+        icon={CloudUpload}
+        iconSize={iconSize}
+        to="/contribute"
+      />
 
       {isDesktop && <Divider margin="1rem 0" />}
       {isDesktop && (
         <ProfileImgItem
           title={profile?.name?.split(' ')?.[0]}
-          src={profile?.profile_picture}
+          src={profile?.profilePicture}
         />
       )}
 

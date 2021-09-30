@@ -9,8 +9,8 @@ import { LoaderAnimation } from 'components/shared'
 import { ButtonSwitch } from 'components/shared/Buttons/Button'
 import { toastError } from 'components/toast'
 
-import CourseReviewAdd from './CourseReviewAdd'
 import CourseReviewItem from './CourseReviewItem'
+import { ReviewEditor } from './Editor'
 
 const nestComments = (commentsList) => {
   const commentsMap = {}
@@ -29,7 +29,6 @@ const nestComments = (commentsList) => {
   return commentsList.filter((comment) => comment.parent === null)
 }
 
-// TODO: make write review button primary
 const CourseReviewsContainer = () => {
   const [reviewsData, setReviewsData] = useState([])
   const { courseCode } = useParams()
@@ -79,7 +78,7 @@ const CourseReviewsContainer = () => {
         </ButtonSwitch>
       </ReviewOptions>
 
-      <CourseReviewAdd visible course={courseCode} parent={null} />
+      <ReviewEditor visible course={courseCode} parent={null} />
 
       {reviewsData.map((review) => (
         <Fragment key={review.id}>

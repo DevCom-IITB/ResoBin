@@ -14,6 +14,8 @@ const defaultPopoverIcon = (
 
 const ButtonIconContainer = ({
   children,
+  shape = 'circle',
+  size = 'large',
   icon,
   tooltip = null,
   color = null,
@@ -53,10 +55,10 @@ const ButtonIconContainer = ({
     >
       <Tooltip title={tooltip}>
         <StyledButton
-          shape="circle"
+          shape={shape}
           type="text"
           icon={icon}
-          size="large"
+          size={size}
           color={color}
           defaultstyle={defaultstyle}
           hoverstyle={hoverstyle}
