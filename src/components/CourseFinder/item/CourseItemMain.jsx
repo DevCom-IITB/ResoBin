@@ -5,18 +5,12 @@ import styled, { css } from 'styled-components/macro'
 
 import { ButtonIcon } from 'components/shared/Buttons'
 import { coursePageUrl } from 'paths'
+import { selectDepartments } from 'store/courseSlice'
 import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
 import { device, fontSize } from 'styles/responsive'
 import { colorPicker } from 'styles/utils'
 
 import ParseDescription from '../ParseDescription'
-
-// ! Fetch from elastic search server
-const departmentList = [
-  'Aerospace Engineering',
-  'Applied Geophysics',
-  'Applied Statistics and Informatics',
-]
 
 const CourseItemMain = ({ courseData }) => {
   const {
@@ -28,6 +22,7 @@ const CourseItemMain = ({ courseData }) => {
   } = courseData
 
   const favourite = useSelector(selectFavouriteStatus(code))
+  const departmentList = useSelector(selectDepartments)
 
   const dispatch = useDispatch()
   const favouriteClick = () => dispatch(updateFavourite(code))
@@ -36,7 +31,11 @@ const CourseItemMain = ({ courseData }) => {
     <>
       <SubTitle>
         <DepartmentContainer
-          style={{ color: colorPicker(departmentList.indexOf(department)) }}
+          style={{
+            color: colorPicker(
+              departmentList.findIndex(({ name }) => name === department)
+            ),
+          }}
         >
           {department}
         </DepartmentContainer>

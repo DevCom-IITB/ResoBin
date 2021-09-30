@@ -6,35 +6,27 @@ import { device, fontSize } from 'styles/responsive'
 const CoursePageBody = ({ courseData }) => {
   return (
     <Container id="details">
-      <CourseCode>{courseData.Code}</CourseCode>
-      <CourseTitle>{courseData.Title}</CourseTitle>
+      <CourseCode>{courseData.code}</CourseCode>
+      <CourseTitle>{courseData.title}</CourseTitle>
       <CourseDepartment>
-        {courseData.Department} | {courseData.TotalCredits} credits
+        {courseData.department.name} | {courseData.credit} credits
       </CourseDepartment>
-
       <Divider
         style={{ backgroundColor: '#ffffff', margin: '1rem 0', opacity: 0.3 }}
       />
       <CourseDescription>
-        {courseData.Description || 'Not available'}
+        {courseData.description || 'Not available'}
       </CourseDescription>
 
       <Row>
-        <Col span={8}>
-          <SubHeaderText>Course Structure</SubHeaderText>
+        <Col>
+          <SubHeaderText>Course Workload</SubHeaderText>
           <CenterText>
-            Lectures : {courseData.Structure.Lecture} | Tutorial:{' '}
-            {courseData.Structure.Tutorial} | Practical:{' '}
-            {courseData.Structure.Practical}
+            Lectures : {courseData.workload.lecture} | Tutorial:{' '}
+            {courseData.workload.tutorial} | Practical:{' '}
+            {courseData.workload.practical} | Selfstudy:{' '}
+            {courseData.workload.selfstudy}
           </CenterText>
-        </Col>
-        <Col span={8}>
-          <SubHeaderText>Prerequisites</SubHeaderText>
-          <CenterText>{courseData.Prerequisite}</CenterText>
-        </Col>
-        <Col span={8}>
-          <SubHeaderText>Credits</SubHeaderText>
-          <CenterText>{courseData.TotalCredits}</CenterText>
         </Col>
       </Row>
     </Container>
