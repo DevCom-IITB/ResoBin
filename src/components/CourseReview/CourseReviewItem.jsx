@@ -4,23 +4,23 @@ import { Button, Comment, Tooltip } from 'antd'
 import { format, formatDistance } from 'date-fns'
 import DOMPurify from 'dompurify'
 import { useState } from 'react'
-import ReactQuill from 'react-quill'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
+import { API } from 'api'
 import { ButtonIcon } from 'components/shared'
 import { UserAvatar } from 'components/shared/Avatar'
 import { selectUserProfile } from 'store/userSlice'
 
 import { Editor, ReviewEditor } from './Editor'
 
-const CourseReviewItem = ({ content, course, depth }) => {
+const CourseReviewItem = ({ content, updateContent, depth }) => {
   const [likeStatus, setLikeStatus] = useState(false)
   const [likeCount, setLikeCount] = useState(content.votesCount)
   const [action, setAction] = useState(null)
 
   const profile = useSelector(selectUserProfile)
-  const allowEdit = profile.id === content.userProfile.id
+  const isOwner = profile.id === content.userProfile.id
 
   const like = () => {
     setLikeCount(likeStatus ? likeCount - 1 : likeCount + 1)
@@ -30,15 +30,51 @@ const CourseReviewItem = ({ content, course, depth }) => {
   const showReplyForm = () =>
     action === 'reply' ? setAction(null) : setAction('reply')
   const showEditForm = () =>
-    allowEdit && (action === 'edit' ? setAction(null) : setAction('edit'))
+    isOwner && (action === 'edit' ? setAction(null) : setAction('edit'))
 
-  const handleReviewEdit = (value) => {
-    console.log(value)
+  const handleUpdate = async (body) => {
+    try {
+      const payload = { ...content, body }
+      await API.reviews.update({ id: content.id, payload })
+
+      updateContent({ id: content.id, payload })
+      setAction(null)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleDelete = async () => {
+    try {
+      await API.reviews.delete({ id: content.id })
+      updateContent({ id: content.id, payload: null })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleCreateChild = async (reply) => {
+    try {
+      const response = await API.reviews.create({
+        payload: {
+          course: content.course,
+          parent: content.id,
+          body: reply,
+          status: false,
+        },
+      })
+      const payload = { ...content, children: [...content.children, response] }
+
+      updateContent({ id: content.id, payload })
+      setAction(null)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const actions = [
     <ButtonIcon
-      key="comment-like"
+      key="content-like"
       shape="round"
       color="white"
       size="middle"
@@ -51,14 +87,20 @@ const CourseReviewItem = ({ content, course, depth }) => {
     </ButtonIcon>,
 
     depth < 4 && (
-      <Button key="comment-reply" type="link" onClick={showReplyForm}>
+      <Button key="content-reply" type="link" onClick={showReplyForm}>
         Reply
       </Button>
     ),
 
-    allowEdit && (
-      <Button key="comment-edit" type="link" onClick={showEditForm}>
+    isOwner && (
+      <Button key="content-edit" type="link" onClick={showEditForm}>
         Edit
+      </Button>
+    ),
+
+    isOwner && (
+      <Button key="content-delete" type="link" onClick={handleDelete}>
+        Delete
       </Button>
     ),
   ]
@@ -83,10 +125,8 @@ const CourseReviewItem = ({ content, course, depth }) => {
         action === 'edit' ? (
           <Editor
             visible
-            course={course}
-            parent={content.id}
-            // value={DOMPurify.sanitize(content?.body)}
-            // onChange={handleReviewEdit}
+            initialValue={DOMPurify.sanitize(content?.body)}
+            onSubmit={handleUpdate}
           />
         ) : (
           <CommentText
@@ -106,54 +146,16 @@ const CourseReviewItem = ({ content, course, depth }) => {
         </Tooltip>
       }
     >
-      <ReviewEditor
-        visible={action === 'reply'}
-        course={course}
-        parent={content.id}
-      />
+      <ReviewEditor visible={action === 'reply'} onSubmit={handleCreateChild} />
 
       {content?.children?.map((child) => (
-        <CourseReviewItem
-          key={child.id}
-          content={child}
-          course={course}
-          depth={depth + 1}
-        />
+        <CourseReviewItem key={child.id} content={child} depth={depth + 1} />
       ))}
     </StyledComment>
   )
 }
 
 export default CourseReviewItem
-
-// const ReviewEditor = styled(ReactQuill)`
-//   margin-bottom: 1rem;
-//   border: 1px solid #000000;
-//   border-radius: 0.5rem;
-//   color: #000000;
-//   background-color: ${({ theme }) => theme.textColor};
-//   box-shadow: 0 0 1rem 4px rgba(0, 0, 0, 0.2);
-
-//   .ql-toolbar.ql-snow {
-//     display: block;
-//     border: none;
-//     border-bottom: 1px solid #000000;
-//     border-top-left-radius: 0.5rem;
-//     border-top-right-radius: 0.5rem;
-//     background: #eaecec;
-//   }
-
-//   .ql-container.ql-snow {
-//     border: none;
-//     border-top: 1px solid #000000;
-//   }
-
-//   .ql-editor {
-//     overflow-y: scroll;
-//     height: 5rem;
-//     resize: vertical;
-//   }
-// `
 
 const StyledComment = styled(Comment)`
   .ant-comment-avatar {
