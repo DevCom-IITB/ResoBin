@@ -4,23 +4,37 @@ import { Button, Comment, Tooltip } from 'antd'
 import { format, formatDistance } from 'date-fns'
 import DOMPurify from 'dompurify'
 import { useState } from 'react'
+import ReactQuill from 'react-quill'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { ButtonIcon } from 'components/shared'
-import StyledAvatar from 'components/shared/Avatar'
+import { UserAvatar } from 'components/shared/Avatar'
+import { selectUserProfile } from 'store/userSlice'
 
-import CourseReviewAdd from './CourseReviewAdd'
+import { Editor, ReviewEditor } from './Editor'
 
 const CourseReviewItem = ({ content, course, depth }) => {
   const [likeStatus, setLikeStatus] = useState(false)
   const [likeCount, setLikeCount] = useState(content.votesCount)
-  const [showReply, setShowReply] = useState(false)
+  const [action, setAction] = useState(null)
+
+  const profile = useSelector(selectUserProfile)
+  const allowEdit = profile.id === content.userProfile.id
 
   const like = () => {
     setLikeCount(likeStatus ? likeCount - 1 : likeCount + 1)
     setLikeStatus((prev) => !prev)
   }
-  const showReplyForm = () => setShowReply((prev) => !prev)
+
+  const showReplyForm = () =>
+    action === 'reply' ? setAction(null) : setAction('reply')
+  const showEditForm = () =>
+    allowEdit && (action === 'edit' ? setAction(null) : setAction('edit'))
+
+  const handleReviewEdit = (value) => {
+    console.log(value)
+  }
 
   const actions = [
     <ButtonIcon
@@ -41,6 +55,12 @@ const CourseReviewItem = ({ content, course, depth }) => {
         Reply
       </Button>
     ),
+
+    allowEdit && (
+      <Button key="comment-edit" type="link" onClick={showEditForm}>
+        Edit
+      </Button>
+    ),
   ]
 
   return (
@@ -53,18 +73,28 @@ const CourseReviewItem = ({ content, course, depth }) => {
         </a>
       }
       avatar={
-        <StyledAvatar
+        <UserAvatar
           size="2rem"
           src={content?.userProfile.profilePicture}
           alt="Profile picture"
         />
       }
       content={
-        <CommentText
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(content?.body),
-          }}
-        />
+        action === 'edit' ? (
+          <Editor
+            visible
+            course={course}
+            parent={content.id}
+            // value={DOMPurify.sanitize(content?.body)}
+            // onChange={handleReviewEdit}
+          />
+        ) : (
+          <CommentText
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(content?.body),
+            }}
+          />
+        )
       }
       datetime={
         <Tooltip title={format(new Date(content.timestamp), 'dd.MM.yyyy')}>
@@ -76,8 +106,8 @@ const CourseReviewItem = ({ content, course, depth }) => {
         </Tooltip>
       }
     >
-      <CourseReviewAdd
-        visible={showReply}
+      <ReviewEditor
+        visible={action === 'reply'}
         course={course}
         parent={content.id}
       />
@@ -95,6 +125,35 @@ const CourseReviewItem = ({ content, course, depth }) => {
 }
 
 export default CourseReviewItem
+
+// const ReviewEditor = styled(ReactQuill)`
+//   margin-bottom: 1rem;
+//   border: 1px solid #000000;
+//   border-radius: 0.5rem;
+//   color: #000000;
+//   background-color: ${({ theme }) => theme.textColor};
+//   box-shadow: 0 0 1rem 4px rgba(0, 0, 0, 0.2);
+
+//   .ql-toolbar.ql-snow {
+//     display: block;
+//     border: none;
+//     border-bottom: 1px solid #000000;
+//     border-top-left-radius: 0.5rem;
+//     border-top-right-radius: 0.5rem;
+//     background: #eaecec;
+//   }
+
+//   .ql-container.ql-snow {
+//     border: none;
+//     border-top: 1px solid #000000;
+//   }
+
+//   .ql-editor {
+//     overflow-y: scroll;
+//     height: 5rem;
+//     resize: vertical;
+//   }
+// `
 
 const StyledComment = styled(Comment)`
   .ant-comment-avatar {
