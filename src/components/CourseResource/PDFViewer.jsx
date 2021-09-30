@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Document, Page } from 'react-pdf'
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
 
 const PDFViewer = ({ file }) => {
   const [numPages, setNumPages] = useState(null)

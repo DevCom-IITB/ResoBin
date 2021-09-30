@@ -1,5 +1,4 @@
 import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 
 const toastStyles = {
   position: toast.POSITION.BOTTOM_RIGHT,

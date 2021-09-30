@@ -11,6 +11,7 @@ import { toastError } from 'components/toast'
 
 import CourseReviewItem from './CourseReviewItem'
 import { ReviewEditor } from './Editor'
+import reviewTemplate from './reviewTemplate'
 
 const nestComments = (commentsList) => {
   const commentsMap = {}
@@ -53,9 +54,43 @@ const CourseReviewsContainer = () => {
     fetchReviews()
   }, [courseCode])
 
-  const [reviewStatus, setReviewStatus] = useState(false)
+  const [reviewRequestStatus, setReviewRequestStatus] = useState(false)
 
-  const handleReviewRequest = () => setReviewStatus((v) => !v)
+  const handleReviewRequest = () => setReviewRequestStatus((prev) => !prev)
+
+  const handleUpdateContent = ({ id, payload }) => {
+    if (id === null) {
+      // ? create content
+      setReviewsData((_reviewsData) => _reviewsData.concat([payload]))
+    } else if (payload === null) {
+      // ? delete content
+      setReviewsData((_reviewsData) =>
+        _reviewsData.filter((review) => id !== review.id)
+      )
+    } else {
+      // ? update content
+      setReviewsData((_reviewsData) =>
+        _reviewsData.map((review) => (id !== review.id ? review : payload))
+      )
+    }
+  }
+
+  const createContent = async (review) => {
+    try {
+      const response = await API.reviews.create({
+        payload: {
+          course: courseCode,
+          parent: null,
+          body: review,
+        },
+      })
+
+      handleUpdateContent({ id: null, payload: { ...response, children: [] } })
+    } catch (error) {
+      console.log(error)
+      toastError(error)
+    }
+  }
 
   return loading ? (
     <LoaderAnimation />
@@ -64,10 +99,10 @@ const CourseReviewsContainer = () => {
       <ReviewOptions>
         <ButtonSwitch
           type="primary"
-          active={reviewStatus ? 1 : 0}
+          active={reviewRequestStatus ? 1 : 0}
           onClick={handleReviewRequest}
         >
-          {!reviewStatus ? (
+          {!reviewRequestStatus ? (
             <>
               <UserAdd size="18" style={{ marginRight: '0.5rem' }} />
               Request
@@ -78,11 +113,20 @@ const CourseReviewsContainer = () => {
         </ButtonSwitch>
       </ReviewOptions>
 
-      <ReviewEditor visible course={courseCode} parent={null} />
+      <ReviewEditor
+        visible
+        initialValue={reviewTemplate}
+        onSubmit={createContent}
+      />
 
       {reviewsData.map((review) => (
         <Fragment key={review.id}>
-          <CourseReviewItem content={review} course={courseCode} depth={0} />
+          <CourseReviewItem
+            content={review}
+            updateContent={handleUpdateContent}
+            course={courseCode}
+            depth={0}
+          />
           <StyledDivider />
         </Fragment>
       ))}
