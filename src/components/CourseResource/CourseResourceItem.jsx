@@ -2,12 +2,11 @@ import { Download } from '@styled-icons/heroicons-outline'
 import { rgba } from 'polished'
 import styled from 'styled-components/macro'
 
-import { ButtonIcon } from 'components/shared'
-import { UserAvatar } from 'components/shared/Avatar'
+import { ButtonIcon, UserAvatar } from 'components/shared'
 
 const CourseResourceItem = ({ resource }) => {
   const placeholderImg =
-    'https://images.unsplash.com/photo-1470124182917-cc6e71b22ecc?dpr=2&auto=format&fit=crop&w=1500&h=1000&q=80&cs=tinysrgb&crop='
+    'https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg'
 
   const handleDownload = () => {
     window.location.href = resource.file
@@ -63,10 +62,9 @@ const GridItem = styled.figure`
   color: ${({ theme }) => theme.textColor};
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 
-  img {
+  > img {
     min-width: 100%;
     min-height: 100%;
-    object-fit: cover;
   }
 
   &::after {

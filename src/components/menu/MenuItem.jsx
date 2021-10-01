@@ -1,7 +1,8 @@
+/* eslint-disable jsx-a11y/no-distracting-elements */
 import { NavLink } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
 
-import { ProfileImg } from 'components/shared'
+import { UserAvatar } from 'components/shared'
 import { device } from 'styles/responsive'
 
 const ContainerBase = css`
@@ -92,9 +93,9 @@ export const ProfileImgItem = ({ title, src }) => {
   return (
     <ContainerDiv>
       <IconContainer>
-        <ProfileImg src={src} size="28px" />
+        <UserAvatar size="1.75rem" src={src} />
       </IconContainer>
-      <Title style={{ fontWeight: '300' }}>{title}</Title>
+      <Title style={{ marginLeft: '0.25rem' }}>{title}</Title>
     </ContainerDiv>
   )
 }

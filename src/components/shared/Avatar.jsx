@@ -8,6 +8,7 @@ const StyledAvatar = styled(Avatar)`
   align-items: center;
   width: ${({ size }) => size};
   height: ${({ size }) => size};
+  border: 1px solid ${({ theme }) => theme.textColor};
 
   img {
     width: ${({ size }) => size};

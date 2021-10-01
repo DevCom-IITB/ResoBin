@@ -21,6 +21,7 @@ button {
 }
 
 a {
+  color: inherit;
   transition: color 200ms;
 
   &:hover {
