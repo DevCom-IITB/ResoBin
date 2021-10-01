@@ -1,8 +1,11 @@
 import { Button } from 'antd'
 import { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router'
+import styled from 'styled-components/macro'
 
 import { API } from 'api'
+
+import CourseResourceItem from './CourseResourceItem'
 
 const CoursePageResourcesContainer = () => {
   const [resources, setResources] = useState([])
@@ -30,17 +33,22 @@ const CoursePageResourcesContainer = () => {
         Upload resources
       </Button>
 
-      {resources.map((resource) => (
-        <div key={resource.id}>
-          <h2>
-            <a href={resource.file}>{resource.title}</a>
-          </h2>
-          <p>{resource.description}</p>
-        </div>
-      ))}
-      {/* <CourseResourceItem /> */}
+      <GridContainer>
+        {resources.map((resource) => (
+          <CourseResourceItem key={resource.id} resource={resource} />
+        ))}
+      </GridContainer>
     </>
   )
 }
 
 export default CoursePageResourcesContainer
+
+const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  grid-auto-rows: 15rem;
+  grid-auto-flow: row dense;
+  grid-gap: 1rem;
+  padding: 1rem 0;
+`
