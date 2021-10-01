@@ -1,5 +1,5 @@
-import sample from './.temp/sample.pdf'
-import PDFViewer from './PDFViewer'
+// import sample from './.temp/sample.pdf'
+// import PDFViewer from './PDFViewer'
 
 const CourseResourceList = () => {
   return (
