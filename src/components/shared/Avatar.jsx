@@ -15,7 +15,7 @@ const StyledAvatar = styled(Avatar)`
   }
 `
 
-export const UserAvatar = ({ size, src, alt = 'Profile picture' }) => {
+export const UserAvatar = ({ size = '2rem', src, alt = 'Profile picture' }) => {
   return src ? (
     <StyledAvatar size={size} src={src} alt={alt} />
   ) : (

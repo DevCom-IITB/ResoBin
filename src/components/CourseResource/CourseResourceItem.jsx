@@ -1,19 +1,49 @@
+import { Download } from '@styled-icons/heroicons-outline'
 import { rgba } from 'polished'
 import styled from 'styled-components/macro'
+
+import { ButtonIcon } from 'components/shared'
+import { UserAvatar } from 'components/shared/Avatar'
 
 const CourseResourceItem = ({ resource }) => {
   const placeholderImg =
     'https://images.unsplash.com/photo-1470124182917-cc6e71b22ecc?dpr=2&auto=format&fit=crop&w=1500&h=1000&q=80&cs=tinysrgb&crop='
+
+  const handleDownload = () => {
+    window.location.href = resource.file
+  }
 
   return (
     <GridItem>
       <img src={resource.image || placeholderImg} alt={resource.title} />
 
       <FigureCaption>
-        <a href={resource.file}>
+        <div
+          style={{
+            display: 'flex',
+            gap: '0.5rem',
+            alignItems: 'center',
+            marginBottom: '0.5rem',
+          }}
+        >
+          <UserAvatar size="1.5rem" src={resource.userProfile.profilePicture} />
+          <h5 style={{ color: 'white' }}>{resource.userProfile.name}</h5>{' '}
+        </div>
+
+        <div>
           <h4 style={{ color: 'white' }}>{resource.title}</h4>
-        </a>
-        <p>{resource.description}</p>
+          <p>{resource.description}</p>
+        </div>
+
+        <div>
+          <ButtonIcon
+            color="white"
+            size="large"
+            icon={<Download size="28" />}
+            onClick={handleDownload}
+            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+          />
+        </div>
       </FigureCaption>
     </GridItem>
   )
@@ -42,7 +72,7 @@ const GridItem = styled.figure`
   &::after {
     content: '';
     position: absolute;
-    opacity: 0.3;
+    opacity: 0.1;
     width: 100%;
     height: 100%;
     background-color: black;
@@ -63,10 +93,5 @@ const FigureCaption = styled.figcaption`
   width: 100%;
   padding: 0.5rem;
   color: ${({ theme }) => theme.textColorInactive};
-  background: linear-gradient(
-    0deg,
-    ${({ theme }) => rgba(theme.darksecondary, 0.95)} 0%,
-    ${({ theme }) => rgba(theme.darksecondary, 0.9)} 60%,
-    ${({ theme }) => rgba(theme.darksecondary, 0.7)} 100%
-  );
+  background: ${({ theme }) => rgba(theme.darksecondary, 0.95)};
 `

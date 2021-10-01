@@ -46,7 +46,7 @@ export default CoursePageResourcesContainer
 
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
   grid-auto-rows: 15rem;
   grid-auto-flow: row dense;
   grid-gap: 1rem;
