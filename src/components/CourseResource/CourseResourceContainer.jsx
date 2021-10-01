@@ -27,15 +27,17 @@ const CoursePageResourcesContainer = () => {
 
   return (
     <>
-      <h1>Course Resources</h1>
+      <Header>
+        <h1>Course Resources</h1>
 
-      <Button type="primary" onClick={redirectContribute}>
-        Upload resources
-      </Button>
+        <Button type="primary" onClick={redirectContribute}>
+          New
+        </Button>
+      </Header>
 
       <GridContainer>
         {resources.map((resource) => (
-          <CourseResourceItem key={resource.id} resource={resource} />
+          <CourseResourceItem key={resource.id} content={resource} />
         ))}
       </GridContainer>
     </>
@@ -51,4 +53,10 @@ const GridContainer = styled.div`
   grid-auto-flow: row dense;
   grid-gap: 1rem;
   padding: 1rem 0;
+`
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `

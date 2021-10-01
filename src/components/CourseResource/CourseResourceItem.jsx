@@ -1,40 +1,36 @@
-import { Download } from '@styled-icons/heroicons-outline'
+import { Download, PencilAlt } from '@styled-icons/heroicons-outline'
 import { rgba } from 'polished'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { ButtonIcon, UserAvatar } from 'components/shared'
+import { selectUserProfile } from 'store/userSlice'
 
-const CourseResourceItem = ({ resource }) => {
+const CourseResourceItem = ({ content }) => {
+  const { id } = useSelector(selectUserProfile)
+  const isOwner = id === content.userProfile.id
+
   const placeholderImg =
     'https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg'
 
   const handleDownload = () => {
-    window.location.href = resource.file
+    window.location.href = content.file
   }
 
   return (
     <GridItem>
-      <img src={resource.image || placeholderImg} alt={resource.title} />
+      <img src={content.image || placeholderImg} alt={content.title} />
 
-      <FigureCaption>
-        <div
-          style={{
-            display: 'flex',
-            gap: '0.5rem',
-            alignItems: 'center',
-            marginBottom: '0.5rem',
-          }}
-        >
-          <UserAvatar size="1.5rem" src={resource.userProfile.profilePicture} />
-          <h5 style={{ color: 'white' }}>{resource.userProfile.name}</h5>{' '}
-        </div>
+      <ItemInfo>
+        <Row>
+          <UserAvatar size="1.5rem" src={content.userProfile.profilePicture} />
+          <h5 style={{ color: 'white' }}>{content.userProfile.name}</h5>{' '}
+        </Row>
 
-        <div>
-          <h4 style={{ color: 'white' }}>{resource.title}</h4>
-          <p>{resource.description}</p>
-        </div>
+        <h4 style={{ color: 'white' }}>{content.title}</h4>
+        <p>{content.description}</p>
 
-        <div>
+        <Row>
           <ButtonIcon
             color="white"
             size="large"
@@ -42,8 +38,17 @@ const CourseResourceItem = ({ resource }) => {
             onClick={handleDownload}
             hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
           />
-        </div>
-      </FigureCaption>
+          {isOwner && (
+            <ButtonIcon
+              color="white"
+              size="large"
+              icon={<PencilAlt size="26" />}
+              onClick={handleDownload}
+              hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+            />
+          )}
+        </Row>
+      </ItemInfo>
     </GridItem>
   )
 }
@@ -84,7 +89,14 @@ const GridItem = styled.figure`
   }
 `
 
-const FigureCaption = styled.figcaption`
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  gap: 0.5rem;
+`
+
+const ItemInfo = styled.figcaption`
   position: absolute;
   bottom: 0;
   z-index: 1;

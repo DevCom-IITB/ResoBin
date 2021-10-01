@@ -6,8 +6,8 @@ const StyledAvatar = styled(Avatar)`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${({ size }) => size};
-  height: ${({ size }) => size};
+  min-width: ${({ size }) => size};
+  min-height: ${({ size }) => size};
   border: 1px solid ${({ theme }) => theme.textColor};
 
   img {
