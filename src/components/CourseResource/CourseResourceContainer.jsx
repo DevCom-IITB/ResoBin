@@ -28,12 +28,24 @@ const CoursePageResourcesContainer = () => {
   return (
     <>
       <Header>
-        <h1>Course Resources</h1>
+        <h1 style={{ fontSize: '1.5rem' }}>Course Resources</h1>
 
-        <Button type="primary" onClick={redirectContribute}>
-          New
-        </Button>
+        <div>
+          <Button type="default" onClick={redirectContribute}>
+            Request
+          </Button>
+
+          <Button type="default" onClick={redirectContribute}>
+            Manage
+          </Button>
+
+          <Button type="primary" onClick={redirectContribute}>
+            Upload
+          </Button>
+        </div>
       </Header>
+
+      <h3>Available resources</h3>
 
       <GridContainer>
         {resources.map((resource) => (

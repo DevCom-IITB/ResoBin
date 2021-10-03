@@ -1,10 +1,12 @@
 import { Download, PencilAlt } from '@styled-icons/heroicons-outline'
 import { rgba } from 'polished'
 import { useSelector } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { ButtonIcon, UserAvatar } from 'components/shared'
 import { selectUserProfile } from 'store/userSlice'
+import { limitLines } from 'styles/mixins'
 
 const CourseResourceItem = ({ content }) => {
   const { id } = useSelector(selectUserProfile)
@@ -17,6 +19,10 @@ const CourseResourceItem = ({ content }) => {
     window.location.href = content.file
   }
 
+  const handleEdit = () => {
+    return <Redirect to={`/contribute#${content.id}`} />
+  }
+
   return (
     <GridItem>
       <img src={content.image || placeholderImg} alt={content.title} />
@@ -24,11 +30,11 @@ const CourseResourceItem = ({ content }) => {
       <ItemInfo>
         <Row>
           <UserAvatar size="1.5rem" src={content.userProfile.profilePicture} />
-          <h5 style={{ color: 'white' }}>{content.userProfile.name}</h5>{' '}
+          <UserName>{content.userProfile.name}</UserName>
         </Row>
 
-        <h4 style={{ color: 'white' }}>{content.title}</h4>
-        <p>{content.description}</p>
+        <ResourceTitle>{content.title}</ResourceTitle>
+        <ResourceDescription>{content.description}</ResourceDescription>
 
         <Row>
           <ButtonIcon
@@ -43,7 +49,7 @@ const CourseResourceItem = ({ content }) => {
               color="white"
               size="large"
               icon={<PencilAlt size="26" />}
-              onClick={handleDownload}
+              onClick={handleEdit}
               hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
             />
           )}
@@ -94,6 +100,22 @@ const Row = styled.div`
   align-items: center;
   margin-bottom: 0.5rem;
   gap: 0.5rem;
+`
+
+const UserName = styled.h5`
+  ${limitLines({ count: 2, height: '1.75rem' })}
+  color: ${({ theme }) => theme.textColor};
+`
+
+const ResourceTitle = styled.h3`
+  ${limitLines({ count: 2, height: '1.75rem' })}
+  color: ${({ theme }) => theme.textColor};
+  margin-bottom: 0.5rem;
+`
+
+const ResourceDescription = styled.p`
+  ${limitLines({ count: 2, height: '1.75rem' })}
+  margin-bottom: 0;
 `
 
 const ItemInfo = styled.figcaption`
