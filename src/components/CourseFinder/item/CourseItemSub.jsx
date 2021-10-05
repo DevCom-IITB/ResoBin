@@ -30,6 +30,7 @@ const SemesterItem = ({ courseCode, semester }) => {
       active={status ? 1 : 0}
       icon={<Calendar size="18" style={{ marginRight: '0.5rem' }} />}
       onClick={handleClick}
+      style={{ margin: '0.5rem 0 1rem' }}
     >
       {status ? 'Remove' : 'Add to timetable'}
     </ButtonSwitch>

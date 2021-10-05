@@ -19,9 +19,10 @@ const ButtonIconContainer = ({
   icon,
   tooltip = null,
   color = null,
-  defaultstyle = {},
+  extrastyle = {},
   hoverstyle = {},
   onClick,
+  loading,
 
   // ? popover props
   popover = false,
@@ -60,8 +61,9 @@ const ButtonIconContainer = ({
           icon={icon}
           size={size}
           color={color}
-          defaultstyle={defaultstyle}
+          extrastyle={extrastyle}
           hoverstyle={hoverstyle}
+          loading={loading}
         >
           {children}
         </StyledButton>
@@ -70,11 +72,11 @@ const ButtonIconContainer = ({
   )
 }
 
-export const ButtonIconDanger = ({ defaultstyle, color, ...props }) => (
+export const ButtonIconDanger = ({ extrastyle, color, ...props }) => (
   <ButtonIconContainer
     {...props}
     color={color || 'red'}
-    defaultstyle={{ color: '#ff5050', ...defaultstyle }}
+    extrastyle={{ color: '#ff5050', ...extrastyle }}
   />
 )
 
@@ -86,7 +88,7 @@ const StyledButton = styled(Button)`
   align-items: center;
   border: 0;
   color: ${({ color, theme }) => color || theme.textColor};
-  ${({ defaultstyle }) => defaultstyle};
+  ${({ extrastyle }) => extrastyle};
 
   > svg {
     width: ${({ size }) => fontSize.responsive[size]};

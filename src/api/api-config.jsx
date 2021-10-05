@@ -2,13 +2,11 @@ import axios from 'axios'
 
 import { toastError } from 'components/toast'
 import { camelizeKeys, snakeizeKeys } from 'helpers/transformKeys'
-// import { store } from 'store'
-// import { logoutAction } from 'store/authSlice'
 
 export const APIInstance = axios.create({
   baseURL: 'http://localhost:8000/api',
   headers: {
-    'Content-Type': 'application/json',
+    'content-type': 'application/json',
   },
   timeout: 30000,
   xsrfCookieName: 'csrftoken',
@@ -18,27 +16,28 @@ export const APIInstance = axios.create({
 
 APIInstance.interceptors.request.use(
   (request) => {
-    if (request.headers['Content-Type'] === 'application/json')
+    if (request.headers['content-type'] === 'application/json')
       return { ...request, data: snakeizeKeys(request.data) }
 
     return request
   },
   (error) => {
-    console.log('Request error', error)
-    return Promise.reject(error)
+    return Promise.reject(error.message)
   }
 )
 
 APIInstance.interceptors.response.use(
-  (response) => camelizeKeys(response.data),
+  (response) => {
+    if (response.headers['content-type'] === 'application/json')
+      return camelizeKeys(response.data)
+
+    return response.data
+  },
   (error) => {
     if (error.response.status === 401) {
       toastError('Please login again')
-      // persistor.dispatch(logoutAction())
     }
-    console.log('Response error', error)
-    // toastError(error.message)
-    return Promise.reject(error.response.data)
+    return Promise.reject(error.message)
   }
 )
 
@@ -63,11 +62,17 @@ export const API = {
   // * Courses endpoints
   courses: {
     list: async ({ params }) => APIInstance.get('/courses', { params }),
-    detail: async ({ code }) => APIInstance.get(`/courses/${code}`),
+    read: async ({ code }) => APIInstance.get(`/courses/${code}`),
     listResources: async ({ code }) =>
       APIInstance.get(`/courses/${code}/resources`),
     listReviews: async ({ code }) =>
       APIInstance.get(`/courses/${code}/reviews`),
+    favorite: {
+      add: async ({ code }) =>
+        APIInstance.put(`/accounts/profile/course/${code}/favorite`),
+      remove: async ({ code }) =>
+        APIInstance.delete(`/accounts/profile/course/${code}/favorite`),
+    },
   },
 
   // * Resources endpoints
@@ -87,6 +92,13 @@ export const API = {
       }),
     delete: async ({ id }) => APIInstance.delete(`/resources/${id}`),
 
+    request: {
+      add: async ({ code }) =>
+        APIInstance.put(`/accounts/profile/course/${code}/request/resource`),
+      remove: async ({ code }) =>
+        APIInstance.delete(`/accounts/profile/course/${code}/request/resource`),
+    },
+
     tags: {
       list: async () => APIInstance.get(`/resources/tags`),
     },
@@ -99,6 +111,13 @@ export const API = {
     update: async ({ id, payload }) =>
       APIInstance.put(`/reviews/${id}`, payload),
     delete: async ({ id }) => APIInstance.delete(`/reviews/${id}`),
+
+    request: {
+      add: async ({ code }) =>
+        APIInstance.put(`/accounts/profile/course/${code}/request/review`),
+      remove: async ({ code }) =>
+        APIInstance.delete(`/accounts/profile/course/${code}/request/review`),
+    },
   },
 
   // * Departments endpoints
