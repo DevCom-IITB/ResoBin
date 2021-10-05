@@ -1,12 +1,12 @@
-import { UserAdd } from '@styled-icons/heroicons-outline'
+import { UserGroup, CloudUpload } from '@styled-icons/heroicons-outline'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
-import { ButtonSquare, LoaderAnimation } from 'components/shared'
-import { ButtonSwitch } from 'components/shared/Buttons/Button'
+import { LoaderAnimation } from 'components/shared'
+import { ButtonSquare, ButtonSwitch } from 'components/shared/Buttons'
 import { toastError } from 'components/toast'
 import { selectUserProfile } from 'store/userSlice'
 
@@ -82,19 +82,17 @@ const CourseResourceContainer = () => {
             type="primary"
             active={requestResource.status ? 1 : 0}
             onClick={handleResourceRequest}
-            style={{ height: '2rem', marginRight: '0.75rem' }}
+            style={{ marginRight: '0.75rem' }}
+            icon={<UserGroup size="18" style={{ marginRight: '0.25rem' }} />}
           >
-            {!requestResource.status ? (
-              <>
-                <UserAdd size="18" style={{ marginRight: '0.5rem' }} />
-                Request
-              </>
-            ) : (
-              <>Cancel request</>
-            )}
+            {!requestResource.status ? <>Request</> : <>Revoke</>}
           </ButtonSwitch>
 
-          <ButtonSquare type="primary" onClick={redirectContribute}>
+          <ButtonSquare
+            type="primary"
+            onClick={redirectContribute}
+            icon={<CloudUpload size="18" style={{ marginRight: '0.25rem' }} />}
+          >
             Upload
           </ButtonSquare>
         </ButtonContainer>

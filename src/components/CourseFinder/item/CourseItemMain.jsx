@@ -1,8 +1,10 @@
 import { Bookmark, BookmarkOutline } from '@styled-icons/zondicons'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
 
+import { API } from 'api'
 import { ButtonIcon } from 'components/shared/Buttons'
 import { coursePageUrl } from 'paths'
 import { selectDepartments } from 'store/courseSlice'
@@ -13,6 +15,7 @@ import { colorPicker } from 'styles/utils'
 import ParseDescription from '../ParseDescription'
 
 const CourseItemMain = ({ courseData }) => {
+  const dispatch = useDispatch()
   const {
     Code: code,
     TotalCredits: totalCredits,
@@ -21,11 +24,26 @@ const CourseItemMain = ({ courseData }) => {
     Description: description,
   } = courseData
 
+  const [loading, setLoading] = useState(false)
+
   const favourite = useSelector(selectFavouriteStatus(code))
   const departmentList = useSelector(selectDepartments)
 
-  const dispatch = useDispatch()
-  const favouriteClick = () => dispatch(updateFavourite(code))
+  const favouriteClick = async () => {
+    try {
+      setLoading(true)
+      if (favourite) {
+        await API.courses.favorite.remove({ code })
+      } else {
+        await API.courses.favorite.add({ code })
+      }
+      dispatch(updateFavourite(code))
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <>
@@ -54,6 +72,7 @@ const CourseItemMain = ({ courseData }) => {
               favourite ? <Bookmark size="30" /> : <BookmarkOutline size="30" />
             }
             color="white"
+            loading={loading}
           />
         </RightIcons>
       </SubTitle>

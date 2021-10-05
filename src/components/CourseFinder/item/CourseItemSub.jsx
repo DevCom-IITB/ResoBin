@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { Tabs } from 'components/shared'
-import { ButtonDropdown, ButtonSwitch } from 'components/shared/Buttons/Button'
+import { ButtonDropdown, ButtonSwitch } from 'components/shared/Buttons'
 import { coursePageUrl } from 'paths'
 import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
 import { selectTimetableStatus, updateTimetable } from 'store/userSlice'
