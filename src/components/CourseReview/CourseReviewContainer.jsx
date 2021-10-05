@@ -1,6 +1,7 @@
 import { UserAdd } from '@styled-icons/heroicons-outline'
 import { Divider } from 'antd'
 import { Fragment, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import styled from 'styled-components/macro'
 
@@ -8,6 +9,7 @@ import { API } from 'api'
 import { LoaderAnimation } from 'components/shared'
 import { ButtonSwitch } from 'components/shared/Buttons/Button'
 import { toastError } from 'components/toast'
+import { selectUserProfile } from 'store/userSlice'
 
 import CourseReviewItem from './CourseReviewItem'
 import { ReviewEditor } from './Editor'
@@ -37,33 +39,55 @@ const recursiveApply = (array, callback) =>
       : item
   )
 
-const CourseReviewsContainer = () => {
-  const [reviewsData, setReviewsData] = useState([])
+const CourseReviewContainer = () => {
+  const profile = useSelector(selectUserProfile)
   const { courseCode } = useParams()
-  const [loading, setLoading] = useState(true)
+
+  const [reviewsData, setReviewsData] = useState([])
+  const [APILoading, setAPILoading] = useState(true)
+  const [requestReview, setRequestReview] = useState({
+    status: profile.reviewsRequested?.includes(courseCode) ?? false,
+    loading: false,
+  })
 
   useEffect(() => {
     const fetchReviews = async () => {
-      setLoading(true)
       try {
-        let response = await API.courses.listReviews({
-          code: courseCode,
-        })
+        setAPILoading(true)
+        let response = await API.courses.listReviews({ code: courseCode })
         response = nestComments(response)
         setReviewsData(response)
       } catch (error) {
         toastError(error)
       } finally {
-        setLoading(false)
+        setAPILoading(false)
       }
     }
 
     fetchReviews()
   }, [courseCode])
 
-  const [reviewRequestStatus, setReviewRequestStatus] = useState(false)
+  const handleReviewRequest = async () => {
+    try {
+      setRequestReview((_requestReview) => ({
+        ..._requestReview,
+        loading: true,
+      }))
 
-  const handleReviewRequest = () => setReviewRequestStatus((prev) => !prev)
+      if (requestReview.status) {
+        await API.reviews.request.remove({ code: courseCode })
+      } else {
+        await API.reviews.request.add({ code: courseCode })
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setRequestReview((_requestReview) => ({
+        status: !_requestReview.status,
+        loading: false,
+      }))
+    }
+  }
 
   const handleUpdateContent = ({ id, payload }) => {
     if (id === null) {
@@ -103,17 +127,19 @@ const CourseReviewsContainer = () => {
     }
   }
 
-  return loading ? (
+  return APILoading ? (
     <LoaderAnimation />
   ) : (
     <>
-      <ReviewOptions>
+      <Header>
+        <h1 style={{ fontSize: '1.25rem' }}>Reviews</h1>
+
         <ButtonSwitch
           type="primary"
-          active={reviewRequestStatus ? 1 : 0}
+          active={requestReview.status ? 1 : 0}
           onClick={handleReviewRequest}
         >
-          {!reviewRequestStatus ? (
+          {!requestReview.status ? (
             <>
               <UserAdd size="18" style={{ marginRight: '0.5rem' }} />
               Request
@@ -122,7 +148,7 @@ const CourseReviewsContainer = () => {
             <>Cancel request</>
           )}
         </ButtonSwitch>
-      </ReviewOptions>
+      </Header>
 
       <ReviewEditor
         visible
@@ -145,11 +171,13 @@ const CourseReviewsContainer = () => {
   )
 }
 
-export default CourseReviewsContainer
+export default CourseReviewContainer
 
-const ReviewOptions = styled.div`
+const Header = styled.div`
   display: flex;
-  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
 `
 
 const StyledDivider = styled(Divider)`

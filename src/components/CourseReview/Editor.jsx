@@ -4,7 +4,7 @@ import ReactQuill from 'react-quill'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import StyledAvatar from 'components/shared/Avatar'
+import { UserAvatar } from 'components/shared'
 import { selectUserProfile } from 'store/userSlice'
 
 const formats = [
@@ -51,6 +51,7 @@ export const Editor = ({ visible, onSubmit, initialValue = '' }) => {
     setLoading(true)
     try {
       await onSubmit(content)
+      setContent(initialValue)
     } catch (error) {
       console.error(error)
     } finally {
@@ -62,7 +63,7 @@ export const Editor = ({ visible, onSubmit, initialValue = '' }) => {
     visible && (
       <>
         <StyledReactQuill
-          placeholder="Write a review"
+          placeholder="Write something"
           value={content}
           onChange={handleChange}
           formats={formats}
@@ -88,7 +89,7 @@ export const ReviewEditor = ({ visible, initialValue, onSubmit }) => {
     visible && (
       <Comment
         avatar={
-          <StyledAvatar
+          <UserAvatar
             size="2rem"
             src={profile.profilePicture}
             alt="Profile picture"
