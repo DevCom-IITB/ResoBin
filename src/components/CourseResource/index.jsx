@@ -1,2 +1,2 @@
 export { default as CourseResourceContainer } from './CourseResourceContainer'
-export { default as CourseResourceUploadModal } from './CourseResourceUploadModal'
+export { default as CourseResourceItem } from './CourseResourceItem'
