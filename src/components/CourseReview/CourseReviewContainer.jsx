@@ -1,4 +1,4 @@
-import { UserAdd } from '@styled-icons/heroicons-outline'
+import { UserGroup } from '@styled-icons/heroicons-outline'
 import { Divider } from 'antd'
 import { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -6,8 +6,7 @@ import { useParams } from 'react-router'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
-import { LoaderAnimation } from 'components/shared'
-import { ButtonSwitch } from 'components/shared/Buttons'
+import { ButtonSwitch, LoaderAnimation } from 'components/shared'
 import { toastError } from 'components/toast'
 import { selectUserProfile } from 'store/userSlice'
 
@@ -69,23 +68,19 @@ const CourseReviewContainer = () => {
 
   const handleReviewRequest = async () => {
     try {
-      setRequestReview((_requestReview) => ({
-        ..._requestReview,
-        loading: true,
-      }))
+      setRequestReview((value) => ({ ...value, loading: true }))
 
       if (requestReview.status) {
         await API.reviews.request.remove({ code: courseCode })
       } else {
         await API.reviews.request.add({ code: courseCode })
       }
+
+      setRequestReview((value) => ({ ...value, status: !value.status }))
     } catch (error) {
       console.log(error)
     } finally {
-      setRequestReview((_requestReview) => ({
-        status: !_requestReview.status,
-        loading: false,
-      }))
+      setRequestReview((value) => ({ ...value, loading: false }))
     }
   }
 
@@ -138,7 +133,8 @@ const CourseReviewContainer = () => {
           type="primary"
           active={requestReview.status ? 1 : 0}
           onClick={handleReviewRequest}
-          icon={<UserAdd size="18" style={{ marginRight: '0.25rem' }} />}
+          icon={<UserGroup size="18" style={{ marginRight: '0.25rem' }} />}
+          loading={requestReview.loading}
         >
           {!requestReview.status ? <>Request</> : <>Revoke</>}
         </ButtonSwitch>

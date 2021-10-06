@@ -12,8 +12,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { Tabs } from 'components/shared'
-import { ButtonDropdown, ButtonSwitch } from 'components/shared/Buttons'
+import { Tabs, ButtonDropdown, ButtonSwitch } from 'components/shared'
 import { coursePageUrl } from 'paths'
 import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
 import { selectTimetableStatus, updateTimetable } from 'store/userSlice'
@@ -30,7 +29,7 @@ const SemesterItem = ({ courseCode, semester }) => {
       active={status ? 1 : 0}
       icon={<Calendar size="18" style={{ marginRight: '0.5rem' }} />}
       onClick={handleClick}
-      style={{ margin: '0.5rem 0 1rem' }}
+      style={{ margin: '0.75rem 0 1rem', width: '100%' }}
     >
       {status ? 'Remove' : 'Add to timetable'}
     </ButtonSwitch>

@@ -5,8 +5,7 @@ import { useHistory, useParams } from 'react-router'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
-import { LoaderAnimation } from 'components/shared'
-import { ButtonSquare, ButtonSwitch } from 'components/shared/Buttons'
+import { ButtonSquare, ButtonSwitch, LoaderAnimation } from 'components/shared'
 import { toastError } from 'components/toast'
 import { selectUserProfile } from 'store/userSlice'
 
@@ -46,27 +45,19 @@ const CourseResourceContainer = () => {
 
   const handleResourceRequest = async () => {
     try {
-      setRequestResource((_requestResource) => ({
-        ..._requestResource,
-        loading: true,
-      }))
+      setRequestResource((value) => ({ ...value, loading: true }))
 
       if (requestResource.status) {
         await API.resources.request.remove({ code: courseCode })
       } else {
         await API.resources.request.add({ code: courseCode })
       }
-      setRequestResource({
-        ...requestResource,
-        status: !requestResource.status,
-      })
+
+      setRequestResource((value) => ({ ...value, status: !value.status }))
     } catch (error) {
       console.log(error)
     } finally {
-      setRequestResource((_requestResource) => ({
-        status: !_requestResource.status,
-        loading: false,
-      }))
+      setRequestResource((value) => ({ ...value, loading: false }))
     }
   }
 
@@ -84,6 +75,7 @@ const CourseResourceContainer = () => {
             onClick={handleResourceRequest}
             style={{ marginRight: '0.75rem' }}
             icon={<UserGroup size="18" style={{ marginRight: '0.25rem' }} />}
+            loading={requestResource.loading}
           >
             {!requestResource.status ? <>Request</> : <>Revoke</>}
           </ButtonSwitch>
@@ -97,8 +89,6 @@ const CourseResourceContainer = () => {
           </ButtonSquare>
         </ButtonContainer>
       </Header>
-
-      <h3>Available resources</h3>
 
       <GridContainer>
         {resources.map((resource) => (
@@ -123,11 +113,11 @@ const GridContainer = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  padding: 0.25rem 0 1rem;
 `
 
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem 0;
 `

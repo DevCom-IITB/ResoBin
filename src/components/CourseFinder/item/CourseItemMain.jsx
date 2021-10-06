@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
 
 import { API } from 'api'
-import { ButtonIcon } from 'components/shared/Buttons'
+import { ButtonIcon } from 'components/shared'
 import { coursePageUrl } from 'paths'
 import { selectDepartments } from 'store/courseSlice'
 import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
