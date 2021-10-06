@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
@@ -10,12 +9,7 @@ import { device } from 'styles/responsive'
 import CoursePageBody from './CoursePageBody'
 
 const CoursePageContainer = ({ courseData }) => {
-  const reviewCount = 2
-  const resourceCount = 2
   const { hash } = useLocation()
-
-  const reviews = useRef(null)
-  const resources = useRef(null)
 
   return (
     <>
@@ -25,21 +19,19 @@ const CoursePageContainer = ({ courseData }) => {
         <Tabs
           tabheight="2.25rem"
           tabwidth="7.5rem"
+          animated
           defaultActiveKey={hash.split('#')[1]}
         >
           <Tabs.TabPane
             key="reviews"
-            tab={`Reviews (${reviewCount})`}
-            disabled={false}
+            tab={`Reviews (${courseData.reviews?.length})`}
           >
             <CourseReviewContainer />
           </Tabs.TabPane>
 
           <Tabs.TabPane
             key="resources"
-            tab={`Resources (${resourceCount})`}
-            disabled={false}
-            id="resources"
+            tab={`Resources (${courseData.resources?.length})`}
           >
             <CourseResourceContainer />
           </Tabs.TabPane>

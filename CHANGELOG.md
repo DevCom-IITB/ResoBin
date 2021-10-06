@@ -27,4 +27,8 @@ sfdkak
 
 -- Your professor
 
-# Add your stuff
+# Known bugs: 
+
+1. New tags not inserted in backend
+2. Frontend datastructuring is a mess
+3. 
