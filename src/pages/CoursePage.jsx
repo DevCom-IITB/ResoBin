@@ -1,24 +1,48 @@
+import { isEmpty } from 'lodash'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { useSelector } from 'react-redux'
 import { Redirect, useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { CoursePageBody, CoursePageBreadcrumbs } from 'components/CoursePage'
+import { API } from 'api'
+import {
+  CoursePageContainer,
+  CoursePageBreadcrumbs,
+} from 'components/CoursePage'
+import { LoaderAnimation } from 'components/shared'
 import { coursePageUrl } from 'paths'
-import { selectCourseListByCourseCode } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
 const CoursePage = ({ match }) => {
   const location = useLocation()
   const { courseCode } = useParams()
+  const [courseData, setCourseData] = useState({})
+  const [loading, setLoading] = useState(true)
 
-  const courseData = useSelector(selectCourseListByCourseCode(courseCode))
+  useEffect(() => {
+    const getCourseData = async () => {
+      setLoading(true)
+      try {
+        const response = await API.courses.read({ code: courseCode })
+        setCourseData(response)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-  if (courseData === null) return <Redirect to="/404" />
-  const title = `${courseData.Code}: ${courseData.Title}`
+    getCourseData()
+  }, [courseCode])
 
-  // redirect to canonical URL (eg: /courses/CL152/introduction-to-chemical-engineering)
-  const canonicalUrl = coursePageUrl(courseData.Code, courseData.Title)
+  if (loading) return <LoaderAnimation />
+
+  if (isEmpty(courseData)) return <Redirect to="/404" />
+
+  const title = `${courseData.code}: ${courseData.title}`
+
+  // ? redirect to canonical URL (eg: /courses/CL152/introduction-to-chemical-engineering)
+  const canonicalUrl = coursePageUrl(courseData.code, courseData.title)
   if (match.url !== canonicalUrl)
     return <Redirect to={{ ...location, pathname: canonicalUrl }} />
 
@@ -26,12 +50,12 @@ const CoursePage = ({ match }) => {
     <Container>
       <Helmet>
         <title>{`${title} - ResoBin`}</title>
-        <meta property="description" content={courseData.Description} />
+        <meta property="description" content={courseData.description} />
       </Helmet>
 
       <CoursePageBreadcrumbs courseTitle={title} />
 
-      <CoursePageBody courseData={courseData} />
+      <CoursePageContainer courseData={courseData} />
     </Container>
   )
 }

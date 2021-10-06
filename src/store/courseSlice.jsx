@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
+import { API } from 'api'
 import { courseListAPI, courseSlotListAPI } from 'api/courses'
 import { toastError } from 'components/toast'
 
@@ -15,16 +16,39 @@ export const getCourseSlots = createAsyncThunk(
   async () => axios.get(courseSlotListAPI)
 )
 
+export const getDepartmentList = createAsyncThunk(
+  'courses/getDepartmentList',
+  API.departments.list
+)
+
+export const getResourceTags = createAsyncThunk(
+  'courses/getResourceTags',
+  API.resources.tags.list
+)
+
+export const getCourseListMinified = createAsyncThunk(
+  'courses/getCourseListMinified',
+  () =>
+    API.courses.list({
+      params: { fields: 'code,title', page_size: 0 },
+    })
+)
+
 // ? reducer
 const courseSlice = createSlice({
   name: 'course',
 
   initialState: {
     list: [],
+    listMinified: [],
     slots: [],
     loading: false,
     checksum: '',
     lastUpdated: '',
+    departments: [],
+    resources: {
+      tags: [],
+    },
   },
 
   reducers: {
@@ -63,6 +87,41 @@ const courseSlice = createSlice({
     [getCourseSlots.rejected]: (state) => {
       state.loading = false
     },
+
+    [getResourceTags.fulfilled]: (state, { payload }) => {
+      state.resources = {
+        tags: payload,
+      }
+      state.loading = false
+    },
+    [getResourceTags.pending]: (state) => {
+      state.loading = true
+    },
+    [getResourceTags.rejected]: (state) => {
+      state.loading = false
+    },
+
+    [getDepartmentList.fulfilled]: (state, { payload }) => {
+      state.departments = payload
+      state.loading = false
+    },
+    [getDepartmentList.pending]: (state) => {
+      state.loading = true
+    },
+    [getDepartmentList.rejected]: (state) => {
+      state.loading = false
+    },
+
+    [getCourseListMinified.fulfilled]: (state, { payload }) => {
+      state.listMinified = payload
+      state.loading = false
+    },
+    [getCourseListMinified.pending]: (state) => {
+      state.loading = true
+    },
+    [getCourseListMinified.rejected]: (state) => {
+      state.loading = false
+    },
   },
 })
 
@@ -74,6 +133,9 @@ export const selectCourseList = (state) => state.course.list
 export const selectCourseAPILoading = (state) => state.course.loading
 export const selectChecksum = (state) => state.course.checksum
 export const selectCourseSlots = (state) => state.course.slots
+export const selectResourceTags = (state) => state.course.resources.tags
+export const selectDepartments = (state) => state.course.departments
+export const selectCourseListMinified = (state) => state.course.listMinified
 
 // https://stackoverflow.com/questions/62545632/how-to-pass-an-additional-argument-to-useselector
 export const selectCourseListByCourseCode = (courseCode) =>

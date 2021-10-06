@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,13 +11,18 @@ import { toastError } from 'components/toast'
 import PageTransition from 'hoc/PageTransition'
 import { useScrollToTop } from 'hooks'
 import { DashboardRoutes } from 'routes'
+import { selectAuthLoading } from 'store/authSlice'
 import {
   getCourseList,
   getCourseSlots,
+  getResourceTags,
+  getDepartmentList,
+  getCourseListMinified,
   selectChecksum,
   selectCourseAPILoading,
   updateChecksum,
 } from 'store/courseSlice'
+import { getProfileAction } from 'store/userSlice'
 
 const Dashboard = () => {
   useScrollToTop()
@@ -27,10 +33,17 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // ? Fetch user profile
+    dispatch(getProfileAction())
+    dispatch(getResourceTags())
+    dispatch(getDepartmentList())
+    dispatch(getCourseListMinified())
+
     const getChecksum = async (prevChecksum) =>
       axios
         .get(courseChecksumAPI)
         .then(({ data }) => {
+          // TODO: This is a hack to get the menu to update
           if (data.checksum !== prevChecksum) {
             dispatch(updateChecksum(data))
             dispatch(getCourseList())
@@ -44,11 +57,14 @@ const Dashboard = () => {
 
     setLoading(true)
     getChecksum(checksum)
-  }, [checksum, dispatch])
+  }, [])
 
-  const loadingAPI = useSelector(selectCourseAPILoading)
+  const loadingAPI = [
+    useSelector(selectCourseAPILoading),
+    useSelector(selectAuthLoading),
+  ]
 
-  return loadingAPI || loading ? (
+  return loadingAPI.includes(true) || loading ? (
     <LoaderAnimation fixed />
   ) : (
     <>

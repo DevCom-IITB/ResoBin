@@ -1,7 +1,7 @@
-import axios from 'axios'
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 
+import { API } from 'api'
 import { toastError } from 'components/toast'
 
 const CSRFToken = () => {
@@ -9,9 +9,11 @@ const CSRFToken = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await axios
-        .get('/accounts/csrf_token')
-        .catch((error) => toastError(error.message))
+      try {
+        await API.auth.csrftoken()
+      } catch (error) {
+        toastError(error.message)
+      }
     }
     fetchData()
     setToken(Cookies.get('csrftoken') || '')

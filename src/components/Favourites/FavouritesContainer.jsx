@@ -8,7 +8,7 @@ import styled from 'styled-components/macro'
 import { CourseList, CourseSearch } from 'components/CourseFinder'
 import { toastError } from 'components/toast'
 import { searchAsync } from 'helpers'
-import { selectAllFavourites } from 'store/userSlice'
+import { selectFavouriteCourses } from 'store/userSlice'
 
 const searchFields = ['Code', 'Title', 'Description']
 
@@ -37,7 +37,8 @@ const FavouritesContainer = () => {
   }
 
   const [, setCourseDataFiltered] = useState([])
-  const favouriteCourses = useSelector(selectAllFavourites)
+
+  const favouriteCourses = useSelector(selectFavouriteCourses)
 
   // ? search input state
   const handleChange = (event) => setSearch(event.currentTarget.value)

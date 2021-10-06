@@ -1,24 +1,21 @@
 import { Bookmark, BookmarkOutline } from '@styled-icons/zondicons'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
 
+import { API } from 'api'
 import { ButtonIcon } from 'components/shared'
 import { coursePageUrl } from 'paths'
+import { selectDepartments } from 'store/courseSlice'
 import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
 import { device, fontSize } from 'styles/responsive'
 import { colorPicker } from 'styles/utils'
 
 import ParseDescription from '../ParseDescription'
 
-// ! Fetch from elastic search server
-const departmentList = [
-  'Aerospace Engineering',
-  'Applied Geophysics',
-  'Applied Statistics and Informatics',
-]
-
 const CourseItemMain = ({ courseData }) => {
+  const dispatch = useDispatch()
   const {
     Code: code,
     TotalCredits: totalCredits,
@@ -27,16 +24,36 @@ const CourseItemMain = ({ courseData }) => {
     Description: description,
   } = courseData
 
-  const favourite = useSelector(selectFavouriteStatus(code))
+  const [loading, setLoading] = useState(false)
 
-  const dispatch = useDispatch()
-  const favouriteClick = () => dispatch(updateFavourite(code))
+  const favourite = useSelector(selectFavouriteStatus(code))
+  const departmentList = useSelector(selectDepartments)
+
+  const favouriteClick = async () => {
+    try {
+      setLoading(true)
+      if (favourite) {
+        await API.courses.favorite.remove({ code })
+      } else {
+        await API.courses.favorite.add({ code })
+      }
+      dispatch(updateFavourite(code))
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <>
       <SubTitle>
         <DepartmentContainer
-          style={{ color: colorPicker(departmentList.indexOf(department)) }}
+          style={{
+            color: colorPicker(
+              departmentList.findIndex(({ name }) => name === department)
+            ),
+          }}
         >
           {department}
         </DepartmentContainer>
@@ -47,10 +64,15 @@ const CourseItemMain = ({ courseData }) => {
           </CreditContainer>
 
           <ButtonIcon
-            tooltip="Bookmark"
+            tooltip="Add to favorites"
             onClick={favouriteClick}
-            size="lg"
-            Icon={favourite ? Bookmark : BookmarkOutline}
+            popover={favourite}
+            popoverTitle="Remove from favorites?"
+            icon={
+              favourite ? <Bookmark size="30" /> : <BookmarkOutline size="30" />
+            }
+            color="white"
+            loading={loading}
           />
         </RightIcons>
       </SubTitle>

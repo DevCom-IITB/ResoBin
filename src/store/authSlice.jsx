@@ -1,55 +1,35 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { axiosAuth } from 'helpers'
+import { API } from 'api'
 
 const initialState = {
-  isAuthenticated: false,
+  isAuthenticated: null,
   loading: false,
+  profile: {},
 }
 
-export const loginAction = createAsyncThunk('auth/login', async (data) => {
-  await axiosAuth.post('/accounts/login', data)
-  // rememberMe
-  //   ? localStorage.setItem('TOKEN_KEY', 'token')
-  //   : sessionStorage.setItem('TOKEN_KEY', 'token')
-})
+export const loginAction = createAsyncThunk('auth/loginAction', API.auth.login)
 
-export const signupAction = createAsyncThunk('auth/signup', async (data) =>
-  axiosAuth.post('/accounts/signup', data)
+export const logoutAction = createAsyncThunk(
+  'auth/logoutAction',
+  API.auth.logout
 )
 
-export const logoutAction = createAsyncThunk('auth/logout', async () => {
-  await axiosAuth.post('/accounts/logout')
-
-  sessionStorage.removeItem('TOKEN_KEY')
-  localStorage.removeItem('TOKEN_KEY')
-})
-
-export const checkAuthAction = createAsyncThunk('auth/checkAuth', async () =>
-  axiosAuth.get('/accounts/authenticated')
+export const getAuthStatusAction = createAsyncThunk(
+  'auth/getAuthStatusAction',
+  API.auth.authenticate
 )
 
-export const deleteAccAction = createAsyncThunk(
-  'auth/deleteAcc',
-  async (data) => axiosAuth.delete('/accounts/delete')
+export const deleteProfileAction = createAsyncThunk(
+  'auth/deleteProfile',
+  API.profile.delete
 )
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   extraReducers: {
-    [signupAction.fulfilled]: (state, action) => {
-      state.isAuthenticated = true
-      state.loading = false
-    },
-    [signupAction.pending]: (state) => {
-      state.loading = true
-    },
-    [signupAction.rejected]: (state) => {
-      state.loading = false
-    },
-
-    [loginAction.fulfilled]: (state, action) => {
+    [loginAction.fulfilled]: (state, { payload }) => {
       state.isAuthenticated = true
       state.loading = false
     },
@@ -61,7 +41,7 @@ const authSlice = createSlice({
     },
 
     [logoutAction.fulfilled]: (state, action) => {
-      state.isAuthenticated = true
+      state.isAuthenticated = false
       state.loading = false
     },
     [logoutAction.pending]: (state) => {
@@ -71,17 +51,20 @@ const authSlice = createSlice({
       state.loading = false
     },
 
-    [checkAuthAction.fulfilled]: (state, action) => {
+    [getAuthStatusAction.fulfilled]: (state, { payload }) => {
       state.isAuthenticated = true
       state.loading = false
     },
-    [checkAuthAction.pending]: (state) => {
+    [getAuthStatusAction.pending]: (state) => {
       state.loading = true
     },
-    [checkAuthAction.rejected]: (state) => {
+    [getAuthStatusAction.rejected]: (state) => {
+      state.isAuthenticated = false
       state.loading = false
     },
   },
 })
+
+export const selectAuthLoading = (state) => state.auth.loading
 
 export default authSlice.reducer

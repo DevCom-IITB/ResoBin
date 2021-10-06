@@ -1,7 +1,7 @@
 import { lazy } from 'react'
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
 
-// import { PrivateRoute } from 'hoc'
+import { PrivateRoute } from 'hoc'
 
 // lazy load the pages when called
 const Dashboard = lazy(() => import('pages/Dashboard'))
@@ -14,10 +14,11 @@ const CoursePage = lazy(() => import('pages/CoursePage'))
 const Contribute = lazy(() => import('pages/Contribute'))
 const Contact = lazy(() => import('pages/Contact'))
 const Favourites = lazy(() => import('pages/Favourites'))
+const Logout = lazy(() => import('pages/Logout'))
 const Settings = lazy(() => import('pages/Settings'))
 const TimeTable = lazy(() => import('pages/Timetable'))
 
-// authentication necessary for all routes
+// ? authentication necessary for all dashboard routes
 export const DashboardRoutes = () => {
   const location = useLocation()
 
@@ -35,6 +36,7 @@ export const DashboardRoutes = () => {
       <Route exact path="/settings" component={Settings} />
       <Route exact path="/contact" component={Contact} />
       <Route exact path="/timetable/:sem?" component={TimeTable} />
+      <Route exact path="/logout" component={Logout} />
 
       {/* 404 page */}
       <Redirect to="/404" />
@@ -42,15 +44,13 @@ export const DashboardRoutes = () => {
   )
 }
 
-// IMPORTANT: Remember to update any route changes on the sitemap
+// ! IMPORTANT: Remember to update any route changes on the sitemap
 export const AppRoutes = () => {
   return (
     <Switch>
       <Route exact path="/login" component={Login} />
       <Route path="/404" component={NotFound} />
-
-      {/* Change to PrivateRoute for production */}
-      <Route path="/" component={Dashboard} />
+      <PrivateRoute path="/" component={Dashboard} />
 
       {/* 404 page */}
       <Route component={NotFound} />

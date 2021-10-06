@@ -1,10 +1,10 @@
 import { X } from '@styled-icons/heroicons-outline'
 import { Checkbox } from 'antd'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { ButtonIcon } from 'components/shared'
+import { ButtonIconDanger } from 'components/shared/Buttons'
 
 const Title = styled.span`
   display: inline-block;
@@ -22,48 +22,48 @@ const Header = styled.div`
   color: white;
 `
 
-// ! multiple issues in this component, try and fix all asap
 const FilterItem = ({ data: groupData }) => {
   const location = useLocation()
   const history = useHistory()
   const param = groupData.id
 
   const queryString = new URLSearchParams(location.search)
-  const currentValues = queryString.get(param)
 
-  const setQueryString = (query) => {
-    // ? No change
-    if (query === (queryString.get(param) || '')) return
+  const [filterValue, setFilterValue] = useState(queryString.get(param))
 
-    // ? update query string or clear query string if query is empty
-    if (query) queryString.set(param, query)
-    else queryString.delete(param)
+  const handleChange = (checkedValues) => setFilterValue(checkedValues.sort())
 
-    // ? reset pagination
-    queryString.delete('p')
+  useEffect(() => {
+    // ? update url only if needed
+    const currentSearch = new URLSearchParams(location.search)
+    if (filterValue !== currentSearch.get(param)) {
+      // ? reset pagination
+      currentSearch.delete('p')
 
-    history.push({
-      pathname: location.pathname,
-      search: `?${queryString.toString()}`,
-    })
-  }
+      // ? remove empty query from url to keep it clean
+      if (filterValue?.length) {
+        currentSearch.set(param, filterValue)
+      } else {
+        currentSearch.delete(param)
+      }
 
-  const onChange = (checkedValues) => setQueryString(checkedValues.sort())
-  const clearAllFilters = () => setQueryString('')
+      history.push({ search: currentSearch.toString() })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterValue])
 
   return (
     <>
       <Header>
         <Title>{groupData.FilterTitle}</Title>
-        <ButtonIcon
-          tooltip="Bookmark"
-          onClick={clearAllFilters}
-          size="xs"
-          Icon={X}
+        <ButtonIconDanger
+          tooltip="Clear"
+          onClick={() => setFilterValue([])}
+          icon={<X size="18" />}
         />
       </Header>
 
-      <StyledCheckboxGroup onChange={onChange} defaultValue={currentValues}>
+      <StyledCheckboxGroup onChange={handleChange} value={filterValue}>
         {groupData.Options.map((optionData) => (
           <Checkbox key={optionData.id} value={optionData.id}>
             {optionData.Label}

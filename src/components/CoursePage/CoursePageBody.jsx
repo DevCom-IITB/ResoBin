@@ -1,66 +1,34 @@
-import { Col, Divider, Row, Tabs } from 'antd'
+import { Col, Divider, Row } from 'antd'
 import styled from 'styled-components/macro'
 
 import { device, fontSize } from 'styles/responsive'
 
-import CourseReviews from './CourseReview'
-
 const CoursePageBody = ({ courseData }) => {
-  const reviewCount = 2
-
   return (
-    <Container>
-      <CourseCode>{courseData.Code}</CourseCode>
-      <CourseTitle>{courseData.Title}</CourseTitle>
+    <Container id="details">
+      <CourseCode>{courseData.code}</CourseCode>
+      <CourseTitle>{courseData.title}</CourseTitle>
       <CourseDepartment>
-        {courseData.Department} | {courseData.TotalCredits} credits
+        {courseData.department.name} | {courseData.credit} credits
       </CourseDepartment>
-
       <Divider
         style={{ backgroundColor: '#ffffff', margin: '1rem 0', opacity: 0.3 }}
       />
       <CourseDescription>
-        {courseData.Description || 'Not available'}
+        {courseData.description || 'Not available'}
       </CourseDescription>
 
       <Row>
-        <Col span={8}>
-          <SubHeaderText>Course Structure</SubHeaderText>
+        <Col>
+          <SubHeaderText>Course Workload</SubHeaderText>
           <CenterText>
-            Lectures : {courseData.Structure.Lecture} | Tutorial:{' '}
-            {courseData.Structure.Tutorial} | Practical:{' '}
-            {courseData.Structure.Practical}
+            Lectures : {courseData.workload.lecture} | Tutorial:{' '}
+            {courseData.workload.tutorial} | Practical:{' '}
+            {courseData.workload.practical} | Selfstudy:{' '}
+            {courseData.workload.selfstudy}
           </CenterText>
         </Col>
-        <Col span={8}>
-          <SubHeaderText>Prerequisites</SubHeaderText>
-          <CenterText>{courseData.Prerequisite}</CenterText>
-        </Col>
-        <Col span={8}>
-          <SubHeaderText>Credits</SubHeaderText>
-          <CenterText>{courseData.TotalCredits}</CenterText>
-        </Col>
       </Row>
-      <Divider />
-
-      <Tabs
-        defaultActiveKey="1"
-        centered
-        size="large"
-        style={{
-          color: `${({ theme }) => theme.textColor}`,
-          fontWeight: 600,
-          fontSize: '24px',
-        }}
-        type="card"
-      >
-        <Tabs.TabPane tab={`Reviews (${reviewCount})`} key="1">
-          <CourseReviews />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Resources" key="2">
-          Resources
-        </Tabs.TabPane>
-      </Tabs>
     </Container>
   )
 }

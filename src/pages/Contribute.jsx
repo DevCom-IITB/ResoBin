@@ -1,8 +1,12 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components/macro'
 
-import { FileDetails, FileList } from 'components/contribute'
+import {
+  // FileDetails,
+  // FileList,
+  ContributeContainer,
+} from 'components/contribute'
 import { device } from 'styles/responsive'
 
 const Container = styled.div`
@@ -12,10 +16,10 @@ const Container = styled.div`
 `
 
 const Contribute = () => {
-  const [formvalue, setFormvalue] = useState([])
-  const handleFormdetail = (value) => {
-    setFormvalue(value)
-  }
+  // const [formvalue, setFormvalue] = useState([])
+  // const handleFormdetail = (value) => {
+  //   setFormvalue(value)
+  // }
 
   return (
     <Container>
@@ -24,12 +28,13 @@ const Contribute = () => {
         <meta name="description" content="Upload and share your own notes" />
       </Helmet>
 
-      <FileDetails
+      <ContributeContainer />
+      {/* <FileDetails
         handleFormdetail={(value) => {
           handleFormdetail(value)
         }}
       />
-      <FileList formvalues={formvalue} />
+      <FileList formvalues={formvalue} /> */}
     </Container>
   )
 }

@@ -15,28 +15,27 @@ const StyledIcon = styled(({ Icon, className, ...props }) => {
 
 const CoursePageBreadcrumbs = ({ courseTitle }) => {
   const { width } = useViewportContext()
-  return (
-    width >= breakpoints.md && (
-      <StyledBreadcrumb separator=">">
-        <Breadcrumb.Item>
-          <Link to="/">
-            <StyledIcon Icon={Home} />
-            <span>Home</span>
-          </Link>
-        </Breadcrumb.Item>
 
-        <Breadcrumb.Item>
-          <Link to="/courses">
-            <StyledIcon Icon={BookOpen} />
-            <span>Courses</span>
-          </Link>
-        </Breadcrumb.Item>
+  return width < breakpoints.md ? null : (
+    <StyledBreadcrumb separator=">">
+      <Breadcrumb.Item>
+        <Link to="/">
+          <StyledIcon Icon={Home} />
+          <span>Home</span>
+        </Link>
+      </Breadcrumb.Item>
 
-        <Breadcrumb.Item>
-          <span>{courseTitle}</span>
-        </Breadcrumb.Item>
-      </StyledBreadcrumb>
-    )
+      <Breadcrumb.Item>
+        <Link to="/courses">
+          <StyledIcon Icon={BookOpen} />
+          <span>Courses</span>
+        </Link>
+      </Breadcrumb.Item>
+
+      <Breadcrumb.Item>
+        <span>{courseTitle}</span>
+      </Breadcrumb.Item>
+    </StyledBreadcrumb>
   )
 }
 

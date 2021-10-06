@@ -1,5 +1,6 @@
 import { Select } from 'antd'
 import { useEffect, useState } from 'react'
+import styled from 'styled-components/macro'
 
 import filterData from './__mock__/filterData.json'
 
@@ -25,7 +26,7 @@ const MultiSelect = () => {
   }, [selectedDept])
 
   return (
-    <Select
+    <StyledSelect
       mode="multiple"
       placeholder="Select departments to filter"
       onChange={handleDepartmentSelect}
@@ -36,9 +37,6 @@ const MultiSelect = () => {
       // loading
       // maxTagCount={1}
       // listHeight="6rem"
-      dropdownAlign={{
-        overflow: { adjustY: 0 },
-      }}
       getPopupContainer={(trigger) => trigger.parentNode}
     >
       {remainingDept.map((item) => (
@@ -46,8 +44,33 @@ const MultiSelect = () => {
           {item.value}
         </Select.Option>
       ))}
-    </Select>
+    </StyledSelect>
   )
 }
 
 export default MultiSelect
+
+const StyledSelect = styled(Select)`
+  width: 100%;
+
+  .ant-select-selection-placeholder {
+    font-size: 0.75rem;
+    color: #807da0;
+  }
+
+  .ant-select-selection-multiple {
+    overflow: auto;
+    height: 2rem;
+    white-space: nowrap;
+  }
+
+  .ant-select-selection-item {
+    font-size: 0.75rem;
+  }
+
+  .ant-select-selector {
+    display: flex;
+    align-items: center;
+    min-height: 2rem;
+  }
+`

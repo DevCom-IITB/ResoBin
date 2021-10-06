@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
-import getContributors from 'api/github'
+import { API } from 'api'
 import { LoaderAnimation } from 'components/shared'
 import Divider from 'components/shared/Divider'
 import { toastError } from 'components/toast'
@@ -14,7 +14,7 @@ const ContributorList = () => {
 
   useEffect(() => {
     const getContributorsData = async () =>
-      getContributors()
+      API.GitHub.getContributors()
         .then((data) =>
           data.map((item) => ({
             name: item.login,

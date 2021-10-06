@@ -23,7 +23,18 @@ module.exports = {
     'no-invalid-position-at-import-rule': null,
     'number-leading-zero': 'always',
     'value-keyword-case': null,
-
+    'value-no-vendor-prefix': [
+      true,
+      {
+        ignoreValues: ['box'],
+      },
+    ],
+    'property-no-vendor-prefix': [
+      true,
+      {
+        ignoreProperties: ['box-orient'],
+      },
+    ],
     'selector-pseudo-class-no-unknown': [
       true,
       {

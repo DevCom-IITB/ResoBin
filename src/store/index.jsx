@@ -1,21 +1,11 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { createLogger } from 'redux-logger'
-import {
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-  persistStore,
-} from 'redux-persist'
+import { persistStore } from 'redux-persist'
 
-import { persistedReducer } from './combineReducers'
+import { reducer } from './combineReducers'
 
 const middleware = getDefaultMiddleware({
-  serializableCheck: {
-    ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-  },
+  serializableCheck: false,
 })
 
 const logger = createLogger({
@@ -25,7 +15,8 @@ const logger = createLogger({
 if (process.env.NODE_ENV === 'development') middleware.push(logger)
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer,
+  // reducer: persistedReducer,
   devTools: process.env.NODE_ENV === 'development',
   middleware,
   preloadedState: {},

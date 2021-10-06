@@ -5,7 +5,7 @@ export const makeGradient = (color) => {
 }
 
 export const colorPicker = (id) => {
-  switch (id) {
+  switch (id % 8) {
     case 0:
       return '#f1fa8c'
     case 1:
