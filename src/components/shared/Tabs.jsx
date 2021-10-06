@@ -6,7 +6,7 @@ const StyledTabs = styled(Tabs)`
   color: ${({ theme }) => theme.textColor};
 
   .ant-tabs-nav {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
 
     .ant-tabs-ink-bar {
       height: 3px;

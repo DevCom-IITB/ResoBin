@@ -1,6 +1,10 @@
 export { default as Avatar, UserAvatar } from './Avatar'
-export { ButtonIcon } from './Buttons'
-export { default as ButtonSquare } from './ButtonSquare'
+export {
+  ButtonIcon,
+  ButtonSquare,
+  ButtonDropdown,
+  ButtonSwitch,
+} from './Buttons'
 export { default as Checkbox } from './Checkbox'
 export { default as Divider } from './Divider'
 export { default as InputRounded } from './InputRounded'
