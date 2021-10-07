@@ -55,7 +55,7 @@ const getTitle = (fileName) =>
     .replace(/[\W_]+/g, ' ')
     .trim()
 
-export const getFileDetails = (file) => {
+export const getFileDetails = (file, initialState = {}) => {
   if (!file) return defaultFile
   const { name, type } = file
   const fileType = fileTypes.find((item) => item.type === type)
@@ -63,6 +63,7 @@ export const getFileDetails = (file) => {
 
   return {
     ...defaultFile,
+    ...initialState,
     name,
     title: getTitle(name),
     type,

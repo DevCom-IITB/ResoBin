@@ -1,29 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button } from 'antd'
 import { nanoid } from 'nanoid'
 import { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router'
 import styled from 'styled-components/macro'
 import { Plus } from 'styled-icons/heroicons-outline'
 
 import { API } from 'api'
-import { PageHeading, PageTitle } from 'components/shared'
+import { ButtonSquare, PageHeading, PageTitle } from 'components/shared'
 import { defaultFile, fileTypes } from 'data/CourseResources'
 import { selectUserProfile } from 'store/userSlice'
 import { device } from 'styles/responsive'
 
 import ContributeItem from './ContributeItem'
 
-const defaultFileItem = () => ({
+const defaultFileItem = (details) => ({
   id: nanoid(),
   status: null,
   progress: 0,
   file: null,
-  details: defaultFile,
+  details: { ...defaultFile, ...details },
 })
 
 const ContributeContainer = ({ visible, setVisible }) => {
-  const [fileList, setFileList] = useState([defaultFileItem()])
+  const location = useLocation()
+  const queryString = new URLSearchParams(location.search)
+  const course = queryString.get('course')
+
+  const [fileList, setFileList] = useState([defaultFileItem({ course })])
   const { resourcesPosted } = useSelector(selectUserProfile)
   const [myResources, setMyResources] = useState([])
 
@@ -36,7 +40,7 @@ const ContributeContainer = ({ visible, setVisible }) => {
   // const [uploading, setUploading] = useState(false)
 
   const createFileItem = useCallback(() => {
-    setFileList((prevItems) => [...prevItems, defaultFileItem()])
+    setFileList((prevItems) => [...prevItems, defaultFileItem({ course })])
   }, [])
 
   const updateFileItem = (id) => (fileItem) => {
@@ -57,6 +61,7 @@ const ContributeContainer = ({ visible, setVisible }) => {
       <PageHeading>
         <PageTitle>Contribute</PageTitle>
       </PageHeading>
+
       <PageTitle style={{ padding: '1.5rem', fontSize: '1rem' }}>
         Please upload documents only in the following formats:
         {fileTypes.map(({ extention }) => (
@@ -76,13 +81,15 @@ const ContributeContainer = ({ visible, setVisible }) => {
         ))}
       </FileList>
 
-      <Button
-        style={{ marginTop: '0.5rem' }}
-        icon={<Plus size="18" />}
+      <ButtonSquare
+        icon={<Plus size="18" style={{ marginRight: '0.25rem' }} />}
         onClick={createFileItem}
+        style={{ marginLeft: '1rem' }}
       >
         Add new
-      </Button>
+      </ButtonSquare>
+
+      <PageTitle>My uploads</PageTitle>
 
       {myResources.map((resource) => (
         <div key={resource.id} style={{ color: 'white', padding: '1rem' }}>
