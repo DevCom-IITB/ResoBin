@@ -1,8 +1,8 @@
 import { Button } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
-import { Redirect, useLocation } from 'react-router-dom'
+import { Redirect, useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { getLoginURL, SSO } from 'api'
@@ -14,16 +14,28 @@ import { fontSize } from 'styles/responsive'
 
 const Login = () => {
   const location = useLocation()
+  const history = useHistory()
   const dispatch = useDispatch()
 
-  const qs = new URLSearchParams(location.search)
+  const qs = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  )
   const redirect = qs.get('redirect') ?? '/'
   const error = qs.get('error')
   const code = qs.get('code')
-  if (error) {
-    toastError(`Error: ${error}`)
-    qs.delete('error')
-  }
+
+  useEffect(() => {
+    if (error) {
+      toastError(`Error: ${error}`)
+      qs.delete('error')
+
+      history.push({
+        pathname: location.pathname,
+        search: `?${qs.toString()}`,
+      })
+    }
+  }, [error, history, location.pathname, qs])
 
   const { isAuthenticated, loading } = useSelector((state) => state.auth)
 

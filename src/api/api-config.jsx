@@ -57,6 +57,12 @@ export const API = {
     update: async ({ payload }) =>
       APIInstance.put('/accounts/profile', payload),
     delete: async () => APIInstance.delete('/accounts/profile'),
+    resources: {
+      list: async () => APIInstance.get('/accounts/profile/resources'),
+    },
+    reviews: {
+      list: async () => APIInstance.get('/accounts/profile/reviews'),
+    },
   },
 
   // * Courses endpoints

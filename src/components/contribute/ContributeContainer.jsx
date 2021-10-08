@@ -1,15 +1,18 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { nanoid } from 'nanoid'
 import { useCallback, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
 import styled from 'styled-components/macro'
 import { Plus } from 'styled-icons/heroicons-outline'
 
 import { API } from 'api'
-import { ButtonSquare, PageHeading, PageTitle } from 'components/shared'
+import {
+  ButtonSquare,
+  LoaderAnimation,
+  PageHeading,
+  PageTitle,
+} from 'components/shared'
+import { toastError } from 'components/toast'
 import { defaultFile, fileTypes } from 'data/CourseResources'
-import { selectUserProfile } from 'store/userSlice'
 import { device } from 'styles/responsive'
 
 import ContributeItem from './ContributeItem'
@@ -28,20 +31,29 @@ const ContributeContainer = ({ visible, setVisible }) => {
   const course = queryString.get('course')
 
   const [fileList, setFileList] = useState([defaultFileItem({ course })])
-  const { resourcesPosted } = useSelector(selectUserProfile)
   const [myResources, setMyResources] = useState([])
+  const [APILoading, setAPILoading] = useState(false)
+  // const [uploading, setUploading] = useState(false)
 
   useEffect(() => {
-    resourcesPosted.forEach(async (id) => {
-      const response = await API.resources.read({ id })
-      setMyResources((prev) => [...prev, response])
-    })
+    const fetchUserResources = async () => {
+      try {
+        setAPILoading(true)
+        const response = await API.profile.resources.list()
+        setMyResources(response)
+      } catch (error) {
+        toastError(error)
+      } finally {
+        setAPILoading(false)
+      }
+    }
+
+    fetchUserResources()
   }, [])
-  // const [uploading, setUploading] = useState(false)
 
   const createFileItem = useCallback(() => {
     setFileList((prevItems) => [...prevItems, defaultFileItem({ course })])
-  }, [])
+  }, [course])
 
   const updateFileItem = (id) => (fileItem) => {
     setFileList((prevItems) =>
@@ -90,6 +102,7 @@ const ContributeContainer = ({ visible, setVisible }) => {
       </ButtonSquare>
 
       <PageTitle>My uploads</PageTitle>
+      <LoaderAnimation fixed disable={!APILoading} />
 
       {myResources.map((resource) => (
         <div key={resource.id} style={{ color: 'white', padding: '1rem' }}>
