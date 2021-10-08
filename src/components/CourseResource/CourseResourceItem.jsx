@@ -59,7 +59,26 @@ const CourseResourceItem = ({ content }) => {
   )
 }
 
+export const CourseResourceGrid = ({ items }) => {
+  return (
+    <Grid>
+      {items.map((content) => (
+        <CourseResourceItem key={content.id} content={content} />
+      ))}
+    </Grid>
+  )
+}
+
 export default CourseResourceItem
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+  grid-auto-rows: 12rem;
+  grid-auto-flow: row dense;
+  grid-gap: 1rem;
+  padding: 1rem 0;
+`
 
 const GridItem = styled.figure`
   position: relative;
@@ -104,17 +123,20 @@ const Row = styled.div`
 
 const UserName = styled.h5`
   ${limitLines({ count: 2, height: '1.75rem' })}
+
   color: ${({ theme }) => theme.textColor};
 `
 
 const ResourceTitle = styled.h3`
   ${limitLines({ count: 2, height: '1.75rem' })}
+
   color: ${({ theme }) => theme.textColor};
   margin-bottom: 0.5rem;
 `
 
 const ResourceDescription = styled.p`
   ${limitLines({ count: 2, height: '1.75rem' })}
+
   margin-bottom: 0;
 `
 

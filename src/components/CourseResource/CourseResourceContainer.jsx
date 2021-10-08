@@ -9,7 +9,7 @@ import { ButtonSquare, ButtonSwitch, LoaderAnimation } from 'components/shared'
 import { toastError } from 'components/toast'
 import { selectUserProfile } from 'store/userSlice'
 
-import CourseResourceItem from './CourseResourceItem'
+import { CourseResourceGrid } from './CourseResourceItem'
 
 const CourseResourceContainer = () => {
   const profile = useSelector(selectUserProfile)
@@ -90,25 +90,12 @@ const CourseResourceContainer = () => {
         </ButtonContainer>
       </Header>
 
-      <GridContainer>
-        {resources.map((resource) => (
-          <CourseResourceItem key={resource.id} content={resource} />
-        ))}
-      </GridContainer>
+      <CourseResourceGrid items={resources} />
     </>
   )
 }
 
 export default CourseResourceContainer
-
-const GridContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
-  grid-auto-rows: 12rem;
-  grid-auto-flow: row dense;
-  grid-gap: 1rem;
-  padding: 1rem 0;
-`
 
 const ButtonContainer = styled.div`
   display: flex;

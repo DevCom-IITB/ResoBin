@@ -5,6 +5,7 @@ import styled from 'styled-components/macro'
 import { Plus } from 'styled-icons/heroicons-outline'
 
 import { API } from 'api'
+import { CourseResourceGrid } from 'components/CourseResource/CourseResourceItem'
 import {
   ButtonSquare,
   LoaderAnimation,
@@ -104,14 +105,7 @@ const ContributeContainer = ({ visible, setVisible }) => {
       <PageTitle>My uploads</PageTitle>
       <LoaderAnimation fixed disable={!APILoading} />
 
-      {myResources.map((resource) => (
-        <div key={resource.id} style={{ color: 'white', padding: '1rem' }}>
-          <h3>
-            <a href={resource.file}>{resource.title}</a>
-          </h3>
-          <p>{resource.description}</p>
-        </div>
-      ))}
+      <CourseResourceGrid items={myResources} />
     </Container>
   )
 }
