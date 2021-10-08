@@ -58,16 +58,16 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
       return
     }
 
-    const formData = new FormData()
-    formData.append('file', fileItem.file, fileItem.file.name)
-    formData.append('title', fileItem.details.title)
-    formData.append('course', fileItem.details.course)
-    formData.append('description', fileItem.details.description)
-    formData.append('tag', fileItem.details.tags)
+    const fd = new FormData()
+    fd.append('file', fileItem.file, fileItem.file.name)
+    fd.append('title', fileItem.details.title)
+    fd.append('course', fileItem.details.course)
+    fd.append('description', fileItem.details.description)
+    fd.append('tags', JSON.stringify(fileItem.details.tags))
 
     try {
       const response = await API.resources.create({
-        payload: formData,
+        payload: fd,
         onUploadProgress,
       })
       const { id, timestamp, url } = response
@@ -168,6 +168,7 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
           autoSize={{ minRows: 1, maxRows: 10 }}
           placeholder="Description"
           value={fileItem.details.description}
+          defaultValue="Not available"
           onChange={(e) =>
             updateFileItem({
               details: {

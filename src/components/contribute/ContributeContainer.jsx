@@ -5,7 +5,7 @@ import styled from 'styled-components/macro'
 import { Plus } from 'styled-icons/heroicons-outline'
 
 import { API } from 'api'
-import { CourseResourceGrid } from 'components/CourseResource/CourseResourceItem'
+import { CourseResourceGrid } from 'components/CourseResource'
 import {
   ButtonSquare,
   LoaderAnimation,
@@ -103,7 +103,7 @@ const ContributeContainer = ({ visible, setVisible }) => {
       </ButtonSquare>
 
       <PageTitle>My uploads</PageTitle>
-      <LoaderAnimation fixed disable={!APILoading} />
+      <LoaderAnimation disable={!APILoading} />
 
       <CourseResourceGrid items={myResources} />
     </Container>

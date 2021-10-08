@@ -5,9 +5,6 @@ import { camelizeKeys, snakeizeKeys } from 'helpers/transformKeys'
 
 export const APIInstance = axios.create({
   baseURL: 'http://localhost:8000/api',
-  headers: {
-    'content-type': 'application/json',
-  },
   timeout: 30000,
   xsrfCookieName: 'csrftoken',
   xsrfHeaderName: 'X-CSRFToken',
@@ -91,9 +88,7 @@ export const API = {
     read: async ({ id }) => APIInstance.get(`/resources/${id}`),
     update: async ({ id, payload, onUploadProgress }) =>
       APIInstance.put(`/resources/${id}`, payload, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress,
       }),
     delete: async ({ id }) => APIInstance.delete(`/resources/${id}`),
