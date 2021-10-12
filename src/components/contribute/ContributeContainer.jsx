@@ -6,15 +6,11 @@ import { Plus } from 'styled-icons/heroicons-outline'
 
 import { API } from 'api'
 import { CourseResourceGrid } from 'components/CourseResource'
-import {
-  ButtonSquare,
-  LoaderAnimation,
-  PageHeading,
-  PageTitle,
-} from 'components/shared'
+import { Aside, ButtonSquare, PageHeading, PageTitle } from 'components/shared'
 import { toastError } from 'components/toast'
+import { useViewportContext } from 'context/ViewportContext'
 import { defaultFile, fileTypes } from 'data/CourseResources'
-import { device } from 'styles/responsive'
+import { breakpoints, device } from 'styles/responsive'
 
 import ContributeItem from './ContributeItem'
 
@@ -30,6 +26,7 @@ const ContributeContainer = ({ visible, setVisible }) => {
   const location = useLocation()
   const queryString = new URLSearchParams(location.search)
   const course = queryString.get('course')
+  const { width } = useViewportContext()
 
   const [fileList, setFileList] = useState([defaultFileItem({ course })])
   const [myResources, setMyResources] = useState([])
@@ -102,10 +99,13 @@ const ContributeContainer = ({ visible, setVisible }) => {
         Add new
       </ButtonSquare>
 
-      <PageTitle>My uploads</PageTitle>
-      <LoaderAnimation disable={!APILoading} />
-
-      <CourseResourceGrid items={myResources} />
+      <Aside
+        title="My uploads"
+        loading={APILoading}
+        visible={width >= breakpoints.lg}
+      >
+        <CourseResourceGrid items={myResources} />
+      </Aside>
     </Container>
   )
 }
@@ -126,6 +126,6 @@ const FileList = styled.div`
   overflow-y: auto;
   flex-direction: column;
   height: calc(100% - 20rem);
-  padding: 1rem 0;
+  padding: 1rem 0.75rem 1rem 0;
   gap: 1rem;
 `
