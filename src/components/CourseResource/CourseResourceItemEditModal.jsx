@@ -1,6 +1,8 @@
-import { Modal, Form, Input } from 'antd'
+import { Form, Input, Modal, Select } from 'antd'
+import { useSelector } from 'react-redux'
 
 import { toastError } from 'components/toast'
+import { selectCourseListMinified, selectResourceTags } from 'store/courseSlice'
 
 const CourseResourceItemEditModal = ({
   visible,
@@ -13,13 +15,24 @@ const CourseResourceItemEditModal = ({
   const handleOk = async () => {
     try {
       const values = await form.validateFields()
-      form.resetFields()
       onEdit(values)
     } catch (error) {
       console.log(error)
       toastError('Check your inputs')
     }
   }
+
+  const tagOptions = useSelector(selectResourceTags)?.map(({ tag }) => ({
+    label: tag,
+    value: tag,
+  }))
+
+  const courseOptions = useSelector(selectCourseListMinified)?.map(
+    ({ code, title }) => ({
+      label: `${code}: ${title}`,
+      value: code,
+    })
+  )
 
   return (
     <Modal
@@ -38,19 +51,43 @@ const CourseResourceItemEditModal = ({
         onFinish={onEdit}
       >
         <Form.Item
+          name="course"
+          label="Course"
+          rules={[
+            {
+              required: true,
+              message: 'Course is necessary',
+            },
+          ]}
+        >
+          <Select showSearch placeholder="Course" options={courseOptions} />
+        </Form.Item>
+
+        <Form.Item
           name="title"
           label="Title"
           rules={[
             {
               required: true,
-              message: 'Please input the title of collection!',
+              message: 'Title is necessary',
             },
           ]}
         >
           <Input />
         </Form.Item>
+
         <Form.Item name="description" label="Description">
           <Input.TextArea />
+        </Form.Item>
+
+        <Form.Item name="tags" label="Tags">
+          <Select
+            mode="tags"
+            placeholder="Add tags"
+            showArrow
+            tokenSeparators={[',']}
+            options={tagOptions}
+          />
         </Form.Item>
       </Form>
     </Modal>
@@ -58,32 +95,3 @@ const CourseResourceItemEditModal = ({
 }
 
 export default CourseResourceItemEditModal
-
-// const CollectionsPage = () => {
-//   const [visible, setVisible] = useState(false)
-
-//   const onCreate = (values) => {
-//     console.log('Received values of form: ', values)
-//     setVisible(false)
-//   }
-
-//   return (
-//     <div>
-//       <Button
-//         type="primary"
-//         onClick={() => {
-//           setVisible(true)
-//         }}
-//       >
-//         New Collection
-//       </Button>
-//       <CollectionCreateForm
-//         visible={visible}
-//         onCreate={onCreate}
-//         onCancel={() => {
-//           setVisible(false)
-//         }}
-//       />
-//     </div>
-//   )
-// }

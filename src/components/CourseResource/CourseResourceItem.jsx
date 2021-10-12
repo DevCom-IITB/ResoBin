@@ -16,10 +16,12 @@ import { limitLines } from 'styles/mixins'
 
 import CourseResourceItemEditModal from './CourseResourceItemEditModal'
 
-const CourseResourceItem = ({ content }) => {
+const CourseResourceItem = ({ content: initialContent }) => {
   const { id } = useSelector(selectUserProfile)
-  const isOwner = id === content.userProfile.id
+  const isOwner = id === initialContent.userProfile.id
+
   const [editModalVisible, setEditModalVisible] = useState(false)
+  const [content, setContent] = useState(initialContent)
 
   const handleDownload = () => {
     window.location.href = content.file
@@ -28,6 +30,7 @@ const CourseResourceItem = ({ content }) => {
   const handleEdit = async (payload) => {
     try {
       await API.resources.update({ id: content.id, payload })
+      setContent({ ...content, ...payload })
       setEditModalVisible(false)
     } catch (error) {
       console.log(error)
