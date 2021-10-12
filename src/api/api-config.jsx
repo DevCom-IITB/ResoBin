@@ -31,9 +31,14 @@ APIInstance.interceptors.response.use(
     return response.data
   },
   (error) => {
-    if (error.response.status === 401) {
-      toastError('Please login again')
+    try {
+      if (error.response.status === 401) {
+        toastError('Please login again')
+      }
+    } catch (e) {
+      toastError('Server is offline')
     }
+
     return Promise.reject(error.message)
   }
 )
@@ -60,6 +65,7 @@ export const API = {
     reviews: {
       list: async () => APIInstance.get('/accounts/profile/reviews'),
     },
+    feed: async () => APIInstance.get('/accounts/profile/feed'),
   },
 
   // * Courses endpoints
@@ -86,11 +92,8 @@ export const API = {
         onUploadProgress,
       }),
     read: async ({ id }) => APIInstance.get(`/resources/${id}`),
-    update: async ({ id, payload, onUploadProgress }) =>
-      APIInstance.put(`/resources/${id}`, payload, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        onUploadProgress,
-      }),
+    update: async ({ id, payload }) =>
+      APIInstance.patch(`/resources/${id}`, payload),
     delete: async ({ id }) => APIInstance.delete(`/resources/${id}`),
 
     request: {
