@@ -1,26 +1,10 @@
-// import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components/macro'
 
-import {
-  // FileDetails,
-  // FileList,
-  ContributeContainer,
-} from 'components/contribute'
+import { ContributeContainer } from 'components/contribute'
 import { device } from 'styles/responsive'
 
-const Container = styled.div`
-  @media ${device.min.md} {
-    margin-left: ${({ theme }) => theme.asideWidthLeft};
-  }
-`
-
 const Contribute = () => {
-  // const [formvalue, setFormvalue] = useState([])
-  // const handleFormdetail = (value) => {
-  //   setFormvalue(value)
-  // }
-
   return (
     <Container>
       <Helmet>
@@ -29,14 +13,14 @@ const Contribute = () => {
       </Helmet>
 
       <ContributeContainer />
-      {/* <FileDetails
-        handleFormdetail={(value) => {
-          handleFormdetail(value)
-        }}
-      />
-      <FileList formvalues={formvalue} /> */}
     </Container>
   )
 }
 
 export default Contribute
+
+const Container = styled.div`
+  @media ${device.min.md} {
+    margin-left: ${({ theme }) => theme.asideWidthLeft};
+  }
+`

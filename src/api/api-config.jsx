@@ -5,9 +5,6 @@ import { camelizeKeys, snakeizeKeys } from 'helpers/transformKeys'
 
 export const APIInstance = axios.create({
   baseURL: 'http://localhost:8000/api',
-  headers: {
-    'content-type': 'application/json',
-  },
   timeout: 30000,
   xsrfCookieName: 'csrftoken',
   xsrfHeaderName: 'X-CSRFToken',
@@ -34,9 +31,14 @@ APIInstance.interceptors.response.use(
     return response.data
   },
   (error) => {
-    if (error.response.status === 401) {
-      toastError('Please login again')
+    try {
+      if (error.response.status === 401) {
+        toastError('Please login again')
+      }
+    } catch (e) {
+      toastError('Server is offline')
     }
+
     return Promise.reject(error.message)
   }
 )
@@ -57,6 +59,13 @@ export const API = {
     update: async ({ payload }) =>
       APIInstance.put('/accounts/profile', payload),
     delete: async () => APIInstance.delete('/accounts/profile'),
+    resources: {
+      list: async () => APIInstance.get('/accounts/profile/resources'),
+    },
+    reviews: {
+      list: async () => APIInstance.get('/accounts/profile/reviews'),
+    },
+    feed: async () => APIInstance.get('/accounts/profile/feed'),
   },
 
   // * Courses endpoints
@@ -83,13 +92,8 @@ export const API = {
         onUploadProgress,
       }),
     read: async ({ id }) => APIInstance.get(`/resources/${id}`),
-    update: async ({ id, payload, onUploadProgress }) =>
-      APIInstance.put(`/resources/${id}`, payload, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        onUploadProgress,
-      }),
+    update: async ({ id, payload }) =>
+      APIInstance.patch(`/resources/${id}`, payload),
     delete: async ({ id }) => APIInstance.delete(`/resources/${id}`),
 
     request: {

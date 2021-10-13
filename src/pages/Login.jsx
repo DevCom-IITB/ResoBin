@@ -1,11 +1,11 @@
 import { Button } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
-import { Redirect, useLocation } from 'react-router-dom'
+import { Redirect, useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { LoginURL, SSO } from 'api'
+import { getLoginURL, SSO } from 'api'
 import { LoaderAnimation } from 'components/shared'
 import { toastError } from 'components/toast'
 import { CSRFToken } from 'helpers'
@@ -14,35 +14,50 @@ import { fontSize } from 'styles/responsive'
 
 const Login = () => {
   const location = useLocation()
+  const history = useHistory()
   const dispatch = useDispatch()
+
+  const qs = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  )
+  const redirect = qs.get('redirect') ?? '/'
+  const error = qs.get('error')
+  const code = qs.get('code')
+
+  useEffect(() => {
+    if (error) {
+      toastError(`Error: ${error}`)
+      qs.delete('error')
+
+      history.push({
+        pathname: location.pathname,
+        search: `?${qs.toString()}`,
+      })
+    }
+  }, [error, history, location.pathname, qs])
+
   const { isAuthenticated, loading } = useSelector((state) => state.auth)
-  const [redirect, setRedirect] = useState(null)
 
   useEffect(() => {
     if (isAuthenticated === null) dispatch(getAuthStatusAction())
-    if (isAuthenticated) setRedirect('/')
+  }, [dispatch, isAuthenticated])
 
-    const queryString = new URLSearchParams(location.search)
-
-    const error = queryString.get('error')
-    if (error) {
-      toastError(`Error: ${error}`)
-      setRedirect('/login')
-    }
-
-    const code = queryString.get('code')
+  useEffect(() => {
     if (code) {
-      const params = { code, redir: SSO.REDIRECT_URI }
+      const params = {
+        code,
+        redir: `${SSO.BASE_REDIRECT_URI}?redirect=${redirect}`,
+      }
       dispatch(loginAction({ params }))
-      setRedirect('/login')
     }
-  }, [dispatch, location, isAuthenticated])
-
-  if (redirect) return <Redirect to={redirect} />
+  }, [dispatch, code, redirect])
 
   const redirectLogin = () => {
-    window.location.href = LoginURL
+    window.location.href = getLoginURL(redirect)
   }
+
+  if (isAuthenticated) return <Redirect to={redirect} />
 
   return (
     <>

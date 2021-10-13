@@ -1,65 +1,115 @@
-import { Download, PencilAlt } from '@styled-icons/heroicons-outline'
+import {
+  Download,
+  InformationCircle,
+  PencilAlt,
+} from '@styled-icons/heroicons-outline'
 import { rgba } from 'polished'
+import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Redirect } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { ButtonIcon, UserAvatar } from 'components/shared'
+import { API } from 'api'
+import placeholderImg from 'assets/images/ResourcePlaceholder.jpg'
+import { ButtonIcon } from 'components/shared'
 import { selectUserProfile } from 'store/userSlice'
 import { limitLines } from 'styles/mixins'
 
-const CourseResourceItem = ({ content }) => {
-  const { id } = useSelector(selectUserProfile)
-  const isOwner = id === content.userProfile.id
+import CourseResourceItemEditModal from './CourseResourceItemEditModal'
 
-  const placeholderImg =
-    'https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg'
+const CourseResourceItem = ({ content: initialContent }) => {
+  const { id } = useSelector(selectUserProfile)
+  const isOwner = id === initialContent.userProfile.id
+
+  const [editModalVisible, setEditModalVisible] = useState(false)
+  const [content, setContent] = useState(initialContent)
 
   const handleDownload = () => {
     window.location.href = content.file
   }
 
-  const handleEdit = () => {
-    return <Redirect to={`/contribute#${content.id}`} />
+  const handleEdit = async (payload) => {
+    try {
+      await API.resources.update({ id: content.id, payload })
+      setContent({ ...content, ...payload })
+      setEditModalVisible(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleInfo = () => {
+    console.log('info')
   }
 
   return (
-    <GridItem>
-      <img src={content.image || placeholderImg} alt={content.title} />
+    <>
+      <GridItem>
+        <img src={content.image || placeholderImg} alt={content.title} />
 
-      <ItemInfo>
-        <Row>
-          <UserAvatar size="1.5rem" src={content.userProfile.profilePicture} />
-          <UserName>{content.userProfile.name}</UserName>
-        </Row>
+        <ItemInfo>
+          <ResourceTitle>{content.title}</ResourceTitle>
+          <ResourceDescription>{content.description}</ResourceDescription>
 
-        <ResourceTitle>{content.title}</ResourceTitle>
-        <ResourceDescription>{content.description}</ResourceDescription>
-
-        <Row>
-          <ButtonIcon
-            color="white"
-            size="large"
-            icon={<Download size="28" />}
-            onClick={handleDownload}
-            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-          />
-          {isOwner && (
+          <Row>
             <ButtonIcon
               color="white"
-              size="large"
-              icon={<PencilAlt size="26" />}
-              onClick={handleEdit}
+              size="default"
+              icon={<Download size="20" />}
+              onClick={handleDownload}
               hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
             />
-          )}
-        </Row>
-      </ItemInfo>
-    </GridItem>
+
+            {isOwner && (
+              <ButtonIcon
+                color="white"
+                size="default"
+                icon={<PencilAlt size="20" />}
+                onClick={() => setEditModalVisible(true)}
+                hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+              />
+            )}
+
+            <ButtonIcon
+              color="white"
+              size="default"
+              icon={<InformationCircle size="20" />}
+              onClick={handleInfo}
+              hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+            />
+          </Row>
+        </ItemInfo>
+      </GridItem>
+
+      <CourseResourceItemEditModal
+        visible={editModalVisible}
+        onEdit={handleEdit}
+        onCancel={() => setEditModalVisible(false)}
+        initialValues={content}
+      />
+    </>
+  )
+}
+
+export const CourseResourceGrid = ({ items }) => {
+  return (
+    <Grid>
+      {items.map((content) => (
+        <CourseResourceItem key={content.id} content={content} />
+      ))}
+    </Grid>
   )
 }
 
 export default CourseResourceItem
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  grid-auto-rows: 12rem;
+  grid-auto-flow: row dense;
+  grid-gap: 1rem;
+  padding: 0 0.25rem;
+`
 
 const GridItem = styled.figure`
   position: relative;
@@ -72,27 +122,6 @@ const GridItem = styled.figure`
   border-radius: 0.5rem;
   color: ${({ theme }) => theme.textColor};
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-
-  > img {
-    min-width: 100%;
-    min-height: 100%;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    opacity: 0.1;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-    transition: opacity 0.3s ease-in-out;
-  }
-
-  &:hover {
-    &::after {
-      opacity: 0;
-    }
-  }
 `
 
 const Row = styled.div`
@@ -102,19 +131,16 @@ const Row = styled.div`
   gap: 0.5rem;
 `
 
-const UserName = styled.h5`
+const ResourceTitle = styled.h5`
   ${limitLines({ count: 2, height: '1.75rem' })}
-  color: ${({ theme }) => theme.textColor};
-`
 
-const ResourceTitle = styled.h3`
-  ${limitLines({ count: 2, height: '1.75rem' })}
-  color: ${({ theme }) => theme.textColor};
   margin-bottom: 0.5rem;
+  color: ${({ theme }) => theme.textColor};
 `
 
 const ResourceDescription = styled.p`
   ${limitLines({ count: 2, height: '1.75rem' })}
+
   margin-bottom: 0;
 `
 

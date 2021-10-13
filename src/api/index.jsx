@@ -1,2 +1,2 @@
 export { APIInstance, API } from './api-config'
-export { SSO, LoginURL } from './SSO'
+export { SSO, getLoginURL } from './SSO'

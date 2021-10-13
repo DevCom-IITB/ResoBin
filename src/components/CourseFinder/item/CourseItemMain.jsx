@@ -69,7 +69,7 @@ const CourseItemMain = ({ courseData }) => {
             popover={favourite}
             popoverTitle="Remove from favorites?"
             icon={
-              favourite ? <Bookmark size="30" /> : <BookmarkOutline size="30" />
+              favourite ? <Bookmark size="25" /> : <BookmarkOutline size="25" />
             }
             color="white"
             loading={loading}

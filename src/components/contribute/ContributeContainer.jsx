@@ -1,43 +1,57 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { Button } from 'antd'
 import { nanoid } from 'nanoid'
 import { useCallback, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router'
 import styled from 'styled-components/macro'
 import { Plus } from 'styled-icons/heroicons-outline'
 
 import { API } from 'api'
-import { PageHeading, PageTitle } from 'components/shared'
+import { CourseResourceGrid } from 'components/CourseResource'
+import { Aside, ButtonSquare, PageHeading, PageTitle } from 'components/shared'
+import { toastError } from 'components/toast'
+import { useViewportContext } from 'context/ViewportContext'
 import { defaultFile, fileTypes } from 'data/CourseResources'
-import { selectUserProfile } from 'store/userSlice'
-import { device } from 'styles/responsive'
+import { breakpoints, device } from 'styles/responsive'
 
 import ContributeItem from './ContributeItem'
 
-const defaultFileItem = () => ({
+const defaultFileItem = (details) => ({
   id: nanoid(),
   status: null,
   progress: 0,
   file: null,
-  details: defaultFile,
+  details: { ...defaultFile, ...details },
 })
 
 const ContributeContainer = ({ visible, setVisible }) => {
-  const [fileList, setFileList] = useState([defaultFileItem()])
-  const { resourcesPosted } = useSelector(selectUserProfile)
-  const [myResources, setMyResources] = useState([])
+  const location = useLocation()
+  const queryString = new URLSearchParams(location.search)
+  const course = queryString.get('course')
+  const { width } = useViewportContext()
 
-  useEffect(() => {
-    resourcesPosted.forEach(async (id) => {
-      const response = await API.resources.read({ id })
-      setMyResources((prev) => [...prev, response])
-    })
-  }, [])
+  const [fileList, setFileList] = useState([defaultFileItem({ course })])
+  const [myResources, setMyResources] = useState([])
+  const [APILoading, setAPILoading] = useState(false)
   // const [uploading, setUploading] = useState(false)
 
-  const createFileItem = useCallback(() => {
-    setFileList((prevItems) => [...prevItems, defaultFileItem()])
+  useEffect(() => {
+    const fetchUserResources = async () => {
+      try {
+        setAPILoading(true)
+        const response = await API.profile.resources.list()
+        setMyResources(response)
+      } catch (error) {
+        toastError(error)
+      } finally {
+        setAPILoading(false)
+      }
+    }
+
+    fetchUserResources()
   }, [])
+
+  const createFileItem = useCallback(() => {
+    setFileList((prevItems) => [...prevItems, defaultFileItem({ course })])
+  }, [course])
 
   const updateFileItem = (id) => (fileItem) => {
     setFileList((prevItems) =>
@@ -57,6 +71,7 @@ const ContributeContainer = ({ visible, setVisible }) => {
       <PageHeading>
         <PageTitle>Contribute</PageTitle>
       </PageHeading>
+
       <PageTitle style={{ padding: '1.5rem', fontSize: '1rem' }}>
         Please upload documents only in the following formats:
         {fileTypes.map(({ extention }) => (
@@ -76,22 +91,21 @@ const ContributeContainer = ({ visible, setVisible }) => {
         ))}
       </FileList>
 
-      <Button
-        style={{ marginTop: '0.5rem' }}
-        icon={<Plus size="18" />}
+      <ButtonSquare
+        icon={<Plus size="18" style={{ marginRight: '0.25rem' }} />}
         onClick={createFileItem}
+        style={{ marginLeft: '1rem' }}
       >
         Add new
-      </Button>
+      </ButtonSquare>
 
-      {myResources.map((resource) => (
-        <div key={resource.id} style={{ color: 'white', padding: '1rem' }}>
-          <h3>
-            <a href={resource.file}>{resource.title}</a>
-          </h3>
-          <p>{resource.description}</p>
-        </div>
-      ))}
+      <Aside
+        title="My uploads"
+        loading={APILoading}
+        visible={width >= breakpoints.lg}
+      >
+        <CourseResourceGrid items={myResources} />
+      </Aside>
     </Container>
   )
 }
@@ -112,6 +126,6 @@ const FileList = styled.div`
   overflow-y: auto;
   flex-direction: column;
   height: calc(100% - 20rem);
-  padding: 1rem 0;
+  padding: 1rem 0.75rem 1rem 0;
   gap: 1rem;
 `

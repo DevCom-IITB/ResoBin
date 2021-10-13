@@ -2,14 +2,18 @@ import { Button, Input, Progress, Select, Tooltip } from 'antd'
 import { rgba } from 'polished'
 import { useDropzone } from 'react-dropzone'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router'
 import styled from 'styled-components/macro'
 import { X, ExclamationCircle, Upload } from 'styled-icons/heroicons-outline'
 
 import { API } from 'api'
+import { LoaderAnimation } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
 import { defaultFile, fileTypes, getFileDetails } from 'data/CourseResources'
-import { selectResourceTags, selectCourseListMinified } from 'store/courseSlice'
+import {
+  selectResourceTags,
+  selectCourseListMinified,
+  selectCourseAPILoading,
+} from 'store/courseSlice'
 
 const ToolTipTitle = () => (
   <TooltipContainer>
@@ -18,15 +22,7 @@ const ToolTipTitle = () => (
   </TooltipContainer>
 )
 
-const CourseResourceUploadItem = ({
-  fileItem,
-  updateFileItem,
-  deleteFileItem,
-}) => {
-  const location = useLocation()
-  const queryString = new URLSearchParams(location.search)
-  const course = queryString.get('course')
-
+const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
   // ? If no file is valid, reset the file list item
   const onDrop = (acceptedFiles) => {
     if (acceptedFiles.length === 0) {
@@ -39,7 +35,7 @@ const CourseResourceUploadItem = ({
       updateFileItem({
         file: acceptedFiles[0],
         status: 'success',
-        details: getFileDetails(acceptedFiles[0]),
+        details: getFileDetails(acceptedFiles[0], fileItem.details),
       })
     }
   }
@@ -62,16 +58,16 @@ const CourseResourceUploadItem = ({
       return
     }
 
-    const formData = new FormData()
-    formData.append('file', fileItem.file, fileItem.file.name)
-    formData.append('title', fileItem.details.title)
-    formData.append('course', fileItem.details.course)
-    formData.append('description', fileItem.details.description)
-    formData.append('tag', fileItem.details.tags)
+    const fd = new FormData()
+    fd.append('file', fileItem.file, fileItem.file.name)
+    fd.append('title', fileItem.details.title)
+    fd.append('course', fileItem.details.course)
+    fd.append('description', fileItem.details.description)
+    fd.append('tags', JSON.stringify(fileItem.details.tags))
 
     try {
       const response = await API.resources.create({
-        payload: formData,
+        payload: fd,
         onUploadProgress,
       })
       const { id, timestamp, url } = response
@@ -121,7 +117,11 @@ const CourseResourceUploadItem = ({
     })
   )
 
-  return (
+  const APILoading = useSelector(selectCourseAPILoading)
+
+  return APILoading ? (
+    <LoaderAnimation />
+  ) : (
     <ItemContainer>
       <StyledTooltip
         color="white"
@@ -168,6 +168,7 @@ const CourseResourceUploadItem = ({
           autoSize={{ minRows: 1, maxRows: 10 }}
           placeholder="Description"
           value={fileItem.details.description}
+          defaultValue="Not available"
           onChange={(e) =>
             updateFileItem({
               details: {
@@ -183,7 +184,6 @@ const CourseResourceUploadItem = ({
           placeholder="Course"
           options={courseOptions}
           value={fileItem.details.course}
-          defaultValue={course}
           onChange={(value) =>
             updateFileItem({
               details: {
@@ -232,7 +232,7 @@ const CourseResourceUploadItem = ({
   )
 }
 
-export default CourseResourceUploadItem
+export default ContributeItem
 
 const StyledTooltip = styled(Tooltip)`
   cursor: pointer;

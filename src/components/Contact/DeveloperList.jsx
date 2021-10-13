@@ -1,8 +1,15 @@
 import { Avatar, Card, Skeleton } from 'antd'
 import { rgba } from 'polished'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
-export const ContributorItem = ({ name, avatar, url, contributions }) => {
+import { API } from 'api'
+import { Aside } from 'components/shared'
+import { toastError } from 'components/toast'
+import { useViewportContext } from 'context/ViewportContext'
+import { breakpoints } from 'styles/responsive'
+
+const DeveloperItem = ({ name, avatar, url, contributions }) => {
   return (
     <a key={name} href={url} target="_blank" rel="noreferrer">
       <StyledCard hoverable>
@@ -21,9 +28,52 @@ export const ContributorItem = ({ name, avatar, url, contributions }) => {
   )
 }
 
-export const ContributorSkeleton = () => (
+const DeveloperSkeleton = () => (
   <StyledSkeleton avatar active paragraph={{ rows: 1 }} />
 )
+
+const ContributorList = () => {
+  const [contributors, setContributors] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const getContributorsData = async () =>
+      API.GitHub.getContributors()
+        .then((data) =>
+          data.map((item) => ({
+            name: item.login,
+            avatar: item.avatar_url,
+            url: item.html_url,
+            contributions: item.contributions,
+          }))
+        )
+        .then((data) => setContributors(data))
+        .then(() => setLoading(false))
+        .catch((err) => {
+          toastError(err.message)
+          setLoading(false)
+        })
+
+    setLoading(true)
+    getContributorsData()
+  }, [])
+  const { width } = useViewportContext()
+
+  return (
+    <Aside
+      title="Made with ❤️ by"
+      visible={width >= breakpoints.lg}
+      loading={loading}
+      loadingComponent={<DeveloperSkeleton />}
+    >
+      {contributors.map((item) => (
+        <DeveloperItem key={item.name} {...item} />
+      ))}
+    </Aside>
+  )
+}
+
+export default ContributorList
 
 const StyledCard = styled(Card)`
   .ant-card-body {

@@ -27,4 +27,33 @@ export const colorPicker = (id) => {
   }
 }
 
+export const antdColorPicker = (id) => {
+  switch (id % 11) {
+    case 0:
+      return 'magenta'
+    case 1:
+      return 'red'
+    case 2:
+      return 'volcano'
+    case 3:
+      return 'orange'
+    case 4:
+      return 'gold'
+    case 5:
+      return 'lime'
+    case 6:
+      return 'green'
+    case 7:
+      return 'cyan'
+    case 8:
+      return 'blue'
+    case 9:
+      return 'geekblue'
+    case 10:
+      return 'purple'
+    default:
+      return 'default'
+  }
+}
+
 export default colorPicker
