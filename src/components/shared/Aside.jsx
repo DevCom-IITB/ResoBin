@@ -2,7 +2,14 @@ import styled from 'styled-components/macro'
 
 import { Divider, LoaderAnimation } from 'components/shared'
 
-const Aside = ({ title, subtitle, loading, visible, children }) => {
+const Aside = ({
+  title,
+  subtitle,
+  loading,
+  loadingComponent,
+  visible,
+  children,
+}) => {
   return (
     <Container visible={visible}>
       {title && (
@@ -15,7 +22,13 @@ const Aside = ({ title, subtitle, loading, visible, children }) => {
           <Divider />
         </>
       )}
-      {loading && <LoaderAnimation />}
+
+      {loading && (
+        <>
+          <LoaderAnimation />
+          {loadingComponent}
+        </>
+      )}
 
       <Children>{children}</Children>
     </Container>
@@ -26,11 +39,11 @@ export default Aside
 
 const Container = styled.div`
   position: fixed;
-  top: 3rem;
+  top: ${({ theme }) => theme.headerHeight};
   right: ${({ visible }) => (visible ? '0' : '-100%')};
   z-index: 5;
   width: ${({ theme }) => theme.asideWidthRight};
-  height: calc(100% - 3rem);
+  height: calc(100vh - 3rem);
   padding: 1rem;
   background: ${({ theme }) => theme.secondary};
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
@@ -47,8 +60,7 @@ const Header = styled.div`
 
 const Title = styled.h4`
   font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-weight: 500;
   color: ${({ theme }) => theme.textColor};
 `
 
