@@ -13,7 +13,7 @@ const sharedStyles = css`
   outline: 0;
   font-size: 1rem;
   color: ${({ theme }) => theme.activeMenu};
-  background-color: ${({ theme }) => rgba(theme.textColor, 0.2)};
+  background-color: ${({ theme }) => rgba(theme.darksecondary, 0.7)};
   transition-duration: 100ms;
 
   &:hover {

@@ -2,7 +2,7 @@ import styled from 'styled-components/macro'
 
 import { PageHeading, PageTitle } from 'components/shared'
 
-import ContactFormBody from './ContactFormBody'
+import ContactFormContainer from './ContactFormContainer'
 
 const ContactContainer = () => {
   return (
@@ -10,7 +10,7 @@ const ContactContainer = () => {
       <PageHeading>
         <PageTitle>Contact us</PageTitle>
       </PageHeading>
-      <ContactFormBody />
+      <ContactFormContainer />
     </Container>
   )
 }
