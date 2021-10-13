@@ -1,2 +1,2 @@
-export { default as ContributorList } from './ContributorList'
-export { default as ContactForm } from './ContactForm'
+export { default as DeveloperList } from './DeveloperList'
+export { default as ContactContainer } from './ContactContainer'
