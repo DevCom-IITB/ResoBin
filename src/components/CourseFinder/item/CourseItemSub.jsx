@@ -1,23 +1,12 @@
 import {
   ChatAlt,
   Calendar,
-  ChevronDown,
   DocumentText,
-  Flag,
-  Plus,
 } from '@styled-icons/heroicons-outline'
-import { Menu } from 'antd'
-import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import {
-  Tabs,
-  ButtonDropdown,
-  ButtonSwitch,
-  ButtonSquare,
-} from 'components/shared'
+import { Tabs, ButtonSwitch } from 'components/shared'
 import { ButtonSquareLink } from 'components/shared/Buttons/ButtonSquare'
 import { coursePageUrl } from 'paths'
 import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
@@ -50,33 +39,6 @@ const CourseItemSub = ({ courseData }) => {
   const resourceCount = courseData?.resources?.length
 
   const semTabInitialValue = isRunning ? 'autumn' : null
-
-  const [requestReviewCount, setRequestReviewCount] = useState(0)
-
-  const handleMenuClick = ({ key }) => {
-    switch (key) {
-      case 'request':
-        if (requestReviewCount === 0) setRequestReviewCount((v) => v + 1)
-        break
-
-      case 'create':
-        break
-
-      default:
-        break
-    }
-  }
-
-  const menu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="request" icon={<Flag size="16" />}>
-        Request
-      </Menu.Item>
-      <Menu.Item key="create" icon={<Plus size="16" />}>
-        Create
-      </Menu.Item>
-    </Menu>
-  )
 
   return (
     <>

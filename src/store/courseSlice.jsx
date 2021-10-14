@@ -109,30 +109,34 @@ const courseSlice = createSlice({
 export const { updateChecksum } = courseSlice.actions
 
 // ? selectors
-export const selectCourseList = (state) => state.course.list
 export const selectCourseAPILoading = (state) => state.course.loading
 export const selectCourseSlots = (state) => state.course.slots
 export const selectResourceTags = (state) => state.course.resources.tags
 export const selectDepartments = (state) => state.course.departments
 export const selectCourseListMinified = (state) => state.course.listMinified
 
+// ! Remove in the future
 // https://stackoverflow.com/questions/62545632/how-to-pass-an-additional-argument-to-useselector
 export const selectCourseListByCourseCode = (courseCode) =>
-  createSelector(selectCourseList, (courseList) => {
-    const matches = courseList.filter((course) => course.Code === courseCode)
+  createSelector(
+    (state) => state.course.list,
+    (courseList) => {
+      const matches = courseList.filter((course) => course.Code === courseCode)
 
-    switch (matches.length) {
-      case 0:
-        toastError(`Course: ${courseCode} does not exist`)
-        return null
-      case 1:
-        return matches[0]
-      default:
-        toastError(`Multiple matches found for course code: ${courseCode}`)
-        return matches[0]
+      switch (matches.length) {
+        case 0:
+          toastError(`Course: ${courseCode} does not exist`)
+          return null
+        case 1:
+          return matches[0]
+        default:
+          toastError(`Multiple matches found for course code: ${courseCode}`)
+          return matches[0]
+      }
     }
-  })
+  )
 
+// ! Remove in the future
 // code: 'CL 152'  ->  slots: ['1A', '1B', '1C']
 export const selectCourseSlotsByCourseCode = (courseCode) =>
   createSelector(selectCourseSlots, (courseSlotList) => {
