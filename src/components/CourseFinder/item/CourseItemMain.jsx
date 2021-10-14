@@ -16,13 +16,7 @@ import ParseDescription from '../ParseDescription'
 
 const CourseItemMain = ({ courseData }) => {
   const dispatch = useDispatch()
-  const {
-    Code: code,
-    TotalCredits: totalCredits,
-    Department: department,
-    Title: title,
-    Description: description,
-  } = courseData
+  const { code, credit, department, title, description } = courseData
 
   const [loading, setLoading] = useState(false)
 
@@ -51,17 +45,15 @@ const CourseItemMain = ({ courseData }) => {
         <DepartmentContainer
           style={{
             color: colorPicker(
-              departmentList.findIndex(({ name }) => name === department)
+              departmentList.findIndex(({ name }) => name === department.name)
             ),
           }}
         >
-          {department}
+          {department.name}
         </DepartmentContainer>
 
         <RightIcons>
-          <CreditContainer small={totalCredits > 9}>
-            {totalCredits}
-          </CreditContainer>
+          <CreditContainer small={credit > 9}>{credit}</CreditContainer>
 
           <ButtonIcon
             tooltip="Add to favorites"

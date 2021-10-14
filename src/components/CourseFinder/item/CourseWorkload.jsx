@@ -17,10 +17,10 @@ const CourseWorkloadItem = ({ value, color, title }) =>
 
 const CourseWorkload = ({ workload }) => {
   const workloadItems = [
-    { title: 'Lecture', value: workload.Lecture },
-    { title: 'Tutorial', value: workload.Tutorial },
-    { title: 'Lab', value: workload.Lab },
-    { title: 'Practical', value: workload.Practical },
+    { title: 'Lecture', value: workload.lecture },
+    { title: 'Tutorial', value: workload.tutorial },
+    { title: 'Lab', value: workload.selfstudy },
+    { title: 'Practical', value: workload.practical },
   ].map((item) => {
     const num = parseInt(item.value, 10)
     return { ...item, value: Number.isNaN(num) ? 0 : num }

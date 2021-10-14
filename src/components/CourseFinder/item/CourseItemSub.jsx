@@ -12,7 +12,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { Tabs, ButtonDropdown, ButtonSwitch } from 'components/shared'
+import {
+  Tabs,
+  ButtonDropdown,
+  ButtonSwitch,
+  ButtonSquare,
+} from 'components/shared'
+import { ButtonSquareLink } from 'components/shared/Buttons/ButtonSquare'
 import { coursePageUrl } from 'paths'
 import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
 import { selectTimetableStatus, updateTimetable } from 'store/userSlice'
@@ -38,10 +44,10 @@ const SemesterItem = ({ courseCode, semester }) => {
 
 // ? semester = ['autumn', 'spring']
 const CourseItemSub = ({ courseData }) => {
-  const { Code: code, Structure: structure, Title: title } = courseData
+  const { code, workload, title } = courseData
   const isRunning = useSelector(selectCourseSlotsByCourseCode(code))
-  const reviewCount = 2
-  const resourceCount = 2
+  const reviewCount = courseData?.reviews?.length
+  const resourceCount = courseData?.resources?.length
 
   const semTabInitialValue = isRunning ? 'autumn' : null
 
@@ -94,21 +100,20 @@ const CourseItemSub = ({ courseData }) => {
         </Title>
       )}
 
-      <CourseWorkload workload={structure} />
+      <CourseWorkload workload={workload} />
 
-      <ButtonDropdown icon={<ChevronDown size="18" />} overlay={menu}>
-        <Link to={`${coursePageUrl(code, title)}#reviews`}>
-          <ChatAlt size="18" style={{ marginRight: '0.5rem' }} />
-          Reviews ({reviewCount})
-        </Link>
-      </ButtonDropdown>
+      <ButtonSquareLink
+        to={`${coursePageUrl(code, title)}#reviews`}
+        style={{ marginBottom: '0.75rem' }}
+      >
+        <ChatAlt size="18" style={{ marginRight: '0.5rem' }} />
+        Reviews ({reviewCount})
+      </ButtonSquareLink>
 
-      <ButtonDropdown icon={<ChevronDown size="18" />} overlay={menu}>
-        <Link to={`${coursePageUrl(code, title)}#resources`}>
-          <DocumentText size="18" style={{ marginRight: '0.5rem' }} />
-          Resources ({resourceCount})
-        </Link>
-      </ButtonDropdown>
+      <ButtonSquareLink to={`${coursePageUrl(code, title)}#resources`}>
+        <DocumentText size="18" style={{ marginRight: '0.5rem' }} />
+        Resources ({resourceCount})
+      </ButtonSquareLink>
     </>
   )
 }

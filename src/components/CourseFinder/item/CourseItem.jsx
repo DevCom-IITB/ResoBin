@@ -1,9 +1,5 @@
 import { Skeleton } from 'antd'
-import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
-
-import { selectCourseListByCourseCode } from 'store/courseSlice'
-import { device } from 'styles/responsive'
 
 import CourseItemMain from './CourseItemMain'
 import CourseItemSub from './CourseItemSub'
@@ -23,22 +19,16 @@ const StyledSkeleton = styled(Skeleton)`
   }
 `
 
-export const CourseItem = ({ courseCode }) => {
-  const courseData = useSelector(selectCourseListByCourseCode(courseCode))
-
-  return (
-    courseData && (
-      <Container>
-        <Main>
-          <CourseItemMain courseData={courseData} />
-        </Main>
-        <Sub>
-          <CourseItemSub courseData={courseData} />
-        </Sub>
-      </Container>
-    )
-  )
-}
+export const CourseItem = ({ courseData }) => (
+  <Container>
+    <Main>
+      <CourseItemMain courseData={courseData} />
+    </Main>
+    <Sub>
+      <CourseItemSub courseData={courseData} />
+    </Sub>
+  </Container>
+)
 
 const Container = styled.li`
   display: grid;
@@ -75,8 +65,6 @@ const Container = styled.li`
     transform: scale(0.9);
     transition: opacity 100ms, transform 100ms;
   }
-
-  /* @media ${device.min.sm} and ${device.max.md}, ${device.min.xl} {} */
 `
 
 const Main = styled.div`
