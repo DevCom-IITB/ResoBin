@@ -2,18 +2,13 @@ import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import { API } from 'api'
-import { courseListAPI, courseSlotListAPI } from 'api/courses'
 import { toastError } from 'components/toast'
 
 // ? async actions
-export const getCourseList = createAsyncThunk(
-  'course/getCourseList',
-  async () => axios.get(courseListAPI)
-)
-
 export const getCourseSlots = createAsyncThunk(
   'courses/getCourseSlots',
-  async () => axios.get(courseSlotListAPI)
+  async () =>
+    axios.get('https://run.mocky.io/v3/108c5a12-32e4-424a-bbc3-98f7ecd983d8')
 )
 
 export const getDepartmentList = createAsyncThunk(
@@ -59,21 +54,6 @@ const courseSlice = createSlice({
   },
 
   extraReducers: {
-    [getCourseList.fulfilled]: (state, { payload }) => {
-      state.list = payload.data.map((course) => ({
-        ...course,
-        Code: course.Code.replaceAll(' ', ''),
-      }))
-
-      state.loading = false
-    },
-    [getCourseList.pending]: (state) => {
-      state.loading = true
-    },
-    [getCourseList.rejected]: (state) => {
-      state.loading = false
-    },
-
     [getCourseSlots.fulfilled]: (state, { payload }) => {
       state.slots = payload.data.map((course) => ({
         ...course,
@@ -131,7 +111,6 @@ export const { updateChecksum } = courseSlice.actions
 // ? selectors
 export const selectCourseList = (state) => state.course.list
 export const selectCourseAPILoading = (state) => state.course.loading
-export const selectChecksum = (state) => state.course.checksum
 export const selectCourseSlots = (state) => state.course.slots
 export const selectResourceTags = (state) => state.course.resources.tags
 export const selectDepartments = (state) => state.course.departments

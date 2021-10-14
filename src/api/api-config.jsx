@@ -59,12 +59,15 @@ export const API = {
     update: async ({ payload }) =>
       APIInstance.put('/accounts/profile', payload),
     delete: async () => APIInstance.delete('/accounts/profile'),
+
     resources: {
       list: async () => APIInstance.get('/accounts/profile/resources'),
     },
+
     reviews: {
       list: async () => APIInstance.get('/accounts/profile/reviews'),
     },
+
     feed: async () => APIInstance.get('/accounts/profile/feed'),
   },
 
@@ -76,6 +79,7 @@ export const API = {
       APIInstance.get(`/courses/${code}/resources`),
     listReviews: async ({ code }) =>
       APIInstance.get(`/courses/${code}/reviews`),
+
     favorite: {
       add: async ({ code }) =>
         APIInstance.put(`/accounts/profile/course/${code}/favorite`),
