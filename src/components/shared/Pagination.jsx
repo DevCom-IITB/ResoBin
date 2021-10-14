@@ -2,7 +2,7 @@ import { Pagination } from 'antd'
 import { rgba } from 'polished'
 import styled, { css } from 'styled-components/macro'
 
-const baseShape = css`
+const baseStyles = css`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,7 +31,7 @@ const StyledPagination = styled(Pagination)`
   .ant-pagination-prev,
   .ant-pagination-next {
     .ant-pagination-item-link {
-      ${baseShape}
+      ${baseStyles}
 
       color: ${({ theme }) => theme.primary};
       background-color: transparent;
@@ -39,7 +39,7 @@ const StyledPagination = styled(Pagination)`
   }
 
   .ant-pagination-item {
-    ${baseShape}
+    ${baseStyles}
 
     font-weight: 600;
 
@@ -56,7 +56,7 @@ const StyledPagination = styled(Pagination)`
 
   .ant-pagination-jump-next,
   .ant-pagination-jump-prev {
-    ${baseShape}
+    ${baseStyles}
 
     .ant-pagination-item-link-icon {
       font-size: 0.75rem;
