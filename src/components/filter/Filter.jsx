@@ -1,9 +1,12 @@
+import { Form, Select } from 'antd'
 import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { FilterItem } from 'components/filter'
-import MultiSelect from 'components/filter/filterData'
+// import MultiSelect from 'components/filter/filterData'
 import { Aside, Divider } from 'components/shared'
+import { selectDepartments } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
 import filterData from './__mock__/filterData.json'
@@ -37,7 +40,6 @@ export const FilterDropdown = ({ showFilter }) => {
         {filterData.map((data) => (
           <FilterItem key={data.id} data={data} />
         ))}
-        <MultiSelect />
       </ListDropdown>
     </ContainerDropdown>
   )
@@ -49,6 +51,13 @@ export const FilterAside = ({ showFilter }) => {
     // setFilters(initialState)
   }
 
+  const departmentOptions = useSelector(selectDepartments)?.map(
+    (department) => ({
+      label: department.name,
+      value: department.id,
+    })
+  )
+
   return (
     <Aside
       title="Filter"
@@ -59,7 +68,25 @@ export const FilterAside = ({ showFilter }) => {
         <FilterItem key={data.id} data={data} />
       ))}
 
-      <MultiSelect />
+      <Form.Item
+        name="select-multiple"
+        label="Select[multiple]"
+        rules={[
+          {
+            required: true,
+            message: 'Please select your favourite colors!',
+            type: 'array',
+          },
+        ]}
+      >
+        <Select
+          options={departmentOptions}
+          mode="multiple"
+          placeholder="Please select favourite colors"
+        />
+      </Form.Item>
+
+      {/* <MultiSelect /> */}
     </Aside>
   )
 }

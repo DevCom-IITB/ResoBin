@@ -12,33 +12,92 @@ import {
 } from 'components/shared'
 import { device } from 'styles/responsive'
 
-const CourseList = ({ title, courseCodes, loading = false }) => {
+// const CourseList = ({ title, courseCodes, loading = false }) => {
+//   const location = useLocation()
+//   const history = useHistory()
+
+//   // pagination
+//   const count = courseCodes ? courseCodes.length : 0
+//   const perPage = 10
+
+//   const searchParams = new URLSearchParams(location.search)
+//   const pageNo = searchParams.get('p') || 1
+
+//   const handlePageChange = (page) => {
+//     searchParams.set('p', page)
+//     history.push({
+//       pathname: location.pathname,
+//       search: `?${searchParams.toString()}`,
+//     })
+//   }
+
+//   const paginate = (data) =>
+//     data.slice((pageNo - 1) * perPage, pageNo * perPage)
+
+//   return (
+//     <Container>
+//       <PageHeading>
+//         <PageTitle>{title}</PageTitle>
+//         <PageSubtitle>{count}&nbsp;results found</PageSubtitle>
+//       </PageHeading>
+
+//       <List>
+//         <CourseItemLoading active={loading} />
+//         <NotFoundSearch active={!loading && !count} />
+
+//         <TransitionGroup>
+//           {!loading &&
+//             paginate(courseCodes).map((Code) => (
+//               <CSSTransition
+//                 key={Code}
+//                 timeout={200}
+//                 unmountOnExit
+//                 classNames="course_item"
+//               >
+//                 <CourseItem courseCode={Code} />
+//               </CSSTransition>
+//             ))}
+//         </TransitionGroup>
+//       </List>
+
+//       {!loading && (
+//         <Pagination
+//           defaultPageSize={perPage}
+//           defaultCurrent={pageNo}
+//           responsive
+//           showSizeChanger={false}
+//           hideOnSinglePage
+//           onChange={handlePageChange}
+//           total={count}
+//         />
+//       )}
+//     </Container>
+//   )
+// }
+
+const CourseFinderList = ({ title, count, courseList, loading = false }) => {
   const location = useLocation()
   const history = useHistory()
-
-  // pagination
-  const count = courseCodes ? courseCodes.length : 0
-  const perPage = 10
 
   const searchParams = new URLSearchParams(location.search)
   const pageNo = searchParams.get('p') || 1
 
   const handlePageChange = (page) => {
     searchParams.set('p', page)
+
     history.push({
       pathname: location.pathname,
       search: `?${searchParams.toString()}`,
     })
   }
 
-  const paginate = (data) =>
-    data.slice((pageNo - 1) * perPage, pageNo * perPage)
-
   return (
     <Container>
       <PageHeading>
         <PageTitle>{title}</PageTitle>
-        <PageSubtitle>{count}&nbsp;results found</PageSubtitle>
+        {count !== undefined && (
+          <PageSubtitle>{count}&nbsp;results found</PageSubtitle>
+        )}
       </PageHeading>
 
       <List>
@@ -47,14 +106,14 @@ const CourseList = ({ title, courseCodes, loading = false }) => {
 
         <TransitionGroup>
           {!loading &&
-            paginate(courseCodes).map((Code) => (
+            courseList.map((courseData) => (
               <CSSTransition
-                key={Code}
+                key={courseData.code}
                 timeout={200}
                 unmountOnExit
                 classNames="course_item"
               >
-                <CourseItem courseCode={Code} />
+                <CourseItem courseData={courseData} />
               </CSSTransition>
             ))}
         </TransitionGroup>
@@ -62,7 +121,7 @@ const CourseList = ({ title, courseCodes, loading = false }) => {
 
       {!loading && (
         <Pagination
-          defaultPageSize={perPage}
+          defaultPageSize="10"
           defaultCurrent={pageNo}
           responsive
           showSizeChanger={false}
@@ -75,7 +134,7 @@ const CourseList = ({ title, courseCodes, loading = false }) => {
   )
 }
 
-export default CourseList
+export default CourseFinderList
 
 const Container = styled.div`
   width: 100%;
