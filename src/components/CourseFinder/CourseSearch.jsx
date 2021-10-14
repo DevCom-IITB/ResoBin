@@ -1,35 +1,70 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { LoadingOutlined } from '@ant-design/icons'
 import { Search } from '@styled-icons/heroicons-outline'
 import { Input } from 'antd'
+import debounce from 'lodash/debounce'
 import { rgba } from 'polished'
+import { useCallback, useState } from 'react'
+import { useHistory, useLocation } from 'react-router'
 import styled from 'styled-components/macro'
 
 import { FilterDropdown } from 'components/filter'
 import { device } from 'styles/responsive'
 
-// Disable filter will disable the filter entirely, show filter will trigger on/off animation
-const CourseSearch = ({
-  value,
-  onChange,
-  showFilter,
-  filterState,
-  loading = false,
-}) => (
-  <SearchContainer>
-    <FilterDropdown filterState={filterState} showFilter={showFilter} />
-    {showFilter && <Overlay />}
+// ? Disable filter will disable the filter entirely, show filter will trigger on/off animation
+const CourseSearch = ({ showFilter, loading, setLoading }) => {
+  const location = useLocation()
+  const history = useHistory()
 
-    <StyledInput
-      size="large"
-      placeholder="course code, name or description"
-      allowClear
-      maxLength={100}
-      onChange={onChange}
-      value={value}
-      prefix={<StyledIcon Icon={loading ? LoadingOutlined : Search} />}
-    />
-  </SearchContainer>
-)
+  const [search, setSearch] = useState('')
+
+  const setQueryString = (query) => {
+    const queryString = new URLSearchParams(location.search)
+    // ? No change
+    if (query === (queryString.get('q') || '')) return
+
+    // ? update query string or clear query string if query is empty
+    if (query) queryString.set('q', query)
+    else queryString.delete('q')
+
+    // ? reset pagination
+    queryString.delete('p')
+
+    history.push({
+      pathname: location.pathname,
+      search: `?${queryString.toString()}`,
+    })
+
+    setLoading(false)
+  }
+
+  const setQueryStringDebounced = useCallback(debounce(setQueryString, 500), [
+    location,
+  ])
+
+  const handleSearch = (event) => {
+    setLoading(true)
+    setSearch(event.target.value)
+    setQueryStringDebounced(event.target.value)
+  }
+
+  return (
+    <SearchContainer>
+      <FilterDropdown showFilter={showFilter} />
+      {showFilter && <Overlay />}
+
+      <StyledInput
+        size="large"
+        placeholder="Course code, name or description"
+        allowClear
+        maxLength={100}
+        onChange={handleSearch}
+        value={search}
+        prefix={<StyledIcon Icon={loading ? LoadingOutlined : Search} />}
+      />
+    </SearchContainer>
+  )
+}
 
 export default CourseSearch
 
@@ -66,6 +101,7 @@ const StyledIcon = styled(({ Icon, className, ...props }) => {
   return <Icon {...props} className={className} />
 })`
   width: 1rem;
+  margin-right: 0.5rem;
   color: lightgray;
 `
 
