@@ -1,38 +1,20 @@
 import { Form, Select } from 'antd'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { useHistory, useLocation } from 'react-router'
 import styled from 'styled-components/macro'
 
 import { FilterItem } from 'components/filter'
 import { Aside, Divider } from 'components/shared'
+import { useQueryString } from 'hooks'
 import { selectDepartments } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
 import filterData from './__mock__/filterData.json'
 
-const useClearAllFilters = () => {
-  const location = useLocation()
-  const history = useHistory()
-
-  const queryString = new URLSearchParams(location.search)
-
-  const clearAll = () => {
-    queryString.delete('sem')
-    queryString.delete('lvl')
-    queryString.delete('dept')
-    queryString.delete('cred')
-    queryString.delete('p')
-
-    location.search = queryString.toString()
-    history.push(location)
-  }
-
-  return clearAll
-}
+const filterKeys = ['sem', 'lvl', 'dept', 'cred', 'p']
 
 export const FilterDropdown = ({ showFilter }) => {
-  const handleClearAll = useClearAllFilters()
+  const { clearQueryString } = useQueryString()
 
   useEffect(() => {
     document.body.style.overflow = showFilter ? 'hidden' : 'auto'
@@ -45,7 +27,9 @@ export const FilterDropdown = ({ showFilter }) => {
     <ContainerDropdown showFilter={showFilter}>
       <Header>
         <Title>Filter</Title>
-        <ClearAll onClick={handleClearAll}>Clear all</ClearAll>
+        <ClearAll onClick={() => clearQueryString(filterKeys)}>
+          Clear all
+        </ClearAll>
       </Header>
       <Divider style={{ margin: '0 1rem', width: 'auto' }} />
 
@@ -59,7 +43,7 @@ export const FilterDropdown = ({ showFilter }) => {
 }
 
 export const FilterAside = ({ showFilter }) => {
-  const handleClearAll = useClearAllFilters()
+  const { clearQueryString } = useQueryString()
 
   const departmentOptions = useSelector(selectDepartments)?.map(
     (department) => ({
@@ -71,7 +55,11 @@ export const FilterAside = ({ showFilter }) => {
   return (
     <Aside
       title="Filter"
-      subtitle={<ClearAll onClick={handleClearAll}>Clear all</ClearAll>}
+      subtitle={
+        <ClearAll onClick={() => clearQueryString(filterKeys)}>
+          Clear all
+        </ClearAll>
+      }
       visible={showFilter}
     >
       {filterData.map((data) => (

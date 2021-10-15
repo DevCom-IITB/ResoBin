@@ -35,27 +35,27 @@ const useQueryString = () => {
     return queryString.get(key)
   }
 
+  // ? If keys are passed, removes keys from qs. Else clears qs
+  const clearQueryString = (keys) => {
+    const queryString = new URLSearchParams(location.search)
+
+    if (isEmpty(keys)) {
+      location.search = ''
+    } else {
+      keys.forEach((key) => {
+        queryString.delete(key)
+      })
+      location.search = queryString.toString()
+    }
+
+    history.push(location)
+  }
+
   return {
-    setQueryString: setQueryStringDebounced,
+    clearQueryString,
     getQueryStringValue,
+    setQueryString: setQueryStringDebounced,
   }
 }
 
 export default useQueryString
-
-// import { getQueryStringValue, setQueryStringValue } from './queryString'
-
-// const useQueryString = (key, initialValue, options) => {
-//   const [value, setValue] = useState(getQueryStringValue(key) || initialValue)
-//   const onSetValue = useCallback(
-//     (newValue) => {
-//       setValue(newValue)
-//       setQueryStringValue(key, newValue)
-//     },
-//     [key]
-//   )
-
-//   return [value, onSetValue]
-// }
-
-// export default useQueryString
