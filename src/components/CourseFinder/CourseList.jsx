@@ -1,4 +1,3 @@
-import { useLocation, useHistory } from 'react-router-dom'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components/macro'
 
@@ -10,22 +9,22 @@ import {
   Pagination,
   PageSubtitle,
 } from 'components/shared'
+import { useQueryString } from 'hooks'
 import { device } from 'styles/responsive'
 
-const CourseFinderList = ({ title, count, courseList, loading = false }) => {
-  const location = useLocation()
-  const history = useHistory()
-
-  const searchParams = new URLSearchParams(location.search)
-  const pageNo = searchParams.get('p') || 1
+const CourseFinderList = ({
+  title,
+  count,
+  courseList,
+  loading = false,
+  setLoading,
+}) => {
+  const { getQueryString, setQueryString } = useQueryString()
+  const pageNo = getQueryString('p') || 1
 
   const handlePageChange = (page) => {
-    searchParams.set('p', page)
-
-    history.push({
-      pathname: location.pathname,
-      search: `?${searchParams.toString()}`,
-    })
+    setLoading(true)
+    setQueryString('p', page)
   }
 
   return (
@@ -43,7 +42,7 @@ const CourseFinderList = ({ title, count, courseList, loading = false }) => {
 
         <TransitionGroup>
           {!loading &&
-            courseList.map((courseData) => (
+            courseList?.map((courseData) => (
               <CSSTransition
                 key={courseData.code}
                 timeout={200}

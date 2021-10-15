@@ -14,7 +14,7 @@ import filterData from './__mock__/filterData.json'
 const filterKeys = ['sem', 'lvl', 'dept', 'cred', 'p']
 
 export const FilterDropdown = ({ showFilter }) => {
-  const { clearQueryString } = useQueryString()
+  const { deleteQueryString } = useQueryString()
 
   useEffect(() => {
     document.body.style.overflow = showFilter ? 'hidden' : 'auto'
@@ -27,7 +27,7 @@ export const FilterDropdown = ({ showFilter }) => {
     <ContainerDropdown showFilter={showFilter}>
       <Header>
         <Title>Filter</Title>
-        <ClearAll onClick={() => clearQueryString(filterKeys)}>
+        <ClearAll onClick={() => deleteQueryString(...filterKeys)}>
           Clear all
         </ClearAll>
       </Header>
@@ -43,7 +43,7 @@ export const FilterDropdown = ({ showFilter }) => {
 }
 
 export const FilterAside = ({ showFilter }) => {
-  const { clearQueryString } = useQueryString()
+  const { deleteQueryString } = useQueryString()
 
   const departmentOptions = useSelector(selectDepartments)?.map(
     (department) => ({
@@ -56,7 +56,7 @@ export const FilterAside = ({ showFilter }) => {
     <Aside
       title="Filter"
       subtitle={
-        <ClearAll onClick={() => clearQueryString(filterKeys)}>
+        <ClearAll onClick={() => deleteQueryString(...filterKeys)}>
           Clear all
         </ClearAll>
       }

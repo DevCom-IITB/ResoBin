@@ -18,42 +18,46 @@ const useQueryString = () => {
     if (isEmpty(value)) queryString.delete(key)
     else queryString.set(key, value)
 
-    // ? reset pagination
-    queryString.delete('p')
-
     location.search = queryString.toString()
     history.push(location)
   }
-
   // ? Debouncing is necessary to avoid unnecessary API calls
   const setQueryStringDebounced = useCallback(debounce(setQueryString, 500), [
     location.search,
   ])
 
-  const getQueryStringValue = (key) => {
-    const queryString = new URLSearchParams(location.search)
-    return queryString.get(key)
-  }
+  const getQueryString = useCallback(
+    (key) => {
+      const queryString = new URLSearchParams(location.search)
+      if (key) return queryString.get(key)
+
+      return Object.fromEntries(queryString)
+    },
+    [location.search]
+  )
 
   // ? If keys are passed, removes keys from qs. Else clears qs
-  const clearQueryString = (keys) => {
-    const queryString = new URLSearchParams(location.search)
+  const deleteQueryString = useCallback(
+    (...keys) => {
+      const queryString = new URLSearchParams(location.search)
 
-    if (isEmpty(keys)) {
-      location.search = ''
-    } else {
-      keys.forEach((key) => {
-        queryString.delete(key)
-      })
-      location.search = queryString.toString()
-    }
+      if (isEmpty(keys)) {
+        location.search = ''
+      } else {
+        keys.forEach((key) => {
+          queryString.delete(key)
+        })
+        location.search = queryString.toString()
+      }
 
-    history.push(location)
-  }
+      history.push(location)
+    },
+    [location.search]
+  )
 
   return {
-    clearQueryString,
-    getQueryStringValue,
+    deleteQueryString,
+    getQueryString,
     setQueryString: setQueryStringDebounced,
   }
 }

@@ -11,10 +11,9 @@ import { device } from 'styles/responsive'
 
 // ? Disable filter will disable the filter entirely, show filter will trigger on/off animation
 const CourseSearch = ({ showFilter, loading, setLoading }) => {
-  const { deleteQueryString, getQueryStringValue, setQueryString } =
-    useQueryString()
+  const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
 
-  const [search, setSearch] = useState(getQueryStringValue('q'))
+  const [search, setSearch] = useState(getQueryString('q'))
 
   const handleSearch = (event) => {
     setLoading(true)
