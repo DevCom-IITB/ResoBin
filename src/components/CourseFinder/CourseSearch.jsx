@@ -1,51 +1,27 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { LoadingOutlined } from '@ant-design/icons'
 import { Search } from '@styled-icons/heroicons-outline'
 import { Input } from 'antd'
-import debounce from 'lodash/debounce'
 import { rgba } from 'polished'
-import { useCallback, useState } from 'react'
-import { useHistory, useLocation } from 'react-router'
+import { useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { FilterDropdown } from 'components/filter'
+import { useQueryString } from 'hooks'
 import { device } from 'styles/responsive'
 
 // ? Disable filter will disable the filter entirely, show filter will trigger on/off animation
 const CourseSearch = ({ showFilter, loading, setLoading }) => {
-  const location = useLocation()
-  const history = useHistory()
+  const { deleteQueryString, getQueryStringValue, setQueryString } =
+    useQueryString()
 
-  const [search, setSearch] = useState('')
-
-  const setQueryString = (query) => {
-    const queryString = new URLSearchParams(location.search)
-    // ? No change
-    if (query === (queryString.get('q') || '')) return
-
-    // ? update query string or clear query string if query is empty
-    if (query) queryString.set('q', query)
-    else queryString.delete('q')
-
-    // ? reset pagination
-    queryString.delete('p')
-
-    history.push({
-      pathname: location.pathname,
-      search: `?${queryString.toString()}`,
-    })
-
-    setLoading(false)
-  }
-
-  const setQueryStringDebounced = useCallback(debounce(setQueryString, 500), [
-    location,
-  ])
+  const [search, setSearch] = useState(getQueryStringValue('q'))
 
   const handleSearch = (event) => {
     setLoading(true)
     setSearch(event.target.value)
-    setQueryStringDebounced(event.target.value)
+
+    setQueryString('q', event.target.value)
+    deleteQueryString('p')
   }
 
   return (
