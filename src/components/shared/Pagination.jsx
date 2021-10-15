@@ -48,7 +48,7 @@ const StyledPagination = styled(Pagination)`
     }
 
     a {
-      font-size: 1rem;
+      font-size: 0.875rem;
       font-weight: 600;
       color: ${({ theme }) => theme.primary};
     }

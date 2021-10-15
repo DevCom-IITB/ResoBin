@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { X } from '@styled-icons/heroicons-outline'
 import { Checkbox } from 'antd'
-import { Fragment, useEffect, useMemo, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
@@ -12,9 +12,7 @@ const FilterItem = ({ data: groupData }) => {
   const history = useHistory()
   const param = groupData.id
 
-  const queryString = useMemo(new URLSearchParams(location.search), [
-    location.search,
-  ])
+  const queryString = new URLSearchParams(location.search)
   const [filterValue, setFilterValue] = useState(queryString.get(param))
 
   const handleCheck = (checkedValues) => setFilterValue(checkedValues.sort())

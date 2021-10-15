@@ -1,25 +1,38 @@
 import { Form, Select } from 'antd'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { useHistory, useLocation } from 'react-router'
 import styled from 'styled-components/macro'
 
 import { FilterItem } from 'components/filter'
-// import MultiSelect from 'components/filter/filterData'
 import { Aside, Divider } from 'components/shared'
 import { selectDepartments } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
 import filterData from './__mock__/filterData.json'
 
-// const initialState = {
-//   offeredIn: null,
-// }
+const useClearAllFilters = () => {
+  const location = useLocation()
+  const history = useHistory()
+
+  const queryString = new URLSearchParams(location.search)
+
+  const clearAll = () => {
+    queryString.delete('sem')
+    queryString.delete('lvl')
+    queryString.delete('dept')
+    queryString.delete('cred')
+    queryString.delete('p')
+
+    location.search = queryString.toString()
+    history.push(location)
+  }
+
+  return clearAll
+}
 
 export const FilterDropdown = ({ showFilter }) => {
-  // const [filters, setFilters] = useState(initialState)
-  const handleClearAll = (e) => {
-    // setFilters(initialState)
-  }
+  const handleClearAll = useClearAllFilters()
 
   useEffect(() => {
     document.body.style.overflow = showFilter ? 'hidden' : 'auto'
@@ -46,10 +59,7 @@ export const FilterDropdown = ({ showFilter }) => {
 }
 
 export const FilterAside = ({ showFilter }) => {
-  // const [filters, setFilters] = useState(initialState)
-  const handleClearAll = (e) => {
-    // setFilters(initialState)
-  }
+  const handleClearAll = useClearAllFilters()
 
   const departmentOptions = useSelector(selectDepartments)?.map(
     (department) => ({
