@@ -1,17 +1,92 @@
-import { Form, Select } from 'antd'
+import { Checkbox, Form, Select, Slider } from 'antd'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { FilterItem } from 'components/filter'
+import { FilterItemContainer } from 'components/filter/FilterItem'
 import { Aside, Divider } from 'components/shared'
 import { useQueryString } from 'hooks'
 import { selectDepartments } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
-import filterData from './__mock__/filterData.json'
-
 const filterKeys = ['sem', 'lvl', 'dept', 'cred', 'p']
+
+const FilterContainer = () => {
+  const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
+
+  const departmentOptions = useSelector(selectDepartments)?.map(
+    (department) => ({
+      label: department.name,
+      value: department.id,
+    })
+  )
+
+  const handleFilterClear = (param) => () => {
+    setQueryString(param, [])
+    deleteQueryString('p')
+  }
+
+  return (
+    <StyledForm
+      name="course_filter"
+      layout="vertical"
+      onFieldsChange={(_, allFields) => {
+        console.log('allFields: ', allFields)
+      }}
+    >
+      <FilterItemContainer
+        label="Semester"
+        handleClear={handleFilterClear('semester')}
+      >
+        <Form.Item name="semester">
+          <Checkbox.Group>
+            <Checkbox value="autumn">Autumn</Checkbox>
+            <Checkbox value="spring">Spring</Checkbox>
+          </Checkbox.Group>
+        </Form.Item>
+      </FilterItemContainer>
+
+      <FilterItemContainer
+        label="Credits"
+        handleClear={handleFilterClear('credits')}
+      >
+        <Form.Item name="credits">
+          <Slider
+            range
+            min={2}
+            max={9}
+            marks={{
+              2: '<3',
+              3: '3',
+              4: '4',
+              5: '5',
+              6: '6',
+              7: '7',
+              8: '8',
+              9: '>8',
+            }}
+            defaultValue={[2, 9]}
+            style={{ margin: '0 0.5rem' }}
+          />
+        </Form.Item>
+      </FilterItemContainer>
+
+      <FilterItemContainer
+        label="Department"
+        handleClear={handleFilterClear('department')}
+      >
+        <Form.Item name="department">
+          <Select
+            options={departmentOptions}
+            mode="multiple"
+            placeholder="Please select favourite colors"
+          />
+        </Form.Item>
+      </FilterItemContainer>
+    </StyledForm>
+  )
+}
 
 export const FilterDropdown = ({ showFilter }) => {
   const { deleteQueryString } = useQueryString()
@@ -34,23 +109,30 @@ export const FilterDropdown = ({ showFilter }) => {
       <Divider style={{ margin: '0 1rem', width: 'auto' }} />
 
       <ListDropdown showFilter={showFilter}>
-        {filterData.map((data) => (
-          <FilterItem key={data.id} data={data} />
-        ))}
+        <FilterContainer />
       </ListDropdown>
     </ContainerDropdown>
   )
 }
 
+const StyledForm = styled(Form)`
+  .ant-checkbox-wrapper {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: ${({ theme }) => theme.textColor};
+  }
+
+  .ant-checkbox-checked {
+    .ant-checkbox-inner {
+      border-color: ${({ theme }) => theme.logo};
+      background: ${({ theme }) => theme.logo};
+    }
+  }
+`
+
 export const FilterAside = ({ showFilter }) => {
   const { deleteQueryString } = useQueryString()
-
-  const departmentOptions = useSelector(selectDepartments)?.map(
-    (department) => ({
-      label: department.name,
-      value: department.id,
-    })
-  )
 
   return (
     <Aside
@@ -62,7 +144,7 @@ export const FilterAside = ({ showFilter }) => {
       }
       visible={showFilter}
     >
-      {filterData.map((data) => (
+      {/* {filterData.map((data) => (
         <FilterItem key={data.id} data={data} />
       ))}
 
@@ -84,7 +166,9 @@ export const FilterAside = ({ showFilter }) => {
         />
       </Form.Item>
 
-      {/* <MultiSelect /> */}
+      <MultiSelect /> */}
+
+      <FilterContainer />
     </Aside>
   )
 }
