@@ -15,7 +15,7 @@ const useQueryString = () => {
     if (value === queryString.get(key)) return
 
     // ? update query string or clear query string if query is empty
-    if (isEmpty(value)) queryString.delete(key)
+    if (value instanceof Array && isEmpty(value)) queryString.delete(key)
     else queryString.set(key, value)
 
     location.search = queryString.toString()
