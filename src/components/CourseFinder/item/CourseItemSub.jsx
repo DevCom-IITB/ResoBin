@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { Tabs, ButtonSwitch } from 'components/shared'
-import { ButtonSquareLink } from 'components/shared/Buttons/ButtonSquare'
+import { ButtonSquareLink } from 'components/shared/Buttons'
 import { coursePageUrl } from 'paths'
 import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
 import { selectTimetableStatus, updateTimetable } from 'store/userSlice'

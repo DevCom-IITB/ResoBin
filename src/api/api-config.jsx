@@ -45,8 +45,8 @@ APIInstance.interceptors.response.use(
 
 // ? API endpoints
 export const API = {
+  // * Authentication endpoints
   auth: {
-    // * Authentication endpoints
     login: async ({ params }) => APIInstance.get('/accounts/login', { params }),
     logout: async () => APIInstance.get('/accounts/logout'),
     authenticate: async () => APIInstance.get('/accounts/authenticate'),
@@ -59,6 +59,8 @@ export const API = {
     update: async ({ payload }) =>
       APIInstance.put('/accounts/profile', payload),
     delete: async () => APIInstance.delete('/accounts/profile'),
+
+    favorites: async () => APIInstance.get('/accounts/profile/favorites'),
 
     resources: {
       list: async () => APIInstance.get('/accounts/profile/resources'),
