@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { isEmpty } from 'lodash'
-import debounce from 'lodash/debounce'
+import { isFinite, isEmpty, debounce, memoize } from 'lodash'
 import { useCallback } from 'react'
 import { useHistory, useLocation } from 'react-router'
 
@@ -14,17 +13,19 @@ const useQueryString = () => {
     // ? No change
     if (value === queryString.get(key)) return
 
-    // ? update query string or clear query string if query is empty
-    if (value instanceof Array && isEmpty(value)) queryString.delete(key)
+    // ? update query string (or clear query string if query is empty)
+    if (isEmpty(value) && !isFinite(value)) queryString.delete(key)
     else queryString.set(key, value)
 
     location.search = queryString.toString()
     history.push(location)
   }
+
   // ? Debouncing is necessary to avoid unnecessary API calls
-  const setQueryStringDebounced = useCallback(debounce(setQueryString, 500), [
-    location.search,
-  ])
+  const setQueryStringDebounced = useCallback(
+    memoize((key) => debounce(setQueryString, 500)),
+    [location.search]
+  )
 
   const getQueryString = useCallback(
     (key) => {
@@ -58,7 +59,7 @@ const useQueryString = () => {
   return {
     deleteQueryString,
     getQueryString,
-    setQueryString: setQueryStringDebounced,
+    setQueryString: (key, value) => setQueryStringDebounced(key)(key, value),
   }
 }
 
