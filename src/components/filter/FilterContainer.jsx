@@ -1,16 +1,27 @@
-import { Checkbox, Form, Select, Slider } from 'antd'
+import { X } from '@styled-icons/heroicons-outline'
+import { Checkbox, Select, Slider } from 'antd'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { FilterItem } from 'components/filter'
-import { FilterItemContainer } from 'components/filter/FilterItem'
-import { Aside, Divider } from 'components/shared'
+import { Aside, Form, Divider, PageHeading } from 'components/shared'
+import { ButtonIconDanger } from 'components/shared/Buttons'
 import { useQueryString } from 'hooks'
 import { selectDepartments } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
-const filterKeys = ['sem', 'lvl', 'dept', 'cred', 'p']
+const filterKeys = ['semester', 'department', 'credit', 'p']
+
+const FilterItem = ({ label, onClear }) => (
+  <PageHeading style={{ margin: 0 }}>
+    <FilterTitle>{label}</FilterTitle>
+    <ButtonIconDanger
+      tooltip="Clear"
+      onClick={onClear}
+      icon={<X size="18" />}
+    />
+  </PageHeading>
+)
 
 const FilterContainer = () => {
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
@@ -18,73 +29,93 @@ const FilterContainer = () => {
   const departmentOptions = useSelector(selectDepartments)?.map(
     (department) => ({
       label: department.name,
-      value: department.id,
+      value: department.slug,
     })
   )
 
-  const handleFilterClear = (param) => () => {
-    setQueryString(param, [])
+  const handleFilterClear =
+    (...params) =>
+    () => {
+      deleteQueryString(...params, 'p')
+    }
+
+  const handleFilterUpdate = (_, allFields) => {
     deleteQueryString('p')
+
+    if (allFields?.credit?.[0] !== 2)
+      setQueryString('credit_min', allFields.credit[0])
+
+    if (allFields?.credit?.[1] !== 9)
+      setQueryString('credit_max', allFields.credit[1])
+
+    if (allFields?.department?.length)
+      setQueryString('department', allFields.department)
+
+    if (allFields?.semester?.length)
+      setQueryString('semester', allFields.semester)
   }
 
   return (
-    <StyledForm
+    <Form
       name="course_filter"
       layout="vertical"
-      onFieldsChange={(_, allFields) => {
-        console.log('allFields: ', allFields)
+      onValuesChange={handleFilterUpdate}
+      initialValues={{
+        semester: getQueryString('semester')?.split(',') ?? [],
+        credit: [
+          parseInt(getQueryString('credit_min'), 10) ?? 2,
+          parseInt(getQueryString('credit_max'), 10) ?? 9,
+        ],
+        department: getQueryString('department')?.split(',') ?? undefined,
       }}
     >
-      <FilterItemContainer
-        label="Semester"
-        handleClear={handleFilterClear('semester')}
-      >
-        <Form.Item name="semester">
-          <Checkbox.Group>
-            <Checkbox value="autumn">Autumn</Checkbox>
-            <Checkbox value="spring">Spring</Checkbox>
-          </Checkbox.Group>
-        </Form.Item>
-      </FilterItemContainer>
+      <FilterItem label="Semesters" onClear={handleFilterClear('semester')} />
+      <Form.Item name="semester">
+        <Checkbox.Group>
+          <Checkbox value="autumn">Autumn</Checkbox>
+          <Checkbox value="spring">Spring</Checkbox>
+        </Checkbox.Group>
+      </Form.Item>
 
-      <FilterItemContainer
+      <FilterItem
         label="Credits"
-        handleClear={handleFilterClear('credits')}
-      >
-        <Form.Item name="credits">
-          <Slider
-            range
-            min={2}
-            max={9}
-            marks={{
-              2: '<3',
-              3: '3',
-              4: '4',
-              5: '5',
-              6: '6',
-              7: '7',
-              8: '8',
-              9: '>8',
-            }}
-            defaultValue={[2, 9]}
-            style={{ margin: '0 0.5rem' }}
-          />
-        </Form.Item>
-      </FilterItemContainer>
+        onClear={handleFilterClear('credit_min', 'credit_max')}
+      />
+      <Form.Item name="credit">
+        <Slider
+          range
+          min={2}
+          step={null}
+          max={9}
+          marks={{
+            2: '<3',
+            3: '3',
+            4: '4',
+            5: '5',
+            6: '6',
+            7: '7',
+            8: '8',
+            9: '>8',
+          }}
+          tipFormatter={null}
+          style={{ margin: '0 1rem 0 0.5rem' }}
+        />
+      </Form.Item>
 
-      <FilterItemContainer
-        label="Department"
-        handleClear={handleFilterClear('department')}
-      >
-        <Form.Item name="department">
-          <Select
-            options={departmentOptions}
-            mode="multiple"
-            placeholder="Please select favourite colors"
-          />
-        </Form.Item>
-      </FilterItemContainer>
-    </StyledForm>
+      <FilterItem
+        label="Departments"
+        onClear={handleFilterClear('department')}
+      />
+      <Form.Item name="department">
+        <Select
+          mode="multiple"
+          options={departmentOptions}
+          placeholder="Type something..."
+          allowClear
+          showArrow
+        />
+      </Form.Item>
+    </Form>
   )
 }
 
@@ -115,22 +146,6 @@ export const FilterDropdown = ({ showFilter }) => {
   )
 }
 
-const StyledForm = styled(Form)`
-  .ant-checkbox-wrapper {
-    margin: 0;
-    font-size: 0.75rem;
-    font-weight: 400;
-    color: ${({ theme }) => theme.textColor};
-  }
-
-  .ant-checkbox-checked {
-    .ant-checkbox-inner {
-      border-color: ${({ theme }) => theme.logo};
-      background: ${({ theme }) => theme.logo};
-    }
-  }
-`
-
 export const FilterAside = ({ showFilter }) => {
   const { deleteQueryString } = useQueryString()
 
@@ -144,30 +159,6 @@ export const FilterAside = ({ showFilter }) => {
       }
       visible={showFilter}
     >
-      {/* {filterData.map((data) => (
-        <FilterItem key={data.id} data={data} />
-      ))}
-
-      <Form.Item
-        name="select-multiple"
-        label="Select[multiple]"
-        rules={[
-          {
-            required: true,
-            message: 'Please select your favourite colors!',
-            type: 'array',
-          },
-        ]}
-      >
-        <Select
-          options={departmentOptions}
-          mode="multiple"
-          placeholder="Please select favourite colors"
-        />
-      </Form.Item>
-
-      <MultiSelect /> */}
-
       <FilterContainer />
     </Aside>
   )
@@ -185,6 +176,14 @@ const ContainerDropdown = styled.div`
   background: ${({ theme }) => theme.secondary};
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   transition: 200ms;
+`
+
+const FilterTitle = styled.span`
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.textColor};
 `
 
 const Header = styled.div`
