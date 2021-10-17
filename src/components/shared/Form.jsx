@@ -3,6 +3,10 @@ import { rgba } from 'polished'
 import styled from 'styled-components/macro'
 
 const StyledForm = styled(Form)`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
   /* Icons */
   span.anticon {
     color: white;
