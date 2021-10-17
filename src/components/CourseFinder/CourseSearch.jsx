@@ -25,7 +25,7 @@ const CourseSearch = ({ showFilter, loading, setLoading }) => {
 
   return (
     <SearchContainer>
-      <FilterDropdown showFilter={showFilter} />
+      <FilterDropdown showFilter={showFilter} setLoading={setLoading} />
       {showFilter && <Overlay />}
 
       <StyledInput

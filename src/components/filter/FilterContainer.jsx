@@ -9,7 +9,7 @@ import FilterContainer from './FilterBody'
 
 const filterKeys = ['semester', 'department', 'p', 'credit_min', 'credit_max']
 
-export const FilterDropdown = ({ showFilter }) => {
+export const FilterDropdown = ({ showFilter, setLoading }) => {
   const { deleteQueryString } = useQueryString()
 
   useEffect(() => {
@@ -24,19 +24,19 @@ export const FilterDropdown = ({ showFilter }) => {
       <Header>
         <Title>Filter</Title>
         <ClearAll onClick={() => deleteQueryString(...filterKeys)}>
-          Clear all
+          Reset all
         </ClearAll>
       </Header>
       <Divider style={{ margin: '0 1rem', width: 'auto' }} />
 
       <ListDropdown showFilter={showFilter}>
-        <FilterContainer />
+        <FilterContainer setLoading={setLoading} />
       </ListDropdown>
     </ContainerDropdown>
   )
 }
 
-export const FilterAside = () => {
+export const FilterAside = ({ setLoading }) => {
   const { deleteQueryString } = useQueryString()
 
   return (
@@ -44,11 +44,11 @@ export const FilterAside = () => {
       title="Filter"
       subtitle={
         <ClearAll onClick={() => deleteQueryString(...filterKeys)}>
-          Clear all
+          Reset all
         </ClearAll>
       }
     >
-      <FilterContainer />
+      <FilterContainer setLoading={setLoading} />
     </Aside>
   )
 }

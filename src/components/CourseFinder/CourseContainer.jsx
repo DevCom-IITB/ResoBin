@@ -44,7 +44,6 @@ const CourseFinderContainer = () => {
 
     fetchCourses(params)
   }, [getQueryString])
-  console.log(courseData)
 
   return (
     <Container>
@@ -55,7 +54,7 @@ const CourseFinderContainer = () => {
       />
 
       {/* For desktops */}
-      <FilterAside />
+      <FilterAside setLoading={setLoading} />
       <FilterFloatButton
         showFilter={showFilter}
         setShowFilter={setShowFilter}

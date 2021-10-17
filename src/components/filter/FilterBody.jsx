@@ -1,5 +1,5 @@
 import { X } from '@styled-icons/heroicons-outline'
-import { Checkbox, Select, Slider } from 'antd'
+import { Checkbox, Select, Slider, Switch } from 'antd'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
@@ -8,19 +8,23 @@ import { ButtonIconDanger } from 'components/shared/Buttons'
 import { useQueryString } from 'hooks'
 import { selectDepartments } from 'store/courseSlice'
 
-const FilterItem = ({ label, onClear }) => (
+const FilterItem = ({ label, onClear, option }) => (
   <PageHeading style={{ margin: 0 }}>
     <FilterTitle>{label}</FilterTitle>
-    <ButtonIconDanger
-      tooltip="Clear"
-      onClick={onClear}
-      icon={<X size="18" />}
-    />
+    {option || (
+      <ButtonIconDanger
+        tooltip="Reset"
+        onClick={onClear}
+        icon={<X size="18" />}
+      />
+    )}
   </PageHeading>
 )
 
-const FilterContainer = () => {
+// TODO: (Known bug) Changing from mobile to desktop view resets filters but query string isnt affected
+const FilterContainer = ({ setLoading }) => {
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
+  const [form] = Form.useForm()
 
   const departmentOptions = useSelector(selectDepartments)?.map(
     (department) => ({
@@ -36,6 +40,7 @@ const FilterContainer = () => {
     }
 
   const handleFilterUpdate = (_, allFields) => {
+    setLoading(true)
     deleteQueryString('p')
 
     if (allFields?.credit?.[0] !== 2)
@@ -48,10 +53,14 @@ const FilterContainer = () => {
 
     setQueryString('department', allFields.department)
     setQueryString('semester', allFields.semester)
+
+    if (allFields.halfsem) setQueryString('halfsem', 'true')
+    else deleteQueryString('halfsem')
   }
 
   return (
     <Form
+      form={form}
       name="course_filter"
       layout="vertical"
       onValuesChange={handleFilterUpdate}
@@ -71,6 +80,16 @@ const FilterContainer = () => {
           <Checkbox value="spring">Spring</Checkbox>
         </Checkbox.Group>
       </Form.Item>
+
+      <FilterItem
+        label="Half semester only"
+        onClear={handleFilterClear('halfsem')}
+        option={
+          <Form.Item name="halfsem">
+            <Switch />
+          </Form.Item>
+        }
+      />
 
       <FilterItem
         label="Credits"
@@ -93,7 +112,7 @@ const FilterContainer = () => {
             9: '>8',
           }}
           tipFormatter={null}
-          style={{ margin: '0 1rem 0 0.5rem' }}
+          style={{ marginRight: '1rem', marginLeft: '0.5rem' }}
         />
       </Form.Item>
 

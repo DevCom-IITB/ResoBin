@@ -11,7 +11,7 @@ const useQueryString = () => {
     const queryString = new URLSearchParams(location.search)
 
     // ? No change
-    if (value === queryString.get(key)) return
+    if (value === undefined || value === queryString.get(key)) return
 
     // ? update query string (or clear query string if query is empty)
     if (isEmpty(value) && !isFinite(value)) queryString.delete(key)
