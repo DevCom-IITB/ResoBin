@@ -1,7 +1,6 @@
 import { ThumbUp as HeartOutlined } from '@styled-icons/heroicons-outline'
 import { ThumbUp as HeartFilled } from '@styled-icons/heroicons-solid'
-import { Button, Comment, Tooltip } from 'antd'
-import { format, formatDistance } from 'date-fns'
+import { Button, Comment } from 'antd'
 import DOMPurify from 'dompurify'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
