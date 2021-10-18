@@ -8,8 +8,9 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
-import { ButtonIcon } from 'components/shared'
+import { ButtonIcon, Timestamp } from 'components/shared'
 import { UserAvatar } from 'components/shared/Avatar'
+import { toastError } from 'components/toast'
 import { selectUserProfile } from 'store/userSlice'
 
 import { Editor, ReviewEditor } from './Editor'
@@ -40,7 +41,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       updateContent({ id: content.id, payload })
       setAction(null)
     } catch (error) {
-      console.log(error)
+      toastError(error)
     }
   }
 
@@ -49,7 +50,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       await API.reviews.delete({ id: content.id })
       updateContent({ id: content.id, payload: null })
     } catch (error) {
-      console.log(error)
+      toastError(error)
     }
   }
 
@@ -71,7 +72,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       updateContent({ id: content.id, payload })
       setAction(null)
     } catch (error) {
-      console.log(error)
+      toastError(error)
     }
   }
 
@@ -139,15 +140,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
           />
         )
       }
-      datetime={
-        <Tooltip title={format(new Date(content.timestamp), 'dd.MM.yyyy')}>
-          <CommentSubHeader>
-            {formatDistance(new Date(content.timestamp), new Date(), {
-              addSuffix: true,
-            })}
-          </CommentSubHeader>
-        </Tooltip>
-      }
+      datetime={<Timestamp time={content.timestamp} />}
     >
       <ReviewEditor visible={action === 'reply'} onSubmit={handleCreateChild} />
 
@@ -191,12 +184,6 @@ const CommentHeader = styled.h2`
   &:hover {
     color: ${({ theme }) => theme.header};
   }
-`
-
-const CommentSubHeader = styled.span`
-  font-size: 0.75rem;
-  font-weight: 400;
-  color: ${({ theme }) => theme.textColorInactive};
 `
 
 const CommentText = styled.div`

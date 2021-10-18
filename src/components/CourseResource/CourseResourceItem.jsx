@@ -3,6 +3,7 @@ import {
   InformationCircle,
   PencilAlt,
 } from '@styled-icons/heroicons-outline'
+import { Popover } from 'antd'
 import { rgba } from 'polished'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -10,7 +11,9 @@ import styled from 'styled-components/macro'
 
 import { API } from 'api'
 import placeholderImg from 'assets/images/ResourcePlaceholder.jpg'
-import { ButtonIcon } from 'components/shared'
+import { ButtonIcon, Timestamp } from 'components/shared'
+import { UserAvatar } from 'components/shared/Avatar'
+import { toastError } from 'components/toast'
 import { selectUserProfile } from 'store/userSlice'
 import { limitLines } from 'styles/mixins'
 
@@ -33,12 +36,8 @@ const CourseResourceItem = ({ content: initialContent }) => {
       setContent({ ...content, ...payload })
       setEditModalVisible(false)
     } catch (error) {
-      console.log(error)
+      toastError(error)
     }
-  }
-
-  const handleInfo = () => {
-    console.log('info')
   }
 
   return (
@@ -69,13 +68,28 @@ const CourseResourceItem = ({ content: initialContent }) => {
               />
             )}
 
-            <ButtonIcon
-              color="white"
-              size="default"
-              icon={<InformationCircle size="20" />}
-              onClick={handleInfo}
-              hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-            />
+            <Popover
+              content={
+                <>
+                  {content?.userProfile.name}
+                  <UserAvatar
+                    size="2rem"
+                    src={content?.userProfile.profilePicture}
+                    alt="Profile picture"
+                  />
+                  <Timestamp time={content?.timestamp} />
+                </>
+              }
+              title="More information"
+              trigger="click"
+            >
+              <ButtonIcon
+                color="white"
+                size="default"
+                icon={<InformationCircle size="20" />}
+                hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+              />
+            </Popover>
           </Row>
         </ItemInfo>
       </GridItem>
