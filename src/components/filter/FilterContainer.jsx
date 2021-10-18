@@ -1,22 +1,23 @@
 import { useEffect } from 'react'
 import styled from 'styled-components/macro'
 
-import { FilterItem } from 'components/filter'
-import MultiSelect from 'components/filter/filterData'
 import { Aside, Divider } from 'components/shared'
+import { useQueryString } from 'hooks'
 import { device } from 'styles/responsive'
 
-import filterData from './__mock__/filterData.json'
+import FilterContainer from './FilterBody'
 
-// const initialState = {
-//   offeredIn: null,
-// }
+const filterKeys = [
+  'semester',
+  'department',
+  'p',
+  'credit_min',
+  'credit_max',
+  'halfsem',
+]
 
-export const FilterDropdown = ({ showFilter }) => {
-  // const [filters, setFilters] = useState(initialState)
-  const handleClearAll = (e) => {
-    // setFilters(initialState)
-  }
+export const FilterDropdown = ({ showFilter, setLoading }) => {
+  const { deleteQueryString } = useQueryString()
 
   useEffect(() => {
     document.body.style.overflow = showFilter ? 'hidden' : 'auto'
@@ -29,37 +30,32 @@ export const FilterDropdown = ({ showFilter }) => {
     <ContainerDropdown showFilter={showFilter}>
       <Header>
         <Title>Filter</Title>
-        <ClearAll onClick={handleClearAll}>Clear all</ClearAll>
+        <ClearAll onClick={() => deleteQueryString(...filterKeys)}>
+          Reset all
+        </ClearAll>
       </Header>
       <Divider style={{ margin: '0 1rem', width: 'auto' }} />
 
       <ListDropdown showFilter={showFilter}>
-        {filterData.map((data) => (
-          <FilterItem key={data.id} data={data} />
-        ))}
-        <MultiSelect />
+        <FilterContainer setLoading={setLoading} />
       </ListDropdown>
     </ContainerDropdown>
   )
 }
 
-export const FilterAside = ({ showFilter }) => {
-  // const [filters, setFilters] = useState(initialState)
-  const handleClearAll = (e) => {
-    // setFilters(initialState)
-  }
+export const FilterAside = ({ setLoading }) => {
+  const { deleteQueryString } = useQueryString()
 
   return (
     <Aside
       title="Filter"
-      subtitle={<ClearAll onClick={handleClearAll}>Clear all</ClearAll>}
-      visible={showFilter}
+      subtitle={
+        <ClearAll onClick={() => deleteQueryString(...filterKeys)}>
+          Reset all
+        </ClearAll>
+      }
     >
-      {filterData.map((data) => (
-        <FilterItem key={data.id} data={data} />
-      ))}
-
-      <MultiSelect />
+      <FilterContainer setLoading={setLoading} />
     </Aside>
   )
 }

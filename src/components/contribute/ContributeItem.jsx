@@ -6,8 +6,9 @@ import styled from 'styled-components/macro'
 import { X, ExclamationCircle, Upload } from 'styled-icons/heroicons-outline'
 
 import { API } from 'api'
-import { LoaderAnimation } from 'components/shared'
+import { Form, LoaderAnimation } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
+import { toastError } from 'components/toast'
 import { defaultFile, fileTypes, getFileDetails } from 'data/CourseResources'
 import {
   selectResourceTags,
@@ -77,7 +78,7 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
         response: { id, timestamp, url },
       })
     } catch (error) {
-      console.log(error)
+      toastError(error)
       updateFileItem({ status: 'error', progress: 0 })
     }
   }
@@ -96,7 +97,7 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
       try {
         await API.resources.delete({ id: fileItem.response.id })
       } catch (error) {
-        console.log(error)
+        toastError(error)
         updateFileItem({ status: 'error', progress: 0 })
         return
       }
@@ -148,7 +149,7 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
         )}
       </StyledTooltip>
 
-      <DetailsForm>
+      <Form style={{ marginLeft: '1rem', gap: '1rem' }}>
         <Input
           type="text"
           name="uploadTitle"
@@ -219,7 +220,7 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
         >
           Upload
         </Button>
-      </DetailsForm>
+      </Form>
 
       <ButtonIconDanger
         icon={<X size="20" />}
@@ -280,60 +281,5 @@ const UploadBox = styled.div`
 
   span {
     font-size: 0.75rem;
-  }
-`
-
-const DetailsForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-left: 1rem;
-  gap: 1rem;
-
-  /* For icons */
-  span.anticon {
-    color: white;
-  }
-
-  .ant-select .ant-select-selection-item {
-    display: flex;
-    align-items: center;
-  }
-
-  .ant-select-selection-overflow-item .ant-select-selection-item {
-    height: 1.5rem;
-    border: 1px solid ${({ theme }) => rgba(theme.textColorInactive, 0.3)};
-    background-color: ${({ theme }) => theme.darksecondary};
-  }
-
-  .ant-input {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
-
-  .ant-select-focused,
-  .ant-select-open {
-    .ant-select-selector {
-      border-color: ${({ theme }) => theme.textColorInactive} !important;
-      box-shadow: none !important;
-    }
-  }
-
-  .ant-select .ant-select-selector,
-  .ant-input {
-    display: flex;
-    align-items: center;
-    border: none;
-    border-bottom: solid 1px
-      ${({ theme }) => rgba(theme.textColorInactive, 0.3)};
-    font-size: 0.875rem;
-    color: ${({ theme }) => theme.textColor};
-    background-color: transparent;
-
-    &:hover,
-    &:focus {
-      border-color: ${({ theme }) => theme.textColorInactive};
-      box-shadow: none !important;
-    }
   }
 `

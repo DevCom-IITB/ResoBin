@@ -3,20 +3,24 @@ import styled from 'styled-components/macro'
 
 import { API } from 'api'
 import { CourseList, CourseSearch } from 'components/CourseFinder'
-import { Aside } from 'components/shared'
+import { FilterAside, FilterFloatButton } from 'components/filter'
 import { toastError } from 'components/toast'
+import { useViewportContext } from 'context/ViewportContext'
 import { useQueryString } from 'hooks'
+import { breakpoints } from 'styles/responsive'
 
-const FavouritesContainer = () => {
+const CourseFinderContainer = () => {
+  const { width } = useViewportContext()
   const { getQueryString } = useQueryString()
 
-  const [loading, setLoading] = useState(true)
+  const [showFilter, setShowFilter] = useState(false)
   const [courseData, setCourseData] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const fetchCourses = async (params) => {
     try {
       setLoading(true)
-      const response = await API.profile.favorites({ params })
+      const response = await API.courses.list({ params })
       setCourseData(response)
     } catch (error) {
       toastError(error)
@@ -31,6 +35,11 @@ const FavouritesContainer = () => {
       q: filter.q,
       search_fields: 'code,title,description',
       page: filter.p,
+      department: filter.department,
+      is_half_semester: filter.halfsem,
+      credit_min: filter.credit_min,
+      credit_max: filter.credit_max,
+      semester: filter.semester,
     }
 
     fetchCourses(params)
@@ -41,23 +50,28 @@ const FavouritesContainer = () => {
       <CourseSearch
         loading={loading}
         setLoading={setLoading}
-        showFilter={false}
+        showFilter={width < breakpoints.lg && showFilter}
+      />
+
+      {/* For desktops */}
+      <FilterAside setLoading={setLoading} />
+      <FilterFloatButton
+        showFilter={showFilter}
+        setShowFilter={setShowFilter}
       />
 
       <CourseList
-        title="Favourites"
+        title="Courses"
         count={courseData.count}
         courseList={courseData.results}
         loading={loading}
         setLoading={setLoading}
       />
-
-      <Aside title="My friends" />
     </Container>
   )
 }
 
-export default FavouritesContainer
+export default CourseFinderContainer
 
 const Container = styled.div`
   width: 100%;

@@ -1,8 +1,10 @@
 import styled from 'styled-components/macro'
 
 import { Divider, LoaderAnimation } from 'components/shared'
+import { useViewportContext } from 'context/ViewportContext'
+import { breakpoints } from 'styles/responsive'
 
-const Aside = ({
+export const AsideContainer = ({
   title,
   subtitle,
   loading,
@@ -33,6 +35,12 @@ const Aside = ({
       <Children>{children}</Children>
     </Container>
   )
+}
+
+const Aside = (params) => {
+  const { width } = useViewportContext()
+
+  return <AsideContainer {...params} visible={width >= breakpoints.lg} />
 }
 
 export default Aside

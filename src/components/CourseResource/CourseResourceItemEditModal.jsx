@@ -17,7 +17,6 @@ const CourseResourceItemEditModal = ({
       const values = await form.validateFields()
       onEdit(values)
     } catch (error) {
-      console.log(error)
       toastError('Check your inputs')
     }
   }

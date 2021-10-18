@@ -1,4 +1,3 @@
-import { useLocation, useHistory } from 'react-router-dom'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components/macro'
 
@@ -10,35 +9,31 @@ import {
   Pagination,
   PageSubtitle,
 } from 'components/shared'
+import { useQueryString } from 'hooks'
 import { device } from 'styles/responsive'
 
-const CourseList = ({ title, courseCodes, loading = false }) => {
-  const location = useLocation()
-  const history = useHistory()
-
-  // pagination
-  const count = courseCodes ? courseCodes.length : 0
-  const perPage = 10
-
-  const searchParams = new URLSearchParams(location.search)
-  const pageNo = searchParams.get('p') || 1
+const CourseFinderList = ({
+  title,
+  count,
+  courseList,
+  loading = false,
+  setLoading,
+}) => {
+  const { getQueryString, setQueryString } = useQueryString()
+  const pageNo = getQueryString('p') || 1
 
   const handlePageChange = (page) => {
-    searchParams.set('p', page)
-    history.push({
-      pathname: location.pathname,
-      search: `?${searchParams.toString()}`,
-    })
+    setLoading(true)
+    setQueryString('p', page)
   }
-
-  const paginate = (data) =>
-    data.slice((pageNo - 1) * perPage, pageNo * perPage)
 
   return (
     <Container>
       <PageHeading>
         <PageTitle>{title}</PageTitle>
-        <PageSubtitle>{count}&nbsp;results found</PageSubtitle>
+        {count !== undefined && (
+          <PageSubtitle>{count}&nbsp;results found</PageSubtitle>
+        )}
       </PageHeading>
 
       <List>
@@ -47,14 +42,14 @@ const CourseList = ({ title, courseCodes, loading = false }) => {
 
         <TransitionGroup>
           {!loading &&
-            paginate(courseCodes).map((Code) => (
+            courseList?.map((courseData) => (
               <CSSTransition
-                key={Code}
+                key={courseData.code}
                 timeout={200}
                 unmountOnExit
                 classNames="course_item"
               >
-                <CourseItem courseCode={Code} />
+                <CourseItem courseData={courseData} />
               </CSSTransition>
             ))}
         </TransitionGroup>
@@ -62,7 +57,7 @@ const CourseList = ({ title, courseCodes, loading = false }) => {
 
       {!loading && (
         <Pagination
-          defaultPageSize={perPage}
+          defaultPageSize="10"
           defaultCurrent={pageNo}
           responsive
           showSizeChanger={false}
@@ -75,7 +70,7 @@ const CourseList = ({ title, courseCodes, loading = false }) => {
   )
 }
 
-export default CourseList
+export default CourseFinderList
 
 const Container = styled.div`
   width: 100%;

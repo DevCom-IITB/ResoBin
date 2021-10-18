@@ -2,34 +2,44 @@ import { LoadingOutlined } from '@ant-design/icons'
 import { Search } from '@styled-icons/heroicons-outline'
 import { Input } from 'antd'
 import { rgba } from 'polished'
+import { useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { FilterDropdown } from 'components/filter'
+import { useQueryString } from 'hooks'
 import { device } from 'styles/responsive'
 
-// Disable filter will disable the filter entirely, show filter will trigger on/off animation
-const CourseSearch = ({
-  value,
-  onChange,
-  showFilter,
-  filterState,
-  loading = false,
-}) => (
-  <SearchContainer>
-    <FilterDropdown filterState={filterState} showFilter={showFilter} />
-    {showFilter && <Overlay />}
+// ? Disable filter will disable the filter entirely, show filter will trigger on/off animation
+const CourseSearch = ({ showFilter, loading, setLoading }) => {
+  const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
 
-    <StyledInput
-      size="large"
-      placeholder="course code, name or description"
-      allowClear
-      maxLength={100}
-      onChange={onChange}
-      value={value}
-      prefix={<StyledIcon Icon={loading ? LoadingOutlined : Search} />}
-    />
-  </SearchContainer>
-)
+  const [search, setSearch] = useState(getQueryString('q'))
+
+  const handleSearch = (event) => {
+    setLoading(true)
+    setSearch(event.target.value)
+
+    setQueryString('q', event.target.value)
+    deleteQueryString('p')
+  }
+
+  return (
+    <SearchContainer>
+      <FilterDropdown showFilter={showFilter} setLoading={setLoading} />
+      {showFilter && <Overlay />}
+
+      <StyledInput
+        size="large"
+        placeholder="Course code, name or description"
+        allowClear
+        maxLength={100}
+        onChange={handleSearch}
+        value={search}
+        prefix={<StyledIcon Icon={loading ? LoadingOutlined : Search} />}
+      />
+    </SearchContainer>
+  )
+}
 
 export default CourseSearch
 
@@ -66,6 +76,7 @@ const StyledIcon = styled(({ Icon, className, ...props }) => {
   return <Icon {...props} className={className} />
 })`
   width: 1rem;
+  margin-right: 0.5rem;
   color: lightgray;
 `
 

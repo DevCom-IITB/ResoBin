@@ -78,7 +78,7 @@ const CourseReviewContainer = () => {
 
       setRequestReview((value) => ({ ...value, status: !value.status }))
     } catch (error) {
-      console.log(error)
+      toastError(error)
     } finally {
       setRequestReview((value) => ({ ...value, loading: false }))
     }
@@ -117,7 +117,6 @@ const CourseReviewContainer = () => {
 
       handleUpdateContent({ id: null, payload: { ...response, children: [] } })
     } catch (error) {
-      console.log(error)
       toastError(error)
     }
   }

@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { UserAvatar } from 'components/shared'
+import { toastError } from 'components/toast'
 import { selectUserProfile } from 'store/userSlice'
 
 const formats = [
@@ -53,7 +54,7 @@ export const Editor = ({ visible, onSubmit, initialValue = '' }) => {
       await onSubmit(content)
       setContent(initialValue)
     } catch (error) {
-      console.error(error)
+      toastError(error)
     } finally {
       setLoading(false)
     }

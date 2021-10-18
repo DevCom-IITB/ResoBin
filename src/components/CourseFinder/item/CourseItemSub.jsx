@@ -1,18 +1,13 @@
 import {
   ChatAlt,
   Calendar,
-  ChevronDown,
   DocumentText,
-  Flag,
-  Plus,
 } from '@styled-icons/heroicons-outline'
-import { Menu } from 'antd'
-import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { Tabs, ButtonDropdown, ButtonSwitch } from 'components/shared'
+import { Tabs, ButtonSwitch } from 'components/shared'
+import { ButtonSquareLink } from 'components/shared/Buttons'
 import { coursePageUrl } from 'paths'
 import { selectCourseSlotsByCourseCode } from 'store/courseSlice'
 import { selectTimetableStatus, updateTimetable } from 'store/userSlice'
@@ -38,39 +33,12 @@ const SemesterItem = ({ courseCode, semester }) => {
 
 // ? semester = ['autumn', 'spring']
 const CourseItemSub = ({ courseData }) => {
-  const { Code: code, Structure: structure, Title: title } = courseData
+  const { code, workload, title } = courseData
   const isRunning = useSelector(selectCourseSlotsByCourseCode(code))
-  const reviewCount = 2
-  const resourceCount = 2
+  const reviewCount = courseData?.reviews?.length
+  const resourceCount = courseData?.resources?.length
 
   const semTabInitialValue = isRunning ? 'autumn' : null
-
-  const [requestReviewCount, setRequestReviewCount] = useState(0)
-
-  const handleMenuClick = ({ key }) => {
-    switch (key) {
-      case 'request':
-        if (requestReviewCount === 0) setRequestReviewCount((v) => v + 1)
-        break
-
-      case 'create':
-        break
-
-      default:
-        break
-    }
-  }
-
-  const menu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="request" icon={<Flag size="16" />}>
-        Request
-      </Menu.Item>
-      <Menu.Item key="create" icon={<Plus size="16" />}>
-        Create
-      </Menu.Item>
-    </Menu>
-  )
 
   return (
     <>
@@ -94,21 +62,20 @@ const CourseItemSub = ({ courseData }) => {
         </Title>
       )}
 
-      <CourseWorkload workload={structure} />
+      <CourseWorkload workload={workload} />
 
-      <ButtonDropdown icon={<ChevronDown size="18" />} overlay={menu}>
-        <Link to={`${coursePageUrl(code, title)}#reviews`}>
-          <ChatAlt size="18" style={{ marginRight: '0.5rem' }} />
-          Reviews ({reviewCount})
-        </Link>
-      </ButtonDropdown>
+      <ButtonSquareLink
+        to={`${coursePageUrl(code, title)}#reviews`}
+        style={{ marginBottom: '0.75rem' }}
+      >
+        <ChatAlt size="18" style={{ marginRight: '0.5rem' }} />
+        Reviews ({reviewCount})
+      </ButtonSquareLink>
 
-      <ButtonDropdown icon={<ChevronDown size="18" />} overlay={menu}>
-        <Link to={`${coursePageUrl(code, title)}#resources`}>
-          <DocumentText size="18" style={{ marginRight: '0.5rem' }} />
-          Resources ({resourceCount})
-        </Link>
-      </ButtonDropdown>
+      <ButtonSquareLink to={`${coursePageUrl(code, title)}#resources`}>
+        <DocumentText size="18" style={{ marginRight: '0.5rem' }} />
+        Resources ({resourceCount})
+      </ButtonSquareLink>
     </>
   )
 }

@@ -1,3 +1,2 @@
-export { FilterAside, FilterDropdown } from './Filter'
-export { default as FilterItem } from './FilterItem'
+export { FilterAside, FilterDropdown } from './FilterContainer'
 export { default as FilterFloatButton } from './FilterFloatButton'
