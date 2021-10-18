@@ -6,12 +6,13 @@ export const SSO = {
   RESPONSE_TYPE: 'code',
 }
 
-export const getLoginURL = (redirect = '') => {
+export const getLoginURL = (state) => {
   const qs = new URLSearchParams()
   qs.append('client_id', SSO.CLIENT_ID)
-  qs.append('redirect_uri', `${SSO.BASE_REDIRECT_URI}?redirect=${redirect}`)
+  qs.append('redirect_uri', SSO.BASE_REDIRECT_URI)
   qs.append('scope', SSO.SCOPE)
   qs.append('response_type', SSO.RESPONSE_TYPE)
+  if (state) qs.append('state', JSON.stringify(state))
 
   return `${SSO.HOST}?${qs.toString()}`
 }

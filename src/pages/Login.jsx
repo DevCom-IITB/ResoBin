@@ -1,65 +1,62 @@
 import { Button } from 'antd'
-import { useEffect, useMemo } from 'react'
+import { lighten } from 'polished'
+import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
-import { Redirect, useHistory, useLocation } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { getLoginURL, SSO } from 'api'
 import { LoaderAnimation } from 'components/shared'
 import { toastError } from 'components/toast'
 import { CSRFToken } from 'helpers'
+import { useQueryString } from 'hooks'
 import { getAuthStatusAction, loginAction } from 'store/authSlice'
 import { fontSize } from 'styles/responsive'
 
 const Login = () => {
-  const location = useLocation()
-  const history = useHistory()
   const dispatch = useDispatch()
-
-  const qs = useMemo(
-    () => new URLSearchParams(location.search),
-    [location.search]
-  )
-  const redirect = qs.get('redirect') ?? '/'
-  const error = qs.get('error')
-  const code = qs.get('code')
-
-  useEffect(() => {
-    if (error) {
-      toastError(`Error: ${error}`)
-      qs.delete('error')
-
-      history.push({
-        pathname: location.pathname,
-        search: `?${qs.toString()}`,
-      })
-    }
-  }, [error, history, location.pathname, qs])
-
+  const history = useHistory()
+  const location = useLocation()
+  const { deleteQueryString, getQueryString } = useQueryString()
   const { isAuthenticated, loading } = useSelector((state) => state.auth)
 
   useEffect(() => {
-    if (isAuthenticated === null) dispatch(getAuthStatusAction())
-  }, [dispatch, isAuthenticated])
+    // * isAuthenticated === true => already authenticated => redirect away from login
+    // * isAuthenticated === null => auth status unknown => check with backend server
+    // * isAuthenticated === false => not authenticated => check if auth is possible
 
-  useEffect(() => {
-    if (code) {
-      const params = {
-        code,
-        redir: `${SSO.BASE_REDIRECT_URI}?redirect=${redirect}`,
+    if (isAuthenticated) {
+      const state = JSON.parse(getQueryString('state')) ?? '/'
+      history.replace(state)
+    } else if (isAuthenticated === null) {
+      dispatch(getAuthStatusAction())
+    } else {
+      // ? If user is not authenticated
+      const error = getQueryString('error')
+      const code = getQueryString('code')
+
+      if (code) {
+        const params = { code, redir: SSO.BASE_REDIRECT_URI }
+        deleteQueryString('code')
+        dispatch(loginAction({ params }))
       }
-      dispatch(loginAction({ params }))
+
+      // ? If SSO login is unsuccessfull, an error param appears in the query string
+      if (error) {
+        toastError(`Error: ${error}`)
+        deleteQueryString('error')
+      }
     }
-  }, [dispatch, code, redirect])
+  }, [dispatch, history, getQueryString, deleteQueryString, isAuthenticated])
 
   const redirectLogin = () => {
-    window.location.href = getLoginURL(redirect)
+    window.location.href = getLoginURL(location.state.from)
   }
 
-  if (isAuthenticated) return <Redirect to={redirect} />
-
-  return (
+  return loading ? (
+    <LoaderAnimation fixed />
+  ) : (
     <>
       <Helmet>
         <title>Log In - ResoBin</title>
@@ -67,15 +64,13 @@ const Login = () => {
       </Helmet>
       <CSRFToken />
 
-      {loading && <LoaderAnimation fixed />}
-
       <PageContainer>
         <BoxContainer>
-          <h4>Login to Your Account</h4>
+          <h4>Welcome to ResoBin!</h4>
 
-          <StyledButton type="primary" onClick={redirectLogin}>
+          <SSOButton type="primary" onClick={redirectLogin}>
             Login with SSO
-          </StyledButton>
+          </SSOButton>
         </BoxContainer>
       </PageContainer>
     </>
@@ -111,14 +106,21 @@ const BoxContainer = styled.div`
   }
 `
 
-const StyledButton = styled(Button)`
+const SSOButton = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 2.25rem;
   margin: 1.5rem 1.5rem 0;
+  border-color: #303f9f;
   border-radius: 0.25rem;
   font-size: 1rem;
   font-weight: 500;
+  background-color: #303f9f;
   box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    border-color: ${lighten(0.1, '#303f9f')};
+    background-color: ${lighten(0.1, '#303f9f')};
+  }
 `

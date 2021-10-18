@@ -1,13 +1,12 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Redirect, Route, useLocation } from 'react-router-dom'
+import { Redirect, Route } from 'react-router-dom'
 
 import { getAuthStatusAction } from 'store/authSlice'
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ component: Component, ...routeProps }) => {
   const { isAuthenticated } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
-  const route = useLocation().pathname
 
   useEffect(() => {
     dispatch(getAuthStatusAction())
@@ -16,12 +15,22 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
     isAuthenticated !== null && (
       <Route
-        {...rest}
+        {...routeProps}
         render={(props) =>
           isAuthenticated ? (
             <Component {...props} />
           ) : (
-            <Redirect to={`/login?redirect=${encodeURIComponent(route)}`} />
+            <Redirect
+              to={{
+                pathname: '/login',
+                state: {
+                  from:
+                    props.location.pathname +
+                    props.location.search +
+                    props.location.hash,
+                },
+              }}
+            />
           )
         }
       />

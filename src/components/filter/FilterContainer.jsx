@@ -7,7 +7,14 @@ import { device } from 'styles/responsive'
 
 import FilterContainer from './FilterBody'
 
-const filterKeys = ['semester', 'department', 'p', 'credit_min', 'credit_max']
+const filterKeys = [
+  'semester',
+  'department',
+  'p',
+  'credit_min',
+  'credit_max',
+  'halfsem',
+]
 
 export const FilterDropdown = ({ showFilter, setLoading }) => {
   const { deleteQueryString } = useQueryString()
