@@ -55,7 +55,7 @@ const CourseResourceContainer = () => {
 
       setRequestResource((value) => ({ ...value, status: !value.status }))
     } catch (error) {
-      console.log(error)
+      toastError(error)
     } finally {
       setRequestResource((value) => ({ ...value, loading: false }))
     }

@@ -6,6 +6,7 @@ import styled, { css } from 'styled-components/macro'
 
 import { API } from 'api'
 import { ButtonIcon } from 'components/shared'
+import { toastError } from 'components/toast'
 import { coursePageUrl } from 'paths'
 import { selectDepartments } from 'store/courseSlice'
 import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
@@ -33,7 +34,7 @@ const CourseItemMain = ({ courseData }) => {
       }
       dispatch(updateFavourite(code))
     } catch (error) {
-      console.log(error)
+      toastError(error)
     } finally {
       setLoading(false)
     }

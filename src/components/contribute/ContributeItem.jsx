@@ -8,6 +8,7 @@ import { X, ExclamationCircle, Upload } from 'styled-icons/heroicons-outline'
 import { API } from 'api'
 import { Form, LoaderAnimation } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
+import { toastError } from 'components/toast'
 import { defaultFile, fileTypes, getFileDetails } from 'data/CourseResources'
 import {
   selectResourceTags,
@@ -77,7 +78,7 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
         response: { id, timestamp, url },
       })
     } catch (error) {
-      console.log(error)
+      toastError(error)
       updateFileItem({ status: 'error', progress: 0 })
     }
   }
@@ -96,7 +97,7 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
       try {
         await API.resources.delete({ id: fileItem.response.id })
       } catch (error) {
-        console.log(error)
+        toastError(error)
         updateFileItem({ status: 'error', progress: 0 })
         return
       }

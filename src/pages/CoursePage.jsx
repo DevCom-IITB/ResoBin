@@ -10,6 +10,7 @@ import {
   CoursePageBreadcrumbs,
 } from 'components/CoursePage'
 import { LoaderAnimation } from 'components/shared'
+import { toastError } from 'components/toast'
 import { coursePageUrl } from 'paths'
 import { device } from 'styles/responsive'
 
@@ -26,7 +27,7 @@ const CoursePage = ({ match }) => {
         const response = await API.courses.read({ code: courseCode })
         setCourseData(response)
       } catch (error) {
-        console.log(error)
+        toastError(error)
       } finally {
         setLoading(false)
       }
