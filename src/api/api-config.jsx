@@ -4,7 +4,11 @@ import { toastError } from 'components/toast'
 import { camelizeKeys, snakeizeKeys } from 'helpers/transformKeys'
 
 export const APIInstance = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL:
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:8000/api'
+      : 'http://10.105.177.70/api',
+
   timeout: 30000,
   xsrfCookieName: 'csrftoken',
   xsrfHeaderName: 'X-CSRFToken',
