@@ -51,7 +51,7 @@ const Login = () => {
   }, [dispatch, history, getQueryString, deleteQueryString, isAuthenticated])
 
   const redirectLogin = () => {
-    window.location.href = getLoginURL(location.state.from)
+    window.location.href = getLoginURL(location.state?.from)
   }
 
   return loading ? (
