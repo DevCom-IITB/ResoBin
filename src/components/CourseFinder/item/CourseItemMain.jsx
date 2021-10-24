@@ -17,7 +17,7 @@ import ParseDescription from '../ParseDescription'
 
 const CourseItemMain = ({ courseData }) => {
   const dispatch = useDispatch()
-  const { code, credit, department, title, description } = courseData
+  const { code, credits, department, title, description } = courseData
 
   const [loading, setLoading] = useState(false)
 
@@ -54,7 +54,7 @@ const CourseItemMain = ({ courseData }) => {
         </DepartmentContainer>
 
         <RightIcons>
-          <CreditContainer small={credit > 9}>{credit}</CreditContainer>
+          <CreditContainer small={credits > 9}>{credits}</CreditContainer>
 
           <ButtonIcon
             tooltip="Add to favorites"

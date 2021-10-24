@@ -37,8 +37,8 @@ const CourseFinderContainer = () => {
       page: filter.p,
       department: filter.department,
       is_half_semester: filter.halfsem,
-      credit_min: filter.credit_min,
-      credit_max: filter.credit_max,
+      credits_min: filter.credits_min,
+      credits_max: filter.credits_max,
       semester: filter.semester,
     }
 

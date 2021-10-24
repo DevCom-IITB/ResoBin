@@ -11,8 +11,8 @@ const filterKeys = [
   'semester',
   'department',
   'p',
-  'credit_min',
-  'credit_max',
+  'credits_min',
+  'credits_max',
   'halfsem',
 ]
 

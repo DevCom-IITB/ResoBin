@@ -43,13 +43,13 @@ const FilterContainer = ({ setLoading }) => {
     setLoading(true)
     deleteQueryString('p')
 
-    if (allFields?.credit?.[0] !== 2)
-      setQueryString('credit_min', allFields.credit[0])
-    else deleteQueryString('credit_min')
+    if (allFields?.credits?.[0] !== 2)
+      setQueryString('credits_min', allFields.credits[0])
+    else deleteQueryString('credits_min')
 
-    if (allFields?.credit?.[1] !== 9)
-      setQueryString('credit_max', allFields.credit[1])
-    else deleteQueryString('credit_max')
+    if (allFields?.credits?.[1] !== 9)
+      setQueryString('credits_max', allFields.credits[1])
+    else deleteQueryString('credits_max')
 
     setQueryString('department', allFields.department)
     setQueryString('semester', allFields.semester)
@@ -66,9 +66,9 @@ const FilterContainer = ({ setLoading }) => {
       onValuesChange={handleFilterUpdate}
       initialValues={{
         semester: getQueryString('semester')?.split(',') ?? [],
-        credit: [
-          parseInt(getQueryString('credit_min') ?? 2, 10),
-          parseInt(getQueryString('credit_max') ?? 9, 10),
+        credits: [
+          parseInt(getQueryString('credits_min') ?? 2, 10),
+          parseInt(getQueryString('credits_max') ?? 9, 10),
         ],
         department: getQueryString('department')?.split(',') ?? undefined,
       }}
@@ -93,9 +93,9 @@ const FilterContainer = ({ setLoading }) => {
 
       <FilterItem
         label="Credits"
-        onClear={handleFilterClear('credit_min', 'credit_max')}
+        onClear={handleFilterClear('credits_min', 'credits_max')}
       />
-      <Form.Item name="credit">
+      <Form.Item name="credits">
         <Slider
           range
           min={2}
