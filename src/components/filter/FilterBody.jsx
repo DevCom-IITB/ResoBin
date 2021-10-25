@@ -58,6 +58,11 @@ const FilterContainer = ({ setLoading }) => {
     else deleteQueryString('halfsem')
   }
 
+  const semesterOptions = [
+    { label: 'Autumn', value: 'autumn' },
+    { label: 'Spring', value: 'spring' },
+  ]
+
   return (
     <Form
       form={form}
@@ -75,17 +80,14 @@ const FilterContainer = ({ setLoading }) => {
     >
       <FilterItem label="Semesters" onClear={handleFilterClear('semester')} />
       <Form.Item name="semester">
-        <Checkbox.Group>
-          <Checkbox value="autumn">Autumn</Checkbox>
-          <Checkbox value="spring">Spring</Checkbox>
-        </Checkbox.Group>
+        <Checkbox.Group options={semesterOptions} />
       </Form.Item>
 
       <FilterItem
         label="Half semester only"
         onClear={handleFilterClear('halfsem')}
         option={
-          <Form.Item name="halfsem">
+          <Form.Item name="halfsem" valuePropName="checked">
             <Switch />
           </Form.Item>
         }

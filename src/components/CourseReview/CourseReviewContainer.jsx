@@ -130,7 +130,7 @@ const CourseReviewContainer = () => {
 
         <ButtonSwitch
           type="primary"
-          active={requestReview.status ? 1 : 0}
+          $active={requestReview.status}
           onClick={handleReviewRequest}
           icon={<UserGroup size="18" style={{ marginRight: '0.25rem' }} />}
           loading={requestReview.loading}

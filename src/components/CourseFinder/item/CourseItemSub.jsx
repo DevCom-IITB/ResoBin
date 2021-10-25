@@ -48,7 +48,6 @@ const SemesterItem = ({ data }) => {
       setLoading(true)
       if (selected) await API.profile.timetable.remove({ id })
       else await API.profile.timetable.add({ id })
-
       dispatch(updateTimetable(id))
     } catch (error) {
       toastError(error)
@@ -72,7 +71,7 @@ const SemesterItem = ({ data }) => {
     >
       <ButtonSwitch
         type="primary"
-        active={selected !== null}
+        $active={selected !== null}
         icon={<Calendar size="18" style={{ marginRight: '0.5rem' }} />}
         loading={loading}
         style={{ margin: '0.75rem 0 1rem', width: '100%' }}
@@ -97,7 +96,7 @@ const SemesterItem = ({ data }) => {
   ) : (
     <ButtonSwitch
       type="primary"
-      active={selected !== null}
+      $active={selected !== null}
       icon={<Calendar size="18" style={{ marginRight: '0.5rem' }} />}
       onClick={handleClick(selected ? selected.id : data[0].id)}
       loading={loading}
