@@ -1,78 +1,109 @@
 import {
-  ChatAlt,
   Calendar,
+  ChatAlt,
+  ChevronDown,
   DocumentText,
 } from '@styled-icons/heroicons-outline'
 import { Dropdown, Menu } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
 import { Tabs, ButtonSwitch } from 'components/shared'
 import { ButtonSquareLink } from 'components/shared/Buttons'
+import { toastError } from 'components/toast'
 import { coursePageUrl } from 'paths'
-import { selectAllTimetable } from 'store/userSlice'
+import { selectAllTimetable, updateTimetable } from 'store/userSlice'
 
 import CourseWorkload from './CourseWorkload'
 
-const SemesterItem = ({ value }) => {
+const SemesterItem = ({ data }) => {
   const dispatch = useDispatch()
-  const userTimetable = useSelector(selectAllTimetable)
+  const userTimetableList = useSelector(selectAllTimetable)
 
   const [loading, setLoading] = useState(false)
+  const [selected, setSelected] = useState(null)
 
-  const status = userTimetable.reduce(
-    (previousValue, currentValue, currentIndex) =>
-      currentValue.id === value.id ? currentIndex : previousValue,
-    -1
-  )
+  useEffect(() => {
+    const timetableContains = (list, item) =>
+      list.reduce(
+        (accumulator, value) => (value === item.id ? item : accumulator),
+        null
+      )
+
+    // ? selected = null if nothing is selected
+    // ? else selected is the index of selected option
+    setSelected(
+      data.reduce(
+        (accumulator, value) =>
+          timetableContains(userTimetableList, value) ?? accumulator,
+        null
+      )
+    )
+  }, [userTimetableList, data])
 
   const handleClick = (id) => async () => {
     try {
       setLoading(true)
-      if (status !== -1) await API.profile.timetable.remove({ id })
+      if (selected) await API.profile.timetable.remove({ id })
       else await API.profile.timetable.add({ id })
 
-      // dispatch(updateTimetable())
+      dispatch(updateTimetable(id))
     } catch (error) {
-      console.log(error)
+      toastError(error)
     } finally {
       setLoading(false)
     }
   }
 
-  return value.length > 1 ? (
+  return data.length > 1 && selected === null ? (
     <Dropdown
+      trigger={['click']}
       overlay={
         <Menu theme="dark">
-          {value.map(({ id, division }) => (
+          {data.map(({ id, division }) => (
             <Menu.Item key={id} onClick={handleClick(id)}>
-              <span>{division}</span>
+              {division}
             </Menu.Item>
           ))}
         </Menu>
       }
-      trigger={['click']}
     >
       <ButtonSwitch
-        active={status !== -1}
+        type="primary"
+        active={selected !== null}
         icon={<Calendar size="18" style={{ marginRight: '0.5rem' }} />}
         loading={loading}
         style={{ margin: '0.75rem 0 1rem', width: '100%' }}
       >
-        {status !== -1 ? 'Remove' : 'Timetable'}
+        {selected !== null ? (
+          `Remove ${selected.division}`
+        ) : (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
+          >
+            Timetable
+            <ChevronDown size="16" />
+          </div>
+        )}
       </ButtonSwitch>
     </Dropdown>
   ) : (
     <ButtonSwitch
-      active={status !== -1}
+      type="primary"
+      active={selected !== null}
       icon={<Calendar size="18" style={{ marginRight: '0.5rem' }} />}
-      onClick={handleClick(value.id)}
+      onClick={handleClick(selected ? selected.id : data[0].id)}
       loading={loading}
       style={{ margin: '0.75rem 0 1rem', width: '100%' }}
     >
-      {status !== -1 ? 'Remove' : 'Timetable'}
+      {selected !== null ? `Remove ${selected.division}` : 'Timetable'}
     </ButtonSwitch>
   )
 }
@@ -109,7 +140,7 @@ const CourseItemSub = ({ courseData }) => {
             tab="Autumn"
             disabled={!timetable.autumn.length}
           >
-            <SemesterItem semester="autumn" value={timetable.autumn} />
+            <SemesterItem semester="autumn" data={timetable.autumn} />
           </Tabs.TabPane>
 
           <Tabs.TabPane
@@ -117,7 +148,7 @@ const CourseItemSub = ({ courseData }) => {
             tab="Spring"
             disabled={!timetable.spring.length}
           >
-            <SemesterItem semester="spring" value={timetable.spring} />
+            <SemesterItem semester="spring" data={timetable.spring} />
           </Tabs.TabPane>
         </Tabs>
       ) : (
