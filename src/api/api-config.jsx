@@ -75,6 +75,17 @@ export const API = {
     },
 
     feed: async () => APIInstance.get('/accounts/profile/feed'),
+
+    timetable: {
+      read: async ({ season, year }) =>
+        APIInstance.get(
+          `/accounts/profile/semester/${season}-${year}/timetable`
+        ),
+      add: async ({ id }) =>
+        APIInstance.put(`/accounts/profile/timetable/${id}`),
+      remove: async ({ id }) =>
+        APIInstance.delete(`/accounts/profile/timetable/${id}`),
+    },
   },
 
   // * Courses endpoints

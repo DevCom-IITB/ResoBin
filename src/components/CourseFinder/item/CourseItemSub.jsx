@@ -79,17 +79,10 @@ const SemesterItem = ({ data }) => {
         {selected !== null ? (
           `Remove ${selected.division}`
         ) : (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '100%',
-            }}
-          >
+          <>
             Timetable
-            <ChevronDown size="16" />
-          </div>
+            <ChevronDown size="16" style={{ marginLeft: '1rem' }} />
+          </>
         )}
       </ButtonSwitch>
     </Dropdown>
