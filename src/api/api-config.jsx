@@ -151,6 +151,10 @@ export const API = {
     detail: async ({ slug }) => APIInstance.get(`/departments/${slug}`),
   },
 
+  semesters: {
+    list: async () => APIInstance.get('/semesters'),
+  },
+
   // * Developer stats endpoints
   GitHub: {
     getContributors: async () => {
