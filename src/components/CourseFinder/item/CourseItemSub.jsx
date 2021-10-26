@@ -13,7 +13,7 @@ import { API } from 'api'
 import { Tabs, ButtonSwitch } from 'components/shared'
 import { ButtonSquareLink } from 'components/shared/Buttons'
 import { toastError } from 'components/toast'
-import { coursePageUrl } from 'paths'
+import { coursePageUrl } from 'helpers/format'
 import { selectAllTimetable, updateTimetable } from 'store/userSlice'
 
 import CourseWorkload from './CourseWorkload'

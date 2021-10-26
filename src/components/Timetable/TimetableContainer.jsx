@@ -6,6 +6,7 @@ import styled from 'styled-components/macro'
 import { API } from 'api'
 import { ButtonIcon, LoaderAnimation } from 'components/shared'
 import { toastError } from 'components/toast'
+import { displayYear } from 'helpers/format'
 import { selectSemesters } from 'store/courseSlice'
 
 import CurrentTime from './CurrentTime'
@@ -39,7 +40,7 @@ const TimetableContainer = () => {
     <LoaderAnimation fixed />
   ) : (
     <>
-      <Change>
+      <TimetableSemesterTitle>
         <ButtonIcon
           color="white"
           size="default"
@@ -48,7 +49,8 @@ const TimetableContainer = () => {
           disabled={semIdx === 0}
           hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
         />
-        {semesterList[semIdx].season} {semesterList[semIdx].year}
+        {semesterList[semIdx]?.season}&nbsp;
+        {displayYear(semesterList[semIdx]?.year)}
         <ButtonIcon
           color="white"
           size="default"
@@ -57,11 +59,11 @@ const TimetableContainer = () => {
           onClick={() => setSemIdx(semIdx + 1)}
           hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
         />
-      </Change>
+      </TimetableSemesterTitle>
 
       <TimetableLayout>
         {courseTimetableList.map((item, idx) => (
-          <TimetableCourseItem key={item.id} colorCode={item.id} data={item} />
+          <TimetableCourseItem key={item.id} colorCode={idx} data={item} />
         ))}
         <CurrentTime mode="vertical" />
       </TimetableLayout>
@@ -71,10 +73,13 @@ const TimetableContainer = () => {
 
 export default TimetableContainer
 
-const Change = styled.div`
+const TimetableSemesterTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   margin: 1rem 0;
-  font-size: 1.75rem;
+  font-size: 1.25rem;
+  color: white;
+  text-transform: capitalize;
 `
