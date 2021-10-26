@@ -1,10 +1,12 @@
+import { LoadingOutlined } from '@ant-design/icons'
 import { ChevronLeft, ChevronRight } from '@styled-icons/heroicons-outline'
+import { Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
-import { ButtonIcon, LoaderAnimation } from 'components/shared'
+import { Aside, ButtonIcon, LoaderAnimation } from 'components/shared'
 import { toastError } from 'components/toast'
 import { displayYear } from 'helpers/format'
 import { selectSemesters } from 'store/courseSlice'
@@ -36,17 +38,20 @@ const TimetableContainer = () => {
     fetchUserTimetable(semesterList[semIdx])
   }, [semesterList, semIdx])
 
-  return loading ? (
-    <LoaderAnimation fixed />
-  ) : (
-    <>
+  const handleClickPrev = () =>
+    semIdx - 1 in semesterList && setSemIdx(semIdx - 1)
+  const handleClickNext = () =>
+    semIdx + 1 in semesterList && setSemIdx(semIdx + 1)
+
+  return (
+    <Container>
       <TimetableSemesterTitle>
         <ButtonIcon
           color="white"
           size="default"
           icon={<ChevronLeft size="20" />}
-          onClick={() => setSemIdx(semIdx - 1)}
-          disabled={semIdx === 0}
+          onClick={handleClickPrev}
+          disabled={loading || !(semIdx - 1 in semesterList)}
           hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
         />
         {semesterList[semIdx]?.season}&nbsp;
@@ -55,23 +60,42 @@ const TimetableContainer = () => {
           color="white"
           size="default"
           icon={<ChevronRight size="20" />}
-          disabled={semIdx === semesterList.length - 1}
-          onClick={() => setSemIdx(semIdx + 1)}
+          disabled={loading || !(semIdx + 1 in semesterList)}
+          onClick={handleClickNext}
           hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
         />
       </TimetableSemesterTitle>
 
-      <TimetableLayout>
-        {courseTimetableList.map((item, idx) => (
-          <TimetableCourseItem key={item.id} colorCode={idx} data={item} />
-        ))}
-        <CurrentTime mode="vertical" />
-      </TimetableLayout>
-    </>
+      {loading && <LoaderAnimation />}
+
+      <Spin
+        spinning={loading}
+        indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
+      >
+        <TimetableLayout>
+          {courseTimetableList.map((item, idx) => (
+            <TimetableCourseItem key={item.id} colorCode={idx} data={item} />
+          ))}
+
+          <CurrentTime mode="vertical" />
+        </TimetableLayout>
+      </Spin>
+
+      <Aside title="Semester courses" loading={loading}>
+        {!loading &&
+          courseTimetableList.map(({ id, course }) => (
+            <h1 key={id}>{course}</h1>
+          ))}
+      </Aside>
+    </Container>
   )
 }
 
 export default TimetableContainer
+
+const Container = styled.div`
+  margin: 0 0.75rem;
+`
 
 const TimetableSemesterTitle = styled.div`
   display: flex;
