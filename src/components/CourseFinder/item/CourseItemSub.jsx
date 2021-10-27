@@ -14,6 +14,7 @@ import { Tabs, ButtonSwitch } from 'components/shared'
 import { ButtonSquareLink } from 'components/shared/Buttons'
 import { toastError } from 'components/toast'
 import { coursePageUrl } from 'helpers/format'
+import { selectSemesters } from 'store/courseSlice'
 import { selectAllTimetable, updateTimetable } from 'store/userSlice'
 
 import CourseWorkload from './CourseWorkload'
@@ -100,21 +101,20 @@ const SemesterItem = ({ data }) => {
   )
 }
 
-const currentSeason = 'autumn'
-
 // ? semester = ['autumn', 'spring']
 const CourseItemSub = ({ courseData }) => {
+  const { code, title, workload, semester, reviews, resources } = courseData
+  const [latestSemester] = useSelector(selectSemesters)?.slice(-1)
+
   const timetable = {
-    autumn: courseData.semester.find(({ season }) => season === 'autumn')
-      .timetable,
-    spring: courseData.semester.find(({ season }) => season === 'spring')
-      .timetable,
+    autumn: semester?.find(({ season }) => season === 'autumn').timetable,
+    spring: semester?.find(({ season }) => season === 'spring').timetable,
   }
 
-  const reviewCount = courseData?.reviews?.length
-  const resourceCount = courseData?.resources?.length
+  const reviewCount = reviews?.length
+  const resourceCount = resources?.length
 
-  let semTabInitialValue = currentSeason
+  let semTabInitialValue = latestSemester?.season
   if (!timetable.spring.length && !timetable.autumn.length)
     semTabInitialValue = null
   else if (!timetable.autumn.length) semTabInitialValue = 'spring'
@@ -149,19 +149,17 @@ const CourseItemSub = ({ courseData }) => {
         </Title>
       )}
 
-      <CourseWorkload workload={courseData.workload} />
+      <CourseWorkload workload={workload} />
 
       <ButtonSquareLink
-        to={`${coursePageUrl(courseData.code, courseData.title)}#reviews`}
+        to={`${coursePageUrl(code, title)}#reviews`}
         style={{ marginBottom: '0.75rem' }}
       >
         <ChatAlt size="18" style={{ marginRight: '0.5rem' }} />
         Reviews ({reviewCount})
       </ButtonSquareLink>
 
-      <ButtonSquareLink
-        to={`${coursePageUrl(courseData.code, courseData.title)}#resources`}
-      >
+      <ButtonSquareLink to={`${coursePageUrl(code, title)}#resources`}>
         <DocumentText size="18" style={{ marginRight: '0.5rem' }} />
         Resources ({resourceCount})
       </ButtonSquareLink>
