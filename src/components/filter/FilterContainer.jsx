@@ -5,7 +5,7 @@ import { Aside, Divider } from 'components/shared'
 import { useQueryString } from 'hooks'
 import { device } from 'styles/responsive'
 
-import FilterContainer from './FilterBody'
+import FilterForm from './FilterBody'
 
 const filterKeys = [
   'semester',
@@ -14,6 +14,7 @@ const filterKeys = [
   'credits_min',
   'credits_max',
   'halfsem',
+  'running',
 ]
 
 export const FilterDropdown = ({ showFilter, setLoading }) => {
@@ -37,7 +38,7 @@ export const FilterDropdown = ({ showFilter, setLoading }) => {
       <Divider style={{ margin: '0 1rem', width: 'auto' }} />
 
       <ListDropdown showFilter={showFilter}>
-        <FilterContainer setLoading={setLoading} />
+        <FilterForm setLoading={setLoading} />
       </ListDropdown>
     </ContainerDropdown>
   )
@@ -55,7 +56,7 @@ export const FilterAside = ({ setLoading }) => {
         </ClearAll>
       }
     >
-      <FilterContainer setLoading={setLoading} />
+      <FilterForm setLoading={setLoading} />
     </Aside>
   )
 }

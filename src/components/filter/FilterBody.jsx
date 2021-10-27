@@ -8,10 +8,10 @@ import { ButtonIconDanger } from 'components/shared/Buttons'
 import { useQueryString } from 'hooks'
 import { selectDepartments } from 'store/courseSlice'
 
-const FilterItem = ({ label, onClear, option }) => (
+const FilterItem = ({ label, onClear, content }) => (
   <PageHeading style={{ margin: 0 }}>
     <FilterTitle>{label}</FilterTitle>
-    {option || (
+    {content || (
       <ButtonIconDanger
         tooltip="Reset"
         onClick={onClear}
@@ -56,6 +56,9 @@ const FilterContainer = ({ setLoading }) => {
 
     if (allFields.halfsem) setQueryString('halfsem', 'true')
     else deleteQueryString('halfsem')
+
+    if (allFields.running) setQueryString('running', 'true')
+    else deleteQueryString('running')
   }
 
   const semesterOptions = [
@@ -76,6 +79,8 @@ const FilterContainer = ({ setLoading }) => {
           parseInt(getQueryString('credits_max') ?? 9, 10),
         ],
         department: getQueryString('department')?.split(',') ?? undefined,
+        halfsem: getQueryString('halfsem') === 'true',
+        running: getQueryString('running') === 'true',
       }}
     >
       <FilterItem label="Semesters" onClear={handleFilterClear('semester')} />
@@ -86,8 +91,18 @@ const FilterContainer = ({ setLoading }) => {
       <FilterItem
         label="Half semester only"
         onClear={handleFilterClear('halfsem')}
-        option={
+        content={
           <Form.Item name="halfsem" valuePropName="checked">
+            <Switch />
+          </Form.Item>
+        }
+      />
+
+      <FilterItem
+        label="Running courses only"
+        onClear={handleFilterClear('running')}
+        content={
+          <Form.Item name="running" valuePropName="checked">
             <Switch />
           </Form.Item>
         }

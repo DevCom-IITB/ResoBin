@@ -32,4 +32,7 @@ export const rows = [
   { id: 'time-1930', title: '19:30' },
   { id: 'time-2000', title: '20:00' },
   { id: 'time-2030', title: '20:30' },
+  { id: 'time-2100', title: '21:00' },
+  { id: 'time-2130', title: '21:30' },
+  { id: 'time-2200', title: '22:00' },
 ]
