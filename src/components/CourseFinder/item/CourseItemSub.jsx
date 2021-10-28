@@ -17,8 +17,6 @@ import { coursePageUrl } from 'helpers/format'
 import { selectSemesters } from 'store/courseSlice'
 import { selectAllTimetable, updateTimetable } from 'store/userSlice'
 
-import CourseWorkload from './CourseWorkload'
-
 const SemesterItem = ({ data }) => {
   const dispatch = useDispatch()
   const userTimetableList = useSelector(selectAllTimetable)
@@ -103,7 +101,7 @@ const SemesterItem = ({ data }) => {
 
 // ? semester = ['autumn', 'spring']
 const CourseItemSub = ({ courseData }) => {
-  const { code, title, workload, semester, reviews, resources } = courseData
+  const { code, title, semester, reviews, resources } = courseData
   const [latestSemester] = useSelector(selectSemesters)?.slice(-1)
 
   const timetable = {
@@ -148,8 +146,6 @@ const CourseItemSub = ({ courseData }) => {
           Timetable entry not found
         </Title>
       )}
-
-      <CourseWorkload workload={workload} />
 
       <ButtonSquareLink
         to={`${coursePageUrl(code, title)}#reviews`}
