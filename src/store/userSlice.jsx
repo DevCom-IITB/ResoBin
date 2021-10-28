@@ -34,27 +34,21 @@ const userSlice = createSlice({
     reviewsVoted: [],
     resourcesPosted: [],
     resourcesRequested: [],
-    timetable: {
-      autumn: [],
-      spring: [],
-    },
+    timetable: [],
   },
 
   reducers: {
-    // remove favourite if in list else add to list
+    // ? remove if present in array else add
     updateFavourite(state, { payload }) {
       const index = state.favoriteCourses.indexOf(payload)
-
       if (index === -1) state.favoriteCourses.push(payload)
       else state.favoriteCourses.splice(index, 1)
     },
 
     updateTimetable(state, { payload }) {
-      const { courseCode, semester } = payload
-      const index = state.timetable[semester].indexOf(courseCode)
-
-      if (index === -1) state.timetable[semester].push(courseCode)
-      else state.timetable[semester].splice(index, 1)
+      const index = state.timetable.indexOf(payload)
+      if (index === -1) state.timetable.push(payload)
+      else state.timetable.splice(index, 1)
     },
   },
 
@@ -73,6 +67,7 @@ const userSlice = createSlice({
         state.reviewsVoted = payload.reviewsVoted
         state.resourcesPosted = payload.resourcesPosted
         state.resourcesRequested = payload.resourcesRequested
+        state.timetable = payload.timetable
         state.loading = false
       })
       // .addCase(getProfileAction.loading, (state) => {
@@ -154,12 +149,6 @@ export const selectFavouriteStatus = (courseCode) =>
   createSelector(
     selectFavouriteCourses,
     (favoriteCourse) => favoriteCourse.indexOf(courseCode) !== -1
-  )
-
-export const selectTimetableStatus = ({ courseCode, semester }) =>
-  createSelector(
-    selectAllTimetable,
-    (timetable) => timetable[semester].indexOf(courseCode) !== -1
   )
 
 export default userSlice.reducer

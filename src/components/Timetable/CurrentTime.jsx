@@ -2,16 +2,24 @@ import styled from 'styled-components/macro'
 
 const CurrentTime = ({
   mode = 'vertical',
-  column = 'col-1',
-  row = 'time-1100',
   circleDiameter = '0.5rem',
   lineThickness = '0.1rem',
 }) => {
+  const date = new Date()
+  const mins = String(30 * Math.floor(date.getMinutes() / 30))
+  const hours = String(date.getHours())
+  const day = date.getDay()
+  const time = `${hours.padStart(2, '0')}${mins.padStart(2, '0')}`
+
+  const isVisible = time > '0830' && time < '2100' && day > 1 && day < 7
+
   return (
-    <Container mode={mode} column={column} row={row}>
-      <Circle diameter={circleDiameter} mode={mode} />
-      <Line thickness={lineThickness} mode={mode} />
-    </Container>
+    isVisible && (
+      <Container mode={mode} column={`col-${day}`} row={`time-${time}`}>
+        <Circle diameter={circleDiameter} mode={mode} />
+        <Line thickness={lineThickness} mode={mode} />
+      </Container>
+    )
   )
 }
 
@@ -23,7 +31,6 @@ const Container = styled.div`
   grid-column: ${({ column }) => column};
   width: ${({ mode }) => (mode === 'vertical' ? '100%' : '0')};
   height: ${({ mode }) => (mode !== 'vertical' ? '100%' : '0')};
-  background: none;
 
   &:hover {
     opacity: 0.2;
@@ -37,7 +44,7 @@ const Circle = styled.div`
   width: calc(${({ diameter }) => diameter});
   height: calc(${({ diameter }) => diameter});
   border-radius: 50%;
-  background: #44475a;
+  background: ${({ theme }) => theme.logo};
 `
 
 const Line = styled.div`
@@ -51,5 +58,5 @@ const Line = styled.div`
   width: ${({ mode, thickness }) => (mode !== 'vertical' ? thickness : '100%')};
   height: ${({ mode, thickness }) =>
     mode === 'vertical' ? thickness : '100%'};
-  background: #44475a;
+  background: ${({ theme }) => theme.logo};
 `

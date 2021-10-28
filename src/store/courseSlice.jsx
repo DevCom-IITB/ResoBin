@@ -1,8 +1,7 @@
-import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import { API } from 'api'
-import { toastError } from 'components/toast'
 
 // ? async actions
 export const getCourseSlots = createAsyncThunk(
@@ -14,6 +13,11 @@ export const getCourseSlots = createAsyncThunk(
 export const getDepartmentList = createAsyncThunk(
   'courses/getDepartmentList',
   API.departments.list
+)
+
+export const getSemesterList = createAsyncThunk(
+  'courses/getSemesterList',
+  API.semesters.list
 )
 
 export const getResourceTags = createAsyncThunk(
@@ -41,6 +45,7 @@ const courseSlice = createSlice({
     checksum: '',
     lastUpdated: '',
     departments: [],
+    semesters: [],
     resources: {
       tags: [],
     },
@@ -92,6 +97,17 @@ const courseSlice = createSlice({
       state.loading = false
     },
 
+    [getSemesterList.fulfilled]: (state, { payload }) => {
+      state.semesters = payload?.reverse()
+      state.loading = false
+    },
+    [getSemesterList.pending]: (state) => {
+      state.loading = true
+    },
+    [getSemesterList.rejected]: (state) => {
+      state.loading = false
+    },
+
     [getCourseListMinified.fulfilled]: (state, { payload }) => {
       state.listMinified = payload
       state.loading = false
@@ -110,50 +126,9 @@ export const { updateChecksum } = courseSlice.actions
 
 // ? selectors
 export const selectCourseAPILoading = (state) => state.course.loading
-export const selectCourseSlots = (state) => state.course.slots
 export const selectResourceTags = (state) => state.course.resources.tags
 export const selectDepartments = (state) => state.course.departments
+export const selectSemesters = (state) => state.course.semesters
 export const selectCourseListMinified = (state) => state.course.listMinified
-
-// ! Remove in the future
-// https://stackoverflow.com/questions/62545632/how-to-pass-an-additional-argument-to-useselector
-export const selectCourseListByCourseCode = (courseCode) =>
-  createSelector(
-    (state) => state.course.list,
-    (courseList) => {
-      const matches = courseList.filter((course) => course.Code === courseCode)
-
-      switch (matches.length) {
-        case 0:
-          toastError(`Course: ${courseCode} does not exist`)
-          return null
-        case 1:
-          return matches[0]
-        default:
-          toastError(`Multiple matches found for course code: ${courseCode}`)
-          return matches[0]
-      }
-    }
-  )
-
-// ! Remove in the future
-// code: 'CL 152'  ->  slots: ['1A', '1B', '1C']
-export const selectCourseSlotsByCourseCode = (courseCode) =>
-  createSelector(selectCourseSlots, (courseSlotList) => {
-    const matches = courseSlotList.filter(
-      (course) => course.Code === courseCode
-    )
-
-    switch (matches.length) {
-      case 0:
-        // toastError(`Course: ${courseCode} is not running this semester`)
-        return null
-      case 1:
-        return matches[0].Slot
-      default:
-        toastError(`Multiple matches found for course code: ${courseCode}`)
-        return matches[0].Slot
-    }
-  })
 
 export default courseSlice.reducer

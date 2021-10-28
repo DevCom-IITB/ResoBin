@@ -11,6 +11,7 @@ import { selectAuthLoading } from 'store/authSlice'
 import {
   getResourceTags,
   getDepartmentList,
+  getSemesterList,
   getCourseListMinified,
   selectCourseAPILoading,
 } from 'store/courseSlice'
@@ -27,6 +28,7 @@ const Dashboard = () => {
     dispatch(getProfileAction())
     dispatch(getResourceTags())
     dispatch(getDepartmentList())
+    dispatch(getSemesterList())
     dispatch(getCourseListMinified())
   }, [dispatch])
 

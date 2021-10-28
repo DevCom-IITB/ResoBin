@@ -4,7 +4,11 @@ import { toastError } from 'components/toast'
 import { camelizeKeys, snakeizeKeys } from 'helpers/transformKeys'
 
 export const APIInstance = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL:
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:8000/api'
+      : 'http://10.105.177.70/api',
+
   timeout: 30000,
   xsrfCookieName: 'csrftoken',
   xsrfHeaderName: 'X-CSRFToken',
@@ -71,6 +75,17 @@ export const API = {
     },
 
     feed: async () => APIInstance.get('/accounts/profile/feed'),
+
+    timetable: {
+      read: async ({ season, year }) =>
+        APIInstance.get(
+          `/accounts/profile/semester/${season}-${year}/timetable`
+        ),
+      add: async ({ id }) =>
+        APIInstance.put(`/accounts/profile/timetable/${id}`),
+      remove: async ({ id }) =>
+        APIInstance.delete(`/accounts/profile/timetable/${id}`),
+    },
   },
 
   // * Courses endpoints
@@ -134,6 +149,10 @@ export const API = {
   departments: {
     list: async () => APIInstance.get('/departments'),
     detail: async ({ slug }) => APIInstance.get(`/departments/${slug}`),
+  },
+
+  semesters: {
+    list: async () => APIInstance.get('/semesters'),
   },
 
   // * Developer stats endpoints

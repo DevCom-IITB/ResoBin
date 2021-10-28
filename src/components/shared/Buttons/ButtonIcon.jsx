@@ -14,15 +14,6 @@ const defaultPopoverIcon = (
 
 const ButtonIconContainer = ({
   children,
-  shape = 'circle',
-  size = 'large',
-  icon,
-  tooltip = null,
-  color = null,
-  extrastyle = {},
-  hoverstyle = {},
-  onClick,
-  loading,
 
   // ? popover props
   popover = false,
@@ -30,6 +21,13 @@ const ButtonIconContainer = ({
   popoverTitle = 'Are you sure?',
   onConfirm = null,
   onCancel = () => {},
+
+  // ? button props
+  shape = 'circle',
+  size = 'large',
+  tooltip = null,
+  onClick,
+  ...props
 }) => {
   const [popoverVisible, setPopoverVisible] = useState(false)
 
@@ -55,16 +53,7 @@ const ButtonIconContainer = ({
       okText="Yes"
     >
       <Tooltip title={tooltip}>
-        <StyledButton
-          shape={shape}
-          type="text"
-          icon={icon}
-          size={size}
-          color={color}
-          extrastyle={extrastyle}
-          hoverstyle={hoverstyle}
-          loading={loading}
-        >
+        <StyledButton shape={shape} type="text" size={size} {...props}>
           {children}
         </StyledButton>
       </Tooltip>

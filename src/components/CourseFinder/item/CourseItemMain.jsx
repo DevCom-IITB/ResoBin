@@ -7,7 +7,7 @@ import styled, { css } from 'styled-components/macro'
 import { API } from 'api'
 import { ButtonIcon } from 'components/shared'
 import { toastError } from 'components/toast'
-import { coursePageUrl } from 'paths'
+import { coursePageUrl } from 'helpers/format'
 import { selectDepartments } from 'store/courseSlice'
 import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
 import { device, fontSize } from 'styles/responsive'
@@ -17,7 +17,7 @@ import ParseDescription from '../ParseDescription'
 
 const CourseItemMain = ({ courseData }) => {
   const dispatch = useDispatch()
-  const { code, credit, department, title, description } = courseData
+  const { code, credits, department, title, description } = courseData
 
   const [loading, setLoading] = useState(false)
 
@@ -54,7 +54,7 @@ const CourseItemMain = ({ courseData }) => {
         </DepartmentContainer>
 
         <RightIcons>
-          <CreditContainer small={credit > 9}>{credit}</CreditContainer>
+          <CreditContainer small={credits > 9}>{credits}</CreditContainer>
 
           <ButtonIcon
             tooltip="Add to favorites"

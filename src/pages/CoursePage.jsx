@@ -11,7 +11,7 @@ import {
 } from 'components/CoursePage'
 import { LoaderAnimation } from 'components/shared'
 import { toastError } from 'components/toast'
-import { coursePageUrl } from 'paths'
+import { coursePageUrl } from 'helpers/format'
 import { device } from 'styles/responsive'
 
 const CoursePage = ({ match }) => {

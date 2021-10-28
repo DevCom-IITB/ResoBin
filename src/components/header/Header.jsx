@@ -2,7 +2,28 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { ResoBinLogo } from 'components/shared'
+import { displayYear } from 'helpers/format'
+import { selectSemesters } from 'store/courseSlice'
 import { device } from 'styles/responsive'
+
+const Header = () => {
+  const { isAuthenticated } = useSelector((state) => state.auth)
+  const [semester] = useSelector(selectSemesters)?.slice(-1)
+
+  return (
+    <Container>
+      <ResoBinLogo size="1.5rem" />
+      {isAuthenticated && (
+        <Term>
+          AY {displayYear(semester?.year)}
+          &nbsp;| {semester?.season}
+        </Term>
+      )}
+    </Container>
+  )
+}
+
+export default Header
 
 const Container = styled.div`
   position: sticky;
@@ -19,6 +40,7 @@ const Container = styled.div`
 
 const Term = styled.span`
   display: none;
+  text-transform: uppercase;
 
   @media ${device.min.md} {
     position: absolute;
@@ -37,16 +59,3 @@ const Term = styled.span`
     padding: 0 0.75rem;
   }
 `
-
-const Header = () => {
-  const { isAuthenticated } = useSelector((state) => state.auth)
-
-  return (
-    <Container>
-      <ResoBinLogo size="1.5rem" />
-      {isAuthenticated && <Term>AY 2021/22 | AUTUMN</Term>}
-    </Container>
-  )
-}
-
-export default Header

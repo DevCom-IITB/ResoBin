@@ -71,7 +71,7 @@ const CourseResourceContainer = () => {
         <ButtonContainer>
           <ButtonSwitch
             type="primary"
-            active={requestResource.status ? 1 : 0}
+            $active={requestResource.status}
             onClick={handleResourceRequest}
             style={{ marginRight: '0.75rem' }}
             icon={<UserGroup size="18" style={{ marginRight: '0.25rem' }} />}
