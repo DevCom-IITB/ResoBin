@@ -1,22 +1,23 @@
 {
   "courseTags": [
-    "Institute Elective",
     "Additional Learning",
-    "Minor",
+    "Core",
     "Department Elective",
-    "Major",
-    "Seminar",
+    "Institute Elective",
+    "Lab",
+    "Minor",
     "Project",
-    "Lab"
+    "Seminar"
   ],
   "resourceTags": [
-    "Material",
+    "Assignment",
+    "Endsem",
     "Extra notes",
     "Lecture slides",
-    "Study material",
-    "Notes",
-    "Endsem",
+    "Material",
     "Midsem",
-    "Quiz"
+    "Notes",
+    "Quiz",
+    "Study material"
   ]
 }

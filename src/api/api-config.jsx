@@ -123,10 +123,6 @@ export const API = {
       remove: async ({ code }) =>
         APIInstance.delete(`/accounts/profile/course/${code}/request/resource`),
     },
-
-    tags: {
-      list: async () => APIInstance.get(`/resources/tags`),
-    },
   },
 
   // * Reviews endpoints
@@ -153,6 +149,11 @@ export const API = {
 
   semesters: {
     list: async () => APIInstance.get('/semesters'),
+  },
+
+  // * Stats endpoint
+  stats: {
+    list: async () => APIInstance.get('/stats'),
   },
 
   // * Developer stats endpoints

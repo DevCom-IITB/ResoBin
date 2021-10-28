@@ -80,7 +80,7 @@ const FilterContainer = ({ setLoading }) => {
     })
   )
 
-  const tagOptions = tags?.courseTags?.map((tag) => ({
+  const tagOptions = tags.courseTags.map((tag) => ({
     label: tag,
     value: kebabCase(tag),
   }))

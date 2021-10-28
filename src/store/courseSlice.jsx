@@ -20,11 +20,6 @@ export const getSemesterList = createAsyncThunk(
   API.semesters.list
 )
 
-export const getResourceTags = createAsyncThunk(
-  'courses/getResourceTags',
-  API.resources.tags.list
-)
-
 export const getCourseListMinified = createAsyncThunk(
   'courses/getCourseListMinified',
   () =>
@@ -46,9 +41,6 @@ const courseSlice = createSlice({
     lastUpdated: '',
     departments: [],
     semesters: [],
-    resources: {
-      tags: [],
-    },
   },
 
   reducers: {
@@ -70,19 +62,6 @@ const courseSlice = createSlice({
       state.loading = true
     },
     [getCourseSlots.rejected]: (state) => {
-      state.loading = false
-    },
-
-    [getResourceTags.fulfilled]: (state, { payload }) => {
-      state.resources = {
-        tags: payload,
-      }
-      state.loading = false
-    },
-    [getResourceTags.pending]: (state) => {
-      state.loading = true
-    },
-    [getResourceTags.rejected]: (state) => {
       state.loading = false
     },
 
@@ -126,7 +105,6 @@ export const { updateChecksum } = courseSlice.actions
 
 // ? selectors
 export const selectCourseAPILoading = (state) => state.course.loading
-export const selectResourceTags = (state) => state.course.resources.tags
 export const selectDepartments = (state) => state.course.departments
 export const selectSemesters = (state) => state.course.semesters
 export const selectCourseListMinified = (state) => state.course.listMinified

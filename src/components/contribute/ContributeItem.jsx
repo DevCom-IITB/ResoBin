@@ -1,4 +1,5 @@
 import { Button, Input, Progress, Select, Tooltip } from 'antd'
+import { kebabCase } from 'lodash'
 import { rgba } from 'polished'
 import { useDropzone } from 'react-dropzone'
 import { useSelector } from 'react-redux'
@@ -10,8 +11,8 @@ import { Form, LoaderAnimation } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
 import { toastError } from 'components/toast'
 import { defaultFile, fileTypes, getFileDetails } from 'data/CourseResources'
+import tags from 'data/tags.json'
 import {
-  selectResourceTags,
   selectCourseListMinified,
   selectCourseAPILoading,
 } from 'store/courseSlice'
@@ -106,9 +107,9 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
     deleteFileItem(fileItem.id)
   }
 
-  const tagOptions = useSelector(selectResourceTags)?.map(({ tag }) => ({
+  const tagOptions = tags.resourceTags.map((tag) => ({
     label: tag,
-    value: tag,
+    value: kebabCase(tag),
   }))
 
   const courseOptions = useSelector(selectCourseListMinified)?.map(
