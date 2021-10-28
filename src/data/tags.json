@@ -1,13 +1,15 @@
 {
   "courseTags": [
-    "Additional Learning",
     "Core",
-    "Department Elective",
-    "Institute Elective",
+    "Elective",
     "Lab",
     "Minor",
-    "Project",
-    "Seminar"
+    "Non Credit",
+    "Project Stage 1",
+    "Project Stage 2",
+    "SEP courses",
+    "Seminar",
+    "Theory"
   ],
   "resourceTags": [
     "Assignment",
