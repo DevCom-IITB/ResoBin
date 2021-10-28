@@ -15,6 +15,7 @@ const filterKeys = [
   'credits_max',
   'halfsem',
   'running',
+  'tags',
 ]
 
 export const FilterDropdown = ({ showFilter, setLoading }) => {

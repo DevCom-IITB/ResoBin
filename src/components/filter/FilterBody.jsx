@@ -1,10 +1,12 @@
 import { X } from '@styled-icons/heroicons-outline'
 import { Checkbox, Select, Slider, Switch } from 'antd'
+import { kebabCase } from 'lodash'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { Form, PageHeading } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
+import tags from 'data/tags.json'
 import { useQueryString } from 'hooks'
 import { selectDepartments } from 'store/courseSlice'
 
@@ -26,18 +28,22 @@ const FilterContainer = ({ setLoading }) => {
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
   const [form] = Form.useForm()
 
-  const departmentOptions = useSelector(selectDepartments)?.map(
-    (department) => ({
-      label: department.name,
-      value: department.slug,
-    })
-  )
-
-  const handleFilterClear =
-    (...params) =>
-    () => {
-      deleteQueryString(...params, 'p')
+  const handleFilterClear = (formField, qsFields) => () => {
+    const defaultInitialValues = {
+      semester: [],
+      credits: [2, 9],
+      halfsem: false,
+      running: false,
+      department: [],
+      tags: [],
     }
+
+    form.setFieldsValue({
+      [formField]: defaultInitialValues[formField],
+    })
+
+    deleteQueryString(...qsFields, 'p')
+  }
 
   const handleFilterUpdate = (_, allFields) => {
     setLoading(true)
@@ -53,6 +59,7 @@ const FilterContainer = ({ setLoading }) => {
 
     setQueryString('department', allFields.department)
     setQueryString('semester', allFields.semester)
+    setQueryString('tags', allFields.tags)
 
     if (allFields.halfsem) setQueryString('halfsem', 'true')
     else deleteQueryString('halfsem')
@@ -66,6 +73,18 @@ const FilterContainer = ({ setLoading }) => {
     { label: 'Spring', value: 'spring' },
   ]
 
+  const departmentOptions = useSelector(selectDepartments)?.map(
+    (department) => ({
+      label: department.name,
+      value: department.slug,
+    })
+  )
+
+  const tagOptions = tags?.courseTags?.map((tag) => ({
+    label: tag,
+    value: kebabCase(tag),
+  }))
+
   return (
     <Form
       form={form}
@@ -74,13 +93,14 @@ const FilterContainer = ({ setLoading }) => {
       onValuesChange={handleFilterUpdate}
       initialValues={{
         semester: getQueryString('semester')?.split(',') ?? [],
+        halfsem: getQueryString('halfsem') === 'true',
+        running: getQueryString('running') === 'true',
         credits: [
           parseInt(getQueryString('credits_min') ?? 2, 10),
           parseInt(getQueryString('credits_max') ?? 9, 10),
         ],
-        department: getQueryString('department')?.split(',') ?? undefined,
-        halfsem: getQueryString('halfsem') === 'true',
-        running: getQueryString('running') === 'true',
+        department: getQueryString('department')?.split(',') ?? [],
+        tags: getQueryString('tags')?.split(',') ?? [],
       }}
     >
       <FilterItem label="Semesters" onClear={handleFilterClear('semester')} />
@@ -90,7 +110,7 @@ const FilterContainer = ({ setLoading }) => {
 
       <FilterItem
         label="Half semester only"
-        onClear={handleFilterClear('halfsem')}
+        onClear={handleFilterClear('halfsem', ['halfsem'])}
         content={
           <Form.Item name="halfsem" valuePropName="checked">
             <Switch />
@@ -100,7 +120,7 @@ const FilterContainer = ({ setLoading }) => {
 
       <FilterItem
         label="Running courses only"
-        onClear={handleFilterClear('running')}
+        onClear={handleFilterClear('running', ['running'])}
         content={
           <Form.Item name="running" valuePropName="checked">
             <Switch />
@@ -110,7 +130,7 @@ const FilterContainer = ({ setLoading }) => {
 
       <FilterItem
         label="Credits"
-        onClear={handleFilterClear('credits_min', 'credits_max')}
+        onClear={handleFilterClear('credits', ['credits_min', 'credits_max'])}
       />
       <Form.Item name="credits">
         <Slider
@@ -135,14 +155,23 @@ const FilterContainer = ({ setLoading }) => {
 
       <FilterItem
         label="Departments"
-        onClear={handleFilterClear('department')}
+        onClear={handleFilterClear('department', ['department'])}
       />
       <Form.Item name="department">
         <Select
           mode="multiple"
           options={departmentOptions}
           placeholder="Type something..."
-          allowClear
+          showArrow
+        />
+      </Form.Item>
+
+      <FilterItem label="Tags" onClear={handleFilterClear('tags', ['tags'])} />
+      <Form.Item name="tags">
+        <Select
+          mode="multiple"
+          options={tagOptions}
+          placeholder="Select something..."
           showArrow
         />
       </Form.Item>

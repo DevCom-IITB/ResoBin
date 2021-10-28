@@ -41,6 +41,7 @@ const CourseFinderContainer = () => {
       credits_min: filter.credits_min,
       credits_max: filter.credits_max,
       semester: filter.semester,
+      tags: filter.tags,
     }
 
     fetchCourses(params)
