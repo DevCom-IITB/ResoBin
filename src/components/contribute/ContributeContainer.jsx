@@ -6,11 +6,11 @@ import { Plus } from 'styled-icons/heroicons-outline'
 
 import { API } from 'api'
 import { CourseResourceGrid } from 'components/CourseResource'
-import { Aside, ButtonSquare, PageHeading, PageTitle } from 'components/shared'
+import { Aside, ButtonSquare, PageTitle } from 'components/shared'
 import { toastError } from 'components/toast'
 import { useViewportContext } from 'context/ViewportContext'
 import { defaultFile, fileTypes } from 'data/CourseResources'
-import { breakpoints, device } from 'styles/responsive'
+import { breakpoints } from 'styles/responsive'
 
 import ContributeItem from './ContributeItem'
 
@@ -67,11 +67,7 @@ const ContributeContainer = ({ visible, setVisible }) => {
   }
 
   return (
-    <Container>
-      <PageHeading>
-        <PageTitle>Contribute</PageTitle>
-      </PageHeading>
-
+    <>
       <PageTitle style={{ padding: '1.5rem', fontSize: '1rem' }}>
         Please upload documents only in the following formats:
         {fileTypes.map(({ extention }) => (
@@ -106,20 +102,11 @@ const ContributeContainer = ({ visible, setVisible }) => {
       >
         <CourseResourceGrid items={myResources} />
       </Aside>
-    </Container>
+    </>
   )
 }
 
 export default ContributeContainer
-
-const Container = styled.div`
-  min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
-  padding-top: 0.5rem;
-
-  @media ${device.min.lg} {
-    margin-right: ${({ theme }) => theme.asideWidthRight};
-  }
-`
 
 const FileList = styled.div`
   display: flex;
