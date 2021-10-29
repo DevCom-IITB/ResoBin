@@ -35,7 +35,7 @@ const Container = styled.div`
   background: ${({ theme }) => theme.secondary};
 
   @media ${device.max.md} {
-    margin: 1rem 0.75rem;
+    margin-top: 0.75rem;
   }
 `
 

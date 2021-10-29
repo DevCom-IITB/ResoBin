@@ -4,7 +4,6 @@ import styled from 'styled-components/macro'
 import { CourseResourceContainer } from 'components/CourseResource'
 import { CourseReviewContainer } from 'components/CourseReview'
 import { Aside, Tabs } from 'components/shared'
-import { device } from 'styles/responsive'
 
 import CoursePageBody from './CoursePageBody'
 
@@ -52,8 +51,4 @@ const Container = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.textColor};
   background: ${({ theme }) => theme.secondary};
-
-  @media ${device.max.md} {
-    margin: 1rem 0.75rem;
-  }
 `

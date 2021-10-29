@@ -6,13 +6,6 @@ import styled from 'styled-components/macro'
 import { useViewportContext } from 'context/ViewportContext'
 import { breakpoints } from 'styles/responsive'
 
-const StyledIcon = styled(({ Icon, className, ...props }) => {
-  return <Icon {...props} className={className} />
-})`
-  width: 0.9rem;
-  margin-right: 0.25rem;
-`
-
 const CoursePageBreadcrumbs = ({ courseTitle }) => {
   const { width } = useViewportContext()
 
@@ -44,8 +37,7 @@ export default CoursePageBreadcrumbs
 const StyledBreadcrumb = styled(Breadcrumb)`
   display: flex;
   align-items: center;
-  height: 3rem;
-  margin: 0 1.5rem;
+  margin: 0.75rem;
   font-size: 1rem;
 
   & > span {
@@ -54,6 +46,7 @@ const StyledBreadcrumb = styled(Breadcrumb)`
 
   .ant-breadcrumb-separator {
     color: ${({ theme }) => theme.textColor};
+    margin: 0 1rem;
   }
 
   .ant-breadcrumb-link {
@@ -64,7 +57,7 @@ const StyledBreadcrumb = styled(Breadcrumb)`
 
     a {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       color: ${({ theme }) => theme.textColor};
 
       &:hover {
@@ -73,4 +66,10 @@ const StyledBreadcrumb = styled(Breadcrumb)`
       }
     }
   }
+`
+
+const StyledIcon = styled(({ Icon, className, ...props }) => {
+  return <Icon {...props} size="20" className={className} />
+})`
+  margin-right: 0.25rem;
 `
