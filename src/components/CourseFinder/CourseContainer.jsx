@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import styled from 'styled-components/macro'
 
 import { API } from 'api'
 import { CourseList, CourseSearch } from 'components/CourseFinder'
@@ -48,7 +47,7 @@ const CourseFinderContainer = () => {
   }, [getQueryString])
 
   return (
-    <Container>
+    <>
       <CourseSearch
         loading={loading}
         setLoading={setLoading}
@@ -69,12 +68,8 @@ const CourseFinderContainer = () => {
         loading={loading}
         setLoading={setLoading}
       />
-    </Container>
+    </>
   )
 }
 
 export default CourseFinderContainer
-
-const Container = styled.div`
-  width: 100%;
-`

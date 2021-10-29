@@ -29,7 +29,7 @@ export default CoursePageBody
 
 const Container = styled.div`
   padding: 1.5rem 1rem;
-  margin: 0 0.75rem 0.75rem;
+  margin-bottom: 0.75rem;
   border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.textColor};
   background: ${({ theme }) => theme.secondary};

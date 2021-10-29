@@ -44,7 +44,7 @@ const TimetableContainer = () => {
     semIdx + 1 in semesterList && setSemIdx(semIdx + 1)
 
   return (
-    <Container>
+    <>
       <TimetableSemesterTitle>
         <ButtonIcon
           color="white"
@@ -87,22 +87,18 @@ const TimetableContainer = () => {
             <h1 key={id}>{course}</h1>
           ))}
       </Aside>
-    </Container>
+    </>
   )
 }
 
 export default TimetableContainer
-
-const Container = styled.div`
-  margin: 0 0.75rem;
-`
 
 const TimetableSemesterTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  margin: 1rem 0;
+  margin: 0.75rem 0;
   font-size: 1.25rem;
   color: white;
   text-transform: capitalize;

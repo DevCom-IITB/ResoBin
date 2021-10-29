@@ -24,6 +24,7 @@ export const PageSubtitle = styled.span`
 export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
+  /* gap: 1rem; */
   min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
   padding: 0 0.75rem;
   transition: margin 200ms ease-in;

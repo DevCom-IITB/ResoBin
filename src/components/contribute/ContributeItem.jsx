@@ -251,8 +251,6 @@ const TooltipContainer = styled.div`
 const ItemContainer = styled.div`
   display: flex;
   padding: 1.5rem 1rem;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
   border-radius: 0.5rem;
   background-color: ${({ theme }) => theme.secondary};
 `

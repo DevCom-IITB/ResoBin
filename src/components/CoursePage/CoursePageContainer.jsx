@@ -3,7 +3,7 @@ import styled from 'styled-components/macro'
 
 import { CourseResourceContainer } from 'components/CourseResource'
 import { CourseReviewContainer } from 'components/CourseReview'
-import { Tabs } from 'components/shared'
+import { Aside, Tabs } from 'components/shared'
 import { device } from 'styles/responsive'
 
 import CoursePageBody from './CoursePageBody'
@@ -37,6 +37,10 @@ const CoursePageContainer = ({ courseData }) => {
           </Tabs.TabPane>
         </Tabs>
       </Container>
+
+      <Aside title="Course stats">
+        <h1>Hello World</h1>
+      </Aside>
     </>
   )
 }
@@ -45,7 +49,6 @@ export default CoursePageContainer
 
 const Container = styled.div`
   padding: 1.5rem 1rem;
-  margin: 0 0.75rem 0.75rem;
   border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.textColor};
   background: ${({ theme }) => theme.secondary};

@@ -68,7 +68,7 @@ const ContributeContainer = ({ visible, setVisible }) => {
 
   return (
     <>
-      <PageTitle style={{ padding: '1.5rem', fontSize: '1rem' }}>
+      <PageTitle style={{ fontSize: '1rem' }}>
         Please upload documents only in the following formats:
         {fileTypes.map(({ extention }) => (
           <code key={extention}> {extention}</code>
@@ -110,9 +110,7 @@ export default ContributeContainer
 
 const FileList = styled.div`
   display: flex;
-  overflow-y: auto;
   flex-direction: column;
-  height: calc(100% - 20rem);
-  padding: 1rem 0.75rem 1rem 0;
+  margin: 1.5rem 0;
   gap: 1rem;
 `
