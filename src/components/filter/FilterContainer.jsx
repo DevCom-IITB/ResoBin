@@ -67,10 +67,9 @@ const ContainerDropdown = styled.div`
   top: 2rem;
   z-index: 5;
   overflow: auto;
-  width: calc(100% - 1.5rem);
+  width: 100%;
   height: ${({ showFilter }) => (showFilter ? 'calc(100vh - 5rem)' : '0')};
   padding: ${({ showFilter }) => (showFilter ? '1rem 0 20rem' : '0')};
-  margin: 0 0.75rem;
   background: ${({ theme }) => theme.secondary};
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   transition: 200ms;
