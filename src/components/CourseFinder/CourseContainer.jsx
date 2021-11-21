@@ -4,12 +4,10 @@ import { API } from 'api'
 import { CourseList, CourseSearch } from 'components/CourseFinder'
 import { FilterAside, FilterFloatButton } from 'components/filter'
 import { toastError } from 'components/toast'
-import { useViewportContext } from 'context/ViewportContext'
-import { useQueryString } from 'hooks'
-import { breakpoints } from 'styles/responsive'
+import { useQueryString, useResponsive } from 'hooks'
 
 const CourseFinderContainer = () => {
-  const { width } = useViewportContext()
+  const { isDesktop } = useResponsive()
   const { getQueryString } = useQueryString()
 
   const [showFilter, setShowFilter] = useState(false)
@@ -51,7 +49,7 @@ const CourseFinderContainer = () => {
       <CourseSearch
         loading={loading}
         setLoading={setLoading}
-        showFilter={width < breakpoints.lg && showFilter}
+        showFilter={!isDesktop && showFilter}
       />
 
       {/* For desktops */}

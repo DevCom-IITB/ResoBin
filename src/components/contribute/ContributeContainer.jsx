@@ -8,9 +8,8 @@ import { API } from 'api'
 import { CourseResourceGrid } from 'components/CourseResource'
 import { Aside, ButtonSquare, PageTitle } from 'components/shared'
 import { toastError } from 'components/toast'
-import { useViewportContext } from 'context/ViewportContext'
 import { defaultFile, fileTypes } from 'data/CourseResources'
-import { breakpoints } from 'styles/responsive'
+import { useResponsive } from 'hooks'
 
 import ContributeItem from './ContributeItem'
 
@@ -23,10 +22,10 @@ const defaultFileItem = (details) => ({
 })
 
 const ContributeContainer = ({ visible, setVisible }) => {
+  const { isDesktop } = useResponsive()
   const location = useLocation()
   const queryString = new URLSearchParams(location.search)
   const course = queryString.get('course')
-  const { width } = useViewportContext()
 
   const [fileList, setFileList] = useState([defaultFileItem({ course })])
   const [myResources, setMyResources] = useState([])
@@ -95,11 +94,7 @@ const ContributeContainer = ({ visible, setVisible }) => {
         Add new
       </ButtonSquare>
 
-      <Aside
-        title="My uploads"
-        loading={APILoading}
-        visible={width >= breakpoints.lg}
-      >
+      <Aside title="My uploads" loading={APILoading} visible={isDesktop}>
         <CourseResourceGrid items={myResources} />
       </Aside>
     </>

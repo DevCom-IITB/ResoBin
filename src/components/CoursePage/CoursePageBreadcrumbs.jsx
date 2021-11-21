@@ -3,13 +3,13 @@ import { Breadcrumb } from 'antd'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { useViewportContext } from 'context/ViewportContext'
-import { breakpoints } from 'styles/responsive'
+import { useResponsive } from 'hooks'
 
 const CoursePageBreadcrumbs = ({ courseTitle }) => {
-  const { width } = useViewportContext()
+  const { isMobile } = useResponsive()
+  if (isMobile) return null
 
-  return width < breakpoints.md ? null : (
+  return (
     <StyledBreadcrumb separator=">">
       <Breadcrumb.Item>
         <Link to="/">

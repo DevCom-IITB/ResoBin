@@ -1,8 +1,7 @@
 import styled from 'styled-components/macro'
 
 import { Divider, LoaderAnimation } from 'components/shared'
-import { useViewportContext } from 'context/ViewportContext'
-import { breakpoints } from 'styles/responsive'
+import { useResponsive } from 'hooks'
 
 export const AsideContainer = ({
   title,
@@ -11,36 +10,34 @@ export const AsideContainer = ({
   loadingComponent,
   visible,
   children,
-}) => {
-  return (
-    <Container visible={visible}>
-      {title && (
-        <>
-          <Header>
-            <Title>{title}</Title>
-            {subtitle}
-          </Header>
+}) => (
+  <Container visible={visible}>
+    {title && (
+      <>
+        <Header>
+          <Title>{title}</Title>
+          {subtitle}
+        </Header>
 
-          <Divider />
-        </>
-      )}
+        <Divider />
+      </>
+    )}
 
-      {loading && (
-        <>
-          <LoaderAnimation />
-          {loadingComponent}
-        </>
-      )}
+    {loading && (
+      <>
+        <LoaderAnimation />
+        {loadingComponent}
+      </>
+    )}
 
-      <Children>{children}</Children>
-    </Container>
-  )
-}
+    <Children>{children}</Children>
+  </Container>
+)
 
 const Aside = (params) => {
-  const { width } = useViewportContext()
+  const { isDesktop } = useResponsive()
 
-  return <AsideContainer {...params} visible={width >= breakpoints.lg} />
+  return <AsideContainer {...params} visible={isDesktop} />
 }
 
 export default Aside
