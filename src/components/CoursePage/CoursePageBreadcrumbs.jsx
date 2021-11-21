@@ -1,4 +1,4 @@
-import { BookOpen, Home } from '@styled-icons/heroicons-outline'
+import { BookOpen, Home, ChevronRight } from '@styled-icons/heroicons-outline'
 import { Breadcrumb } from 'antd'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
@@ -10,7 +10,7 @@ const CoursePageBreadcrumbs = ({ courseTitle }) => {
   if (isMobile) return null
 
   return (
-    <StyledBreadcrumb separator=">">
+    <StyledBreadcrumb separator={<StyledIcon Icon={ChevronRight} />}>
       <Breadcrumb.Item>
         <Link to="/">
           <StyledIcon Icon={Home} />
@@ -37,16 +37,11 @@ export default CoursePageBreadcrumbs
 const StyledBreadcrumb = styled(Breadcrumb)`
   display: flex;
   align-items: center;
-  margin: 0.75rem;
+  margin: 1rem;
   font-size: 1rem;
 
   & > span {
     display: flex;
-  }
-
-  .ant-breadcrumb-separator {
-    color: ${({ theme }) => theme.textColor};
-    margin: 0 1rem;
   }
 
   .ant-breadcrumb-link {
@@ -56,8 +51,9 @@ const StyledBreadcrumb = styled(Breadcrumb)`
     color: ${({ theme }) => theme.primary};
 
     a {
+      gap: 0.5rem;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       color: ${({ theme }) => theme.textColor};
 
       &:hover {
@@ -68,8 +64,9 @@ const StyledBreadcrumb = styled(Breadcrumb)`
   }
 `
 
-const StyledIcon = styled(({ Icon, className, ...props }) => {
-  return <Icon {...props} size="20" className={className} />
-})`
-  margin-right: 0.25rem;
+const StyledIcon = styled(({ Icon, className, ...props }) => (
+  <Icon {...props} className={className} />
+))`
+  height: 24px;
+  color: ${({ theme }) => theme.textColor};
 `
