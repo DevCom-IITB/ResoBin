@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
-import { Tabs, ButtonSwitch } from 'components/shared'
+import { Tabs, ButtonSwitch, Divider } from 'components/shared'
 import { ButtonSquareLink } from 'components/shared/Buttons'
 import { toastError } from 'components/toast'
 import { coursePageUrl } from 'helpers/format'
@@ -45,8 +45,12 @@ const SemesterItem = ({ data }) => {
   const handleClick = (id) => async () => {
     try {
       setLoading(true)
-      if (selected) await API.profile.timetable.remove({ id })
-      else await API.profile.timetable.add({ id })
+      if (selected) {
+        await API.profile.timetable.remove({ id })
+      } else {
+        await API.profile.timetable.add({ id })
+      }
+
       dispatch(updateTimetable(id))
     } catch (error) {
       toastError(error)
@@ -73,15 +77,15 @@ const SemesterItem = ({ data }) => {
         $active={selected !== null}
         icon={<Calendar size="18" style={{ marginRight: '0.5rem' }} />}
         loading={loading}
-        style={{ margin: '0.75rem 0 1rem', width: '100%' }}
+        style={{ margin: '0.75rem 0 0', width: '100%' }}
       >
         {selected !== null ? (
           `Remove ${selected.division}`
         ) : (
-          <>
+          <SpaceBetween>
             Timetable
-            <ChevronDown size="16" style={{ marginLeft: '1rem' }} />
-          </>
+            <ChevronDown size="16" />
+          </SpaceBetween>
         )}
       </ButtonSwitch>
     </Dropdown>
@@ -92,7 +96,7 @@ const SemesterItem = ({ data }) => {
       icon={<Calendar size="18" style={{ marginRight: '0.5rem' }} />}
       onClick={handleClick(selected ? selected.id : data[0].id)}
       loading={loading}
-      style={{ margin: '0.75rem 0 1rem', width: '100%' }}
+      style={{ margin: '0.75rem 0 0', width: '100%' }}
     >
       {selected !== null ? `Remove ${selected.division}` : 'Timetable'}
     </ButtonSwitch>
@@ -113,9 +117,11 @@ const CourseItemSub = ({ courseData }) => {
   const resourceCount = resources?.length
 
   let semTabInitialValue = latestSemester?.season
-  if (!timetable.spring.length && !timetable.autumn.length)
+  if (!timetable.spring.length && !timetable.autumn.length) {
     semTabInitialValue = null
-  else if (!timetable.autumn.length) semTabInitialValue = 'spring'
+  } else if (!timetable.autumn.length) {
+    semTabInitialValue = 'spring'
+  }
 
   return (
     <>
@@ -142,23 +148,27 @@ const CourseItemSub = ({ courseData }) => {
           </Tabs.TabPane>
         </Tabs>
       ) : (
-        <Title style={{ marginBottom: '1rem', opacity: 0.8 }}>
+        <Title style={{ margin: 0, opacity: 0.8 }}>
           Timetable entry not found
         </Title>
       )}
 
-      <ButtonSquareLink
-        to={`${coursePageUrl(code, title)}#reviews`}
-        style={{ marginBottom: '0.75rem' }}
-      >
-        <ChatAlt size="18" style={{ marginRight: '0.5rem' }} />
-        Reviews ({reviewCount})
-      </ButtonSquareLink>
+      {<Divider margin="0.75rem 0" />}
 
-      <ButtonSquareLink to={`${coursePageUrl(code, title)}#resources`}>
-        <DocumentText size="18" style={{ marginRight: '0.5rem' }} />
-        Resources ({resourceCount})
-      </ButtonSquareLink>
+      <div>
+        <ButtonSquareLink
+          to={`${coursePageUrl(code, title)}#reviews`}
+          style={{ marginBottom: '0.75rem' }}
+        >
+          <ChatAlt size="18" style={{ marginRight: '0.5rem' }} />
+          Reviews ({reviewCount})
+        </ButtonSquareLink>
+
+        <ButtonSquareLink to={`${coursePageUrl(code, title)}#resources`}>
+          <DocumentText size="18" style={{ marginRight: '0.5rem' }} />
+          Resources ({resourceCount})
+        </ButtonSquareLink>
+      </div>
     </>
   )
 }
@@ -172,4 +182,11 @@ const Title = styled.span`
   font-weight: 400;
   letter-spacing: 1.5px;
   color: ${({ theme }) => theme.textColor};
+`
+
+const SpaceBetween = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 `
