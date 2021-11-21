@@ -99,9 +99,9 @@ export const API = {
 
     favorite: {
       add: async ({ code }) =>
-        APIInstance.put(`/accounts/profile/course/${code}/favorite`),
+        APIInstance.put(`/accounts/profile/courses/${code}/favorite`),
       remove: async ({ code }) =>
-        APIInstance.delete(`/accounts/profile/course/${code}/favorite`),
+        APIInstance.delete(`/accounts/profile/courses/${code}/favorite`),
     },
   },
 
@@ -119,9 +119,11 @@ export const API = {
 
     request: {
       add: async ({ code }) =>
-        APIInstance.put(`/accounts/profile/course/${code}/request/resource`),
+        APIInstance.put(`/accounts/profile/courses/${code}/request/resource`),
       remove: async ({ code }) =>
-        APIInstance.delete(`/accounts/profile/course/${code}/request/resource`),
+        APIInstance.delete(
+          `/accounts/profile/courses/${code}/request/resource`
+        ),
     },
   },
 
@@ -135,9 +137,16 @@ export const API = {
 
     request: {
       add: async ({ code }) =>
-        APIInstance.put(`/accounts/profile/course/${code}/request/review`),
+        APIInstance.put(`/accounts/profile/courses/${code}/request/review`),
       remove: async ({ code }) =>
-        APIInstance.delete(`/accounts/profile/course/${code}/request/review`),
+        APIInstance.delete(`/accounts/profile/courses/${code}/request/reviews`),
+    },
+
+    vote: {
+      add: async ({ id }) =>
+        APIInstance.put(`/accounts/profile/reviews/${id}/vote`),
+      remove: async ({ id }) =>
+        APIInstance.delete(`/accounts/profile/reviews/${id}/vote`),
     },
   },
 

@@ -3,28 +3,45 @@ import { ThumbUp as HeartFilled } from '@styled-icons/heroicons-solid'
 import { Button, Comment } from 'antd'
 import DOMPurify from 'dompurify'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
 import { ButtonIcon, Timestamp } from 'components/shared'
 import { UserAvatar } from 'components/shared/Avatar'
 import { toastError } from 'components/toast'
-import { selectUserProfile } from 'store/userSlice'
+import {
+  selectUserProfile,
+  selectReviewVoteStatus,
+  updateReviewsVoted,
+} from 'store/userSlice'
 
 import { Editor, ReviewEditor } from './Editor'
 
 const CourseReviewItem = ({ content, updateContent, depth }) => {
-  const [likeStatus, setLikeStatus] = useState(false)
-  const [likeCount, setLikeCount] = useState(content.votesCount)
+  const dispatch = useDispatch()
+
+  const voteStatus = useSelector(selectReviewVoteStatus(content.id))
+  const [voteCount, setVoteCount] = useState(content.votersCount)
   const [action, setAction] = useState(null)
 
   const profile = useSelector(selectUserProfile)
   const isOwner = profile.id === content.userProfile.id
 
-  const like = () => {
-    setLikeCount(likeStatus ? likeCount - 1 : likeCount + 1)
-    setLikeStatus((prev) => !prev)
+  const vote = async () => {
+    try {
+      if (voteStatus) {
+        await API.reviews.vote.remove({ id: content.id })
+        setVoteCount(voteCount - 1)
+      } else {
+        await API.reviews.vote.add({ id: content.id })
+        setVoteCount(voteCount + 1)
+      }
+
+      dispatch(updateReviewsVoted(content.id))
+    } catch (error) {
+      toastError(error)
+    }
   }
 
   const showReplyForm = () =>
@@ -77,16 +94,16 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
 
   const actions = [
     <ButtonIcon
-      key="content-like"
+      key="content-vote"
       shape="round"
       color="white"
       size="middle"
       icon={
-        likeStatus ? <HeartFilled size="18" /> : <HeartOutlined size="18" />
+        voteStatus ? <HeartFilled size="18" /> : <HeartOutlined size="18" />
       }
-      onClick={like}
+      onClick={vote}
     >
-      <LikeCount>{likeCount}</LikeCount>
+      <LikeCount>{voteCount}</LikeCount>
     </ButtonIcon>,
 
     depth < 4 && (
