@@ -1,7 +1,9 @@
-import { Col, Divider, Row } from 'antd'
+import { Divider } from 'antd'
 import styled from 'styled-components/macro'
 
 import { device, fontSize } from 'styles/responsive'
+
+import CourseWorkload from './CourseWorkload'
 
 const CoursePageBody = ({ courseData }) => {
   return (
@@ -18,17 +20,7 @@ const CoursePageBody = ({ courseData }) => {
         {courseData.description || 'Not available'}
       </CourseDescription>
 
-      <Row>
-        <Col>
-          <SubHeaderText>Course Workload</SubHeaderText>
-          <CenterText>
-            Lectures : {courseData.workload.lecture} | Tutorial:{' '}
-            {courseData.workload.tutorial} | Practical:{' '}
-            {courseData.workload.practical} | Selfstudy:{' '}
-            {courseData.workload.selfstudy}
-          </CenterText>
-        </Col>
-      </Row>
+      <CourseWorkload workload={courseData.workload} />
     </Container>
   )
 }
@@ -37,13 +29,13 @@ export default CoursePageBody
 
 const Container = styled.div`
   padding: 1.5rem 1rem;
-  margin: 0 0.75rem 0.75rem;
+  margin-bottom: 0.75rem;
   border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.textColor};
   background: ${({ theme }) => theme.secondary};
 
   @media ${device.max.md} {
-    margin: 1rem 0.75rem;
+    margin-top: 0.75rem;
   }
 `
 
@@ -68,15 +60,4 @@ const CourseDescription = styled.p`
   font-weight: 300;
   text-align: justify;
   color: lightgray;
-`
-
-const SubHeaderText = styled.div`
-  font-size: 24px;
-  font-weight: 500;
-  text-align: center;
-  color: ${({ theme }) => theme.textColor};
-`
-
-const CenterText = styled.h3`
-  text-align: center;
 `

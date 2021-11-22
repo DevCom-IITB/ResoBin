@@ -9,7 +9,6 @@ import { useScrollToTop } from 'hooks'
 import { DashboardRoutes } from 'routes'
 import { selectAuthLoading } from 'store/authSlice'
 import {
-  getResourceTags,
   getDepartmentList,
   getSemesterList,
   getCourseListMinified,
@@ -26,7 +25,6 @@ const Dashboard = () => {
   useEffect(() => {
     // ? Fetch user profile
     dispatch(getProfileAction())
-    dispatch(getResourceTags())
     dispatch(getDepartmentList())
     dispatch(getSemesterList())
     dispatch(getCourseListMinified())

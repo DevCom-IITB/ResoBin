@@ -7,7 +7,6 @@ import styled from 'styled-components/macro'
 
 import { FilterDropdown } from 'components/filter'
 import { useQueryString } from 'hooks'
-import { device } from 'styles/responsive'
 
 // ? Disable filter will disable the filter entirely, show filter will trigger on/off animation
 const CourseSearch = ({ showFilter, loading, setLoading }) => {
@@ -45,24 +44,18 @@ export default CourseSearch
 
 const SearchContainer = styled.div`
   position: sticky;
-  top: 3rem;
+  top: ${({ theme }) => theme.headerHeight};
   z-index: 6;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 3rem;
-  padding: 0 0.75rem;
   background: linear-gradient(
     0deg,
     ${({ theme }) => rgba(theme.darksecondary, 0)} 0%,
     ${({ theme }) => rgba(theme.darksecondary, 0)} 30%,
     ${({ theme }) => rgba(theme.darksecondary, 1)} 50%
   );
-
-  @media ${device.min.lg} {
-    margin-right: ${({ theme }) => theme.asideWidthRight};
-    transition: margin-right 200ms ease-in;
-  }
 `
 
 const Overlay = styled.div`

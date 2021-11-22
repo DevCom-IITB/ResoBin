@@ -5,7 +5,7 @@ import { Aside, Divider } from 'components/shared'
 import { useQueryString } from 'hooks'
 import { device } from 'styles/responsive'
 
-import FilterContainer from './FilterBody'
+import FilterForm from './FilterBody'
 
 const filterKeys = [
   'semester',
@@ -14,6 +14,8 @@ const filterKeys = [
   'credits_min',
   'credits_max',
   'halfsem',
+  'running',
+  'tags',
 ]
 
 export const FilterDropdown = ({ showFilter, setLoading }) => {
@@ -37,7 +39,7 @@ export const FilterDropdown = ({ showFilter, setLoading }) => {
       <Divider style={{ margin: '0 1rem', width: 'auto' }} />
 
       <ListDropdown showFilter={showFilter}>
-        <FilterContainer setLoading={setLoading} />
+        <FilterForm setLoading={setLoading} />
       </ListDropdown>
     </ContainerDropdown>
   )
@@ -55,7 +57,7 @@ export const FilterAside = ({ setLoading }) => {
         </ClearAll>
       }
     >
-      <FilterContainer setLoading={setLoading} />
+      <FilterForm setLoading={setLoading} />
     </Aside>
   )
 }
@@ -65,10 +67,9 @@ const ContainerDropdown = styled.div`
   top: 2rem;
   z-index: 5;
   overflow: auto;
-  width: calc(100% - 1.5rem);
+  width: 100%;
   height: ${({ showFilter }) => (showFilter ? 'calc(100vh - 5rem)' : '0')};
   padding: ${({ showFilter }) => (showFilter ? '1rem 0 20rem' : '0')};
-  margin: 0 0.75rem;
   background: ${({ theme }) => theme.secondary};
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   transition: 200ms;

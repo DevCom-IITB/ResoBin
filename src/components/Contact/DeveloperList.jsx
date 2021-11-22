@@ -6,8 +6,7 @@ import styled from 'styled-components/macro'
 import { API } from 'api'
 import { Aside } from 'components/shared'
 import { toastError } from 'components/toast'
-import { useViewportContext } from 'context/ViewportContext'
-import { breakpoints } from 'styles/responsive'
+import { useResponsive } from 'hooks'
 
 const DeveloperItem = ({ name, avatar, url, contributions }) => {
   return (
@@ -57,12 +56,12 @@ const ContributorList = () => {
     setLoading(true)
     getContributorsData()
   }, [])
-  const { width } = useViewportContext()
+  const { isDesktop } = useResponsive()
 
   return (
     <Aside
       title="Made with ❤️ by"
-      visible={width >= breakpoints.lg}
+      visible={isDesktop}
       loading={loading}
       loadingComponent={<DeveloperSkeleton />}
     >

@@ -9,7 +9,6 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css'
 
 import App from 'App'
-import ContextProvider from 'context'
 import { store } from 'store'
 import 'styles/styles.scss'
 
@@ -19,11 +18,9 @@ const StrictApp = () => (
   <StrictMode>
     <Provider store={store}>
       <Router>
-        <ContextProvider>
-          <HelmetProvider>
-            <App />
-          </HelmetProvider>
-        </ContextProvider>
+        <HelmetProvider>
+          <App />
+        </HelmetProvider>
       </Router>
     </Provider>
   </StrictMode>

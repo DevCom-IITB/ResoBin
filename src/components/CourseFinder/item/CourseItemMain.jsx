@@ -32,6 +32,7 @@ const CourseItemMain = ({ courseData }) => {
       } else {
         await API.courses.favorite.add({ code })
       }
+
       dispatch(updateFavourite(code))
     } catch (error) {
       toastError(error)
@@ -59,8 +60,6 @@ const CourseItemMain = ({ courseData }) => {
           <ButtonIcon
             tooltip="Add to favorites"
             onClick={favouriteClick}
-            popover={favourite}
-            popoverTitle="Remove from favorites?"
             icon={
               favourite ? <Bookmark size="25" /> : <BookmarkOutline size="25" />
             }
@@ -144,12 +143,11 @@ const RightIcons = styled.div`
   align-items: center;
 `
 
-const CourseDescription = styled.p`
-  margin: 0.75rem 0;
+const CourseDescription = styled.div`
+  margin-top: 0.75rem;
   font-size: ${fontSize.static.md};
   font-weight: 300;
   text-align: justify;
-  color: lightgray;
 `
 
 const CreditContainer = styled.span`

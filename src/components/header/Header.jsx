@@ -8,15 +8,15 @@ import { device } from 'styles/responsive'
 
 const Header = () => {
   const { isAuthenticated } = useSelector((state) => state.auth)
-  const [semester] = useSelector(selectSemesters)?.slice(-1)
+  const [latestSemester] = useSelector(selectSemesters)?.slice(-1)
 
   return (
     <Container>
       <ResoBinLogo size="1.5rem" />
       {isAuthenticated && (
         <Term>
-          AY {displayYear(semester?.year)}
-          &nbsp;| {semester?.season}
+          AY {displayYear(latestSemester?.year)}
+          &nbsp;| {latestSemester?.season}
         </Term>
       )}
     </Container>

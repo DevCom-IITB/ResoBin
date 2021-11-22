@@ -54,9 +54,9 @@ const Login = () => {
     window.location.href = getLoginURL(location.state?.from)
   }
 
-  return loading ? (
-    <LoaderAnimation fixed />
-  ) : (
+  if (loading) return <LoaderAnimation fixed />
+
+  return (
     <>
       <Helmet>
         <title>Log In - ResoBin</title>

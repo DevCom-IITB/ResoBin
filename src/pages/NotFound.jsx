@@ -5,6 +5,29 @@ import styled from 'styled-components/macro'
 import NotFoundImg from 'assets/images/NotFound.png'
 import { device, fontSize } from 'styles/responsive'
 
+const NotFound = () => {
+  const history = useHistory()
+
+  return (
+    <Container>
+      <Helmet>
+        <title>404 Not Found</title>
+        <meta name="description" content="Page not found" />
+      </Helmet>
+
+      <Box>
+        <Image src={NotFoundImg} alt="404 Page not found" />
+
+        <Subtitle>
+          This page is not available.
+          <br />
+          <GoBack onClick={history.goBack}>Take me back!</GoBack>
+        </Subtitle>
+      </Box>
+    </Container>
+  )
+}
+
 const Container = styled.div`
   position: absolute;
   inset: 0;
@@ -55,27 +78,5 @@ const GoBack = styled.button`
 const Image = styled.img`
   width: clamp(13rem, 30vw, 20rem);
 `
-
-const NotFound = () => {
-  const history = useHistory()
-
-  return (
-    <Container>
-      <Helmet>
-        <title>404 Not Found</title>
-        <meta name="description" content="Page not found" />
-      </Helmet>
-      <Box>
-        <Image src={NotFoundImg} alt="404 Page not found" />
-
-        <Subtitle>
-          This page is not available.
-          <br />
-          <GoBack onClick={history.goBack}>Take me back!</GoBack>
-        </Subtitle>
-      </Box>
-    </Container>
-  )
-}
 
 export default NotFound

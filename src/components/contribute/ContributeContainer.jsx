@@ -6,11 +6,10 @@ import { Plus } from 'styled-icons/heroicons-outline'
 
 import { API } from 'api'
 import { CourseResourceGrid } from 'components/CourseResource'
-import { Aside, ButtonSquare, PageHeading, PageTitle } from 'components/shared'
+import { Aside, ButtonSquare, PageTitle } from 'components/shared'
 import { toastError } from 'components/toast'
-import { useViewportContext } from 'context/ViewportContext'
 import { defaultFile, fileTypes } from 'data/CourseResources'
-import { breakpoints, device } from 'styles/responsive'
+import { useResponsive } from 'hooks'
 
 import ContributeItem from './ContributeItem'
 
@@ -23,10 +22,10 @@ const defaultFileItem = (details) => ({
 })
 
 const ContributeContainer = ({ visible, setVisible }) => {
+  const { isDesktop } = useResponsive()
   const location = useLocation()
   const queryString = new URLSearchParams(location.search)
   const course = queryString.get('course')
-  const { width } = useViewportContext()
 
   const [fileList, setFileList] = useState([defaultFileItem({ course })])
   const [myResources, setMyResources] = useState([])
@@ -67,12 +66,8 @@ const ContributeContainer = ({ visible, setVisible }) => {
   }
 
   return (
-    <Container>
-      <PageHeading>
-        <PageTitle>Contribute</PageTitle>
-      </PageHeading>
-
-      <PageTitle style={{ padding: '1.5rem', fontSize: '1rem' }}>
+    <>
+      <PageTitle style={{ fontSize: '1rem' }}>
         Please upload documents only in the following formats:
         {fileTypes.map(({ extention }) => (
           <code key={extention}> {extention}</code>
@@ -99,33 +94,18 @@ const ContributeContainer = ({ visible, setVisible }) => {
         Add new
       </ButtonSquare>
 
-      <Aside
-        title="My uploads"
-        loading={APILoading}
-        visible={width >= breakpoints.lg}
-      >
+      <Aside title="My uploads" loading={APILoading} visible={isDesktop}>
         <CourseResourceGrid items={myResources} />
       </Aside>
-    </Container>
+    </>
   )
 }
 
 export default ContributeContainer
 
-const Container = styled.div`
-  min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
-  padding-top: 0.5rem;
-
-  @media ${device.min.lg} {
-    margin-right: ${({ theme }) => theme.asideWidthRight};
-  }
-`
-
 const FileList = styled.div`
   display: flex;
-  overflow-y: auto;
   flex-direction: column;
-  height: calc(100% - 20rem);
-  padding: 1rem 0.75rem 1rem 0;
+  margin: 1.5rem 0;
   gap: 1rem;
 `
