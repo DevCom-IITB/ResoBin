@@ -17,9 +17,11 @@ const useResponsive = () => {
     return () => window.removeEventListener('resize', handleWindowResize)
   }, [])
 
+  // TODO: Rename and improve this
   return {
     height,
     width,
+    isMobileS: width < breakpoints.xs,
     isMobile: width < breakpoints.md,
     isTablet: width < breakpoints.lg && width >= breakpoints.md,
     isDesktop: width >= breakpoints.lg,

@@ -143,12 +143,11 @@ const RightIcons = styled.div`
   align-items: center;
 `
 
-const CourseDescription = styled.p`
-  margin: 0.75rem 0;
+const CourseDescription = styled.div`
+  margin-top: 0.75rem;
   font-size: ${fontSize.static.md};
   font-weight: 300;
   text-align: justify;
-  color: lightgray;
 `
 
 const CreditContainer = styled.span`

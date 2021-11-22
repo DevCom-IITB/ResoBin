@@ -10,10 +10,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
-import { Tabs, ButtonSwitch, Divider } from 'components/shared'
+import { ButtonSwitch, Divider, Tabs } from 'components/shared'
 import { ButtonSquareLink } from 'components/shared/Buttons'
 import { toastError } from 'components/toast'
 import { coursePageUrl } from 'helpers/format'
+import { useResponsive } from 'hooks'
 import { selectSemesters } from 'store/courseSlice'
 import { selectAllTimetable, updateTimetable } from 'store/userSlice'
 
@@ -103,8 +104,11 @@ const SemesterItem = ({ data }) => {
   )
 }
 
+// TODO: Improve responsiveness
 // ? semester = ['autumn', 'spring']
 const CourseItemSub = ({ courseData }) => {
+  const { isMobile, isMobileS } = useResponsive()
+
   const { code, title, semester, reviews, resources } = courseData
   const [latestSemester] = useSelector(selectSemesters)?.slice(-1)
 
@@ -153,7 +157,10 @@ const CourseItemSub = ({ courseData }) => {
         </Title>
       )}
 
-      {<Divider margin="0.75rem 0" />}
+      {(isMobileS || !isMobile) && <Divider margin="0.75rem 0" />}
+      {isMobile && !isMobileS && (
+        <Divider style={{ width: '1px' }} type="vertical" />
+      )}
 
       <div>
         <ButtonSquareLink
@@ -161,12 +168,12 @@ const CourseItemSub = ({ courseData }) => {
           style={{ marginBottom: '0.75rem' }}
         >
           <ChatAlt size="18" style={{ marginRight: '0.5rem' }} />
-          Reviews ({reviewCount})
+          Reviews {reviewCount > 0 && `(${reviewCount})`}
         </ButtonSquareLink>
 
         <ButtonSquareLink to={`${coursePageUrl(code, title)}#resources`}>
           <DocumentText size="18" style={{ marginRight: '0.5rem' }} />
-          Resources ({resourceCount})
+          Resources {resourceCount > 0 && `(${resourceCount})`}
         </ButtonSquareLink>
       </div>
     </>
@@ -175,7 +182,7 @@ const CourseItemSub = ({ courseData }) => {
 
 export default CourseItemSub
 
-const Title = styled.span`
+const Title = styled.p`
   display: block;
   margin: 0 0.25rem 0.25rem;
   font-size: 0.75rem;

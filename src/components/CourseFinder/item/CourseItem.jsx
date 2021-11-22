@@ -1,11 +1,38 @@
 import { Skeleton } from 'antd'
 import styled from 'styled-components/macro'
 
+import { Divider } from 'components/shared'
+import { useResponsive } from 'hooks'
+import { device } from 'styles/responsive'
+
 import CourseItemMain from './CourseItemMain'
 import CourseItemSub from './CourseItemSub'
 
 export const CourseItemLoading = ({ active }) =>
   active && <StyledSkeleton active />
+
+export const CourseItem = ({ courseData }) => {
+  const { isMobile } = useResponsive()
+
+  return (
+    <Container>
+      <Main>
+        <CourseItemMain courseData={courseData} />
+      </Main>
+
+      {isMobile && (
+        <Divider
+          style={{ width: '100%', gridArea: 'item-divider' }}
+          margin="1rem 0"
+        />
+      )}
+
+      <Sub>
+        <CourseItemSub courseData={courseData} />
+      </Sub>
+    </Container>
+  )
+}
 
 const StyledSkeleton = styled(Skeleton)`
   width: 100%;
@@ -19,17 +46,6 @@ const StyledSkeleton = styled(Skeleton)`
   }
 `
 
-export const CourseItem = ({ courseData }) => (
-  <Container>
-    <Main>
-      <CourseItemMain courseData={courseData} />
-    </Main>
-    <Sub>
-      <CourseItemSub courseData={courseData} />
-    </Sub>
-  </Container>
-)
-
 const Container = styled.li`
   display: grid;
   grid-template-columns:
@@ -37,7 +53,7 @@ const Container = styled.li`
     [item-sub] auto;
   grid-column-gap: 1rem;
   width: 100%;
-  padding: 1.5rem 1rem 1rem;
+  padding: 1rem;
   margin: 1rem 0;
   border-radius: 0.5rem;
   background: ${({ theme }) => theme.secondary};
@@ -65,6 +81,15 @@ const Container = styled.li`
     transform: scale(0.9);
     transition: opacity 100ms, transform 100ms;
   }
+
+  @media ${device.max.md} {
+    grid-template-columns: none;
+    grid-column-gap: 0;
+    grid-template-rows:
+      [item-main] 1fr
+      [item-divider] auto
+      [item-sub] auto;
+  }
 `
 
 const Main = styled.div`
@@ -74,5 +99,16 @@ const Main = styled.div`
 
 const Sub = styled.div`
   grid-area: item-sub;
-  width: 10rem;
+
+  > div {
+    width: 10rem;
+  }
+
+  @media ${device.min.xs} and ${device.max.md} {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
 `
