@@ -1,7 +1,5 @@
 import styled from 'styled-components/macro'
 
-import { device } from 'styles/responsive'
-
 const HomeItem = () => {
   return (
     <Container>
@@ -47,6 +45,4 @@ const Container = styled.li`
     transform: scale(0.9);
     transition: opacity 100ms, transform 100ms;
   }
-
-  /* @media ${device.min.sm} and ${device.max.md}, ${device.min.xl} {} */
 `
