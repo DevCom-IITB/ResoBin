@@ -1,4 +1,3 @@
-import { Anchor } from 'antd'
 import { rgba } from 'polished'
 import styled from 'styled-components/macro'
 

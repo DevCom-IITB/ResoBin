@@ -7,6 +7,7 @@ export {
   ButtonSwitch,
 } from './Buttons'
 export { default as Checkbox } from './Checkbox'
+export { default as Card, CardSkeleton } from './Card'
 export { default as Divider } from './Divider'
 export { default as Form } from './Form'
 export { default as InputRounded } from './InputRounded'
