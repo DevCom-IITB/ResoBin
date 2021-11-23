@@ -19,7 +19,7 @@ export const AsideContainer = ({
           {subtitle}
         </Header>
 
-        <Divider />
+        <Divider margin="0" />
       </>
     )}
 

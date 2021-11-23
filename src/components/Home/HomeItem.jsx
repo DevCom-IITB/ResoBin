@@ -10,15 +10,9 @@ const HomeItem = () => {
 
 export default HomeItem
 
-const Container = styled.li`
-  display: grid;
-  grid-template-columns:
-    [item-main] 1fr
-    [item-sub] auto;
-  grid-column-gap: 1rem;
+const Container = styled.div`
   width: 100%;
-  padding: 1.5rem 1rem 1rem;
-  margin: 1rem 0;
+  padding: 1rem 1rem 1rem;
   border-radius: 0.5rem;
   background: ${({ theme }) => theme.secondary};
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);
