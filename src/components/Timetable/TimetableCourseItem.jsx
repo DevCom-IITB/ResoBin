@@ -4,22 +4,22 @@ import { useSelector } from 'react-redux'
 import styled, { css } from 'styled-components/macro'
 
 import { cols, rows, slots } from 'data/timetable'
-import { selectCourseListMinified } from 'store/courseSlice'
+import { selectCourseTitle } from 'store/courseSlice'
 import { colorPicker, makeGradient } from 'styles/utils'
 
 // * id refers to the color of the timetable item
 const TimetableCourseItem = ({ data, colorCode = 0 }) => {
-  const courseListMinified = useSelector(selectCourseListMinified)
-  const courseData = courseListMinified.find(({ code }) => code === data.course)
+  const { course: code, lectureSlots } = data
+  const title = useSelector(selectCourseTitle(code))
 
-  if (!data.lectureSlots || data.lectureSlots.length === 0) return null
-  const courseSlots = data.lectureSlots.map((slot) => slots[slot])
+  if (!lectureSlots || lectureSlots.length === 0) return null
+  const courseSlots = lectureSlots.map((slot) => slots[slot])
 
   const TimetableCourseLectureItem = ({ gridCol, gridRow }) => (
     <GridItem row={gridRow} col={gridCol}>
-      <Tooltip title={courseData?.title}>
+      <Tooltip title={title}>
         <Item id={colorCode}>
-          <h3>{courseData?.code}</h3>
+          <h3>{code}</h3>
           <span>
             {gridRow.start.title} - {gridRow.end.title}
           </span>

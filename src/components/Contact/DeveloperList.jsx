@@ -42,12 +42,12 @@ const ContributorList = () => {
         setLoading(true)
 
         let response = await API.GitHub.getContributors()
-        response = {
-          name: response.login,
-          avatar: response.avatar_url,
-          url: response.html_url,
-          contributions: response.contributions,
-        }
+        response = response.map((item) => ({
+          name: item.login,
+          avatar: item.avatar_url,
+          url: item.html_url,
+          contributions: item.contributions,
+        }))
 
         setContributors(response)
       } catch (error) {
@@ -68,7 +68,7 @@ const ContributorList = () => {
       loadingComponent={<DeveloperSkeleton />}
     >
       <DeveloperList>
-        {contributors.map((item) => (
+        {contributors?.map((item) => (
           <DeveloperItem key={item.name} {...item} />
         ))}
       </DeveloperList>

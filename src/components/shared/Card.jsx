@@ -24,8 +24,7 @@ export const StyledCard = styled(Card)`
   }
 
   .ant-card-meta {
-    display: flex;
-    align-items: center;
+    width: 100%;
 
     .ant-card-meta-title {
       font-size: 1rem;
