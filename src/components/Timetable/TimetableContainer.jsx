@@ -140,7 +140,7 @@ const TimetableContainer = () => {
         </TimetableLayout>
       </Spin>
 
-      <Aside title="My semester courses" loading={loading}>
+      <Aside title="My courses" loading={loading}>
         <AsideList>
           {!loading &&
             courseTimetableList.map(({ id, course }) => (
