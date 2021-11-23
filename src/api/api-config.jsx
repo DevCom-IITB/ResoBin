@@ -119,10 +119,10 @@ export const API = {
 
     request: {
       add: async ({ code }) =>
-        APIInstance.put(`/accounts/profile/courses/${code}/request/resource`),
+        APIInstance.put(`/accounts/profile/courses/${code}/request/resources`),
       remove: async ({ code }) =>
         APIInstance.delete(
-          `/accounts/profile/courses/${code}/request/resource`
+          `/accounts/profile/courses/${code}/request/resources`
         ),
     },
   },
@@ -137,7 +137,7 @@ export const API = {
 
     request: {
       add: async ({ code }) =>
-        APIInstance.put(`/accounts/profile/courses/${code}/request/review`),
+        APIInstance.put(`/accounts/profile/courses/${code}/request/reviews`),
       remove: async ({ code }) =>
         APIInstance.delete(`/accounts/profile/courses/${code}/request/reviews`),
     },
