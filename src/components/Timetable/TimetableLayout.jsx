@@ -1,12 +1,11 @@
+import { Anchor } from 'antd'
 import { rgba } from 'polished'
 import styled from 'styled-components/macro'
 
 import { cols, rows } from 'data/timetable'
 
 const ColHeader = ({ id, title }) => (
-  <ColContainer aria-hidden="true" id={id}>
-    {title}
-  </ColContainer>
+  <ColContainer id={id}>{title}</ColContainer>
 )
 
 const RowHeader = ({ id, title }) => (
@@ -37,30 +36,18 @@ const TimetableLayout = ({ children }) => {
 
 export default TimetableLayout
 
-// * grid data is loaded from timetableData.jsx
-// * switch '1fr' to 'auto' if height of slot shouldnt be proportional to lecture length
-
 const Container = styled.div`
   display: grid;
   grid-template-rows:
     [tracks] 2rem
     ${rows.map(({ id, title }, index) => `[${id}] 1fr `)};
   grid-template-columns:
-    [times] 3.5rem
+    [times] 2.5rem
     ${cols.map(({ id, title }, index) => `[${id}] 1fr `)};
-  padding: 1rem;
+  padding: 0.75rem;
   border-radius: 0.5rem;
   background: ${({ theme }) => theme.secondary};
-
-  &::after {
-    content: '';
-    position: sticky;
-    top: calc(3rem - 1px);
-    z-index: 0;
-    grid-row: tracks;
-    grid-column: 1 / -1;
-    background-color: ${({ theme }) => rgba(theme.secondary, 0.95)};
-  }
+  overflow-x: scroll;
 
   > div {
     box-shadow: inset -1px -1px 0 ${({ theme }) => rgba(theme.primary, 0.1)};
@@ -68,27 +55,22 @@ const Container = styled.div`
 `
 
 const ColContainer = styled.span`
-  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   grid-row: tracks;
   grid-column: ${({ id }) => id};
   font-size: 0.75rem;
   font-weight: 500;
-  text-align: center;
   text-transform: uppercase;
+  padding: 0 1rem;
   color: ${({ theme }) => theme.textColor};
-
-  @media screen and (min-width: 700px) {
-    position: sticky;
-    top: 3rem;
-    z-index: 20;
-    display: block;
-    padding: 10px 5px 5px;
-  }
+  background: ${({ theme }) => theme.secondary};
 `
 
 const RowContainer = styled.span`
   position: relative;
-  top: -0.375rem;
+  top: -0.4rem;
   right: 0.75rem;
   display: flex;
   justify-content: flex-end;

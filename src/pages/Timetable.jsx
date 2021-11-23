@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 
-import { PageContainer, PageHeading, PageTitle } from 'components/shared'
+import { PageContainer } from 'components/shared'
 import { TimetableContainer } from 'components/Timetable'
 
 const TimeTable = () => {
@@ -13,10 +13,6 @@ const TimeTable = () => {
           content="IIT Bombay time table for selected courses"
         />
       </Helmet>
-
-      <PageHeading>
-        <PageTitle>Timetable</PageTitle>
-      </PageHeading>
 
       <TimetableContainer />
     </PageContainer>

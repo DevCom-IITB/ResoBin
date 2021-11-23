@@ -6,7 +6,13 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
-import { Aside, ButtonIcon, LoaderAnimation } from 'components/shared'
+import {
+  Aside,
+  ButtonIcon,
+  LoaderAnimation,
+  PageHeading,
+  PageTitle,
+} from 'components/shared'
 import { toastError } from 'components/toast'
 import { displayYear } from 'helpers/format'
 import { selectSemesters } from 'store/courseSlice'
@@ -45,6 +51,10 @@ const TimetableContainer = () => {
 
   return (
     <>
+      <PageHeading>
+        <PageTitle>Timetable</PageTitle>
+      </PageHeading>
+
       <TimetableSemesterTitle>
         <ButtonIcon
           color="white"
