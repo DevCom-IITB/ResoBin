@@ -10,9 +10,9 @@ import {
   PageHeading,
   PageSubtitle,
   PageTitle,
+  Card,
 } from 'components/shared'
 import { AsideHeader } from 'components/shared/Aside'
-import { StyledCard } from 'components/shared/Card'
 import { toastError } from 'components/toast'
 import { coursePageUrl } from 'helpers/format'
 
@@ -21,9 +21,9 @@ const HomeItem = ({ course, hash }) => {
 
   return (
     <Link to={coursePageUrl(code, title, hash)}>
-      <StyledCard hoverable>
-        <StyledCard.Meta title={code} description={title} />
-      </StyledCard>
+      <Card hoverable style={{ display: 'inline-block' }}>
+        <Card.Meta title={code} description={title} />
+      </Card>
     </Link>
   )
 }

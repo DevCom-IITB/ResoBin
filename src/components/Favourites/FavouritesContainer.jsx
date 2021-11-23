@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import styled from 'styled-components/macro'
 
 import { API } from 'api'
 import { CourseList, CourseSearch } from 'components/CourseFinder'
