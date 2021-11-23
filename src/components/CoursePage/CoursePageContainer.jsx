@@ -1,9 +1,10 @@
+import { Empty } from 'antd'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { CourseResourceContainer } from 'components/CourseResource'
 import { CourseReviewContainer } from 'components/CourseReview'
-import { Aside, Tabs } from 'components/shared'
+import { Aside, PageSubtitle, Tabs } from 'components/shared'
 
 import CoursePageBody from './CoursePageBody'
 
@@ -23,14 +24,22 @@ const CoursePageContainer = ({ courseData }) => {
         >
           <Tabs.TabPane
             key="reviews"
-            tab={`Reviews (${courseData.reviews?.length})`}
+            tab={
+              courseData.reviews?.length
+                ? `Reviews (${courseData.reviews.length})`
+                : `Reviews`
+            }
           >
             <CourseReviewContainer />
           </Tabs.TabPane>
 
           <Tabs.TabPane
             key="resources"
-            tab={`Resources (${courseData.resources?.length})`}
+            tab={
+              courseData.resources?.length
+                ? `Resources (${courseData.resources.length})`
+                : `Resources`
+            }
           >
             <CourseResourceContainer />
           </Tabs.TabPane>
@@ -38,7 +47,7 @@ const CoursePageContainer = ({ courseData }) => {
       </Container>
 
       <Aside title="Course stats">
-        <h1>Hello World</h1>
+        <Empty description={<PageSubtitle>Coming soon!</PageSubtitle>} />
       </Aside>
     </>
   )
