@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import styled from 'styled-components/macro'
 
 import { API } from 'api'
 import { CourseList, CourseSearch } from 'components/CourseFinder'
@@ -37,7 +36,7 @@ const FavouritesContainer = () => {
   }, [getQueryString])
 
   return (
-    <Container>
+    <>
       <CourseSearch
         loading={loading}
         setLoading={setLoading}
@@ -53,12 +52,8 @@ const FavouritesContainer = () => {
       />
 
       <Aside title="My friends" />
-    </Container>
+    </>
   )
 }
 
 export default FavouritesContainer
-
-const Container = styled.div`
-  width: 100%;
-`

@@ -47,7 +47,9 @@ const CourseResourceItem = ({ content: initialContent }) => {
 
         <ItemInfo>
           <ResourceTitle>{content.title}</ResourceTitle>
-          <ResourceDescription>{content.description}</ResourceDescription>
+          <ResourceDescription>
+            {content.description || 'Description not available'}
+          </ResourceDescription>
 
           <Row>
             <ButtonIcon
@@ -80,7 +82,7 @@ const CourseResourceItem = ({ content: initialContent }) => {
                   <Timestamp time={content?.timestamp} />
                 </>
               }
-              title="More information"
+              title="Uploaded by"
               trigger="click"
             >
               <ButtonIcon

@@ -45,6 +45,12 @@ const userSlice = createSlice({
       else state.favoriteCourses.splice(index, 1)
     },
 
+    updateReviewsVoted(state, { payload }) {
+      const index = state.reviewsVoted.indexOf(payload)
+      if (index === -1) state.reviewsVoted.push(payload)
+      else state.reviewsVoted.splice(index, 1)
+    },
+
     updateTimetable(state, { payload }) {
       const index = state.timetable.indexOf(payload)
       if (index === -1) state.timetable.push(payload)
@@ -83,72 +89,29 @@ const userSlice = createSlice({
         }
       )
   },
-
-  //     // state.profile = {
-  //     //   id: payload.id,
-  //     //   name: payload.name,
-  //     //   email: payload.email,
-  //     //   ldap: payload.ldap,
-  //     //   picture: payload.profilePicture,
-  //     //   department: payload.department,
-  //     // }
-  //     // state.favoriteCourses = payload.favorite_courses
-  //     // state.reviews = {
-  //     //   contributed: payload.reviews_written,
-  //     //   requested: payload.reviews_requested,
-  //     //   voted: payload.reviews_voted,
-  //     // }
-  //     // state.resources = {
-  //     //   contributed: payload.resources_posted,
-  //     //   requested: payload.resources_requested,
-  //     // }
-
-  //   [updateProfileAction.fulfilled]: (state, { payload }) => {
-  //     state = payload
-  //     // state.profile = {
-  //     //   id: payload.id,
-  //     //   name: payload.name,
-  //     //   email: payload.email,
-  //     //   ldap: payload.ldap,
-  //     //   picture: payload.profile_picture,
-  //     //   department: payload.department,
-  //     // }
-  //     // state.favoriteCourses = payload.favorite_courses
-  //     // state.reviews = {
-  //     //   contributed: payload.reviews_written,
-  //     //   requested: payload.reviews_requested,
-  //     //   voted: payload.reviews_voted,
-  //     // }
-  //     // state.resources = {
-  //     //   contributed: payload.resources_posted,
-  //     //   requested: payload.resources_requested,
-  //     // }
-  //     state.loading = false
-  //   },
-  //   [updateProfileAction.pending]: (state) => {
-  //     state.loading = true
-  //   },
-  //   [updateProfileAction.rejected]: (state) => {
-  //     state.loading = false
-  //   },
-  // },
 })
 
 // ? actions
-export const { updateFavourite, updateTimetable } = userSlice.actions
+export const { updateFavourite, updateReviewsVoted, updateTimetable } =
+  userSlice.actions
 
 // ? selectors
 // * get all favourites
 export const selectUserProfile = (state) => state.user
 export const selectUserLoading = (state) => state.user.loading
 export const selectFavouriteCourses = (state) => state.user.favoriteCourses
+export const selectReviewsVoted = (state) => state.user.reviewsVoted
 export const selectAllTimetable = (state) => state.user.timetable
 
 // * get if a course is a favourite or not
-export const selectFavouriteStatus = (courseCode) =>
+export const selectFavouriteStatus = (code) =>
   createSelector(
     selectFavouriteCourses,
-    (favoriteCourse) => favoriteCourse.indexOf(courseCode) !== -1
+    (course) => course.indexOf(code) !== -1
   )
+
+// * get if a course review is voted or not by the user
+export const selectReviewVoteStatus = (id) =>
+  createSelector(selectReviewsVoted, (review) => review.indexOf(id) !== -1)
 
 export default userSlice.reducer

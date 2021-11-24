@@ -1,4 +1,5 @@
 import { Button, Input, Progress, Select, Tooltip } from 'antd'
+import { kebabCase } from 'lodash'
 import { rgba } from 'polished'
 import { useDropzone } from 'react-dropzone'
 import { useSelector } from 'react-redux'
@@ -10,8 +11,8 @@ import { Form, LoaderAnimation } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
 import { toastError } from 'components/toast'
 import { defaultFile, fileTypes, getFileDetails } from 'data/CourseResources'
+import tags from 'data/tags.json'
 import {
-  selectResourceTags,
   selectCourseListMinified,
   selectCourseAPILoading,
 } from 'store/courseSlice'
@@ -63,7 +64,7 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
     fd.append('file', fileItem.file, fileItem.file.name)
     fd.append('title', fileItem.details.title)
     fd.append('course', fileItem.details.course)
-    fd.append('description', fileItem.details.description)
+    fd.append('description', fileItem.details.description ?? '')
     fd.append('tags', JSON.stringify(fileItem.details.tags))
 
     try {
@@ -106,9 +107,9 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
     deleteFileItem(fileItem.id)
   }
 
-  const tagOptions = useSelector(selectResourceTags)?.map(({ tag }) => ({
+  const tagOptions = tags.resourceTags.map((tag) => ({
     label: tag,
-    value: tag,
+    value: kebabCase(tag),
   }))
 
   const courseOptions = useSelector(selectCourseListMinified)?.map(
@@ -250,8 +251,6 @@ const TooltipContainer = styled.div`
 const ItemContainer = styled.div`
   display: flex;
   padding: 1.5rem 1rem;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
   border-radius: 0.5rem;
   background-color: ${({ theme }) => theme.secondary};
 `

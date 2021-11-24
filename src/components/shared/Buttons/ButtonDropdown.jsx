@@ -1,7 +1,7 @@
 import { Dropdown } from 'antd'
 import styled from 'styled-components/macro'
 
-import buttonStyles from './buttonStyles'
+import { buttonStyles } from './buttonStyles'
 
 const ButtonDropdown = styled(Dropdown.Button)`
   width: 100%;
@@ -10,6 +10,7 @@ const ButtonDropdown = styled(Dropdown.Button)`
   .ant-btn {
     ${buttonStyles}
 
+    background: ${({ theme }) => theme.darksecondary};
     width: 100%;
     border-radius: 0;
 

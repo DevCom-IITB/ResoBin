@@ -1,26 +1,23 @@
 import { Helmet } from 'react-helmet-async'
-import styled from 'styled-components/macro'
 
 import { ContributeContainer } from 'components/contribute'
-import { device } from 'styles/responsive'
+import { PageHeading, PageTitle, PageContainer } from 'components/shared'
 
 const Contribute = () => {
   return (
-    <Container>
+    <PageContainer>
       <Helmet>
         <title>Contribute - ResoBin</title>
         <meta name="description" content="Upload and share your own notes" />
       </Helmet>
 
+      <PageHeading>
+        <PageTitle>Contribute</PageTitle>
+      </PageHeading>
+
       <ContributeContainer />
-    </Container>
+    </PageContainer>
   )
 }
 
 export default Contribute
-
-const Container = styled.div`
-  @media ${device.min.md} {
-    margin-left: ${({ theme }) => theme.asideWidthLeft};
-  }
-`

@@ -7,15 +7,14 @@ import {
   Bookmark as BookmarkOutline,
 } from '@styled-icons/heroicons-outline'
 import { ContactSupport } from '@styled-icons/material-outlined'
-import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { MenuItem, ProfileImgItem } from 'components/menu'
 import { Divider } from 'components/shared'
-import { useViewportContext } from 'context/ViewportContext'
+import { useResponsive } from 'hooks'
 import { selectUserProfile } from 'store/userSlice'
-import { device, breakpoints } from 'styles/responsive'
+import { device } from 'styles/responsive'
 
 const Container = styled.nav`
   position: sticky;
@@ -43,17 +42,10 @@ const Container = styled.nav`
 `
 
 const Menu = () => {
-  // mobile devices horizontal menu & desktops vertical menu
-  const { width } = useViewportContext()
-  const [isDesktop, setIsDesktop] = useState(true)
-
+  // ? mobile devices horizontal menu & desktops vertical menu
   const profile = useSelector(selectUserProfile)
-
-  useEffect(() => {
-    setIsDesktop(width >= breakpoints.md)
-  }, [width])
-
-  const iconSize = isDesktop ? '1.125rem' : '1.5rem'
+  const { isMobile } = useResponsive()
+  const iconSize = isMobile ? '1.5rem' : '1.125rem'
 
   return (
     <Container>
@@ -78,8 +70,8 @@ const Menu = () => {
         to="/contribute"
       />
 
-      {isDesktop && <Divider margin="1rem 0" />}
-      {isDesktop && (
+      {isMobile || <Divider margin="1rem 0" />}
+      {isMobile || (
         <ProfileImgItem
           title={profile?.name?.split(' ')?.[0]}
           src={profile?.profilePicture}
@@ -99,8 +91,8 @@ const Menu = () => {
         to="/settings"
       />
 
-      {isDesktop && <Divider margin="1rem 0" />}
-      {isDesktop && (
+      {isMobile || <Divider margin="1rem 0" />}
+      {isMobile || (
         <MenuItem
           title="Get help"
           icon={ContactSupport}

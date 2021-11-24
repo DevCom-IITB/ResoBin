@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'react'
-import styled from 'styled-components/macro'
 
 import { API } from 'api'
 import { CourseList, CourseSearch } from 'components/CourseFinder'
 import { FilterAside, FilterFloatButton } from 'components/filter'
 import { toastError } from 'components/toast'
-import { useViewportContext } from 'context/ViewportContext'
-import { useQueryString } from 'hooks'
-import { breakpoints } from 'styles/responsive'
+import { useQueryString, useResponsive } from 'hooks'
 
 const CourseFinderContainer = () => {
-  const { width } = useViewportContext()
+  const { isDesktop } = useResponsive()
   const { getQueryString } = useQueryString()
 
   const [showFilter, setShowFilter] = useState(false)
@@ -37,20 +34,22 @@ const CourseFinderContainer = () => {
       page: filter.p,
       department: filter.department,
       is_half_semester: filter.halfsem,
+      is_running: filter.running,
       credits_min: filter.credits_min,
       credits_max: filter.credits_max,
       semester: filter.semester,
+      tags: filter.tags,
     }
 
     fetchCourses(params)
   }, [getQueryString])
 
   return (
-    <Container>
+    <>
       <CourseSearch
         loading={loading}
         setLoading={setLoading}
-        showFilter={width < breakpoints.lg && showFilter}
+        showFilter={!isDesktop && showFilter}
       />
 
       {/* For desktops */}
@@ -67,12 +66,8 @@ const CourseFinderContainer = () => {
         loading={loading}
         setLoading={setLoading}
       />
-    </Container>
+    </>
   )
 }
 
 export default CourseFinderContainer
-
-const Container = styled.div`
-  width: 100%;
-`

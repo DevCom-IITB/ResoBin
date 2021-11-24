@@ -1,9 +1,12 @@
 import { Button, Popconfirm, Tooltip } from 'antd'
+import { lighten } from 'polished'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
 import { ExclamationCircle } from 'styled-icons/heroicons-outline'
 
 import { fontSize } from 'styles/responsive'
+
+import { buttonStyles } from './buttonStyles'
 
 const defaultPopoverIcon = (
   <ExclamationCircle
@@ -72,11 +75,10 @@ export const ButtonIconDanger = ({ extrastyle, color, ...props }) => (
 export default ButtonIconContainer
 
 const StyledButton = styled(Button)`
-  display: flex;
+  ${buttonStyles}
+
   justify-content: center;
-  align-items: center;
-  border: 0;
-  color: ${({ color, theme }) => color || theme.textColor};
+  color: ${({ color }) => color};
   ${({ extrastyle }) => extrastyle};
 
   > svg {
@@ -84,12 +86,22 @@ const StyledButton = styled(Button)`
   }
 
   &:hover {
-    color: ${({ color, theme }) => color || theme.textColor};
+    color: ${({ color }) => color};
     background: rgba(0, 0, 0, 0.1);
     ${({ hoverstyle }) => hoverstyle};
   }
 
   &:focus {
-    color: ${({ color, theme }) => color || theme.textColor};
+    color: ${({ color }) => color};
+  }
+
+  &.ant-btn-primary {
+    background-color: ${({ $active, theme }) =>
+      lighten($active ? 0.4 : 0, theme.darksecondary)};
+
+    &:hover {
+      background: ${({ $active, theme }) =>
+        lighten($active ? 0.45 : 0.4, theme.darksecondary)};
+    }
   }
 `

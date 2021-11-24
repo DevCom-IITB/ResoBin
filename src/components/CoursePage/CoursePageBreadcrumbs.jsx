@@ -1,23 +1,16 @@
-import { BookOpen, Home } from '@styled-icons/heroicons-outline'
+import { BookOpen, Home, ChevronRight } from '@styled-icons/heroicons-outline'
 import { Breadcrumb } from 'antd'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { useViewportContext } from 'context/ViewportContext'
-import { breakpoints } from 'styles/responsive'
-
-const StyledIcon = styled(({ Icon, className, ...props }) => {
-  return <Icon {...props} className={className} />
-})`
-  width: 0.9rem;
-  margin-right: 0.25rem;
-`
+import { useResponsive } from 'hooks'
 
 const CoursePageBreadcrumbs = ({ courseTitle }) => {
-  const { width } = useViewportContext()
+  const { isMobile } = useResponsive()
+  if (isMobile) return null
 
-  return width < breakpoints.md ? null : (
-    <StyledBreadcrumb separator=">">
+  return (
+    <StyledBreadcrumb separator={<StyledIcon Icon={ChevronRight} />}>
       <Breadcrumb.Item>
         <Link to="/">
           <StyledIcon Icon={Home} />
@@ -44,16 +37,11 @@ export default CoursePageBreadcrumbs
 const StyledBreadcrumb = styled(Breadcrumb)`
   display: flex;
   align-items: center;
-  height: 3rem;
-  margin: 0 1.5rem;
+  margin: 1rem;
   font-size: 1rem;
 
   & > span {
     display: flex;
-  }
-
-  .ant-breadcrumb-separator {
-    color: ${({ theme }) => theme.textColor};
   }
 
   .ant-breadcrumb-link {
@@ -63,6 +51,7 @@ const StyledBreadcrumb = styled(Breadcrumb)`
     color: ${({ theme }) => theme.primary};
 
     a {
+      gap: 0.5rem;
       display: flex;
       align-items: center;
       color: ${({ theme }) => theme.textColor};
@@ -73,4 +62,11 @@ const StyledBreadcrumb = styled(Breadcrumb)`
       }
     }
   }
+`
+
+const StyledIcon = styled(({ Icon, className, ...props }) => (
+  <Icon {...props} className={className} />
+))`
+  height: 24px;
+  color: ${({ theme }) => theme.textColor};
 `

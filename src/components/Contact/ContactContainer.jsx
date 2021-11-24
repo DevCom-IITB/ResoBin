@@ -1,26 +1,33 @@
+// import { useState } from 'react'
 import styled from 'styled-components/macro'
 
-import { PageHeading, PageTitle } from 'components/shared'
-
-import ContactFormContainer from './ContactFormContainer'
+import { ButtonSquare, InputSquared, TextAreaSquared } from 'components/shared'
 
 const ContactContainer = () => {
+  // const [state, setState] = useState(initalState)
+
+  // const handleInput = (e) => {
+  //   const inputName = e.currentTarget.name
+  //   const value = e.currentTarget.value
+  //   setState((prev) => ({ ...prev, [inputName]: value }))
+  // }
+
   return (
-    <Container>
-      <PageHeading>
-        <PageTitle>Contact us</PageTitle>
-      </PageHeading>
-      <ContactFormContainer />
-    </Container>
+    <ContainerForm>
+      <InputSquared placeholder="Subject" type="text" />
+
+      <TextAreaSquared placeholder="Message" />
+
+      <ButtonSquare type="submit">Send Message</ButtonSquare>
+    </ContainerForm>
   )
 }
 
-export default ContactContainer
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
-  margin: 0 ${({ theme }) => theme.asideWidthRight} 0
-    ${({ theme }) => theme.asideWidthLeft};
+const ContainerForm = styled.form`
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: ${({ theme }) => theme.secondary};
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
 `
+
+export default ContactContainer

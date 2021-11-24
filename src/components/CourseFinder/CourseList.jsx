@@ -1,5 +1,4 @@
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import styled from 'styled-components/macro'
 
 import { CourseItem, CourseItemLoading } from 'components/CourseFinder'
 import {
@@ -10,7 +9,6 @@ import {
   PageSubtitle,
 } from 'components/shared'
 import { useQueryString } from 'hooks'
-import { device } from 'styles/responsive'
 
 const CourseFinderList = ({
   title,
@@ -28,32 +26,28 @@ const CourseFinderList = ({
   }
 
   return (
-    <Container>
+    <>
       <PageHeading>
         <PageTitle>{title}</PageTitle>
-        {count !== undefined && (
-          <PageSubtitle>{count}&nbsp;results found</PageSubtitle>
-        )}
+        {!loading && <PageSubtitle>{count}&nbsp;results found</PageSubtitle>}
       </PageHeading>
 
-      <List>
-        <CourseItemLoading active={loading} />
-        <NotFoundSearch active={!loading && !count} />
+      <CourseItemLoading active={loading} />
+      <NotFoundSearch active={!loading && !count} />
 
-        <TransitionGroup>
-          {!loading &&
-            courseList?.map((courseData) => (
-              <CSSTransition
-                key={courseData.code}
-                timeout={200}
-                unmountOnExit
-                classNames="course_item"
-              >
-                <CourseItem courseData={courseData} />
-              </CSSTransition>
-            ))}
-        </TransitionGroup>
-      </List>
+      <TransitionGroup>
+        {!loading &&
+          courseList?.map((courseData) => (
+            <CSSTransition
+              key={courseData.code}
+              timeout={200}
+              unmountOnExit
+              classNames="course_item"
+            >
+              <CourseItem courseData={courseData} />
+            </CSSTransition>
+          ))}
+      </TransitionGroup>
 
       {!loading && (
         <Pagination
@@ -66,20 +60,8 @@ const CourseFinderList = ({
           total={count}
         />
       )}
-    </Container>
+    </>
   )
 }
 
 export default CourseFinderList
-
-const Container = styled.div`
-  width: 100%;
-  @media ${device.min.lg} {
-    padding-right: ${({ theme }) => theme.asideWidthRight};
-    transition: padding-right 200ms ease-in;
-  }
-`
-
-const List = styled.ul`
-  margin: 0 0.75rem;
-`

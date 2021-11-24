@@ -1,8 +1,25 @@
 import styled from 'styled-components/macro'
 
 import { Divider, LoaderAnimation } from 'components/shared'
-import { useViewportContext } from 'context/ViewportContext'
-import { breakpoints } from 'styles/responsive'
+import { useResponsive } from 'hooks'
+
+export const AsideHeader = ({ title, subtitle, loading, loadingComponent }) => (
+  <>
+    <Header>
+      <Title>{title}</Title>
+      {subtitle}
+    </Header>
+
+    <Divider margin="0" />
+
+    {loading && (
+      <>
+        <LoaderAnimation />
+        {loadingComponent}
+      </>
+    )}
+  </>
+)
 
 export const AsideContainer = ({
   title,
@@ -11,36 +28,27 @@ export const AsideContainer = ({
   loadingComponent,
   visible,
   children,
-}) => {
-  return (
-    <Container visible={visible}>
-      {title && (
-        <>
-          <Header>
-            <Title>{title}</Title>
-            {subtitle}
-          </Header>
+}) => (
+  <Container visible={visible}>
+    {title && (
+      <AsideHeader loading={loading} title={title} subtitle={subtitle} />
+    )}
 
-          <Divider />
-        </>
-      )}
+    {!title && loading && (
+      <>
+        <LoaderAnimation />
+        {loadingComponent}
+      </>
+    )}
 
-      {loading && (
-        <>
-          <LoaderAnimation />
-          {loadingComponent}
-        </>
-      )}
-
-      <Children>{children}</Children>
-    </Container>
-  )
-}
+    <Children>{children}</Children>
+  </Container>
+)
 
 const Aside = (params) => {
-  const { width } = useViewportContext()
+  const { isDesktop } = useResponsive()
 
-  return <AsideContainer {...params} visible={width >= breakpoints.lg} />
+  return <AsideContainer {...params} visible={isDesktop} />
 }
 
 export default Aside
@@ -52,7 +60,7 @@ const Container = styled.div`
   z-index: 5;
   width: ${({ theme }) => theme.asideWidthRight};
   height: calc(100vh - 3rem);
-  padding: 1rem;
+  padding: 0 1rem;
   background: ${({ theme }) => theme.secondary};
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   transition: right 200ms ease-in;
@@ -63,6 +71,7 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: baseline;
   height: 2.25rem;
+  margin-top: 1rem;
   padding-bottom: 0.5rem;
 `
 

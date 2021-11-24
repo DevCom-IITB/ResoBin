@@ -54,6 +54,7 @@ export default CourseWorkload
 
 const Container = styled.div`
   display: flex;
+  width: 10rem;
   overflow: auto;
   flex-wrap: wrap;
   padding: 4px;

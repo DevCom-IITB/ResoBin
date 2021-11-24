@@ -1,13 +1,11 @@
 import { Helmet } from 'react-helmet-async'
-import styled from 'styled-components/macro'
 
-import { PageHeading, PageTitle } from 'components/shared'
+import { PageContainer } from 'components/shared'
 import { TimetableContainer } from 'components/Timetable'
-import { device } from 'styles/responsive'
 
-const TimeTable = ({ match }) => {
+const TimeTable = () => {
   return (
-    <Container>
+    <PageContainer>
       <Helmet>
         <title>TimeTable - ResoBin</title>
         <meta
@@ -16,28 +14,9 @@ const TimeTable = ({ match }) => {
         />
       </Helmet>
 
-      <PageHeading>
-        <PageTitle>Timetable</PageTitle>
-      </PageHeading>
-
       <TimetableContainer />
-    </Container>
+    </PageContainer>
   )
 }
 
 export default TimeTable
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - ${({ theme }) => theme.headerHeight});
-
-  @media ${device.min.md} {
-    margin-left: ${({ theme }) => theme.asideWidthLeft};
-  }
-
-  @media ${device.min.xl} {
-    padding-right: ${({ theme }) => theme.asideWidthRight};
-    transition: padding-right 200ms ease-in;
-  }
-`

@@ -1,8 +1,10 @@
 import { Form, Input, Modal, Select } from 'antd'
+import { kebabCase } from 'lodash'
 import { useSelector } from 'react-redux'
 
 import { toastError } from 'components/toast'
-import { selectCourseListMinified, selectResourceTags } from 'store/courseSlice'
+import tags from 'data/tags.json'
+import { selectCourseListMinified } from 'store/courseSlice'
 
 const CourseResourceItemEditModal = ({
   visible,
@@ -21,9 +23,9 @@ const CourseResourceItemEditModal = ({
     }
   }
 
-  const tagOptions = useSelector(selectResourceTags)?.map(({ tag }) => ({
+  const tagOptions = tags.resourceTags.map((tag) => ({
     label: tag,
-    value: tag,
+    value: kebabCase(tag),
   }))
 
   const courseOptions = useSelector(selectCourseListMinified)?.map(
