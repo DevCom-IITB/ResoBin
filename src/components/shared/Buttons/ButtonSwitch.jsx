@@ -2,11 +2,13 @@ import { Button } from 'antd'
 import { lighten } from 'polished'
 import styled from 'styled-components/macro'
 
-import buttonStyles from './buttonStyles'
+import { buttonStyles } from './buttonStyles'
 
 // ? ref: https://styled-components.com/docs/api#transient-props
 const ButtonSwitch = styled(Button)`
   ${buttonStyles}
+
+  background: ${({ theme }) => theme.darksecondary};
 
   &.ant-btn-primary {
     background-color: ${({ $active, theme }) =>

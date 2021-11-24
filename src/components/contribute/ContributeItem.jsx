@@ -64,7 +64,7 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
     fd.append('file', fileItem.file, fileItem.file.name)
     fd.append('title', fileItem.details.title)
     fd.append('course', fileItem.details.course)
-    fd.append('description', fileItem.details.description)
+    fd.append('description', fileItem.details.description ?? '')
     fd.append('tags', JSON.stringify(fileItem.details.tags))
 
     try {
