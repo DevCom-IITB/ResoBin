@@ -101,7 +101,7 @@ const Sub = styled.div`
   grid-area: item-sub;
 
   > div {
-    width: 10rem;
+    width: 11rem;
   }
 
   @media ${device.min.xs} and ${device.max.md} {

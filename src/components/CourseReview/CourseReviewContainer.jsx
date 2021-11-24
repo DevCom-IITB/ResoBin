@@ -1,14 +1,12 @@
-import { UserGroup } from '@styled-icons/heroicons-outline'
 import { Divider } from 'antd'
 import { Fragment, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
-import { ButtonSwitch, LoaderAnimation } from 'components/shared'
+import { CourseContentRequest } from 'components/CoursePage'
+import { LoaderAnimation } from 'components/shared'
 import { toastError } from 'components/toast'
-import { selectUserProfile } from 'store/userSlice'
 
 import CourseReviewItem from './CourseReviewItem'
 import { ReviewEditor } from './Editor'
@@ -39,15 +37,10 @@ const recursiveApply = (array, callback) =>
   )
 
 const CourseReviewContainer = () => {
-  const profile = useSelector(selectUserProfile)
   const { courseCode } = useParams()
 
   const [reviewsData, setReviewsData] = useState([])
   const [APILoading, setAPILoading] = useState(true)
-  const [requestReview, setRequestReview] = useState({
-    status: profile.reviewsRequested?.includes(courseCode) ?? false,
-    loading: false,
-  })
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -65,24 +58,6 @@ const CourseReviewContainer = () => {
 
     fetchReviews()
   }, [courseCode])
-
-  const handleReviewRequest = async () => {
-    try {
-      setRequestReview((value) => ({ ...value, loading: true }))
-
-      if (requestReview.status) {
-        await API.reviews.request.remove({ code: courseCode })
-      } else {
-        await API.reviews.request.add({ code: courseCode })
-      }
-
-      setRequestReview((value) => ({ ...value, status: !value.status }))
-    } catch (error) {
-      toastError(error)
-    } finally {
-      setRequestReview((value) => ({ ...value, loading: false }))
-    }
-  }
 
   const handleUpdateContent = ({ id, payload }) => {
     if (id === null) {
@@ -121,22 +96,14 @@ const CourseReviewContainer = () => {
     }
   }
 
-  return APILoading ? (
-    <LoaderAnimation />
-  ) : (
+  if (APILoading) return <LoaderAnimation />
+
+  return (
     <>
       <Header>
         <h1 style={{ fontSize: '1.25rem' }}>Reviews</h1>
 
-        <ButtonSwitch
-          type="primary"
-          $active={requestReview.status}
-          onClick={handleReviewRequest}
-          icon={<UserGroup size="18" style={{ marginRight: '0.25rem' }} />}
-          loading={requestReview.loading}
-        >
-          {!requestReview.status ? <>Request</> : <>Revoke</>}
-        </ButtonSwitch>
+        <CourseContentRequest code={courseCode} type="reviews" />
       </Header>
 
       <ReviewEditor

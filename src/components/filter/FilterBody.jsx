@@ -103,7 +103,10 @@ const FilterContainer = ({ setLoading }) => {
         tags: getQueryString('tags')?.split(',') ?? [],
       }}
     >
-      <FilterItem label="Semesters" onClear={handleFilterClear('semester')} />
+      <FilterItem
+        label="Semesters"
+        onClear={handleFilterClear('semester', ['semester'])}
+      />
       <Form.Item name="semester">
         <Checkbox.Group options={semesterOptions} />
       </Form.Item>

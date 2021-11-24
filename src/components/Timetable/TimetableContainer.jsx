@@ -1,25 +1,66 @@
 import { LoadingOutlined } from '@ant-design/icons'
-import { ChevronLeft, ChevronRight } from '@styled-icons/heroicons-outline'
+import { ChevronLeft, ChevronRight, X } from '@styled-icons/heroicons-outline'
 import { Spin } from 'antd'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
-import { Aside, ButtonIcon, LoaderAnimation } from 'components/shared'
+import {
+  Aside,
+  Card,
+  LoaderAnimation,
+  PageHeading,
+  PageTitle,
+} from 'components/shared'
+import { ButtonIcon, ButtonIconDanger } from 'components/shared/Buttons'
 import { toastError } from 'components/toast'
-import { displayYear } from 'helpers/format'
-import { selectSemesters } from 'store/courseSlice'
+import { displayYear, coursePageUrl } from 'helpers/format'
+import {
+  selectCourseAPILoading,
+  selectCourseTitle,
+  selectSemesters,
+} from 'store/courseSlice'
+import { updateTimetable } from 'store/userSlice'
 
 import CurrentTime from './CurrentTime'
 import TimetableCourseItem from './TimetableCourseItem'
 import TimetableLayout from './TimetableLayout'
 
+const TimetableAsideItem = ({ code, handleRemove, loading }) => {
+  const title = useSelector(selectCourseTitle(code))
+
+  return (
+    <Link to={coursePageUrl(code, title)}>
+      <Card hoverable>
+        <Card.Meta
+          title={
+            <TimetableCardTitle>
+              {code}
+
+              <ButtonIconDanger
+                tooltip="Remove from timetable"
+                icon={<X size="24" />}
+                onClick={handleRemove}
+                disabled={loading}
+                hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+              />
+            </TimetableCardTitle>
+          }
+          description={title}
+        />
+      </Card>
+    </Link>
+  )
+}
+
 const TimetableContainer = () => {
+  const dispatch = useDispatch()
   const semesterList = useSelector(selectSemesters)
 
   const [courseTimetableList, setCourseTimetableList] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(useSelector(selectCourseAPILoading))
   const [semIdx, setSemIdx] = useState(semesterList.length - 1)
 
   useEffect(() => {
@@ -43,22 +84,40 @@ const TimetableContainer = () => {
   const handleClickNext = () =>
     semIdx + 1 in semesterList && setSemIdx(semIdx + 1)
 
+  const removeFromTimetable = (id) => async () => {
+    try {
+      setLoading(true)
+      await API.profile.timetable.remove({ id })
+
+      setCourseTimetableList(
+        courseTimetableList.filter((item) => item.id !== id)
+      )
+      dispatch(updateTimetable(id))
+    } catch (error) {
+      toastError(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <>
+      <PageHeading>
+        <PageTitle>Timetable</PageTitle>
+      </PageHeading>
+
       <TimetableSemesterTitle>
         <ButtonIcon
           color="white"
-          size="default"
           icon={<ChevronLeft size="20" />}
           onClick={handleClickPrev}
           disabled={loading || !(semIdx - 1 in semesterList)}
           hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
         />
-        {semesterList[semIdx]?.season}&nbsp;
+        {semesterList[semIdx]?.season ?? 'Click next'}&nbsp;
         {displayYear(semesterList[semIdx]?.year)}
         <ButtonIcon
           color="white"
-          size="default"
           icon={<ChevronRight size="20" />}
           disabled={loading || !(semIdx + 1 in semesterList)}
           onClick={handleClickNext}
@@ -81,11 +140,18 @@ const TimetableContainer = () => {
         </TimetableLayout>
       </Spin>
 
-      <Aside title="Semester courses" loading={loading}>
-        {!loading &&
-          courseTimetableList.map(({ id, course }) => (
-            <h1 key={id}>{course}</h1>
-          ))}
+      <Aside title="My courses" loading={loading}>
+        <AsideList>
+          {!loading &&
+            courseTimetableList.map(({ id, course }) => (
+              <TimetableAsideItem
+                key={id}
+                code={course}
+                handleRemove={removeFromTimetable(id)}
+                loading={loading}
+              />
+            ))}
+        </AsideList>
       </Aside>
     </>
   )
@@ -102,4 +168,18 @@ const TimetableSemesterTitle = styled.div`
   font-size: 1.25rem;
   color: white;
   text-transform: capitalize;
+`
+
+const AsideList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 13.6rem;
+`
+
+const TimetableCardTitle = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
 `
