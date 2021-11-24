@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
+import { CourseContentRequestButtonIcon } from 'components/CoursePage/CourseContentRequest'
 import { ButtonSwitch, Divider, Tabs } from 'components/shared'
 import { ButtonSquareLink } from 'components/shared/Buttons'
 import { toastError } from 'components/toast'
@@ -132,7 +133,7 @@ const CourseItemSub = ({ courseData }) => {
       {semTabInitialValue ? (
         <Tabs
           tabheight="1.75rem"
-          tabwidth="5rem"
+          tabwidth="5.5rem"
           defaultActiveKey={semTabInitialValue}
         >
           <Tabs.TabPane
@@ -163,18 +164,37 @@ const CourseItemSub = ({ courseData }) => {
       )}
 
       <div>
-        <ButtonSquareLink
-          to={`${coursePageUrl(code, title)}#reviews`}
-          style={{ marginBottom: '0.75rem' }}
-        >
-          <ChatAlt size="18" style={{ marginRight: '0.5rem' }} />
-          Reviews {reviewCount > 0 && `(${reviewCount})`}
-        </ButtonSquareLink>
+        <FlexGap>
+          <ButtonSquareLink
+            to={`${coursePageUrl(code, title)}#reviews`}
+            style={{ width: '100%', marginBottom: '0.75rem' }}
+          >
+            <ChatAlt size="18" style={{ marginRight: '0.5rem' }} />
+            Reviews {reviewCount > 0 && `(${reviewCount})`}
+          </ButtonSquareLink>
 
-        <ButtonSquareLink to={`${coursePageUrl(code, title)}#resources`}>
-          <DocumentText size="18" style={{ marginRight: '0.5rem' }} />
-          Resources {resourceCount > 0 && `(${resourceCount})`}
-        </ButtonSquareLink>
+          <CourseContentRequestButtonIcon
+            code={code}
+            type="reviews"
+            tooltip="Request reviews"
+          />
+        </FlexGap>
+
+        <FlexGap>
+          <ButtonSquareLink
+            style={{ width: '100%' }}
+            to={`${coursePageUrl(code, title)}#resources`}
+          >
+            <DocumentText size="18" style={{ marginRight: '0.5rem' }} />
+            Resources {resourceCount > 0 && `(${resourceCount})`}
+          </ButtonSquareLink>
+
+          <CourseContentRequestButtonIcon
+            code={code}
+            type="resources"
+            tooltip="Request resources"
+          />
+        </FlexGap>
       </div>
     </>
   )
@@ -196,4 +216,10 @@ const SpaceBetween = styled.div`
   width: 100%;
   justify-content: space-between;
   align-items: center;
+`
+
+const FlexGap = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 0.5rem;
 `

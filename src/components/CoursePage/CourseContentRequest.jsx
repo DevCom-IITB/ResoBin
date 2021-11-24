@@ -3,12 +3,11 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { API } from 'api'
-import { ButtonSwitch } from 'components/shared'
+import { ButtonIcon, ButtonSwitch } from 'components/shared'
 import { toastError } from 'components/toast'
 import { selectUserProfile } from 'store/userSlice'
 
-// * type = reviews | resources
-const CourseContentRequest = ({ code, type, ...props }) => {
+export const useCourseContentRequest = ({ code, type }) => {
   const profile = useSelector(selectUserProfile)
 
   const [loading, setLoading] = useState(false)
@@ -33,6 +32,20 @@ const CourseContentRequest = ({ code, type, ...props }) => {
     }
   }
 
+  return {
+    requestStatus,
+    handleRequest,
+    loading,
+  }
+}
+
+// * type = reviews | resources
+const CourseContentRequestButtonSquare = ({ code, type, ...props }) => {
+  const { requestStatus, handleRequest, loading } = useCourseContentRequest({
+    code,
+    type,
+  })
+
   return (
     <ButtonSwitch
       type="primary"
@@ -47,4 +60,25 @@ const CourseContentRequest = ({ code, type, ...props }) => {
   )
 }
 
-export default CourseContentRequest
+export const CourseContentRequestButtonIcon = ({ code, type, ...props }) => {
+  const { requestStatus, handleRequest, loading } = useCourseContentRequest({
+    code,
+    type,
+  })
+
+  return (
+    <ButtonIcon
+      type="primary"
+      color="white"
+      shape="round"
+      size="default"
+      icon={<UserGroup size="18" />}
+      $active={requestStatus}
+      onClick={handleRequest}
+      loading={loading}
+      {...props}
+    />
+  )
+}
+
+export default CourseContentRequestButtonSquare
