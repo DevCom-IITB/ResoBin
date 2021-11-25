@@ -7,10 +7,7 @@ import { logoutAction } from 'store/authSlice'
 
 const SettingsContainer = () => {
   const dispatch = useDispatch()
-
-  const handleLogout = async () => {
-    dispatch(logoutAction())
-  }
+  const handleLogout = () => dispatch(logoutAction())
 
   return (
     <div>

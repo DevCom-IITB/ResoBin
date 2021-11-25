@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useState, useEffect } from 'react'
 
 import { API } from 'api'
@@ -6,6 +7,7 @@ import { FilterAside, FilterFloatButton } from 'components/filter'
 import { toastError } from 'components/toast'
 import { useQueryString, useResponsive } from 'hooks'
 
+let ajaxRequest = null
 const CourseFinderContainer = () => {
   const { isDesktop } = useResponsive()
   const { getQueryString } = useQueryString()
@@ -17,7 +19,13 @@ const CourseFinderContainer = () => {
   const fetchCourses = async (params) => {
     try {
       setLoading(true)
-      const response = await API.courses.list({ params })
+      if (ajaxRequest) ajaxRequest.cancel()
+      ajaxRequest = axios.CancelToken.source()
+
+      const response = await API.courses.list({
+        params,
+        cancelToken: ajaxRequest.token,
+      })
       setCourseData(response)
     } catch (error) {
       toastError(error)

@@ -36,9 +36,8 @@ APIInstance.interceptors.response.use(
   },
   (error) => {
     try {
-      if (error.response.status === 401) {
+      if (!axios.isCancel(error) && error.response.status === 401)
         toastError('Please login again')
-      }
     } catch (e) {
       toastError('Server is offline')
     }
@@ -90,7 +89,8 @@ export const API = {
 
   // * Courses endpoints
   courses: {
-    list: async ({ params }) => APIInstance.get('/courses', { params }),
+    list: async ({ params, cancelToken }) =>
+      APIInstance.get('/courses', { params, cancelToken }),
     read: async ({ code }) => APIInstance.get(`/courses/${code}`),
     listResources: async ({ code }) =>
       APIInstance.get(`/courses/${code}/resources`),
