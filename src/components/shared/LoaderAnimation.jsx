@@ -1,5 +1,19 @@
 import styled, { keyframes } from 'styled-components/macro'
 
+export const LoaderAnimation = ({ fixed, disable }) => {
+  if (disable) return null
+
+  return (
+    <Container style={fixed && { position: 'fixed' }}>
+      <LoaderTrack>
+        <LoaderFill />
+      </LoaderTrack>
+    </Container>
+  )
+}
+
+export default LoaderAnimation
+
 const Container = styled.div`
   top: 0;
   left: 0;
@@ -73,17 +87,3 @@ const LoaderFill = styled.div`
     animation-delay: 1.15s;
   }
 `
-
-export const LoaderAnimation = ({ fixed, disable }) => {
-  if (disable) return null
-
-  return (
-    <Container style={fixed && { position: 'fixed' }}>
-      <LoaderTrack>
-        <LoaderFill />
-      </LoaderTrack>
-    </Container>
-  )
-}
-
-export default LoaderAnimation

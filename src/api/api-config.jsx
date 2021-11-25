@@ -35,9 +35,10 @@ APIInstance.interceptors.response.use(
     return response.data
   },
   (error) => {
+    if (axios.isCancel(error)) return Promise.reject(error)
+
     try {
-      if (!axios.isCancel(error) && error.response.status === 401)
-        toastError('Please login again')
+      if (error.response.status === 401) toastError('Please login again')
     } catch (e) {
       toastError('Server is offline')
     }

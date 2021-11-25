@@ -17,8 +17,9 @@ const CourseFinderContainer = () => {
   const [loading, setLoading] = useState(true)
 
   const fetchCourses = async (params) => {
+    setLoading(true)
+
     try {
-      setLoading(true)
       if (ajaxRequest) ajaxRequest.cancel()
       ajaxRequest = axios.CancelToken.source()
 
@@ -28,10 +29,11 @@ const CourseFinderContainer = () => {
       })
       setCourseData(response)
     } catch (error) {
+      if (axios.isCancel(error)) return
       toastError(error)
-    } finally {
-      setLoading(false)
     }
+
+    setLoading(false)
   }
 
   useEffect(() => {

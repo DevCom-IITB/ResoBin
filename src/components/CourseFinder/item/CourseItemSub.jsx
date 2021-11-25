@@ -133,7 +133,7 @@ const CourseItemSub = ({ courseData }) => {
       {semTabInitialValue ? (
         <Tabs
           tabheight="1.75rem"
-          tabwidth="5.5rem"
+          tabwidth="6.5rem"
           defaultActiveKey={semTabInitialValue}
         >
           <Tabs.TabPane

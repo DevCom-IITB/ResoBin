@@ -4,7 +4,7 @@ import { Divider, LoaderAnimation } from 'components/shared'
 import { useResponsive } from 'hooks'
 
 export const AsideHeader = ({ title, subtitle, loading, loadingComponent }) => (
-  <>
+  <div>
     <Header>
       <Title>{title}</Title>
       {subtitle}
@@ -18,7 +18,7 @@ export const AsideHeader = ({ title, subtitle, loading, loadingComponent }) => (
         {loadingComponent}
       </>
     )}
-  </>
+  </div>
 )
 
 export const AsideContainer = ({
