@@ -3,7 +3,7 @@ import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
 
 import { PrivateRoute } from 'hoc'
 
-// lazy load the pages when called
+// ? lazy load the pages when called
 const Dashboard = lazy(() => import('pages/Dashboard'))
 const Login = lazy(() => import('pages/Login'))
 const NotFound = lazy(() => import('pages/NotFound'))

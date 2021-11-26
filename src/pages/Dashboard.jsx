@@ -35,9 +35,9 @@ const Dashboard = () => {
     useSelector(selectAuthLoading),
   ]
 
-  return loadingAPI.includes(true) ? (
-    <LoaderAnimation fixed />
-  ) : (
+  if (loadingAPI.includes(true)) return <LoaderAnimation fixed />
+
+  return (
     <>
       <Menu />
 

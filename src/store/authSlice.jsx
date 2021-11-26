@@ -66,5 +66,6 @@ const authSlice = createSlice({
 })
 
 export const selectAuthLoading = (state) => state.auth.loading
+export const selectAuthStatus = (state) => state.auth.isAuthenticated
 
 export default authSlice.reducer
