@@ -13,10 +13,10 @@ const Header = () => {
   return (
     <Container>
       <ResoBinLogo size="1.5rem" />
-      {isAuthenticated && (
+      {isAuthenticated && latestSemester && (
         <Term>
-          AY {displayYear(latestSemester?.year)}
-          &nbsp;| {latestSemester?.season}
+          AY {displayYear(latestSemester.year)}
+          &nbsp;| {latestSemester.season}
         </Term>
       )}
     </Container>
