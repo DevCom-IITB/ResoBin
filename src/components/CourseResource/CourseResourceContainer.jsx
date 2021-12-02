@@ -1,6 +1,6 @@
 import { CloudUpload } from '@styled-icons/heroicons-outline'
 import { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
@@ -12,7 +12,7 @@ import { CourseResourceGrid } from './CourseResourceItem'
 
 const CourseResourceContainer = () => {
   const { courseCode } = useParams()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const [resources, setResources] = useState([])
   const [loading, setLoading] = useState(false)
@@ -33,9 +33,7 @@ const CourseResourceContainer = () => {
     fetchResources()
   }, [courseCode])
 
-  const redirectContribute = () => {
-    history.push(`/contribute?course=${courseCode}`)
-  }
+  const redirectContribute = () => navigate(`/contribute?course=${courseCode}`)
 
   if (loading) return <LoaderAnimation />
 

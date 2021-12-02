@@ -11,17 +11,13 @@ const SettingsContainer = () => {
 
   return (
     <div>
-      <>
-        <h1>Switch theme</h1>
-        <DarkmodeToggle />
-      </>
+      <h1>Switch theme</h1>
+      <DarkmodeToggle />
 
-      <>
-        <h1>Are you sure you want to logout?</h1>
-        <StyledButton type="primary" onClick={handleLogout}>
-          Logout
-        </StyledButton>
-      </>
+      <h1>Are you sure you want to logout?</h1>
+      <StyledButton type="primary" onClick={handleLogout}>
+        Logout
+      </StyledButton>
     </div>
   )
 }

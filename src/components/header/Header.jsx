@@ -3,17 +3,17 @@ import styled from 'styled-components/macro'
 
 import { ResoBinLogo } from 'components/shared'
 import { displayYear } from 'helpers/format'
-import { selectSemesters } from 'store/courseSlice'
+import { selectCurrentSemester } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
 const Header = () => {
   const { isAuthenticated } = useSelector((state) => state.auth)
-  const [latestSemester] = useSelector(selectSemesters)?.slice(-1)
+  const latestSemester = useSelector(selectCurrentSemester)
 
   return (
     <Container>
       <ResoBinLogo size="1.5rem" />
-      {isAuthenticated && latestSemester && (
+      {!isAuthenticated && latestSemester && (
         <Term>
           AY {displayYear(latestSemester.year)}
           &nbsp;| {latestSemester.season}
@@ -28,7 +28,7 @@ export default Header
 const Container = styled.div`
   position: sticky;
   top: 0;
-  z-index: 9; /* To put header at the top */
+  z-index: 9;
   display: flex;
   justify-content: center;
   align-items: center;

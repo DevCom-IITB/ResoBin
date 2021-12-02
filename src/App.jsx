@@ -3,7 +3,6 @@ import { Suspense } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { pdfjs } from 'react-pdf'
 import { useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
 import { ThemeProvider } from 'styled-components/macro'
 
 import { Header } from 'components/header'
@@ -17,7 +16,6 @@ import { themes, GlobalStyles } from 'styles'
 pdfjs.GlobalWorkerOptions.workerSrc = worker
 
 const App = () => {
-  toast.configure()
   const selectedTheme = useSelector(selectTheme)
   const authLoading = useSelector(selectAuthLoading)
 

@@ -1,27 +1,15 @@
 import { useState } from 'react'
 import styled from 'styled-components/macro'
 
-const ReadMoreText = styled.span`
-  display: inline-block;
-  margin: 0;
-  font-size: 85%;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-weight: 600;
-  color: gray;
-  cursor: pointer;
-`
+const maxChars = 199
 
-const ReadMore = ({ children }) => {
+const ReadMore = ({ children: text }) => {
   const [isReadMore, setIsReadMore] = useState(true)
-  if (!children) return children
 
+  if (!text || text.length < maxChars) return text
   const toggleReadMore = () => setIsReadMore(!isReadMore)
-  const maxChars = 199
-  const text = children
 
-  return text.length < maxChars ? (
-    <>{text}</>
-  ) : (
+  return (
     <>
       {isReadMore ? text.slice(0, maxChars) : text}
       <ReadMoreText onClick={toggleReadMore}>
@@ -32,3 +20,13 @@ const ReadMore = ({ children }) => {
 }
 
 export default ReadMore
+
+const ReadMoreText = styled.span`
+  display: inline-block;
+  margin: 0;
+  font-size: 85%;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+  color: gray;
+  cursor: pointer;
+`

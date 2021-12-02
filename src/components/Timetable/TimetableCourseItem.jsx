@@ -1,5 +1,6 @@
 import { Tooltip } from 'antd'
 import { darken } from 'polished'
+import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import styled, { css } from 'styled-components/macro'
 
@@ -12,21 +13,24 @@ const TimetableCourseItem = ({ data, colorCode = 0 }) => {
   const { course: code, lectureSlots } = data
   const title = useSelector(selectCourseTitle(code))
 
-  if (!lectureSlots || lectureSlots.length === 0) return null
-  const courseSlots = lectureSlots.map((slot) => slots[slot])
-
-  const TimetableCourseLectureItem = ({ gridCol, gridRow }) => (
-    <GridItem row={gridRow} col={gridCol}>
-      <Tooltip title={title}>
-        <Item id={colorCode}>
-          <h3>{code}</h3>
-          <span>
-            {gridRow.start.title} - {gridRow.end.title}
-          </span>
-        </Item>
-      </Tooltip>
-    </GridItem>
+  const TimetableCourseLectureItem = useMemo(
+    ({ gridCol, gridRow }) => (
+      <GridItem row={gridRow} col={gridCol}>
+        <Tooltip title={title}>
+          <Item id={colorCode}>
+            <h3>{code}</h3>
+            <span>
+              {gridRow.start.title} - {gridRow.end.title}
+            </span>
+          </Item>
+        </Tooltip>
+      </GridItem>
+    ),
+    [code, colorCode, title]
   )
+
+  if (lectureSlots?.length === 0) return null
+  const courseSlots = lectureSlots.map((slot) => slots[slot])
 
   return (
     <>

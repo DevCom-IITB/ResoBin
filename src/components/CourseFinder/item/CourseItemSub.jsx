@@ -16,7 +16,7 @@ import { ButtonSquareLink } from 'components/shared/Buttons'
 import { toastError } from 'components/toast'
 import { coursePageUrl } from 'helpers/format'
 import { useResponsive } from 'hooks'
-import { selectSemesters } from 'store/courseSlice'
+import { selectCurrentSemester } from 'store/courseSlice'
 import { selectAllTimetable, updateTimetable } from 'store/userSlice'
 
 const SemesterItem = ({ data }) => {
@@ -111,7 +111,7 @@ const CourseItemSub = ({ courseData }) => {
   const { isMobile, isMobileS } = useResponsive()
 
   const { code, title, semester, reviews, resources } = courseData
-  const [latestSemester] = useSelector(selectSemesters)?.slice(-1)
+  const latestSemester = useSelector(selectCurrentSemester)
 
   const timetable = {
     autumn: semester?.find(({ season }) => season === 'autumn').timetable,

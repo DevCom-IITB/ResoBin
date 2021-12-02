@@ -81,4 +81,9 @@ export const selectCourseTitle = (code) =>
       courseListMinified.find((course) => course.code === code)?.title ?? ''
   )
 
+export const selectCurrentSemester = createSelector(
+  selectSemesters,
+  (semesters) => semesters.at(-1)
+)
+
 export default courseSlice.reducer

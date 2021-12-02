@@ -6,11 +6,10 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
 import 'react-quill/dist/quill.snow.css'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
-import 'react-toastify/dist/ReactToastify.css'
 
 import App from 'App'
 import { store } from 'store'
-import 'styles/styles.scss'
+import 'styles/styles.css'
 
 const rootElement = document.getElementById('root')
 
