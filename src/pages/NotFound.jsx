@@ -1,12 +1,14 @@
 import { Helmet } from 'react-helmet-async'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import NotFoundImg from 'assets/images/NotFound.png'
 import { device, fontSize } from 'styles/responsive'
 
 const NotFound = () => {
-  const history = useHistory()
+  const navigate = useNavigate()
+  const goHome = () => navigate('/')
+  const goBack = () => navigate(-1)
 
   return (
     <Container>
@@ -21,7 +23,8 @@ const NotFound = () => {
         <Subtitle>
           This page is not available.
           <br />
-          <GoBack onClick={history.goBack}>Take me back!</GoBack>
+          <GoBack onClick={goBack}>Return back</GoBack>, or&nbsp;
+          <GoBack onClick={goHome}>take me home!</GoBack>
         </Subtitle>
       </Box>
     </Container>
