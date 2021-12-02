@@ -13,9 +13,9 @@ import {
   LoaderAnimation,
   PageHeading,
   PageTitle,
+  toast,
 } from 'components/shared'
 import { ButtonIcon, ButtonIconDanger } from 'components/shared/Buttons'
-import { toastError } from 'components/toast'
 import { displayYear, coursePageUrl } from 'helpers/format'
 import {
   selectCourseAPILoading,
@@ -70,7 +70,7 @@ const TimetableContainer = () => {
         const response = await API.profile.timetable.read(_semester)
         setCourseTimetableList(response)
       } catch (error) {
-        toastError(error)
+        toast({ status: 'error', content: error })
       } finally {
         setLoading(false)
       }
@@ -94,7 +94,7 @@ const TimetableContainer = () => {
       )
       dispatch(updateTimetable(id))
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     } finally {
       setLoading(false)
     }

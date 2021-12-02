@@ -6,8 +6,7 @@ import { Plus } from 'styled-icons/heroicons-outline'
 
 import { API } from 'api'
 import { CourseResourceGrid } from 'components/CourseResource'
-import { Aside, ButtonSquare, PageTitle } from 'components/shared'
-import { toastError } from 'components/toast'
+import { Aside, ButtonSquare, PageTitle, toast } from 'components/shared'
 import { defaultFile, fileTypes } from 'data/CourseResources'
 import { useResponsive } from 'hooks'
 
@@ -39,7 +38,7 @@ const ContributeContainer = ({ visible, setVisible }) => {
         const response = await API.profile.resources.list()
         setMyResources(response)
       } catch (error) {
-        toastError(error)
+        toast({ status: 'error', content: error })
       } finally {
         setAPILoading(false)
       }

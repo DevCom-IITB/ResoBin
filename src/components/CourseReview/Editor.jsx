@@ -4,8 +4,7 @@ import ReactQuill from 'react-quill'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { UserAvatar } from 'components/shared'
-import { toastError } from 'components/toast'
+import { toast, UserAvatar } from 'components/shared'
 import { selectUserProfile } from 'store/userSlice'
 
 const formats = [
@@ -54,7 +53,7 @@ export const Editor = ({ visible, onSubmit, initialValue = '' }) => {
       await onSubmit(content)
       setContent(initialValue)
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     } finally {
       setLoading(false)
     }

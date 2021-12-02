@@ -3,8 +3,7 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { API } from 'api'
-import { ButtonIcon, ButtonSwitch } from 'components/shared'
-import { toastError } from 'components/toast'
+import { ButtonIcon, ButtonSwitch, toast } from 'components/shared'
 import { selectUserProfile } from 'store/userSlice'
 
 export const useCourseContentRequest = ({ code, type }) => {
@@ -26,7 +25,7 @@ export const useCourseContentRequest = ({ code, type }) => {
 
       setRequestStatus(!requestStatus)
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     } finally {
       setLoading(false)
     }

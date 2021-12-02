@@ -11,9 +11,8 @@ import styled from 'styled-components/macro'
 
 import { API } from 'api'
 import { CourseContentRequestButtonIcon } from 'components/CoursePage/CourseContentRequest'
-import { ButtonSwitch, Divider, Tabs } from 'components/shared'
+import { ButtonSwitch, Divider, Tabs, toast } from 'components/shared'
 import { ButtonSquareLink } from 'components/shared/Buttons'
-import { toastError } from 'components/toast'
 import { coursePageUrl } from 'helpers/format'
 import { useResponsive } from 'hooks'
 import { selectCurrentSemester } from 'store/courseSlice'
@@ -55,7 +54,7 @@ const SemesterItem = ({ data }) => {
 
       dispatch(updateTimetable(id))
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     } finally {
       setLoading(false)
     }

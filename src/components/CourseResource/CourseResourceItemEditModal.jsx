@@ -2,7 +2,7 @@ import { Form, Input, Modal, Select } from 'antd'
 import { kebabCase } from 'lodash'
 import { useSelector } from 'react-redux'
 
-import { toastError } from 'components/toast'
+import { toast } from 'components/shared'
 import tags from 'data/tags.json'
 import { selectCourseListMinified } from 'store/courseSlice'
 
@@ -19,7 +19,7 @@ const CourseResourceItemEditModal = ({
       const values = await form.validateFields()
       onEdit(values)
     } catch (error) {
-      toastError('Check your inputs')
+      toast({ status: 'error', content: 'Check your inputs' })
     }
   }
 

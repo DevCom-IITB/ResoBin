@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { API } from 'api'
 import { CourseList, CourseSearch } from 'components/CourseFinder'
 import { FilterAside, FilterFloatButton } from 'components/filter'
-import { toastError } from 'components/toast'
+import { toast } from 'components/shared'
 import { useQueryString, useResponsive } from 'hooks'
 
 let ajaxRequest = null
@@ -30,7 +30,7 @@ const CourseFinderContainer = () => {
       setCourseData(response)
     } catch (error) {
       if (axios.isCancel(error)) return
-      toastError(error)
+      toast({ status: 'error', content: error })
     }
 
     setLoading(false)

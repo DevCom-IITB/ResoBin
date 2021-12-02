@@ -11,9 +11,7 @@ import styled from 'styled-components/macro'
 
 import { API } from 'api'
 import placeholderImg from 'assets/images/ResourcePlaceholder.jpg'
-import { ButtonIcon, Timestamp } from 'components/shared'
-import { UserAvatar } from 'components/shared/Avatar'
-import { toastError } from 'components/toast'
+import { ButtonIcon, Timestamp, toast, UserAvatar } from 'components/shared'
 import { selectUserProfile } from 'store/userSlice'
 import { limitLines } from 'styles/mixins'
 
@@ -36,7 +34,7 @@ const CourseResourceItem = ({ content: initialContent }) => {
       setContent({ ...content, ...payload })
       setEditModalVisible(false)
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     }
   }
 

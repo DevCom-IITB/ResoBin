@@ -7,9 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { API } from 'api'
-import { ButtonIcon, Timestamp } from 'components/shared'
-import { UserAvatar } from 'components/shared/Avatar'
-import { toastError } from 'components/toast'
+import { ButtonIcon, Timestamp, toast, UserAvatar } from 'components/shared'
 import {
   selectUserProfile,
   selectReviewVoteStatus,
@@ -40,7 +38,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
 
       dispatch(updateReviewsVoted(content.id))
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     }
   }
 
@@ -57,7 +55,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       updateContent({ id: content.id, payload })
       setAction(null)
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     }
   }
 
@@ -66,7 +64,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       await API.reviews.delete({ id: content.id })
       updateContent({ id: content.id, payload: null })
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     }
   }
 
@@ -88,7 +86,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       updateContent({ id: content.id, payload })
       setAction(null)
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     }
   }
 

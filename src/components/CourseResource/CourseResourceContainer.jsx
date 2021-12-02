@@ -5,8 +5,7 @@ import styled from 'styled-components/macro'
 
 import { API } from 'api'
 import { CourseContentRequest } from 'components/CoursePage'
-import { ButtonSquare, LoaderAnimation } from 'components/shared'
-import { toastError } from 'components/toast'
+import { ButtonSquare, LoaderAnimation, toast } from 'components/shared'
 
 import { CourseResourceGrid } from './CourseResourceItem'
 
@@ -24,7 +23,7 @@ const CourseResourceContainer = () => {
         const response = await API.courses.listResources({ code: courseCode })
         setResources(response)
       } catch (error) {
-        toastError(error)
+        toast({ status: 'error', content: error })
       } finally {
         setLoading(false)
       }

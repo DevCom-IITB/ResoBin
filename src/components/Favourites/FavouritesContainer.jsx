@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 
 import { API } from 'api'
 import { CourseList, CourseSearch } from 'components/CourseFinder'
-import { Aside } from 'components/shared'
-import { toastError } from 'components/toast'
+import { Aside, toast } from 'components/shared'
 import { useQueryString } from 'hooks'
 
 const FavouritesContainer = () => {
@@ -18,7 +17,7 @@ const FavouritesContainer = () => {
       const response = await API.profile.favorites({ params })
       setCourseData(response)
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     } finally {
       setLoading(false)
     }

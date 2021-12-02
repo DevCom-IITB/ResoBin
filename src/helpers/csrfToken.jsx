@@ -2,7 +2,7 @@ import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 
 import { API } from 'api'
-import { toastError } from 'components/toast'
+import { toast } from 'components/shared'
 
 const CSRFToken = () => {
   const [token, setToken] = useState('')
@@ -12,9 +12,10 @@ const CSRFToken = () => {
       try {
         await API.auth.csrftoken()
       } catch (error) {
-        toastError(error.message)
+        toast({ status: 'error', content: error })
       }
     }
+
     fetchData()
     setToken(Cookies.get('csrftoken') || '')
   }, [setToken])

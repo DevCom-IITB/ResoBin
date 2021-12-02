@@ -5,8 +5,7 @@ import styled from 'styled-components/macro'
 
 import { API } from 'api'
 import { CourseContentRequest } from 'components/CoursePage'
-import { LoaderAnimation } from 'components/shared'
-import { toastError } from 'components/toast'
+import { LoaderAnimation, toast } from 'components/shared'
 
 import CourseReviewItem from './CourseReviewItem'
 import { ReviewEditor } from './Editor'
@@ -50,7 +49,7 @@ const CourseReviewContainer = () => {
         response = nestComments(response)
         setReviewsData(response)
       } catch (error) {
-        toastError(error)
+        toast({ status: 'error', content: error })
       } finally {
         setAPILoading(false)
       }
@@ -92,7 +91,7 @@ const CourseReviewContainer = () => {
 
       handleUpdateContent({ id: null, payload: { ...response, children: [] } })
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     }
   }
 

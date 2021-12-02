@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { toastError } from 'components/toast'
+import { toast } from 'components/shared'
 import { camelizeKeys, snakeizeKeys } from 'helpers/transformKeys'
 
 export const APIInstance = axios.create({
@@ -38,9 +38,10 @@ APIInstance.interceptors.response.use(
     if (axios.isCancel(error)) return Promise.reject(error)
 
     try {
-      if (error.response.status === 401) toastError('Please login again')
+      if (error.response.status === 401)
+        toast({ status: 'error', content: 'Please login again' })
     } catch (e) {
-      toastError('Server is offline')
+      toast({ status: 'error', content: 'Server is offline' })
     }
 
     return Promise.reject(error.message)

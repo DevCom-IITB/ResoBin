@@ -11,9 +11,9 @@ import {
   PageSubtitle,
   PageTitle,
   Card,
+  toast,
 } from 'components/shared'
 import { AsideHeader } from 'components/shared/Aside'
-import { toastError } from 'components/toast'
 import { coursePageUrl } from 'helpers/format'
 
 const HomeItem = ({ course, hash }) => {
@@ -39,7 +39,7 @@ const HomeContainer = () => {
         const response = await API.stats.list()
         setStats(response)
       } catch (error) {
-        toastError(error)
+        toast({ status: 'error', content: error })
       } finally {
         setLoading(false)
       }
