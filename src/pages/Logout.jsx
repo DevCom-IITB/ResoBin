@@ -1,7 +1,6 @@
 import { Button } from 'antd'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
-import { Redirect } from 'react-router'
 import styled from 'styled-components/macro'
 
 import { LoaderAnimation } from 'components/shared'
@@ -10,13 +9,8 @@ import { fontSize } from 'styles/responsive'
 
 const Logout = () => {
   const dispatch = useDispatch()
-  const { isAuthenticated, loading } = useSelector((state) => state.auth)
-
-  const handleLogout = async () => {
-    dispatch(logoutAction())
-  }
-
-  if (!isAuthenticated) return <Redirect to="/login" />
+  const { loading } = useSelector((state) => state.auth)
+  const handleLogout = async () => dispatch(logoutAction())
 
   return (
     <>

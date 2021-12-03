@@ -3,12 +3,11 @@ import { lighten } from 'polished'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { getLoginURL, SSO } from 'api'
-import { LoaderAnimation } from 'components/shared'
-import { toastError } from 'components/toast'
+import { LoaderAnimation, toast } from 'components/shared'
 import { CSRFToken } from 'helpers'
 import { useQueryString } from 'hooks'
 import { getAuthStatusAction, loginAction } from 'store/authSlice'
@@ -16,7 +15,7 @@ import { fontSize } from 'styles/responsive'
 
 const Login = () => {
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
   const location = useLocation()
   const { deleteQueryString, getQueryString } = useQueryString()
   const { isAuthenticated, loading } = useSelector((state) => state.auth)
@@ -28,7 +27,7 @@ const Login = () => {
 
     if (isAuthenticated) {
       const state = JSON.parse(getQueryString('state')) ?? '/'
-      history.replace(state)
+      navigate(state, { replace: true })
     } else if (isAuthenticated === null) {
       dispatch(getAuthStatusAction())
     } else {
@@ -44,11 +43,11 @@ const Login = () => {
 
       // ? If SSO login is unsuccessfull, an error param appears in the query string
       if (error) {
-        toastError(`Error: ${error}`)
+        toast({ status: 'error', content: `Error: ${error}` })
         deleteQueryString('error')
       }
     }
-  }, [dispatch, history, getQueryString, deleteQueryString, isAuthenticated])
+  }, [dispatch, navigate, getQueryString, deleteQueryString, isAuthenticated])
 
   const redirectLogin = () => {
     window.location.href = getLoginURL(location.state?.from)

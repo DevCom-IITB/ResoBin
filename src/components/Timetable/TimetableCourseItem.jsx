@@ -1,6 +1,6 @@
 import { Tooltip } from 'antd'
 import { darken } from 'polished'
-import { useMemo } from 'react'
+import { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import styled, { css } from 'styled-components/macro'
 
@@ -13,7 +13,7 @@ const TimetableCourseItem = ({ data, colorCode = 0 }) => {
   const { course: code, lectureSlots } = data
   const title = useSelector(selectCourseTitle(code))
 
-  const TimetableCourseLectureItem = useMemo(
+  const TimetableCourseLectureItem = useCallback(
     ({ gridCol, gridRow }) => (
       <GridItem row={gridRow} col={gridCol}>
         <Tooltip title={title}>
@@ -32,17 +32,13 @@ const TimetableCourseItem = ({ data, colorCode = 0 }) => {
   if (lectureSlots?.length === 0) return null
   const courseSlots = lectureSlots.map((slot) => slots[slot])
 
-  return (
-    <>
-      {courseSlots.map(({ row, col }, idx) => (
-        <TimetableCourseLectureItem
-          key={String(idx)}
-          gridCol={cols[col - 1]}
-          gridRow={{ start: rows[row.start], end: rows[row.end] }}
-        />
-      ))}
-    </>
-  )
+  return courseSlots?.map(({ row, col }, idx) => (
+    <TimetableCourseLectureItem
+      key={String(idx)}
+      gridCol={cols[col - 1]}
+      gridRow={{ start: rows[row.start], end: rows[row.end] }}
+    />
+  ))
 }
 
 export default TimetableCourseItem

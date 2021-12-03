@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { isFinite, isEmpty, debounce, memoize } from 'lodash'
 import { useCallback } from 'react'
-import { useHistory, useLocation } from 'react-router'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 const useQueryString = () => {
   const location = useLocation()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const setQueryString = (key, value) => {
     const queryString = new URLSearchParams(location.search)
@@ -18,7 +18,7 @@ const useQueryString = () => {
     else queryString.set(key, value)
 
     location.search = queryString.toString()
-    history.push(location)
+    navigate(location, { replace: true })
   }
 
   // ? Debouncing is necessary to avoid unnecessary API calls
@@ -51,7 +51,7 @@ const useQueryString = () => {
         location.search = queryString.toString()
       }
 
-      history.push(location)
+      navigate(location, { replace: true })
     },
     [location.search]
   )

@@ -31,6 +31,8 @@ const NotFound = () => {
   )
 }
 
+export default NotFound
+
 const Container = styled.div`
   position: absolute;
   inset: 0;
@@ -81,5 +83,3 @@ const GoBack = styled.button`
 const Image = styled.img`
   width: clamp(13rem, 30vw, 20rem);
 `
-
-export default NotFound
