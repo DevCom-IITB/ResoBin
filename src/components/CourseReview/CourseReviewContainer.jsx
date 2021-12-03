@@ -36,7 +36,7 @@ const recursiveApply = (array, callback) =>
   )
 
 const CourseReviewContainer = () => {
-  const { courseCode } = useParams()
+  const { code } = useParams()
 
   const [reviewsData, setReviewsData] = useState([])
   const [APILoading, setAPILoading] = useState(true)
@@ -45,7 +45,7 @@ const CourseReviewContainer = () => {
     const fetchReviews = async () => {
       try {
         setAPILoading(true)
-        let response = await API.courses.listReviews({ code: courseCode })
+        let response = await API.courses.listReviews({ code })
         response = nestComments(response)
         setReviewsData(response)
       } catch (error) {
@@ -56,7 +56,7 @@ const CourseReviewContainer = () => {
     }
 
     fetchReviews()
-  }, [courseCode])
+  }, [code])
 
   const handleUpdateContent = ({ id, payload }) => {
     if (id === null) {
@@ -83,7 +83,7 @@ const CourseReviewContainer = () => {
     try {
       const response = await API.reviews.create({
         payload: {
-          course: courseCode,
+          course: code,
           parent: null,
           body: review,
         },
@@ -102,7 +102,7 @@ const CourseReviewContainer = () => {
       <Header>
         <h1 style={{ fontSize: '1.25rem' }}>Reviews</h1>
 
-        <CourseContentRequest code={courseCode} type="reviews" />
+        <CourseContentRequest code={code} type="reviews" />
       </Header>
 
       <ReviewEditor
@@ -116,7 +116,7 @@ const CourseReviewContainer = () => {
           <CourseReviewItem
             content={review}
             updateContent={handleUpdateContent}
-            course={courseCode}
+            course={code}
             depth={0}
           />
           <StyledDivider />

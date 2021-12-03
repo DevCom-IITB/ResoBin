@@ -1,2 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
+export { default as DashboardLayout } from './DashboardLayout'
+export { default as PageTransition } from './PageTransition'
 export { default as PrivateRoute } from './PrivateRoute'

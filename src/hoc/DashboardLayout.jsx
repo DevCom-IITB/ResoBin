@@ -1,12 +1,11 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Outlet } from 'react-router-dom'
 
 import { Menu } from 'components/menu'
 import { LoaderAnimation } from 'components/shared'
-import PageTransition from 'hoc/PageTransition'
+import { PageTransition } from 'hoc'
 import { useScrollToTop } from 'hooks'
-import { DashboardRoutes } from 'routes'
 import { selectAuthLoading } from 'store/authSlice'
 import {
   getDepartmentList,
@@ -43,7 +42,7 @@ const Dashboard = () => {
 
       {/* Add transition effect to route changes */}
       <PageTransition page={page}>
-        <DashboardRoutes />
+        <Outlet />
       </PageTransition>
     </>
   )

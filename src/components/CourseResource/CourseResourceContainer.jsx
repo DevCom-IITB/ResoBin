@@ -10,7 +10,7 @@ import { ButtonSquare, LoaderAnimation, toast } from 'components/shared'
 import { CourseResourceGrid } from './CourseResourceItem'
 
 const CourseResourceContainer = () => {
-  const { courseCode } = useParams()
+  const { code } = useParams()
   const navigate = useNavigate()
 
   const [resources, setResources] = useState([])
@@ -20,7 +20,7 @@ const CourseResourceContainer = () => {
     const fetchResources = async () => {
       try {
         setLoading(true)
-        const response = await API.courses.listResources({ code: courseCode })
+        const response = await API.courses.listResources({ code })
         setResources(response)
       } catch (error) {
         toast({ status: 'error', content: error })
@@ -30,9 +30,9 @@ const CourseResourceContainer = () => {
     }
 
     fetchResources()
-  }, [courseCode])
+  }, [code])
 
-  const redirectContribute = () => navigate(`/contribute?course=${courseCode}`)
+  const redirectContribute = () => navigate(`/contribute?course=${code}`)
 
   if (loading) return <LoaderAnimation />
 
@@ -43,7 +43,7 @@ const CourseResourceContainer = () => {
 
         <ButtonContainer>
           <CourseContentRequest
-            code={courseCode}
+            code={code}
             type="resources"
             style={{ marginRight: '0.75rem' }}
           />

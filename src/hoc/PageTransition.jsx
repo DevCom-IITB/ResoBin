@@ -1,15 +1,13 @@
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components/macro'
 
-const PageTransition = ({ children, page }) => {
-  return (
-    <TransitionGroup>
-      <CSSTransition key={page} timeout={300} classNames="page" exit={false}>
-        <Section>{children}</Section>
-      </CSSTransition>
-    </TransitionGroup>
-  )
-}
+const PageTransition = ({ children, page }) => (
+  <TransitionGroup>
+    <CSSTransition key={page} timeout={300} classNames="page" exit={false}>
+      <Section>{children}</Section>
+    </CSSTransition>
+  </TransitionGroup>
+)
 
 export default PageTransition
 
