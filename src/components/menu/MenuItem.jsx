@@ -1,9 +1,28 @@
-/* eslint-disable jsx-a11y/no-distracting-elements */
 import { NavLink } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
 
 import { UserAvatar } from 'components/shared'
 import { device } from 'styles/responsive'
+
+export const MenuItem = ({ title, icon: Icon, iconSize, to }) => (
+  <StyledNavLink to={to}>
+    <IconContainer>
+      <Icon size={iconSize} />
+    </IconContainer>
+
+    <Title>{title}</Title>
+  </StyledNavLink>
+)
+
+export const ProfileImgItem = ({ title, src }) => (
+  <ContainerDiv>
+    <IconContainer>
+      <UserAvatar size="1.75rem" src={src} />
+    </IconContainer>
+
+    <Title style={{ marginLeft: '0.25rem' }}>{title}</Title>
+  </ContainerDiv>
+)
 
 const ContainerBase = css`
   display: flex;
@@ -71,31 +90,8 @@ const Title = styled.h4`
   }
 `
 
-export const MenuItem = ({ title, icon: Icon, iconSize, exact, to }) => {
-  return (
-    <StyledNavLink exact={exact} to={to}>
-      <IconContainer>
-        <Icon size={iconSize} />
-      </IconContainer>
-
-      <Title>{title}</Title>
-    </StyledNavLink>
-  )
-}
-
 const ContainerDiv = styled.div`
   ${ContainerBase}
 
   color: ${({ theme }) => theme.textColor};
 `
-
-export const ProfileImgItem = ({ title, src }) => {
-  return (
-    <ContainerDiv>
-      <IconContainer>
-        <UserAvatar size="1.75rem" src={src} />
-      </IconContainer>
-      <Title style={{ marginLeft: '0.25rem' }}>{title}</Title>
-    </ContainerDiv>
-  )
-}

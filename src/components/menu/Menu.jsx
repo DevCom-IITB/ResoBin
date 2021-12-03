@@ -4,7 +4,7 @@ import {
   Cog,
   Calendar,
   Home,
-  Bookmark as BookmarkOutline,
+  Bookmark,
 } from '@styled-icons/heroicons-outline'
 import { ContactSupport } from '@styled-icons/material-outlined'
 import { useSelector } from 'react-redux'
@@ -16,31 +16,6 @@ import { useResponsive } from 'hooks'
 import { selectUserProfile } from 'store/userSlice'
 import { device } from 'styles/responsive'
 
-const Container = styled.nav`
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 3rem;
-  padding: 0 1.5rem;
-  background: ${({ theme }) => theme.secondary};
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
-
-  @media ${device.min.md} {
-    position: fixed;
-    top: 3rem;
-    z-index: 8; /* For shadow effects */
-    flex-direction: column;
-    justify-content: initial;
-    width: ${({ theme }) => theme.asideWidthLeft};
-    height: calc(100% - 3rem);
-    padding: 0;
-  }
-`
-
 const Menu = () => {
   // ? mobile devices horizontal menu & desktops vertical menu
   const profile = useSelector(selectUserProfile)
@@ -49,7 +24,7 @@ const Menu = () => {
 
   return (
     <Container>
-      <MenuItem exact title="Home" icon={Home} iconSize={iconSize} to="/" />
+      <MenuItem title="Home" icon={Home} iconSize={iconSize} to="/" />
       <MenuItem
         title="Timetable"
         icon={Calendar}
@@ -80,7 +55,7 @@ const Menu = () => {
 
       <MenuItem
         title="Favourites"
-        icon={BookmarkOutline}
+        icon={Bookmark}
         iconSize={iconSize}
         to="/favourites"
       />
@@ -105,3 +80,28 @@ const Menu = () => {
 }
 
 export default Menu
+
+const Container = styled.nav`
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 3rem;
+  padding: 0 1.5rem;
+  background: ${({ theme }) => theme.secondary};
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+
+  @media ${device.min.md} {
+    position: fixed;
+    top: 3rem;
+    z-index: 8; /* For shadow effects */
+    flex-direction: column;
+    justify-content: initial;
+    width: ${({ theme }) => theme.asideWidthLeft};
+    height: calc(100% - 3rem);
+    padding: 0;
+  }
+`
