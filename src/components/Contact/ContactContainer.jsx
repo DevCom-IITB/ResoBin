@@ -27,7 +27,7 @@ const ContainerForm = styled.form`
   padding: 1rem;
   border-radius: 0.5rem;
   background: ${({ theme }) => theme.secondary};
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0.5rem rgb(0 0 0 / 50%);
 `
 
 export default ContactContainer

@@ -4,10 +4,10 @@ import styled, { css } from 'styled-components/macro'
 const sharedStyles = css`
   box-sizing: border-box;
   display: block;
-  opacity: 80%;
+  opacity: 0.8;
   width: 100%;
   padding: 0.375rem 1rem;
-  margin: 0 auto 1rem auto;
+  margin: 0 auto 1rem;
   border: 1px solid ${({ theme }) => rgba(theme.textColor, 0.4)};
   border-radius: 0.25rem;
   outline: 0;
@@ -17,11 +17,11 @@ const sharedStyles = css`
   transition-duration: 100ms;
 
   &:hover {
-    opacity: 100%;
+    opacity: 1;
   }
 
   &:focus {
-    opacity: 100%;
+    opacity: 1;
     background-color: ${({ theme }) => theme.textInactive};
   }
 `

@@ -35,10 +35,12 @@ const Anim1 = keyframes`
     right: 100%;
     left: -35%;
   }
+
   60%  {
     right: -90%;
     left: 100%;
   }
+
   100% {
     right: -35%;
   left: 100%;
@@ -50,6 +52,7 @@ const Anim2 = keyframes`
     right: 100%;
     left: -200%;
   }
+
   60%  {
     right:  -8%;
     left:  107%;

@@ -110,7 +110,7 @@ const StyledReactQuill = styled(ReactQuill)`
   border-radius: 0.5rem;
   color: #000000;
   background-color: ${({ theme }) => theme.textColor};
-  box-shadow: 0 0 1rem 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 1rem 4px rgb(0 0 0 / 20%);
 
   .ql-toolbar.ql-snow {
     display: block;

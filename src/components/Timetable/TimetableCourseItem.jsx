@@ -74,6 +74,6 @@ const Item = styled.div`
   }
 
   &:hover {
-    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0.5rem rgb(0 0 0 / 40%);
   }
 `

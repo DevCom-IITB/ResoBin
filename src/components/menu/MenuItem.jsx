@@ -52,8 +52,8 @@ const StyledNavLink = styled(NavLink)`
       text-decoration: underline;
       text-decoration-thickness: 2px;
       text-underline-offset: 1.5px;
-      background-color: rgba(0, 0, 0, 0.1);
-      box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.24);
+      background-color: rgb(0 0 0 / 10%);
+      box-shadow: 1px 1px 8px rgb(0 0 0 / 24%);
     }
 
     &.active {

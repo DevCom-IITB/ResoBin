@@ -16,15 +16,15 @@ const GoogleContainer = styled.button`
   border: 0;
   border-radius: 0.25rem;
   background-color: #ffffff;
-  box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
   cursor: pointer;
 
   &:hover {
-    opacity: 90%;
+    opacity: 0.9;
   }
 
   &:active {
-    opacity: 90%;
+    opacity: 0.9;
     box-shadow: inset 0 0 2px ${rgba('#000', 0.4)};
   }
 `

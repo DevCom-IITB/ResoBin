@@ -12,7 +12,7 @@ const ButtonSquare = styled(Button)`
 
   &:hover,
   &:active {
-    opacity: 90%;
+    opacity: 0.9;
     background-color: ${({ theme }) => theme.logo};
   }
 

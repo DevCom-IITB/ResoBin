@@ -35,7 +35,7 @@ const Container = styled.div`
   width: 100%;
   height: 3rem;
   background: ${({ theme }) => theme.darksecondary};
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 40%);
 `
 
 const Term = styled.span`

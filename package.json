@@ -14,7 +14,7 @@
     "eject": "react-scripts eject",
     "lint": "npm-run-all --parallel lint:*",
     "lint:js": "eslint src/**/*.{js,jsx} --fix",
-    "lint:css": "stylelint src/**/*.jsx --fix"
+    "lint:styles": "stylelint src/**/*.{js,jsx} --fix"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.2",
@@ -32,7 +32,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-dropzone": "^11.4.2",
-    "react-helmet-async": "^1.2.0",
+    "react-helmet-async": "^1.2.1",
     "react-pdf": "^5.5.0",
     "react-quill": "2.0.0-beta.4",
     "react-redux": "^7.2.6",
@@ -45,7 +45,8 @@
     "web-vitals": "^2.1.2"
   },
   "devDependencies": {
-    "eslint-config-airbnb": "^19.0.1",
+    "@stylelint/postcss-css-in-js": "^0.37.2",
+    "eslint-config-airbnb": "^19.0.2",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^5.2.0",
@@ -53,10 +54,10 @@
     "redux-logger": "^3.0.6",
     "stylelint": "^14.1.0",
     "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-standard": "^24.0.0",
     "stylelint-config-styled-components": "^0.1.1",
-    "stylelint-order": "^5.0.0",
-    "stylelint-processor-styled-components": "^1.10.0"
+    "stylelint-order": "^5.0.0"
   },
   "browserslist": {
     "production": [

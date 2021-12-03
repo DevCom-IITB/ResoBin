@@ -62,7 +62,7 @@ const Overlay = styled.div`
   position: fixed;
   inset: 0;
   z-index: 4;
-  background-color: rgba(0, 0, 0, 0.55);
+  background-color: rgb(0 0 0 / 55%);
 `
 
 const StyledIcon = styled(({ Icon, className, ...props }) => {
@@ -80,7 +80,7 @@ const StyledInput = styled(Input)`
   border: 0;
   border-radius: 0.5rem;
   background: ${({ theme }) => theme.secondary};
-  box-shadow: 0 8px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 5px rgb(0 0 0 / 30%);
 
   .ant-input {
     padding: 0 0.25rem;

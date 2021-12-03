@@ -21,8 +21,8 @@ const CheckboxLabel = styled.label`
     height: 0.75rem;
     margin: 5px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.1);
+    background: rgb(255 255 255 / 80%);
+    box-shadow: 0 0 3px 2px rgb(0 0 0 / 10%);
     transition: 200ms;
   }
 `

@@ -135,7 +135,7 @@ const GridItem = styled.figure`
   grid-column-start: auto;
   border-radius: 0.5rem;
   color: ${({ theme }) => theme.textColor};
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 5px rgb(0 0 0 / 30%);
 `
 
 const Row = styled.div`

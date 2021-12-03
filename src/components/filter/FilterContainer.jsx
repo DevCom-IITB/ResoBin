@@ -71,7 +71,7 @@ const ContainerDropdown = styled.div`
   height: ${({ showFilter }) => (showFilter ? 'calc(100vh - 5rem)' : '0')};
   padding: ${({ showFilter }) => (showFilter ? '1rem 0 20rem' : '0')};
   background: ${({ theme }) => theme.secondary};
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 0 5px rgb(0 0 0 / 30%);
   transition: 200ms;
 `
 

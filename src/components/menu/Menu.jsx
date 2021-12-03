@@ -92,7 +92,7 @@ const Container = styled.nav`
   height: 3rem;
   padding: 0 1.5rem;
   background: ${({ theme }) => theme.secondary};
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0.5rem rgb(0 0 0 / 50%);
 
   @media ${device.min.md} {
     position: fixed;

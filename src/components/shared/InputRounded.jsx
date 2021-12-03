@@ -15,7 +15,7 @@ const InputBox = styled.div`
   height: 2rem;
   border-radius: 0.5rem;
   background: white;
-  box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
 `
 
 const Input = styled.input`

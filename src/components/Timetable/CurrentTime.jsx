@@ -41,8 +41,8 @@ const Circle = styled.div`
   position: absolute;
   top: calc(-${({ diameter }) => diameter} / 2);
   left: calc(-${({ diameter }) => diameter} / 2);
-  width: calc(${({ diameter }) => diameter});
-  height: calc(${({ diameter }) => diameter});
+  width: calc(${({ diameter }) => diameter });
+  height: calc(${({ diameter }) => diameter });
   border-radius: 50%;
   background: ${({ theme }) => theme.logo};
 `

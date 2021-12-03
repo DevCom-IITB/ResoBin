@@ -43,6 +43,6 @@ const IconContainer = styled.div`
   border-radius: 50%;
   color: white;
   background: ${({ theme }) => theme.logo};
-  box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 0.7rem rgb(0 0 0 / 60%);
   cursor: pointer;
 `

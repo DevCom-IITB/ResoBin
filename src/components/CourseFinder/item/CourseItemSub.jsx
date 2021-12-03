@@ -212,9 +212,9 @@ const Title = styled.p`
 
 const SpaceBetween = styled.div`
   display: flex;
-  width: 100%;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 `
 
 const FlexGap = styled.div`

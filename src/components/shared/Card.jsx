@@ -14,7 +14,7 @@ export const StyledCard = styled(Card)`
 
     &:hover {
       border-radius: ${({ theme }) => theme.borderRadius};
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: rgb(0 0 0 / 30%);
     }
   }
 

@@ -51,10 +51,10 @@ const StyledBreadcrumb = styled(Breadcrumb)`
     color: ${({ theme }) => theme.primary};
 
     a {
-      gap: 0.5rem;
       display: flex;
       align-items: center;
       color: ${({ theme }) => theme.textColor};
+      gap: 0.5rem;
 
       &:hover {
         text-decoration: underline;

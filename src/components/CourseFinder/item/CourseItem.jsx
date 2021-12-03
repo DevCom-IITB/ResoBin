@@ -42,7 +42,7 @@ const StyledSkeleton = styled(Skeleton)`
     padding: 1.5rem 1rem;
     border-radius: 0.5rem;
     background: ${({ theme }) => theme.secondary};
-    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 0.5rem rgb(0 0 0 / 20%);
   }
 `
 
@@ -57,7 +57,7 @@ const Container = styled.li`
   margin: 1rem 0;
   border-radius: 0.5rem;
   background: ${({ theme }) => theme.secondary};
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0.5rem rgb(0 0 0 / 40%);
 
   /* react animation classes */
   &.course_item-enter {
@@ -83,12 +83,12 @@ const Container = styled.li`
   }
 
   @media ${device.max.md} {
-    grid-template-columns: none;
-    grid-column-gap: 0;
     grid-template-rows:
       [item-main] 1fr
       [item-divider] auto
       [item-sub] auto;
+    grid-template-columns: none;
+    grid-column-gap: 0;
   }
 `
 
@@ -106,9 +106,9 @@ const Sub = styled.div`
 
   @media ${device.min.xs} and ${device.max.md} {
     display: flex;
-    width: 100%;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
     gap: 1rem;
   }
 `

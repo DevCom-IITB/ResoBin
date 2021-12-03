@@ -17,7 +17,7 @@ export const buttonStyles = css`
   &:hover {
     color: ${({ theme }) => theme.textColor};
     background: ${({ theme }) => lighten(0.4, theme.darksecondary)};
-    box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 4px 2px rgb(0 0 0 / 20%);
   }
 `
 

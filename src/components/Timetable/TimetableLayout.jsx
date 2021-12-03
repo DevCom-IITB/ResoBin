@@ -37,6 +37,7 @@ export default TimetableLayout
 
 const Container = styled.div`
   display: grid;
+  overflow-x: scroll;
   grid-template-rows:
     [tracks] 2rem
     ${rows.map(({ id, title }, index) => `[${id}] 1fr `)};
@@ -46,7 +47,6 @@ const Container = styled.div`
   padding: 0.75rem;
   border-radius: 0.5rem;
   background: ${({ theme }) => theme.secondary};
-  overflow-x: scroll;
 
   > div {
     box-shadow: inset -1px -1px 0 ${({ theme }) => rgba(theme.primary, 0.1)};
@@ -55,14 +55,14 @@ const Container = styled.div`
 
 const ColContainer = styled.span`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   grid-row: tracks;
   grid-column: ${({ id }) => id};
+  padding: 0 1rem;
   font-size: 0.75rem;
   font-weight: 500;
   text-transform: uppercase;
-  padding: 0 1rem;
   color: ${({ theme }) => theme.textColor};
   background: ${({ theme }) => theme.secondary};
 `

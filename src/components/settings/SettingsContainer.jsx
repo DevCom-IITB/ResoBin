@@ -33,5 +33,5 @@ const StyledButton = styled(Button)`
   border-radius: 0.25rem;
   font-size: 1rem;
   font-weight: 500;
-  box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
 `
