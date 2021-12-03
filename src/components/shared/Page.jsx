@@ -4,21 +4,21 @@ import { device } from 'styles/responsive'
 
 export const PageHeading = styled.h3`
   display: flex;
-  justify-content: space-between;
   align-items: baseline;
+  justify-content: space-between;
   margin: 0.5rem 0.75rem;
 `
 
 export const PageTitle = styled.span`
-  font-size: 1.5rem;
-  font-weight: 700;
   color: ${({ theme }) => theme.primary};
+  font-weight: 700;
+  font-size: 1.5rem;
 `
 
 export const PageSubtitle = styled.span`
-  font-size: 1rem;
-  font-weight: 500;
   color: ${({ theme }) => theme.primary};
+  font-weight: 500;
+  font-size: 1rem;
 `
 
 export const PageContainer = styled.div`

@@ -105,6 +105,6 @@ export default ContributeContainer
 const FileList = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 1.5rem 0;
   gap: 1rem;
+  margin: 1.5rem 0;
 `

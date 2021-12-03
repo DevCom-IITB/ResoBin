@@ -30,8 +30,8 @@ const Container = styled.div`
   top: 0;
   z-index: 9;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 100%;
   height: 3rem;
   background: ${({ theme }) => theme.darksecondary};
@@ -47,12 +47,12 @@ const Term = styled.span`
     right: 0;
     display: flex;
     padding: 0 1.5rem;
-    font-size: 0.875rem;
-    font-weight: 400;
-    line-height: 80%;
-    white-space: nowrap;
-    letter-spacing: 1.5px;
     color: lightgray;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 80%;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
   }
 
   @media ${device.min.lg} {

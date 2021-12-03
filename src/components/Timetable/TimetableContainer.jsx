@@ -161,25 +161,25 @@ export default TimetableContainer
 
 const TimetableSemesterTitle = styled.div`
   display: flex;
-  justify-content: center;
+  gap: 0.5rem;
   align-items: center;
+  justify-content: center;
   margin: 0.75rem 0;
+  color: white;
   font-size: 1.25rem;
   text-transform: capitalize;
-  color: white;
-  gap: 0.5rem;
 `
 
 const AsideList = styled.div`
   display: flex;
   flex-direction: column;
-  width: 13.6rem;
   gap: 0.75rem;
+  width: 13.6rem;
 `
 
 const TimetableCardTitle = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
 `

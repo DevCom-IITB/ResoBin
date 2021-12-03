@@ -22,8 +22,8 @@ const ButtonDropdown = styled(Dropdown.Button)`
 
   .ant-dropdown-trigger {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     width: 2rem;
 
     &:last-child:not(:first-child) {

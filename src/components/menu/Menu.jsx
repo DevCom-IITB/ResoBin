@@ -86,8 +86,8 @@ const Container = styled.nav`
   top: 0;
   z-index: 100;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: 3rem;
   padding: 0 1.5rem;

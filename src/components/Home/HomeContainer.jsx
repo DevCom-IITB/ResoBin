@@ -97,22 +97,22 @@ export default HomeContainer
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   gap: 1rem;
+  width: 100%;
 `
 
 const StatsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  background: ${({ theme }) => theme.secondary};
   gap: 0.5rem;
+  padding: 1rem;
+  background: ${({ theme }) => theme.secondary};
+  border-radius: 0.5rem;
 `
 
 const Flex = styled.div`
   display: flex;
-  overflow-x: scroll;
   flex-basis: 100%;
   gap: 0.5rem;
+  overflow-x: scroll;
 `

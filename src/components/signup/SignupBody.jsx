@@ -10,8 +10,8 @@ const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0 1.5rem;
   margin-top: 1rem;
+  padding: 0 1.5rem;
 
   > * {
     margin-bottom: 1.5rem;
@@ -20,21 +20,21 @@ const FormContainer = styled.form`
 
 const SubTitle = styled.h4`
   display: flex;
-  font-size: 0.875rem;
-  font-weight: 300;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 300;
+  font-size: 0.875rem;
 `
 
 const StyledLink = styled(Link)`
-  font-size: 0.875rem;
-  font-weight: 600;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 600;
+  font-size: 0.875rem;
 
   &:hover {
+    color: ${({ theme }) => theme.textColor};
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 1px;
-    color: ${({ theme }) => theme.textColor};
   }
 `
 

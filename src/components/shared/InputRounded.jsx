@@ -8,13 +8,13 @@ const InputBox = styled.div`
   position: relative;
   z-index: 100;
   display: flex;
-  overflow: hidden;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: 2rem;
-  border-radius: 0.5rem;
+  overflow: hidden;
   background: white;
+  border-radius: 0.5rem;
   box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
 `
 
@@ -22,11 +22,11 @@ const Input = styled.input`
   width: 100%;
   height: 100%;
   padding-right: 1.5rem;
+  color: #1f1c2e;
+  font-weight: 500;
+  font-size: 0.875rem;
   border: none;
   outline: none;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #1f1c2e;
 
   &::placeholder {
     color: #747474;
@@ -34,8 +34,8 @@ const Input = styled.input`
 `
 
 const Label = styled.label`
-  font-size: 0.75rem;
   color: ${({ theme }) => theme.text};
+  font-size: 0.75rem;
 `
 
 const InputRounded = ({ Icon, label, displayLabel, name, ...inputProps }) => {

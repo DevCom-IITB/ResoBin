@@ -118,31 +118,31 @@ export default CourseResourceItem
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
   grid-auto-rows: 12rem;
   grid-auto-flow: row dense;
   grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
   padding: 0 0.25rem;
 `
 
 const GridItem = styled.figure`
   position: relative;
   display: flex;
-  overflow: hidden;
   flex-direction: column;
-  justify-content: flex-end;
   grid-row-start: auto;
   grid-column-start: auto;
-  border-radius: 0.5rem;
+  justify-content: flex-end;
+  overflow: hidden;
   color: ${({ theme }) => theme.textColor};
+  border-radius: 0.5rem;
   box-shadow: 0 0 5px rgb(0 0 0 / 30%);
 `
 
 const Row = styled.div`
   display: flex;
+  gap: 0.5rem;
   align-items: center;
   margin-bottom: 0.5rem;
-  gap: 0.5rem;
 `
 
 const ResourceTitle = styled.h5`

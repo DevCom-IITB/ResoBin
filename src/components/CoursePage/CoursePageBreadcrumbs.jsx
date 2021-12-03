@@ -46,15 +46,15 @@ const StyledBreadcrumb = styled(Breadcrumb)`
 
   .ant-breadcrumb-link {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     color: ${({ theme }) => theme.primary};
 
     a {
       display: flex;
+      gap: 0.5rem;
       align-items: center;
       color: ${({ theme }) => theme.textColor};
-      gap: 0.5rem;
 
       &:hover {
         text-decoration: underline;

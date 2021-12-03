@@ -204,21 +204,21 @@ export default CourseItemSub
 const Title = styled.p`
   display: block;
   margin: 0 0.25rem 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 1.5px;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
 `
 
 const SpaceBetween = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
 `
 
 const FlexGap = styled.div`
   display: flex;
-  width: 100%;
   gap: 0.5rem;
+  width: 100%;
 `

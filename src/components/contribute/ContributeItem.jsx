@@ -241,33 +241,33 @@ const StyledTooltip = styled(Tooltip)`
 
 const TooltipContainer = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  color: red;
   gap: 3px;
+  align-items: center;
+  justify-content: center;
+  color: red;
 `
 
 const ItemContainer = styled.div`
   display: flex;
   padding: 1.5rem 1rem;
-  border-radius: 0.5rem;
   background-color: ${({ theme }) => theme.secondary};
+  border-radius: 0.5rem;
 `
 
 const UploadBox = styled.div`
   display: flex;
+  gap: 0.5rem;
   align-items: center;
   width: 12rem;
   height: 100%;
   padding: 0.5rem;
+  color: ${({ status, theme }) =>
+    status === 'success' ? theme.textColor : theme.textColorInactive};
+  background-color: transparent;
 
   /* padding-bottom: 1rem; */
   border: 2px dashed ${({ theme }) => rgba(theme.textColorInactive, 0.3)};
   border-radius: 0.5rem;
-  color: ${({ status, theme }) =>
-    status === 'success' ? theme.textColor : theme.textColorInactive};
-  background-color: transparent;
-  gap: 0.5rem;
 
   &:hover {
     background-color: ${({ theme }) => theme.darksecondary};

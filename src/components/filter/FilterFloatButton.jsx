@@ -36,13 +36,13 @@ const IconContainer = styled.div`
   bottom: 1.5rem;
   z-index: 100;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 3.5rem;
   height: 3.5rem;
-  border-radius: 50%;
   color: white;
   background: ${({ theme }) => theme.logo};
+  border-radius: 50%;
   box-shadow: 0 0 0.7rem rgb(0 0 0 / 60%);
   cursor: pointer;
 `

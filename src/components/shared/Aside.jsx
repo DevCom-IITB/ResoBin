@@ -68,21 +68,21 @@ const Container = styled.div`
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: baseline;
+  justify-content: space-between;
   height: 2.25rem;
-  padding-bottom: 0.5rem;
   margin-top: 1rem;
+  padding-bottom: 0.5rem;
 `
 
 const Title = styled.h4`
-  font-size: 1.25rem;
-  font-weight: 500;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 500;
+  font-size: 1.25rem;
 `
 
 const Children = styled.div`
-  overflow-y: auto;
   height: 100%;
   padding: 1rem 0 20rem;
+  overflow-y: auto;
 `

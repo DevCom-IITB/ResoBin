@@ -5,17 +5,17 @@ import Google from 'assets/svgs/g-normal.svg'
 import { Divider } from 'components/shared'
 
 const GoogleContainer = styled.button`
-  box-sizing: border-box;
   display: flex;
-  overflow: hidden;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   height: 2.75rem;
-  padding: 0 1rem;
   margin: 0 auto 1.5rem;
+  padding: 0 1rem;
+  overflow: hidden;
+  background-color: #ffffff;
   border: 0;
   border-radius: 0.25rem;
-  background-color: #ffffff;
   box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
   cursor: pointer;
 
@@ -24,8 +24,8 @@ const GoogleContainer = styled.button`
   }
 
   &:active {
-    opacity: 0.9;
     box-shadow: inset 0 0 2px ${rgba('#000', 0.4)};
+    opacity: 0.9;
   }
 `
 
@@ -36,21 +36,21 @@ const GoogleIcon = styled.img`
 
 const Title = styled.h4`
   margin: 0 1rem 0 0.5rem;
-  font-size: 1.25rem;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
   color: #444444;
+  font-weight: 400;
+  font-size: 1.25rem;
+  font-family: Roboto, sans-serif;
 `
 
 const ContainerOr = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 1rem;
-  font-size: 1rem;
-  font-weight: 300;
-  letter-spacing: 0.25rem;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 300;
+  font-size: 1rem;
+  letter-spacing: 0.25rem;
 `
 
 const GoogleAuth = () => {

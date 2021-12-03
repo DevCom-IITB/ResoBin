@@ -26,12 +26,12 @@ export default SettingsContainer
 
 const StyledButton = styled(Button)`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: 2.25rem;
   margin: 1.5rem 1.5rem 0;
-  border-radius: 0.25rem;
-  font-size: 1rem;
   font-weight: 500;
+  font-size: 1rem;
+  border-radius: 0.25rem;
   box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
 `

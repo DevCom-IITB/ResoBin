@@ -187,7 +187,7 @@ export default FilterContainer
 const FilterTitle = styled.span`
   display: inline-block;
   margin-bottom: 0.75rem;
-  font-size: 1rem;
-  font-weight: 600;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 600;
+  font-size: 1rem;
 `

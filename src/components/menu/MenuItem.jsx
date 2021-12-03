@@ -30,14 +30,14 @@ const ContainerBase = css`
   width: 100%;
   height: 3rem;
   padding: 0.5rem;
-  border-left: 3px solid transparent;
   background-color: ${(props) => props.theme.secondary};
+  border-left: 3px solid transparent;
 `
 
 const StyledNavLink = styled(NavLink)`
+  color: ${({ theme }) => theme.textColorInactive};
   text-align: center;
   text-decoration: none;
-  color: ${({ theme }) => theme.textColorInactive};
   cursor: pointer;
 
   &:hover,
@@ -57,8 +57,8 @@ const StyledNavLink = styled(NavLink)`
     }
 
     &.active {
-      border-left: 3px solid ${({ theme }) => theme.activeMenu};
       background-color: ${({ theme }) => theme.headerNumber};
+      border-left: 3px solid ${({ theme }) => theme.activeMenu};
     }
   }
 `
@@ -68,8 +68,8 @@ const IconContainer = styled.div`
 
   @media ${device.min.md} {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     width: 2.25rem;
   }
 `
@@ -79,14 +79,14 @@ const Title = styled.h4`
 
   @media ${device.min.md} {
     display: flex;
-    overflow: hidden;
     align-items: center;
     width: 70%;
-    font-size: 0.875rem;
+    overflow: hidden;
     font-weight: 400;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    font-size: 0.875rem;
     letter-spacing: 0.5px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 `
 

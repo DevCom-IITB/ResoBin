@@ -47,8 +47,8 @@ const SearchContainer = styled.div`
   top: ${({ theme }) => theme.headerHeight};
   z-index: 6;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: 3rem;
   background: linear-gradient(
     0deg,
@@ -77,16 +77,16 @@ const StyledInput = styled(Input)`
   z-index: 10 !important;
   height: 2rem;
   padding: 0 0.75rem;
+  background: ${({ theme }) => theme.secondary};
   border: 0;
   border-radius: 0.5rem;
-  background: ${({ theme }) => theme.secondary};
   box-shadow: 0 8px 5px rgb(0 0 0 / 30%);
 
   .ant-input {
     padding: 0 0.25rem;
-    font-size: 0.875rem;
-    font-weight: 400;
     color: lightgray;
+    font-weight: 400;
+    font-size: 0.875rem;
     background: ${({ theme }) => theme.secondary};
   }
 

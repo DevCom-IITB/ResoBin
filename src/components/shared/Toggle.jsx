@@ -11,39 +11,39 @@ const CheckboxLabel = styled.label`
   left: 0;
   width: 45px;
   height: 25px;
-  border-radius: 15px;
   background: ${({ theme }) => theme.logo};
+  border-radius: 15px;
 
   &::after {
-    content: '';
     display: block;
     width: 0.75rem;
     height: 0.75rem;
     margin: 5px;
-    border-radius: 50%;
     background: rgb(255 255 255 / 80%);
+    border-radius: 50%;
     box-shadow: 0 0 3px 2px rgb(0 0 0 / 10%);
     transition: 200ms;
+    content: '';
   }
 `
 
 const CheckboxInput = styled.input`
   z-index: 1;
-  opacity: 0;
   width: 45px;
   height: 25px;
   border-radius: 15px;
   cursor: pointer;
+  opacity: 0;
 
   &:checked + ${CheckboxLabel} {
     &::after {
-      content: '';
       display: block;
       width: 0.75rem;
       height: 0.75rem;
       margin-left: 24px;
       border-radius: 50%;
       transition: 200ms;
+      content: '';
     }
   }
 `

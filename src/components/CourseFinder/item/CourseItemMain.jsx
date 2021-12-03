@@ -122,14 +122,14 @@ const SubTitle = styled.div`
 
 const DepartmentContainer = styled.span`
   display: inline-block;
-  overflow: hidden;
   width: calc(100% - 3.75rem);
   margin: 0;
-  font-size: ${fontSize.responsive.xs};
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow: hidden;
   color: ${({ theme }) => theme.primary};
+  font-weight: 600;
+  font-size: ${fontSize.responsive.xs};
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
   @media ${device.min.md} {
     font-weight: 500;
@@ -138,30 +138,30 @@ const DepartmentContainer = styled.span`
 
 const RightIcons = styled.div`
   display: flex;
-  justify-content: flex-end;
   align-items: center;
+  justify-content: flex-end;
 `
 
 const CourseDescription = styled.div`
   margin-top: 0.75rem;
-  font-size: ${fontSize.static.md};
   font-weight: 300;
+  font-size: ${fontSize.static.md};
   text-align: justify;
 `
 
 const CreditContainer = styled.span`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 1.25rem;
   height: 1.25rem;
   margin-right: 1rem;
-  border-radius: 50%;
+  color: ${({ theme }) => theme.darksecondary};
+  font-weight: 600;
   font-size: ${({ small }) =>
     small ? fontSize.responsive.xs : fontSize.responsive.lg};
-  font-weight: 600;
-  color: ${({ theme }) => theme.darksecondary};
   background: white;
+  border-radius: 50%;
 
   @media ${device.min.md} {
     width: 1.5rem;

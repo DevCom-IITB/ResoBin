@@ -186,14 +186,14 @@ const StyledComment = styled(Comment)`
 
 const LikeCount = styled.span`
   margin-left: 0.5rem;
-  font-size: 0.75rem;
   color: ${({ theme }) => theme.textColor};
+  font-size: 0.75rem;
 `
 
 const CommentHeader = styled.h2`
-  font-size: 0.75rem;
-  font-weight: 600;
   color: ${({ theme }) => theme.header};
+  font-weight: 600;
+  font-size: 0.75rem;
 
   &:hover {
     color: ${({ theme }) => theme.header};
@@ -202,6 +202,6 @@ const CommentHeader = styled.h2`
 
 const CommentText = styled.div`
   width: 80%;
-  font-weight: 400;
   color: ${({ theme }) => theme.header};
+  font-weight: 400;
 `

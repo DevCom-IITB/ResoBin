@@ -35,23 +35,23 @@ export default NotFound
 
 const Container = styled.div`
   position: absolute;
-  inset: 0;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   background-color: ${({ theme }) => theme.secondary};
+  inset: 0;
 `
 
 const Box = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 1rem;
+  justify-content: center;
   margin: 0.75rem;
-  border-radius: 8px;
+  padding: 1rem;
   background-color: ${({ theme }) => theme.darksecondary};
-  box-shadow: 0 0 1rem 2px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 0 1rem 2px rgb(0 0 0 / 20%);
 
   @media ${device.min.md} {
     padding: 1rem 2rem;
@@ -60,16 +60,16 @@ const Box = styled.div`
 
 const Subtitle = styled.p`
   margin: 1rem;
-  font-size: ${fontSize.responsive.$2xl};
-  font-weight: 300;
-  text-align: center;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 300;
+  font-size: ${fontSize.responsive.$2xl};
+  text-align: center;
 `
 
 const GoBack = styled.button`
-  font-size: ${fontSize.responsive.xl};
-  font-weight: 400;
   color: inherit;
+  font-weight: 400;
+  font-size: ${fontSize.responsive.xl};
   background-color: transparent;
   cursor: pointer;
 

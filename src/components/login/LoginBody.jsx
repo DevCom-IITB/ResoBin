@@ -53,8 +53,8 @@ const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0 1.5rem;
   margin-top: 1rem;
+  padding: 0 1.5rem;
 
   > * {
     margin-bottom: 1.5rem;
@@ -63,21 +63,21 @@ const FormContainer = styled.form`
 
 const ContainerSpaceBetween = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 2rem;
 `
 
 const ForgotPassword = styled(Link)`
   margin-left: 1rem;
-  font-size: 0.875rem;
-  font-weight: 400;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 400;
+  font-size: 0.875rem;
 
   &:hover {
+    color: ${({ theme }) => theme.textColor};
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 1px;
-    color: ${({ theme }) => theme.textColor};
   }
 `

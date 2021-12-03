@@ -24,9 +24,9 @@ export default ReadMore
 const ReadMoreText = styled.span`
   display: inline-block;
   margin: 0;
+  color: gray;
+  font-weight: 600;
   font-size: 85%;
   font-family: 'Source Sans Pro', sans-serif;
-  font-weight: 600;
-  color: gray;
   cursor: pointer;
 `

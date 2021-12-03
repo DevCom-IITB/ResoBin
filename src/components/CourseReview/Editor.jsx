@@ -106,19 +106,19 @@ export const ReviewEditor = ({ visible, initialValue, onSubmit }) => {
 export default Editor
 
 const StyledReactQuill = styled(ReactQuill)`
-  border: 1px solid #000000;
-  border-radius: 0.5rem;
   color: #000000;
   background-color: ${({ theme }) => theme.textColor};
+  border: 1px solid #000000;
+  border-radius: 0.5rem;
   box-shadow: 0 0 1rem 4px rgb(0 0 0 / 20%);
 
   .ql-toolbar.ql-snow {
     display: block;
+    background: #eaecec;
     border: none;
     border-bottom: 1px solid #000000;
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
-    background: #eaecec;
   }
 
   .ql-container.ql-snow {

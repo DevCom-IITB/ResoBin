@@ -40,55 +40,55 @@ const StyledSkeleton = styled(Skeleton)`
 
   .ant-skeleton-content {
     padding: 1.5rem 1rem;
-    border-radius: 0.5rem;
     background: ${({ theme }) => theme.secondary};
+    border-radius: 0.5rem;
     box-shadow: 0 0 0.5rem rgb(0 0 0 / 20%);
   }
 `
 
 const Container = styled.li`
   display: grid;
+  grid-column-gap: 1rem;
   grid-template-columns:
     [item-main] 1fr
     [item-sub] auto;
-  grid-column-gap: 1rem;
   width: 100%;
-  padding: 1rem;
   margin: 1rem 0;
-  border-radius: 0.5rem;
+  padding: 1rem;
   background: ${({ theme }) => theme.secondary};
+  border-radius: 0.5rem;
   box-shadow: 0 0 0.5rem rgb(0 0 0 / 40%);
 
   /* react animation classes */
-  &.course_item-enter {
-    opacity: 0;
+  &.course-item-enter {
     transform: scale(1.01);
+    opacity: 0;
   }
 
-  &.course_item-enter-active {
-    opacity: 1;
+  &.course-item-enter-active {
     transform: scale(1);
+    opacity: 1;
     transition: opacity 200ms, transform 200ms;
   }
 
-  &.course_item-exit {
-    opacity: 1;
+  &.course-item-exit {
     transform: scale(1);
+    opacity: 1;
   }
 
-  &.course_item-exit-active {
-    opacity: 0;
+  &.course-item-exit-active {
     transform: scale(0.9);
+    opacity: 0;
     transition: opacity 100ms, transform 100ms;
   }
 
   @media ${device.max.md} {
+    grid-column-gap: 0;
     grid-template-rows:
       [item-main] 1fr
       [item-divider] auto
       [item-sub] auto;
     grid-template-columns: none;
-    grid-column-gap: 0;
   }
 `
 
@@ -106,9 +106,9 @@ const Sub = styled.div`
 
   @media ${device.min.xs} and ${device.max.md} {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
     gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
   }
 `

@@ -50,9 +50,9 @@ const GridItem = styled.div`
 `
 
 const getTile = (color) => css`
-  border-left: 4px solid ${darken(0.2, color)};
   color: ${darken(0.7, color)};
   background: ${makeGradient(color)};
+  border-left: 4px solid ${darken(0.2, color)};
 `
 
 const Item = styled.div`

@@ -42,7 +42,7 @@ const CourseFinderList = ({
               key={courseData.code}
               timeout={200}
               unmountOnExit
-              classNames="course_item"
+              classNames="course-item"
             >
               <CourseItem courseData={courseData} />
             </CSSTransition>
