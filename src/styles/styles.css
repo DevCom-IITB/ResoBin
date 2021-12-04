@@ -62,11 +62,11 @@ h6 {
 }
 
 *:hover::-webkit-scrollbar-thumb {
-  background-color: #909090 65;
+  background-color: #90909065;
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: #909090 65;
+  background-color: #90909065;
 }
 
 p {

@@ -16,7 +16,6 @@ if (process.env.NODE_ENV === 'development') middleware.push(logger)
 
 export const store = configureStore({
   reducer,
-  // reducer: persistedReducer,
   devTools: process.env.NODE_ENV === 'development',
   middleware,
   preloadedState: {},
