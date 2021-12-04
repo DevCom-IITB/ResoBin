@@ -5,10 +5,9 @@ import { camelizeKeys, snakeizeKeys } from 'helpers/transformKeys'
 
 export const APIInstance = axios.create({
   baseURL:
-    process.env.NODE_ENV === 'development'
-      ? 'http://localhost:8000/api'
-      : 'http://10.105.177.70/api',
-
+    process.env.NODE_ENV === 'production'
+      ? process.env.REACT_APP_API_HOST
+      : 'http://localhost:8000/api',
   timeout: 30000,
   xsrfCookieName: 'csrftoken',
   xsrfHeaderName: 'X-CSRFToken',
@@ -184,4 +183,4 @@ export const API = {
   },
 }
 
-export default APIInstance
+export default API

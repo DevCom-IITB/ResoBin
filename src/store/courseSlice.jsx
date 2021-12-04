@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, createSelector } from '@reduxjs/toolkit'
 
-import { API } from 'api'
+import { API } from 'config/api'
 
 // ? async actions
 export const getDepartmentList = createAsyncThunk(

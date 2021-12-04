@@ -6,9 +6,9 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 import { X, ExclamationCircle, Upload } from 'styled-icons/heroicons-outline'
 
-import { API } from 'api'
 import { Form, LoaderAnimation, toast } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
+import { API } from 'config/api'
 import { defaultFile, fileTypes, getFileDetails } from 'data/CourseResources'
 import tags from 'data/tags.json'
 import {

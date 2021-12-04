@@ -1,3 +1,8 @@
+@import url('antd/dist/antd.css');
+@import url('react-pdf/dist/esm/Page/AnnotationLayer.css');
+@import url('react-quill/dist/quill.snow.css');
+
+/* ? custom fonts */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600;700;900&display=swap');
@@ -6,15 +11,15 @@
 *::after,
 *::before {
   box-sizing: border-box;
-  list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  line-height: calc(1.618em + (1ex - 1ch));
+  text-decoration: none;
+  list-style: none;
   border: 0;
   outline: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: calc(1.618em + (1ex - 1ch));
-  text-decoration: none;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -47,8 +52,8 @@ h6 {
 }
 
 *::-webkit-scrollbar-thumb {
-  border-radius: 0.5rem;
   background-color: inherit;
+  border-radius: 0.5rem;
 }
 
 *::-webkit-scrollbar {

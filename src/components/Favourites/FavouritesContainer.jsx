@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 
-import { API } from 'api'
 import { CourseList, CourseSearch } from 'components/CourseFinder'
 import { Aside, toast } from 'components/shared'
+import { API } from 'config/api'
 import { useQueryString } from 'hooks'
 
 const FavouritesContainer = () => {

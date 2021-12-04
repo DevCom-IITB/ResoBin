@@ -3,10 +3,8 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { API } from 'api'
 import {
   Aside,
-  LoaderAnimation,
   PageHeading,
   PageSubtitle,
   PageTitle,
@@ -14,6 +12,7 @@ import {
   toast,
 } from 'components/shared'
 import { AsideHeader } from 'components/shared/Aside'
+import { API } from 'config/api'
 import { coursePageUrl } from 'helpers/format'
 
 const HomeItem = ({ course, hash }) => {
@@ -53,8 +52,6 @@ const HomeContainer = () => {
       <PageHeading>
         <PageTitle>Popular Courses</PageTitle>
       </PageHeading>
-
-      <LoaderAnimation disable={!loading} fixed />
 
       <Container>
         <StatsContainer>

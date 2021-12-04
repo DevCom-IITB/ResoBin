@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { API } from 'api'
+import { API } from 'config/api'
 
 const initialState = {
   isAuthenticated: null,

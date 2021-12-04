@@ -4,9 +4,9 @@ import { useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import { Plus } from 'styled-icons/heroicons-outline'
 
-import { API } from 'api'
 import { CourseResourceGrid } from 'components/CourseResource'
 import { Aside, ButtonSquare, PageTitle, toast } from 'components/shared'
+import { API } from 'config/api'
 import { defaultFile, fileTypes } from 'data/CourseResources'
 import { useResponsive } from 'hooks'
 

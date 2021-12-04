@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { API } from 'api'
 import { CourseContentRequest } from 'components/CoursePage'
 import { ButtonSquare, LoaderAnimation, toast } from 'components/shared'
+import { API } from 'config/api'
 
 import { CourseResourceGrid } from './CourseResourceItem'
 

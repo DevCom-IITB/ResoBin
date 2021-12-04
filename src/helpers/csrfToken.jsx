@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 
-import { API } from 'api'
 import { toast } from 'components/shared'
+import { API } from 'config/api'
 
 const CSRFToken = () => {
   const [token, setToken] = useState('')

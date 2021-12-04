@@ -1,10 +1,10 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
-import { API } from 'api'
 import { CourseList, CourseSearch } from 'components/CourseFinder'
 import { FilterAside, FilterFloatButton } from 'components/filter'
 import { toast } from 'components/shared'
+import { API } from 'config/api'
 import { useQueryString, useResponsive } from 'hooks'
 
 let ajaxRequest = null

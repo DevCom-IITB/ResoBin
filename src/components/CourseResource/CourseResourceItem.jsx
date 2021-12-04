@@ -9,9 +9,9 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { API } from 'api'
 import placeholderImg from 'assets/images/ResourcePlaceholder.jpg'
 import { ButtonIcon, Timestamp, toast, UserAvatar } from 'components/shared'
+import { API } from 'config/api'
 import { selectUserProfile } from 'store/userSlice'
 import { limitLines } from 'styles/mixins'
 

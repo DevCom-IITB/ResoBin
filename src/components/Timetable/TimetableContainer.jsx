@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { API } from 'api'
 import {
   Aside,
   Card,
@@ -16,6 +15,7 @@ import {
   toast,
 } from 'components/shared'
 import { ButtonIcon, ButtonIconDanger } from 'components/shared/Buttons'
+import { API } from 'config/api'
 import { displayYear, coursePageUrl } from 'helpers/format'
 import {
   selectCourseAPILoading,

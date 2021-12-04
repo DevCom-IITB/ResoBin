@@ -6,8 +6,8 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { API } from 'api'
 import { ButtonIcon, Timestamp, toast, UserAvatar } from 'components/shared'
+import { API } from 'config/api'
 import {
   selectUserProfile,
   selectReviewVoteStatus,

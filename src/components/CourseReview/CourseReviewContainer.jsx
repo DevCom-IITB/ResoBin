@@ -3,9 +3,9 @@ import { Fragment, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { API } from 'api'
 import { CourseContentRequest } from 'components/CoursePage'
 import { LoaderAnimation, toast } from 'components/shared'
+import { API } from 'config/api'
 
 import CourseReviewItem from './CourseReviewItem'
 import { ReviewEditor } from './Editor'

@@ -2,8 +2,8 @@ import { UserGroup } from '@styled-icons/heroicons-outline'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { API } from 'api'
 import { ButtonIcon, ButtonSwitch, toast } from 'components/shared'
+import { API } from 'config/api'
 import { selectUserProfile } from 'store/userSlice'
 
 export const useCourseContentRequest = ({ code, type }) => {
