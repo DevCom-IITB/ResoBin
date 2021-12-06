@@ -1,5 +1,5 @@
-const warnInDevelopment =
-  process.env.NODE_ENV === 'production' ? 'error' : 'warn'
+const isDev = process.env.NODE_ENV === 'development'
+const warnInDevelopment = isDev ? 'warn' : 'error'
 
 module.exports = {
   env: {

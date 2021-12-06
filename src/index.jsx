@@ -5,10 +5,13 @@ import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 import App from 'App'
+import initSentry from 'config/sentry'
 import { store } from 'store'
 import 'styles/styles.css'
 
 const rootElement = document.getElementById('root')
+
+initSentry()
 
 const StrictApp = () => (
   <StrictMode>

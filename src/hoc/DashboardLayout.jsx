@@ -1,11 +1,10 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, Outlet } from 'react-router-dom'
 
 import { Menu } from 'components/menu'
 import { LoaderAnimation } from 'components/shared'
-import { PageTransition } from 'hoc'
 import { useScrollToTop } from 'hooks'
+import { DashboardRoutes } from 'routes'
 import { selectAuthLoading } from 'store/authSlice'
 import {
   getDepartmentList,
@@ -17,8 +16,6 @@ import { getProfileAction } from 'store/userSlice'
 
 const Dashboard = () => {
   useScrollToTop()
-  const location = useLocation()
-  const page = location.pathname.split('/')[1] || '/'
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -39,11 +36,7 @@ const Dashboard = () => {
   return (
     <>
       <Menu />
-
-      {/* Add transition effect to route changes */}
-      <PageTransition page={page}>
-        <Outlet />
-      </PageTransition>
+      <DashboardRoutes />
     </>
   )
 }

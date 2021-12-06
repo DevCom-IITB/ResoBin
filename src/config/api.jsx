@@ -4,10 +4,7 @@ import { toast } from 'components/shared'
 import { camelizeKeys, snakeizeKeys } from 'helpers/transformKeys'
 
 export const APIInstance = axios.create({
-  baseURL:
-    process.env.NODE_ENV === 'production'
-      ? process.env.REACT_APP_API_HOST
-      : 'http://localhost:8000/api',
+  baseURL: process.env.REACT_APP_API_HOST,
   timeout: 30000,
   xsrfCookieName: 'csrftoken',
   xsrfHeaderName: 'X-CSRFToken',

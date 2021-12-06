@@ -1,5 +1,5 @@
-const warnInDevelopment =
-  process.env.NODE_ENV === 'production' ? 'error' : 'warning'
+const isDev = process.env.NODE_ENV === 'development'
+const warnInDevelopment = isDev ? 'warning' : 'error'
 
 module.exports = {
   plugins: ['stylelint-order'],
