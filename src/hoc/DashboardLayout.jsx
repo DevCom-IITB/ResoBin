@@ -26,12 +26,12 @@ const Dashboard = () => {
     dispatch(getCourseListMinified())
   }, [dispatch])
 
-  const loadingAPI = [
+  const loading = [
     useSelector(selectCourseAPILoading),
     useSelector(selectAuthLoading),
-  ]
+  ].includes(true)
 
-  if (loadingAPI.includes(true)) return <LoaderAnimation fixed />
+  if (loading) return <LoaderAnimation fixed />
 
   return (
     <>

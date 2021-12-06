@@ -1,7 +1,7 @@
 import { isEmpty, kebabCase } from 'lodash'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Navigate, useLocation, useParams, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useParams } from 'react-router-dom'
 
 import {
   CoursePageContainer,
@@ -13,7 +13,6 @@ import { coursePageUrl } from 'helpers/format'
 
 const CoursePage = () => {
   const location = useLocation()
-  const navigate = useNavigate()
   const { code, titleSlug } = useParams()
   const [courseData, setCourseData] = useState({})
   const [loading, setLoading] = useState(true)
@@ -42,7 +41,7 @@ const CoursePage = () => {
   const title = `${courseData.code}: ${courseData.title}`
 
   if (titleSlug !== kebabCase(courseData.title))
-    navigate({ ...location, pathname }, { replace: true })
+    return <Navigate to={{ ...location, pathname }} replace />
 
   return (
     <PageContainer>
