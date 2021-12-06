@@ -5,8 +5,9 @@ import { rgba } from 'polished'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
 
-import { FilterDropdown } from 'components/filter'
 import { useQueryString } from 'hooks'
+
+import { CourseFinderFilterDropdown } from './Filter'
 
 // ? Disable filter will disable the filter entirely, show filter will trigger on/off animation
 const CourseSearch = ({ showFilter, loading, setLoading }) => {
@@ -24,7 +25,10 @@ const CourseSearch = ({ showFilter, loading, setLoading }) => {
 
   return (
     <SearchContainer>
-      <FilterDropdown showFilter={showFilter} setLoading={setLoading} />
+      <CourseFinderFilterDropdown
+        showFilter={showFilter}
+        setLoading={setLoading}
+      />
       {showFilter && <Overlay />}
 
       <StyledInput

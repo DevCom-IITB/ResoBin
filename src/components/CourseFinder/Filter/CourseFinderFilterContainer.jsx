@@ -5,7 +5,7 @@ import { Aside, Divider } from 'components/shared'
 import { useQueryString } from 'hooks'
 import { device } from 'styles/responsive'
 
-import FilterForm from './FilterBody'
+import CourseFinderFilterForm from './CourseFinderFilterForm'
 
 const filterKeys = [
   'semester',
@@ -18,7 +18,7 @@ const filterKeys = [
   'tags',
 ]
 
-export const FilterDropdown = ({ showFilter, setLoading }) => {
+export const CourseFinderFilterDropdown = ({ showFilter, setLoading }) => {
   const { deleteQueryString } = useQueryString()
 
   useEffect(() => {
@@ -39,13 +39,13 @@ export const FilterDropdown = ({ showFilter, setLoading }) => {
       <Divider style={{ margin: '0 1rem', width: 'auto' }} />
 
       <ListDropdown showFilter={showFilter}>
-        <FilterForm setLoading={setLoading} />
+        <CourseFinderFilterForm setLoading={setLoading} />
       </ListDropdown>
     </ContainerDropdown>
   )
 }
 
-export const FilterAside = ({ setLoading }) => {
+export const CourseFinderFilterAside = ({ setLoading }) => {
   const { deleteQueryString } = useQueryString()
 
   return (
@@ -57,7 +57,7 @@ export const FilterAside = ({ setLoading }) => {
         </ClearAll>
       }
     >
-      <FilterForm setLoading={setLoading} />
+      <CourseFinderFilterForm setLoading={setLoading} />
     </Aside>
   )
 }
