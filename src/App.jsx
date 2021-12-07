@@ -5,7 +5,6 @@ import { pdfjs } from 'react-pdf'
 import { useSelector } from 'react-redux'
 import { ThemeProvider } from 'styled-components/macro'
 
-import { Header } from 'components/header'
 import { LoaderAnimation } from 'components/shared'
 import { AppRoutes } from 'routes'
 import { selectAuthLoading } from 'store/authSlice'
@@ -31,7 +30,6 @@ const App = () => {
       <GlobalStyles />
       <LoaderAnimation fixed disable={!authLoading} />
 
-      <Header />
       <Suspense fallback={<LoaderAnimation fixed />}>
         <AppRoutes />
       </Suspense>

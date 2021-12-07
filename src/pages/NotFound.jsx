@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import NotFoundImg from 'assets/images/NotFound.png'
+import { PageContainer } from 'components/shared'
 import { device, fontSize } from 'styles/responsive'
 
 const NotFound = () => {
@@ -11,7 +12,7 @@ const NotFound = () => {
   const goBack = () => navigate(-1)
 
   return (
-    <Container>
+    <PageContainer disable={['aside']}>
       <Helmet>
         <title>404 Not Found</title>
         <meta name="description" content="Page not found" />
@@ -27,20 +28,11 @@ const NotFound = () => {
           <GoBack onClick={goHome}>take me home!</GoBack>
         </Subtitle>
       </Box>
-    </Container>
+    </PageContainer>
   )
 }
 
 export default NotFound
-
-const Container = styled.div`
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: ${({ theme }) => theme.secondary};
-  inset: 0;
-`
 
 const Box = styled.div`
   display: flex;
@@ -49,9 +41,6 @@ const Box = styled.div`
   justify-content: center;
   margin: 0.75rem;
   padding: 1rem;
-  background-color: ${({ theme }) => theme.darksecondary};
-  border-radius: 8px;
-  box-shadow: 0 0 1rem 2px rgb(0 0 0 / 20%);
 
   @media ${device.min.md} {
     padding: 1rem 2rem;

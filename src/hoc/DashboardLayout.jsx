@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Menu } from 'components/menu'
 import { LoaderAnimation } from 'components/shared'
 import { useScrollToTop } from 'hooks'
 import { DashboardRoutes } from 'routes'
@@ -33,12 +32,7 @@ const Dashboard = () => {
 
   if (loading) return <LoaderAnimation fixed />
 
-  return (
-    <>
-      <Menu />
-      <DashboardRoutes />
-    </>
-  )
+  return <DashboardRoutes />
 }
 
 export default Dashboard

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { LoaderAnimation, toast } from 'components/shared'
+import { LoaderAnimation, PageContainer, toast } from 'components/shared'
 import { getLoginURL, SSO } from 'config/sso'
 import { CSRFToken } from 'helpers'
 import { useQueryString } from 'hooks'
@@ -56,14 +56,14 @@ const Login = () => {
   if (loading) return <LoaderAnimation fixed />
 
   return (
-    <>
+    <PageContainer disable={['menu', 'aside', 'footer']}>
       <Helmet>
         <title>Log In - ResoBin</title>
         <meta name="description" content="Login to continue" />
       </Helmet>
       <CSRFToken />
 
-      <PageContainer>
+      <Container>
         <BoxContainer>
           <h4>Welcome to ResoBin!</h4>
 
@@ -71,18 +71,18 @@ const Login = () => {
             Login with SSO
           </SSOButton>
         </BoxContainer>
-      </PageContainer>
-    </>
+      </Container>
+    </PageContainer>
   )
 }
 
 export default Login
 
-const PageContainer = styled.div`
+const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - 3rem);
+  height: 100%;
   background-color: ${({ theme }) => theme.secondary};
 `
 
@@ -115,8 +115,7 @@ const SSOButton = styled(Button)`
   font-size: 1rem;
   background-color: #303f9f;
   border-color: #303f9f;
-  border-radius: 0.25rem;
-  box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
+  border-radius: 0.5rem;
 
   &:hover {
     background-color: ${lighten(0.1, '#303f9f')};
