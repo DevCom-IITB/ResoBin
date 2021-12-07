@@ -1,3 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 export { default as Footer } from './Footer'
-export { PageHeading, PageTitle, PageSubtitle, PageContainer } from './Page'
+export { default as PageContainer } from './Page'
+export { PageHeading, PageTitle, PageSubtitle } from './Typography'

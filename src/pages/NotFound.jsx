@@ -4,7 +4,7 @@ import styled from 'styled-components/macro'
 
 import NotFoundImg from 'assets/images/NotFound.png'
 import { PageContainer } from 'components/shared'
-import { device, fontSize } from 'styles/responsive'
+import { fontSize } from 'styles/responsive'
 
 const NotFound = () => {
   const navigate = useNavigate()
@@ -12,7 +12,7 @@ const NotFound = () => {
   const goBack = () => navigate(-1)
 
   return (
-    <PageContainer disable={['aside']}>
+    <PageContainer disable={['aside', 'menu']}>
       <Helmet>
         <title>404 Not Found</title>
         <meta name="description" content="Page not found" />
@@ -39,16 +39,12 @@ const Box = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0.75rem;
-  padding: 1rem;
-
-  @media ${device.min.md} {
-    padding: 1rem 2rem;
-  }
+  padding: 2rem 0 1rem;
+  border-radius: 0.5rem;
+  background: ${({ theme }) => theme.secondary};
 `
 
 const Subtitle = styled.p`
-  margin: 1rem;
   color: ${({ theme }) => theme.textColor};
   font-weight: 300;
   font-size: ${fontSize.responsive.$2xl};
