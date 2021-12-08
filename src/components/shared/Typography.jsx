@@ -24,3 +24,7 @@ export const Text = styled(Typography.Text)`
   text-align: justify;
   color: ${({ theme }) => theme.textColor};
 `
+
+export const Link = styled(Typography.Link)`
+  font-size: 0.75rem;
+`

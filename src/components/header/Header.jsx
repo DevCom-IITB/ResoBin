@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <Container>
       <ResoBinLogo size="1.5rem" />
-      {!isAuthenticated && latestSemester && (
+      {isAuthenticated && latestSemester && (
         <Term>
           AY {displayYear(latestSemester.year)}
           &nbsp;| {latestSemester.season}

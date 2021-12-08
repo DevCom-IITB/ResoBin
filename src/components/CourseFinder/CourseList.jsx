@@ -78,6 +78,8 @@ export default CourseFinderList
 
 // ? react animation classes
 const CardTransition = styled.div`
+  margin-bottom: 1rem;
+
   &.card-enter {
     transform: scale(1.01);
     opacity: 0;

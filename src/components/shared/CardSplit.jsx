@@ -48,7 +48,6 @@ const Container = styled.li`
     [main] 1fr
     [sub] auto;
   width: 100%;
-  margin: 1rem 0;
   padding: 1rem;
   background: ${({ theme }) => theme.secondary};
   border-radius: 0.5rem;
