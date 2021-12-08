@@ -1,59 +1,28 @@
 import { adjustHue } from 'polished'
 
-export const makeGradient = (color) => {
-  return `linear-gradient(135deg, ${color}, ${adjustHue(40, color)})`
-}
+export const makeGradient = (color) =>
+  `linear-gradient(135deg, ${color}, ${adjustHue(40, color)})`
 
-export const colorPicker = (id) => {
-  switch (id % 8) {
-    case 0:
-      return '#f1fa8c'
-    case 1:
-      return '#8be9fd'
-    case 2:
-      return '#ff79c6'
-    case 3:
-      return '#bd93f9'
-    case 4:
-      return '#ffb86c'
-    case 5:
-      return '#ff5555'
-    case 6:
-      return '#50fa7b'
-    case 7:
-      return '#6877fa'
-    default:
-      return '#6272a4'
-  }
-}
+// ? standard paint palette row 2
+export const palette = [
+  '#FF6766',
+  '#FF9968',
+  '#FFCC66',
+  '#FFFF67',
+  '#CDFE67',
+  '#9BFE66',
+  '#66FF66',
+  '#68FE9A',
+  '#66FECB',
+  '#66FEFF',
+  '#66CBFF',
+  '#6599FF',
+  '#6867FF',
+  '#9A67FF',
+  '#CC68FF',
+  '#FF67FF',
+  '#FE66CB',
+  '#FF669A',
+]
 
-export const antdColorPicker = (id) => {
-  switch (id % 11) {
-    case 0:
-      return 'magenta'
-    case 1:
-      return 'red'
-    case 2:
-      return 'volcano'
-    case 3:
-      return 'orange'
-    case 4:
-      return 'gold'
-    case 5:
-      return 'lime'
-    case 6:
-      return 'green'
-    case 7:
-      return 'cyan'
-    case 8:
-      return 'blue'
-    case 9:
-      return 'geekblue'
-    case 10:
-      return 'purple'
-    default:
-      return 'default'
-  }
-}
-
-export default colorPicker
+export const colorPicker = (id) => palette[id % palette.length]

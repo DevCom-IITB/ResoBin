@@ -1,7 +1,8 @@
+import { Empty } from 'antd'
 import { useState, useEffect } from 'react'
 
 import { CourseList, CourseSearch } from 'components/CourseFinder'
-import { Aside, toast } from 'components/shared'
+import { Aside, PageSubtitle, toast } from 'components/shared'
 import { API } from 'config/api'
 import { useQueryString } from 'hooks'
 
@@ -50,7 +51,9 @@ const FavouritesContainer = () => {
         setLoading={setLoading}
       />
 
-      <Aside title="My friends" />
+      <Aside title="My friends">
+        <Empty description={<PageSubtitle>Coming soon!</PageSubtitle>} />
+      </Aside>
     </>
   )
 }

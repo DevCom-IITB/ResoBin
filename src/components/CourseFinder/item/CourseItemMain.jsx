@@ -1,4 +1,5 @@
 import { Bookmark, BookmarkOutline } from '@styled-icons/zondicons'
+import { Tag } from 'antd'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -6,16 +7,29 @@ import styled, { css } from 'styled-components/macro'
 
 import { ButtonIcon, toast, Typography } from 'components/shared'
 import { API } from 'config/api'
+import defaultTags from 'data/tags.json'
 import { coursePageUrl } from 'helpers/format'
 import { selectDepartments } from 'store/courseSlice'
 import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
 import { device, fontSize } from 'styles/responsive'
 import { colorPicker } from 'styles/utils'
 
+const creditColorPicker = (credits) => {
+  if (credits >= 10) return colorPicker(0)
+  if (credits >= 8) return colorPicker(1)
+  if (credits >= 6) return colorPicker(2)
+  if (credits >= 4) return colorPicker(3)
+  if (credits >= 2) return colorPicker(4)
+  return colorPicker(5)
+}
+
+const tagColorPicker = (tag) =>
+  colorPicker(defaultTags.courseTags.findIndex((t) => t === tag))
+
 // TODO: Add highlight for keywords
 const CourseItemMain = ({ courseData }) => {
   const dispatch = useDispatch()
-  const { code, credits, department, title, description } = courseData
+  const { code, credits, department, title, description, tags } = courseData
 
   const [loading, setLoading] = useState(false)
 
@@ -53,7 +67,19 @@ const CourseItemMain = ({ courseData }) => {
         </DepartmentContainer>
 
         <RightIcons>
-          <CreditContainer small={credits > 9}>{credits}</CreditContainer>
+          <TagsContainer>
+            {tags.map((tag) => (
+              <StyledTag key={tag} style={{ color: tagColorPicker(tag) }}>
+                {tag}
+              </StyledTag>
+            ))}
+          </TagsContainer>
+
+          {credits > 0 && (
+            <StyledTag style={{ color: creditColorPicker(credits) }}>
+              {credits} credit{credits > 1 ? 's' : ''}
+            </StyledTag>
+          )}
 
           <ButtonIcon
             tooltip="Add to favorites"
@@ -115,23 +141,18 @@ const CourseTitle = styled.span`
 `
 
 const SubTitle = styled.div`
-  position: relative;
   display: flex;
   align-items: center;
-  height: 1.75rem;
+  height: 2rem;
   margin-bottom: 0.5rem;
 `
 
 const DepartmentContainer = styled.span`
-  display: inline-block;
-  width: calc(100% - 3.75rem);
-  margin: 0;
-  overflow: hidden;
+  width: 100%;
   color: ${({ theme }) => theme.primary};
   font-weight: 600;
   font-size: ${fontSize.responsive.xs};
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  opacity: 85%;
 
   @media ${device.min.md} {
     font-weight: 500;
@@ -144,22 +165,24 @@ const RightIcons = styled.div`
   justify-content: flex-end;
 `
 
-const CreditContainer = styled.span`
+const TagsContainer = styled.div`
+  height: 2rem;
+  margin-left: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  overflow-y: scroll;
+`
+
+const StyledTag = styled(Tag)`
+  height: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-right: 1rem;
-  color: ${({ theme }) => theme.darksecondary};
-  font-weight: 600;
-  font-size: ${({ small }) =>
-    small ? fontSize.responsive.xs : fontSize.responsive.lg};
-  background: white;
-  border-radius: 50%;
-
-  @media ${device.min.md} {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
+  color: ${({ theme }) => theme.textColor};
+  padding: 0 0.75rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  border: none;
+  background: ${({ theme }) => theme.darksecondary};
 `
