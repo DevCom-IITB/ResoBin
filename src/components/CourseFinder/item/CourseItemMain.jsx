@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
 
-import { ButtonIcon, toast } from 'components/shared'
+import { ButtonIcon, toast, Typography } from 'components/shared'
 import { API } from 'config/api'
 import { coursePageUrl } from 'helpers/format'
 import { selectDepartments } from 'store/courseSlice'
@@ -12,8 +12,7 @@ import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
 import { device, fontSize } from 'styles/responsive'
 import { colorPicker } from 'styles/utils'
 
-import ParseDescription from '../ParseDescription'
-
+// TODO: Add highlight for keywords
 const CourseItemMain = ({ courseData }) => {
   const dispatch = useDispatch()
   const { code, credits, department, title, description } = courseData
@@ -73,9 +72,12 @@ const CourseItemMain = ({ courseData }) => {
         <CourseTitle>{title}</CourseTitle>
       </TitleContainer>
 
-      <CourseDescription>
-        <ParseDescription>{description}</ParseDescription>
-      </CourseDescription>
+      <Typography.Paragraph
+        ellipsis={{ rows: 3, expandable: true, symbol: 'show more' }}
+        style={{ marginTop: '0.75rem', marginBottom: 0 }}
+      >
+        {description?.length ? description : 'No description available'}
+      </Typography.Paragraph>
     </>
   )
 }
@@ -140,13 +142,6 @@ const RightIcons = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-`
-
-const CourseDescription = styled.div`
-  margin-top: 0.75rem;
-  font-weight: 300;
-  font-size: ${fontSize.static.md};
-  text-align: justify;
 `
 
 const CreditContainer = styled.span`

@@ -37,7 +37,7 @@ const StyledSkeleton = styled(Skeleton)`
     padding: 1.5rem 1rem;
     background: ${({ theme }) => theme.secondary};
     border-radius: 0.5rem;
-    box-shadow: 0 0 0.5rem rgb(0 0 0 / 20%);
+    box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
   }
 `
 
@@ -52,7 +52,7 @@ const Container = styled.li`
   padding: 1rem;
   background: ${({ theme }) => theme.secondary};
   border-radius: 0.5rem;
-  box-shadow: 0 0 0.5rem rgb(0 0 0 / 40%);
+  box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
 
   @media ${device.max.md} {
     grid-column-gap: 0;

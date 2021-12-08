@@ -1,2 +1,2 @@
-export { default as DarkmodeToggle } from './DarkmodeToggle'
+/* eslint-disable import/prefer-default-export */
 export { default as SettingsContainer } from './SettingsContainer'
