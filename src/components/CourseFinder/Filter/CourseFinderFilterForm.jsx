@@ -1,10 +1,10 @@
 import { X } from '@styled-icons/heroicons-outline'
-import { Checkbox, Select, Slider } from 'antd'
+import { Checkbox, Select } from 'antd'
 import { kebabCase } from 'lodash'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { Form, PageHeading, Switch } from 'components/shared'
+import { Form, PageHeading, Slider, Switch } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
 import tags from 'data/tags.json'
 import { useQueryString } from 'hooks'

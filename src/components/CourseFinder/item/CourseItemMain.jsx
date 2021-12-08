@@ -27,6 +27,33 @@ const tagColorPicker = (tag) =>
   colorPicker(defaultTags.courseTags.findIndex((t) => t === tag))
 
 // TODO: Add highlight for keywords
+// const HighlightMatches = ({ content }) => {
+//   const location = useLocation()
+//   const queryString = new URLSearchParams(location.search)
+//   const search = (queryString.get('q') || '').toLowerCase()
+
+//   const re = new RegExp(`(${search})`, 'gi')
+//   const parts = content.split(re)
+
+//   return search
+//     ? parts.map((part, index) =>
+//         part.toLowerCase() === search ? (
+//           <mark key={String(index)} mark>
+//             {part}
+//           </mark>
+//         ) : (
+//           <span key={String(index)}>{part}</span>
+//         )
+//       )
+//     : content
+// }
+
+// {description?.length ? (
+//   <HighlightMatches content={description} />
+// ) : (
+//   <>No description available</>
+// )}
+
 const CourseItemMain = ({ courseData }) => {
   const dispatch = useDispatch()
   const { code, credits, department, title, description, tags } = courseData
@@ -76,7 +103,12 @@ const CourseItemMain = ({ courseData }) => {
           </TagsContainer>
 
           {credits > 0 && (
-            <StyledTag style={{ color: creditColorPicker(credits) }}>
+            <StyledTag
+              style={{
+                color: creditColorPicker(credits),
+                marginRight: '0.5rem',
+              }}
+            >
               {credits} credit{credits > 1 ? 's' : ''}
             </StyledTag>
           )}
@@ -166,10 +198,11 @@ const RightIcons = styled.div`
 `
 
 const TagsContainer = styled.div`
-  height: 2rem;
-  margin-left: 0.5rem;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  height: 2rem;
+  margin-left: 0.5rem;
   gap: 0.25rem;
   overflow-y: scroll;
 `
@@ -177,6 +210,7 @@ const TagsContainer = styled.div`
 const StyledTag = styled(Tag)`
   height: 1.25rem;
   display: flex;
+  margin: 0;
   align-items: center;
   justify-content: center;
   color: ${({ theme }) => theme.textColor};
