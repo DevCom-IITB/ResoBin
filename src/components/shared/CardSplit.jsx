@@ -5,34 +5,29 @@ import { Divider } from 'components/shared'
 import { useResponsive } from 'hooks'
 import { device } from 'styles/responsive'
 
-import CourseItemMain from './CourseItemMain'
-import CourseItemSub from './CourseItemSub'
-
-export const CourseItemLoading = ({ active }) =>
+export const CardSplitSkeleton = ({ active }) =>
   active && <StyledSkeleton active />
 
-export const CourseItem = ({ courseData }) => {
+const CardSplit = ({ main, sub, subWidth }) => {
   const { isMobile } = useResponsive()
 
   return (
     <Container>
-      <Main>
-        <CourseItemMain courseData={courseData} />
-      </Main>
+      <MainContainer>{main}</MainContainer>
 
       {isMobile && (
         <Divider
-          style={{ width: '100%', gridArea: 'item-divider' }}
+          style={{ width: '100%', gridArea: 'divider' }}
           margin="1rem 0"
         />
       )}
 
-      <Sub>
-        <CourseItemSub courseData={courseData} />
-      </Sub>
+      <SubContainer subWidth={subWidth}>{sub}</SubContainer>
     </Container>
   )
 }
+
+export default CardSplit
 
 const StyledSkeleton = styled(Skeleton)`
   width: 100%;
@@ -50,8 +45,8 @@ const Container = styled.li`
   display: grid;
   grid-column-gap: 1rem;
   grid-template-columns:
-    [item-main] 1fr
-    [item-sub] auto;
+    [main] 1fr
+    [sub] auto;
   width: 100%;
   margin: 1rem 0;
   padding: 1rem;
@@ -59,49 +54,27 @@ const Container = styled.li`
   border-radius: 0.5rem;
   box-shadow: 0 0 0.5rem rgb(0 0 0 / 40%);
 
-  /* react animation classes */
-  &.course-item-enter {
-    transform: scale(1.01);
-    opacity: 0;
-  }
-
-  &.course-item-enter-active {
-    transform: scale(1);
-    opacity: 1;
-    transition: opacity 200ms, transform 200ms;
-  }
-
-  &.course-item-exit {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  &.course-item-exit-active {
-    transform: scale(0.9);
-    opacity: 0;
-    transition: opacity 100ms, transform 100ms;
-  }
-
   @media ${device.max.md} {
     grid-column-gap: 0;
     grid-template-rows:
-      [item-main] 1fr
-      [item-divider] auto
-      [item-sub] auto;
+      [main] 1fr
+      [divider] auto
+      [sub] auto;
     grid-template-columns: none;
   }
 `
 
-const Main = styled.div`
-  grid-area: item-main;
+const MainContainer = styled.div`
+  grid-area: main;
   width: 100%;
 `
 
-const Sub = styled.div`
-  grid-area: item-sub;
+const SubContainer = styled.div`
+  grid-area: sub;
+  width: ${({ subWidth }) => subWidth};
 
   > div {
-    width: 13rem;
+    width: ${({ subWidth }) => subWidth};
   }
 
   @media ${device.min.xs} and ${device.max.md} {

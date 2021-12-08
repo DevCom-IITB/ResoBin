@@ -2,6 +2,25 @@ import { Card, Skeleton } from 'antd'
 import { rgba } from 'polished'
 import styled from 'styled-components/macro'
 
+export const CardSkeleton = styled(Skeleton)`
+  display: flex;
+  align-items: center;
+  margin: 0.75rem 0;
+  padding: 0.875rem 1.125rem;
+  background: #1b172866;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0.5rem rgb(0 0 0 / 20%);
+
+  .ant-skeleton-avatar {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .ant-skeleton-content .ant-skeleton-title {
+    margin: 0;
+  }
+`
+
 export const StyledCard = styled(Card)`
   .ant-card-body {
     display: flex;
@@ -46,25 +65,6 @@ export const StyledCard = styled(Card)`
   .ant-avatar {
     width: 3rem;
     height: 3rem;
-  }
-`
-
-export const CardSkeleton = styled(Skeleton)`
-  display: flex;
-  align-items: center;
-  margin: 0.75rem 0;
-  padding: 0.875rem 1.125rem;
-  background: #1b172866;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 0.5rem rgb(0 0 0 / 20%);
-
-  .ant-skeleton-avatar {
-    width: 3rem;
-    height: 3rem;
-  }
-
-  .ant-skeleton-content .ant-skeleton-title {
-    margin: 0;
   }
 `
 
