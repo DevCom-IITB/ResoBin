@@ -1,23 +1,62 @@
 import { Bookmark, BookmarkOutline } from '@styled-icons/zondicons'
+import { Tag } from 'antd'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
 
-import { API } from 'api'
-import { ButtonIcon } from 'components/shared'
-import { toastError } from 'components/toast'
+import { ButtonIcon, toast, Typography } from 'components/shared'
+import { API } from 'config/api'
+import defaultTags from 'data/tags.json'
 import { coursePageUrl } from 'helpers/format'
 import { selectDepartments } from 'store/courseSlice'
 import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
 import { device, fontSize } from 'styles/responsive'
 import { colorPicker } from 'styles/utils'
 
-import ParseDescription from '../ParseDescription'
+const creditColorPicker = (credits) => {
+  if (credits >= 10) return colorPicker(0)
+  if (credits >= 8) return colorPicker(1)
+  if (credits >= 6) return colorPicker(2)
+  if (credits >= 4) return colorPicker(3)
+  if (credits >= 2) return colorPicker(4)
+  return colorPicker(5)
+}
+
+const tagColorPicker = (tag) =>
+  colorPicker(defaultTags.courseTags.findIndex((t) => t === tag))
+
+// TODO: Add highlight for keywords
+// const HighlightMatches = ({ content }) => {
+//   const location = useLocation()
+//   const queryString = new URLSearchParams(location.search)
+//   const search = (queryString.get('q') || '').toLowerCase()
+
+//   const re = new RegExp(`(${search})`, 'gi')
+//   const parts = content.split(re)
+
+//   return search
+//     ? parts.map((part, index) =>
+//         part.toLowerCase() === search ? (
+//           <mark key={String(index)} mark>
+//             {part}
+//           </mark>
+//         ) : (
+//           <span key={String(index)}>{part}</span>
+//         )
+//       )
+//     : content
+// }
+
+// {description?.length ? (
+//   <HighlightMatches content={description} />
+// ) : (
+//   <>No description available</>
+// )}
 
 const CourseItemMain = ({ courseData }) => {
   const dispatch = useDispatch()
-  const { code, credits, department, title, description } = courseData
+  const { code, credits, department, title, description, tags } = courseData
 
   const [loading, setLoading] = useState(false)
 
@@ -35,7 +74,7 @@ const CourseItemMain = ({ courseData }) => {
 
       dispatch(updateFavourite(code))
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     } finally {
       setLoading(false)
     }
@@ -55,7 +94,24 @@ const CourseItemMain = ({ courseData }) => {
         </DepartmentContainer>
 
         <RightIcons>
-          <CreditContainer small={credits > 9}>{credits}</CreditContainer>
+          <TagsContainer>
+            {tags.map((tag) => (
+              <StyledTag key={tag} style={{ color: tagColorPicker(tag) }}>
+                {tag}
+              </StyledTag>
+            ))}
+          </TagsContainer>
+
+          {credits > 0 && (
+            <StyledTag
+              style={{
+                color: creditColorPicker(credits),
+                marginRight: '0.5rem',
+              }}
+            >
+              {credits} credit{credits > 1 ? 's' : ''}
+            </StyledTag>
+          )}
 
           <ButtonIcon
             tooltip="Add to favorites"
@@ -74,9 +130,12 @@ const CourseItemMain = ({ courseData }) => {
         <CourseTitle>{title}</CourseTitle>
       </TitleContainer>
 
-      <CourseDescription>
-        <ParseDescription>{description}</ParseDescription>
-      </CourseDescription>
+      <Typography.Paragraph
+        ellipsis={{ rows: 3, expandable: true, symbol: 'show more' }}
+        style={{ marginTop: '0.75rem', marginBottom: 0 }}
+      >
+        {description?.length ? description : 'No description available'}
+      </Typography.Paragraph>
     </>
   )
 }
@@ -114,23 +173,18 @@ const CourseTitle = styled.span`
 `
 
 const SubTitle = styled.div`
-  position: relative;
   display: flex;
   align-items: center;
-  height: 1.75rem;
+  height: 2rem;
   margin-bottom: 0.5rem;
 `
 
 const DepartmentContainer = styled.span`
-  display: inline-block;
-  overflow: hidden;
-  width: calc(100% - 3.75rem);
-  margin: 0;
-  font-size: ${fontSize.responsive.xs};
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  width: 100%;
   color: ${({ theme }) => theme.primary};
+  font-weight: 600;
+  font-size: ${fontSize.responsive.xs};
+  opacity: 85%;
 
   @media ${device.min.md} {
     font-weight: 500;
@@ -139,33 +193,30 @@ const DepartmentContainer = styled.span`
 
 const RightIcons = styled.div`
   display: flex;
+  align-items: center;
   justify-content: flex-end;
-  align-items: center;
 `
 
-const CourseDescription = styled.div`
-  margin-top: 0.75rem;
-  font-size: ${fontSize.static.md};
-  font-weight: 300;
-  text-align: justify;
-`
-
-const CreditContainer = styled.span`
+const TagsContainer = styled.div`
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
   align-items: center;
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-right: 1rem;
-  border-radius: 50%;
-  font-size: ${({ small }) =>
-    small ? fontSize.responsive.xs : fontSize.responsive.lg};
-  font-weight: 600;
-  color: ${({ theme }) => theme.darksecondary};
-  background: white;
+  height: 2rem;
+  margin-left: 0.5rem;
+  gap: 0.25rem;
+  overflow-y: scroll;
+`
 
-  @media ${device.min.md} {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
+const StyledTag = styled(Tag)`
+  height: 1.25rem;
+  display: flex;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.textColor};
+  padding: 0 0.75rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  border: none;
+  background: ${({ theme }) => theme.darksecondary};
 `

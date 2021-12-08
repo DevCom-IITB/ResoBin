@@ -3,20 +3,20 @@ import styled from 'styled-components/macro'
 
 import { ResoBinLogo } from 'components/shared'
 import { displayYear } from 'helpers/format'
-import { selectSemesters } from 'store/courseSlice'
+import { selectCurrentSemester } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
 const Header = () => {
   const { isAuthenticated } = useSelector((state) => state.auth)
-  const [latestSemester] = useSelector(selectSemesters)?.slice(-1)
+  const latestSemester = useSelector(selectCurrentSemester)
 
   return (
     <Container>
       <ResoBinLogo size="1.5rem" />
-      {isAuthenticated && (
+      {isAuthenticated && latestSemester && (
         <Term>
-          AY {displayYear(latestSemester?.year)}
-          &nbsp;| {latestSemester?.season}
+          AY {displayYear(latestSemester.year)}
+          &nbsp;| {latestSemester.season}
         </Term>
       )}
     </Container>
@@ -28,14 +28,14 @@ export default Header
 const Container = styled.div`
   position: sticky;
   top: 0;
-  z-index: 9; /* To put header at the top */
+  z-index: 9;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 100%;
   height: 3rem;
   background: ${({ theme }) => theme.darksecondary};
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 40%);
 `
 
 const Term = styled.span`
@@ -47,12 +47,12 @@ const Term = styled.span`
     right: 0;
     display: flex;
     padding: 0 1.5rem;
-    font-size: 0.875rem;
-    font-weight: 400;
-    line-height: 80%;
-    white-space: nowrap;
-    letter-spacing: 1.5px;
     color: lightgray;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 80%;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
   }
 
   @media ${device.min.lg} {

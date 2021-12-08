@@ -2,27 +2,27 @@ import { rgba } from 'polished'
 import styled, { css } from 'styled-components/macro'
 
 const sharedStyles = css`
-  box-sizing: border-box;
   display: block;
-  opacity: 80%;
+  box-sizing: border-box;
   width: 100%;
+  margin: 0 auto 1rem;
   padding: 0.375rem 1rem;
-  margin: 0 auto 1rem auto;
+  color: ${({ theme }) => theme.activeMenu};
+  font-size: 1rem;
+  background-color: ${({ theme }) => rgba(theme.darksecondary, 0.7)};
   border: 1px solid ${({ theme }) => rgba(theme.textColor, 0.4)};
   border-radius: 0.25rem;
   outline: 0;
-  font-size: 1rem;
-  color: ${({ theme }) => theme.activeMenu};
-  background-color: ${({ theme }) => rgba(theme.darksecondary, 0.7)};
+  opacity: 0.8;
   transition-duration: 100ms;
 
   &:hover {
-    opacity: 100%;
+    opacity: 1;
   }
 
   &:focus {
-    opacity: 100%;
     background-color: ${({ theme }) => theme.textInactive};
+    opacity: 1;
   }
 `
 

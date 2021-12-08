@@ -28,11 +28,11 @@ const CoursePageBody = ({ courseData }) => {
 export default CoursePageBody
 
 const Container = styled.div`
-  padding: 1.5rem 1rem;
   margin-bottom: 0.75rem;
-  border-radius: ${({ theme }) => theme.borderRadius};
+  padding: 1.5rem 1rem;
   color: ${({ theme }) => theme.textColor};
   background: ${({ theme }) => theme.secondary};
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   @media ${device.max.md} {
     margin-top: 0.75rem;
@@ -40,9 +40,9 @@ const Container = styled.div`
 `
 
 const CourseCode = styled.h1`
-  font-size: ${fontSize.responsive.$4xl};
-  font-weight: 600;
   color: ${({ theme }) => theme.primary};
+  font-weight: 600;
+  font-size: ${fontSize.responsive.$4xl};
 `
 
 const CourseTitle = styled.h1`
@@ -51,13 +51,13 @@ const CourseTitle = styled.h1`
 
 const CourseDepartment = styled.h3`
   margin-top: 0.5rem;
-  font-size: ${fontSize.responsive.sm};
   font-weight: 400;
+  font-size: ${fontSize.responsive.sm};
 `
 
 const CourseDescription = styled.p`
-  font-size: ${fontSize.responsive.md};
-  font-weight: 300;
-  text-align: justify;
   color: lightgray;
+  font-weight: 300;
+  font-size: ${fontSize.responsive.md};
+  text-align: justify;
 `

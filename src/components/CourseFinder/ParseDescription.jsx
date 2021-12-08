@@ -40,23 +40,23 @@ const ParseDescription = ({ children: text }) => {
 export default ParseDescription
 
 const Span = styled.span`
-  font-family: 'Source Sans Pro', sans-serif;
   color: ${({ theme }) => theme.textColor};
+  font-family: 'Source Sans Pro', sans-serif;
 `
 
 const ReadMoreText = styled(Span)`
   display: inline-block;
-  font-size: 85%;
-  font-weight: 600;
   color: ${({ theme }) => theme.textColorInactive};
+  font-weight: 600;
+  font-size: 85%;
   cursor: pointer;
 `
 
 const Highlight = styled.mark`
   padding: 0;
-  font-family: inherit;
-  font-weight: bold;
-  text-decoration: underline;
   color: inherit;
+  font-weight: bold;
+  font-family: inherit;
+  text-decoration: underline;
   background-color: transparent;
 `

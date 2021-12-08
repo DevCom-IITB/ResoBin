@@ -41,10 +41,10 @@ const Circle = styled.div`
   position: absolute;
   top: calc(-${({ diameter }) => diameter} / 2);
   left: calc(-${({ diameter }) => diameter} / 2);
-  width: calc(${({ diameter }) => diameter});
-  height: calc(${({ diameter }) => diameter});
-  border-radius: 50%;
+  width: calc(${({ diameter }) => diameter });
+  height: calc(${({ diameter }) => diameter });
   background: ${({ theme }) => theme.logo};
+  border-radius: 50%;
 `
 
 const Line = styled.div`

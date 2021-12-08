@@ -6,10 +6,8 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { API } from 'api'
-import { ButtonIcon, Timestamp } from 'components/shared'
-import { UserAvatar } from 'components/shared/Avatar'
-import { toastError } from 'components/toast'
+import { ButtonIcon, Timestamp, toast, UserAvatar } from 'components/shared'
+import { API } from 'config/api'
 import {
   selectUserProfile,
   selectReviewVoteStatus,
@@ -40,7 +38,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
 
       dispatch(updateReviewsVoted(content.id))
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     }
   }
 
@@ -57,7 +55,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       updateContent({ id: content.id, payload })
       setAction(null)
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     }
   }
 
@@ -66,7 +64,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       await API.reviews.delete({ id: content.id })
       updateContent({ id: content.id, payload: null })
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     }
   }
 
@@ -88,7 +86,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       updateContent({ id: content.id, payload })
       setAction(null)
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     }
   }
 
@@ -188,14 +186,14 @@ const StyledComment = styled(Comment)`
 
 const LikeCount = styled.span`
   margin-left: 0.5rem;
-  font-size: 0.75rem;
   color: ${({ theme }) => theme.textColor};
+  font-size: 0.75rem;
 `
 
 const CommentHeader = styled.h2`
-  font-size: 0.75rem;
-  font-weight: 600;
   color: ${({ theme }) => theme.header};
+  font-weight: 600;
+  font-size: 0.75rem;
 
   &:hover {
     color: ${({ theme }) => theme.header};
@@ -204,6 +202,6 @@ const CommentHeader = styled.h2`
 
 const CommentText = styled.div`
   width: 80%;
-  font-weight: 400;
   color: ${({ theme }) => theme.header};
+  font-weight: 400;
 `

@@ -9,11 +9,9 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { API } from 'api'
 import placeholderImg from 'assets/images/ResourcePlaceholder.jpg'
-import { ButtonIcon, Timestamp } from 'components/shared'
-import { UserAvatar } from 'components/shared/Avatar'
-import { toastError } from 'components/toast'
+import { ButtonIcon, Timestamp, toast, UserAvatar } from 'components/shared'
+import { API } from 'config/api'
 import { selectUserProfile } from 'store/userSlice'
 import { limitLines } from 'styles/mixins'
 
@@ -36,7 +34,7 @@ const CourseResourceItem = ({ content: initialContent }) => {
       setContent({ ...content, ...payload })
       setEditModalVisible(false)
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     }
   }
 
@@ -120,31 +118,31 @@ export default CourseResourceItem
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
   grid-auto-rows: 12rem;
   grid-auto-flow: row dense;
   grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
   padding: 0 0.25rem;
 `
 
 const GridItem = styled.figure`
   position: relative;
   display: flex;
-  overflow: hidden;
   flex-direction: column;
-  justify-content: flex-end;
   grid-row-start: auto;
   grid-column-start: auto;
-  border-radius: 0.5rem;
+  justify-content: flex-end;
+  overflow: hidden;
   color: ${({ theme }) => theme.textColor};
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  border-radius: 0.5rem;
+  box-shadow: 0 0 5px rgb(0 0 0 / 30%);
 `
 
 const Row = styled.div`
   display: flex;
+  gap: 0.5rem;
   align-items: center;
   margin-bottom: 0.5rem;
-  gap: 0.5rem;
 `
 
 const ResourceTitle = styled.h5`

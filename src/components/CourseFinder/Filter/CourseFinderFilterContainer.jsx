@@ -5,7 +5,7 @@ import { Aside, Divider } from 'components/shared'
 import { useQueryString } from 'hooks'
 import { device } from 'styles/responsive'
 
-import FilterForm from './FilterBody'
+import CourseFinderFilterForm from './CourseFinderFilterForm'
 
 const filterKeys = [
   'semester',
@@ -18,7 +18,7 @@ const filterKeys = [
   'tags',
 ]
 
-export const FilterDropdown = ({ showFilter, setLoading }) => {
+export const CourseFinderFilterDropdown = ({ showFilter, setLoading }) => {
   const { deleteQueryString } = useQueryString()
 
   useEffect(() => {
@@ -39,13 +39,13 @@ export const FilterDropdown = ({ showFilter, setLoading }) => {
       <Divider style={{ margin: '0 1rem', width: 'auto' }} />
 
       <ListDropdown showFilter={showFilter}>
-        <FilterForm setLoading={setLoading} />
+        <CourseFinderFilterForm setLoading={setLoading} />
       </ListDropdown>
     </ContainerDropdown>
   )
 }
 
-export const FilterAside = ({ setLoading }) => {
+export const CourseFinderFilterAside = ({ setLoading }) => {
   const { deleteQueryString } = useQueryString()
 
   return (
@@ -57,7 +57,7 @@ export const FilterAside = ({ setLoading }) => {
         </ClearAll>
       }
     >
-      <FilterForm setLoading={setLoading} />
+      <CourseFinderFilterForm setLoading={setLoading} />
     </Aside>
   )
 }
@@ -66,42 +66,42 @@ const ContainerDropdown = styled.div`
   position: absolute;
   top: 2rem;
   z-index: 5;
-  overflow: auto;
   width: 100%;
   height: ${({ showFilter }) => (showFilter ? 'calc(100vh - 5rem)' : '0')};
   padding: ${({ showFilter }) => (showFilter ? '1rem 0 20rem' : '0')};
+  overflow: auto;
   background: ${({ theme }) => theme.secondary};
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 0 5px rgb(0 0 0 / 30%);
   transition: 200ms;
 `
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: baseline;
+  justify-content: space-between;
   height: 3rem;
-  padding: 1.25rem 1rem 0;
   margin-bottom: 0.5rem;
+  padding: 1.25rem 1rem 0;
 
   @media ${device.min.lg} {
-    padding: 1rem 1rem 0.5rem;
     margin: 0;
+    padding: 1rem 1rem 0.5rem;
   }
 `
 
 const Title = styled.h4`
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: 1px;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 1px;
 `
 
 const ClearAll = styled.button`
-  border: 0;
-  font-size: 0.75rem;
-  font-weight: 400;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 400;
+  font-size: 0.75rem;
   background: transparent;
+  border: 0;
   cursor: pointer;
 
   &:hover {

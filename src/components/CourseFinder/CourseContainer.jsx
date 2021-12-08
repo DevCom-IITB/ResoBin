@@ -1,11 +1,16 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
-import { API } from 'api'
-import { CourseList, CourseSearch } from 'components/CourseFinder'
-import { FilterAside, FilterFloatButton } from 'components/filter'
-import { toastError } from 'components/toast'
+import { toast } from 'components/shared'
+import { API } from 'config/api'
 import { useQueryString, useResponsive } from 'hooks'
+
+import CourseList from './CourseList'
+import CourseSearch from './CourseSearch'
+import {
+  CourseFinderFilterAside,
+  CourseFinderFilterFloatButton,
+} from './Filter'
 
 let ajaxRequest = null
 const CourseFinderContainer = () => {
@@ -30,7 +35,7 @@ const CourseFinderContainer = () => {
       setCourseData(response)
     } catch (error) {
       if (axios.isCancel(error)) return
-      toastError(error)
+      toast({ status: 'error', content: error })
     }
 
     setLoading(false)
@@ -63,8 +68,8 @@ const CourseFinderContainer = () => {
       />
 
       {/* For desktops */}
-      <FilterAside setLoading={setLoading} />
-      <FilterFloatButton
+      <CourseFinderFilterAside setLoading={setLoading} />
+      <CourseFinderFilterFloatButton
         showFilter={showFilter}
         setShowFilter={setShowFilter}
       />

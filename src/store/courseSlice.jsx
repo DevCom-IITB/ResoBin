@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, createSelector } from '@reduxjs/toolkit'
 
-import { API } from 'api'
+import { API } from 'config/api'
 
 // ? async actions
 export const getDepartmentList = createAsyncThunk(
@@ -80,5 +80,10 @@ export const selectCourseTitle = (code) =>
     (courseListMinified) =>
       courseListMinified.find((course) => course.code === code)?.title ?? ''
   )
+
+export const selectCurrentSemester = createSelector(
+  selectSemesters,
+  (semesters) => semesters.at(-1)
+)
 
 export default courseSlice.reducer

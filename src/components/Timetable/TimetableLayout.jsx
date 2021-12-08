@@ -44,9 +44,9 @@ const Container = styled.div`
     [times] 2.5rem
     ${cols.map(({ id, title }, index) => `[${id}] 1fr `)};
   padding: 0.75rem;
-  border-radius: 0.5rem;
-  background: ${({ theme }) => theme.secondary};
   overflow-x: scroll;
+  background: ${({ theme }) => theme.secondary};
+  border-radius: 0.5rem;
 
   > div {
     box-shadow: inset -1px -1px 0 ${({ theme }) => rgba(theme.primary, 0.1)};
@@ -55,15 +55,15 @@ const Container = styled.div`
 
 const ColContainer = styled.span`
   display: flex;
-  align-items: center;
-  justify-content: center;
   grid-row: tracks;
   grid-column: ${({ id }) => id};
-  font-size: 0.75rem;
-  font-weight: 500;
-  text-transform: uppercase;
+  align-items: center;
+  justify-content: center;
   padding: 0 1rem;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-transform: uppercase;
   background: ${({ theme }) => theme.secondary};
 `
 
@@ -72,12 +72,12 @@ const RowContainer = styled.span`
   top: -0.4rem;
   right: 0.75rem;
   display: flex;
-  justify-content: flex-end;
   grid-row: ${({ id }) => id};
   grid-column: times;
-  font-size: 0.5rem;
-  font-family: 'Roboto', monospace;
+  justify-content: flex-end;
   color: ${({ theme }) => theme.textColor};
+  font-size: 0.5rem;
+  font-family: Roboto, monospace;
 `
 
 const TimetableFillerItem = styled.div`

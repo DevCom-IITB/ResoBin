@@ -6,10 +6,9 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 import { X, ExclamationCircle, Upload } from 'styled-icons/heroicons-outline'
 
-import { API } from 'api'
-import { Form, LoaderAnimation } from 'components/shared'
+import { Form, LoaderAnimation, toast } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
-import { toastError } from 'components/toast'
+import { API } from 'config/api'
 import { defaultFile, fileTypes, getFileDetails } from 'data/CourseResources'
 import tags from 'data/tags.json'
 import {
@@ -79,7 +78,7 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
         response: { id, timestamp, url },
       })
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
       updateFileItem({ status: 'error', progress: 0 })
     }
   }
@@ -98,7 +97,7 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
       try {
         await API.resources.delete({ id: fileItem.response.id })
       } catch (error) {
-        toastError(error)
+        toast({ status: 'error', content: error })
         updateFileItem({ status: 'error', progress: 0 })
         return
       }
@@ -242,33 +241,33 @@ const StyledTooltip = styled(Tooltip)`
 
 const TooltipContainer = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  color: red;
   gap: 3px;
+  align-items: center;
+  justify-content: center;
+  color: red;
 `
 
 const ItemContainer = styled.div`
   display: flex;
   padding: 1.5rem 1rem;
-  border-radius: 0.5rem;
   background-color: ${({ theme }) => theme.secondary};
+  border-radius: 0.5rem;
 `
 
 const UploadBox = styled.div`
   display: flex;
+  gap: 0.5rem;
   align-items: center;
   width: 12rem;
   height: 100%;
   padding: 0.5rem;
+  color: ${({ status, theme }) =>
+    status === 'success' ? theme.textColor : theme.textColorInactive};
+  background-color: transparent;
 
   /* padding-bottom: 1rem; */
   border: 2px dashed ${({ theme }) => rgba(theme.textColorInactive, 0.3)};
   border-radius: 0.5rem;
-  color: ${({ status, theme }) =>
-    status === 'success' ? theme.textColor : theme.textColorInactive};
-  background-color: transparent;
-  gap: 0.5rem;
 
   &:hover {
     background-color: ${({ theme }) => theme.darksecondary};

@@ -1,14 +1,10 @@
 import axios from 'axios'
 
-import { toastError } from 'components/toast'
+import { toast } from 'components/shared'
 import { camelizeKeys, snakeizeKeys } from 'helpers/transformKeys'
 
 export const APIInstance = axios.create({
-  baseURL:
-    process.env.NODE_ENV === 'development'
-      ? 'http://localhost:8000/api'
-      : 'http://10.105.177.70/api',
-
+  baseURL: process.env.REACT_APP_API_HOST,
   timeout: 30000,
   xsrfCookieName: 'csrftoken',
   xsrfHeaderName: 'X-CSRFToken',
@@ -38,9 +34,10 @@ APIInstance.interceptors.response.use(
     if (axios.isCancel(error)) return Promise.reject(error)
 
     try {
-      if (error.response.status === 401) toastError('Please login again')
+      if (error.response.status === 401)
+        toast({ status: 'error', content: 'Please login again' })
     } catch (e) {
-      toastError('Server is offline')
+      toast({ status: 'error', content: 'Server is offline' })
     }
 
     return Promise.reject(error.message)
@@ -171,7 +168,7 @@ export const API = {
     getContributors: async () => {
       const ignoredContributors = ['ImgBotApp']
       return axios
-        .get('https://api.github.com/repos/arya2331/ResoBin/contributors')
+        .get('https://api.github.com/repos/wncc/ResoBin/contributors')
         .then((response) =>
           response.data.filter(
             (contributor) =>
@@ -183,4 +180,4 @@ export const API = {
   },
 }
 
-export default APIInstance
+export default API

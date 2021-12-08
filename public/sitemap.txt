@@ -1,0 +1,8 @@
+https://resobin.gymkhana.iitb.ac.in/
+https://resobin.gymkhana.iitb.ac.in/login
+https://resobin.gymkhana.iitb.ac.in/courses
+https://resobin.gymkhana.iitb.ac.in/timetable
+https://resobin.gymkhana.iitb.ac.in/favorites
+https://resobin.gymkhana.iitb.ac.in/contact
+https://resobin.gymkhana.iitb.ac.in/contribute
+https://resobin.gymkhana.iitb.ac.in/logout

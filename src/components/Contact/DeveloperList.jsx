@@ -2,9 +2,8 @@ import { Avatar } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
-import { API } from 'api'
-import { Aside, Card, CardSkeleton } from 'components/shared'
-import { toastError } from 'components/toast'
+import { Aside, Card, CardSkeleton, toast } from 'components/shared'
+import { API } from 'config/api'
 import { useResponsive } from 'hooks'
 
 const DeveloperItem = ({ name, avatar, url, contributions }) => {
@@ -51,7 +50,7 @@ const ContributorList = () => {
 
         setContributors(response)
       } catch (error) {
-        toastError(error)
+        toast({ status: 'error', content: error })
       } finally {
         setLoading(false)
       }

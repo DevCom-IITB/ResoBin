@@ -87,7 +87,7 @@ const StyledButton = styled(Button)`
 
   &:hover {
     color: ${({ color }) => color};
-    background: rgba(0, 0, 0, 0.1);
+    background: rgb(0 0 0 / 10%);
     ${({ hoverstyle }) => hoverstyle};
   }
 

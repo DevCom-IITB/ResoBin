@@ -26,41 +26,41 @@ export default NotFoundSearch
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
-  text-align: center;
   color: #ffffff;
+  text-align: center;
 `
 
 const Title = styled.h1`
   margin: 1rem 0 0.5rem;
-  font-size: 1.75rem;
-  font-weight: 500;
   color: ${({ theme }) => theme.primary};
+  font-weight: 500;
+  font-size: 1.75rem;
 `
 
 const Content = styled.p`
   max-width: 22rem;
-  font-size: 0.875rem;
+  color: ${({ theme }) => theme.textColor};
   font-weight: 400;
+  font-size: 0.875rem;
+  letter-spacing: 1px;
   text-align: center;
   text-decoration: none;
-  letter-spacing: 1px;
-  color: ${({ theme }) => theme.textColor};
 `
 
 const StyledLink = styled(Link)`
-  font-size: 0.75rem;
-  font-weight: 500;
   color: inherit;
+  font-weight: 500;
+  font-size: 0.75rem;
 
   &:hover {
+    color: inherit;
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-underline-offset: 1px;
-    color: inherit;
   }
 `
 

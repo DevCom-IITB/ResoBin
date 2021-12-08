@@ -5,8 +5,9 @@ import { rgba } from 'polished'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
 
-import { FilterDropdown } from 'components/filter'
 import { useQueryString } from 'hooks'
+
+import { CourseFinderFilterDropdown } from './Filter'
 
 // ? Disable filter will disable the filter entirely, show filter will trigger on/off animation
 const CourseSearch = ({ showFilter, loading, setLoading }) => {
@@ -24,7 +25,10 @@ const CourseSearch = ({ showFilter, loading, setLoading }) => {
 
   return (
     <SearchContainer>
-      <FilterDropdown showFilter={showFilter} setLoading={setLoading} />
+      <CourseFinderFilterDropdown
+        showFilter={showFilter}
+        setLoading={setLoading}
+      />
       {showFilter && <Overlay />}
 
       <StyledInput
@@ -47,8 +51,8 @@ const SearchContainer = styled.div`
   top: ${({ theme }) => theme.headerHeight};
   z-index: 6;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: 3rem;
   background: linear-gradient(
     0deg,
@@ -62,7 +66,7 @@ const Overlay = styled.div`
   position: fixed;
   inset: 0;
   z-index: 4;
-  background-color: rgba(0, 0, 0, 0.55);
+  background-color: rgb(0 0 0 / 55%);
 `
 
 const StyledIcon = styled(({ Icon, className, ...props }) => {
@@ -77,16 +81,16 @@ const StyledInput = styled(Input)`
   z-index: 10 !important;
   height: 2rem;
   padding: 0 0.75rem;
+  background: ${({ theme }) => theme.secondary};
   border: 0;
   border-radius: 0.5rem;
-  background: ${({ theme }) => theme.secondary};
-  box-shadow: 0 8px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 5px rgb(0 0 0 / 30%);
 
   .ant-input {
     padding: 0 0.25rem;
-    font-size: 0.875rem;
-    font-weight: 400;
     color: lightgray;
+    font-weight: 400;
+    font-size: 0.875rem;
     background: ${({ theme }) => theme.secondary};
   }
 

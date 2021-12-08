@@ -1,9 +1,6 @@
 # Personal Template
-**/.mock/
 *.temp
 *.old
-.env
-.env.md
 
 # Local Netlify folder
 .netlify
@@ -26,6 +23,8 @@
 # misc
 .DS_Store
 .env
+.env.development
+.env.production
 .env.local
 .env.development.local
 .env.test.local

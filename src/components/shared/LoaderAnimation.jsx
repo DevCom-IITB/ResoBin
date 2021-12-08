@@ -25,9 +25,9 @@ const Container = styled.div`
 const LoaderTrack = styled.div`
   position: relative;
   display: block;
-  overflow: hidden;
   width: 100%;
   height: 0.1rem;
+  overflow: hidden;
 `
 
 const Anim1 = keyframes`
@@ -35,10 +35,12 @@ const Anim1 = keyframes`
     right: 100%;
     left: -35%;
   }
+
   60%  {
     right: -90%;
     left: 100%;
   }
+
   100% {
     right: -35%;
   left: 100%;
@@ -50,6 +52,7 @@ const Anim2 = keyframes`
     right: 100%;
     left: -200%;
   }
+
   60%  {
     right:  -8%;
     left:  107%;
@@ -64,7 +67,6 @@ const Anim2 = keyframes`
 const LoaderFill = styled.div`
   &::after,
   &::before {
-    content: '';
     position: absolute;
     top: 0;
     bottom: 0;
@@ -75,6 +77,7 @@ const LoaderFill = styled.div`
       ${({ theme }) => theme.logo} 30%,
       transparent 100%
     );
+    content: '';
     will-change: left, right;
   }
 

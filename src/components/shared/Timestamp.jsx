@@ -17,7 +17,7 @@ const Timestamp = ({ time }) => {
 export default Timestamp
 
 const DateTitle = styled.span`
-  font-size: 0.75rem;
-  font-weight: 400;
   color: ${({ theme }) => theme.textColorInactive};
+  font-weight: 400;
+  font-size: 0.75rem;
 `

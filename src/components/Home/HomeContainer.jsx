@@ -3,17 +3,10 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { API } from 'api'
-import {
-  Aside,
-  LoaderAnimation,
-  PageHeading,
-  PageSubtitle,
-  PageTitle,
-  Card,
-} from 'components/shared'
+import { Aside, Card, toast } from 'components/shared'
 import { AsideHeader } from 'components/shared/Aside'
-import { toastError } from 'components/toast'
+import { PageHeading, PageSubtitle, PageTitle } from 'components/shared/Layout'
+import { API } from 'config/api'
 import { coursePageUrl } from 'helpers/format'
 
 const HomeItem = ({ course, hash }) => {
@@ -39,7 +32,7 @@ const HomeContainer = () => {
         const response = await API.stats.list()
         setStats(response)
       } catch (error) {
-        toastError(error)
+        toast({ status: 'error', content: error })
       } finally {
         setLoading(false)
       }
@@ -53,8 +46,6 @@ const HomeContainer = () => {
       <PageHeading>
         <PageTitle>Popular Courses</PageTitle>
       </PageHeading>
-
-      <LoaderAnimation disable={!loading} fixed />
 
       <Container>
         <StatsContainer>

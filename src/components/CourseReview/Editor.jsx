@@ -4,8 +4,7 @@ import ReactQuill from 'react-quill'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { UserAvatar } from 'components/shared'
-import { toastError } from 'components/toast'
+import { toast, UserAvatar } from 'components/shared'
 import { selectUserProfile } from 'store/userSlice'
 
 const formats = [
@@ -54,7 +53,7 @@ export const Editor = ({ visible, onSubmit, initialValue = '' }) => {
       await onSubmit(content)
       setContent(initialValue)
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     } finally {
       setLoading(false)
     }
@@ -107,19 +106,19 @@ export const ReviewEditor = ({ visible, initialValue, onSubmit }) => {
 export default Editor
 
 const StyledReactQuill = styled(ReactQuill)`
-  border: 1px solid #000000;
-  border-radius: 0.5rem;
   color: #000000;
   background-color: ${({ theme }) => theme.textColor};
-  box-shadow: 0 0 1rem 4px rgba(0, 0, 0, 0.2);
+  border: 1px solid #000000;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 1rem 4px rgb(0 0 0 / 20%);
 
   .ql-toolbar.ql-snow {
     display: block;
+    background: #eaecec;
     border: none;
     border-bottom: 1px solid #000000;
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
-    background: #eaecec;
   }
 
   .ql-container.ql-snow {

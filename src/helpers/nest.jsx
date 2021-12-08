@@ -7,7 +7,7 @@ const nest = (...components) => {
         </AccumulatedComponents>
       )
     },
-    ({ children }) => <>{children}</>
+    ({ children }) => children
   )
 }
 export default nest

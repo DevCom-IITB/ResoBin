@@ -46,13 +46,13 @@ const StyledBreadcrumb = styled(Breadcrumb)`
 
   .ant-breadcrumb-link {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     color: ${({ theme }) => theme.primary};
 
     a {
-      gap: 0.5rem;
       display: flex;
+      gap: 0.5rem;
       align-items: center;
       color: ${({ theme }) => theme.textColor};
 

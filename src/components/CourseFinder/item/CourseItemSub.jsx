@@ -9,14 +9,13 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { API } from 'api'
 import { CourseContentRequestButtonIcon } from 'components/CoursePage/CourseContentRequest'
-import { ButtonSwitch, Divider, Tabs } from 'components/shared'
+import { ButtonSwitch, Divider, Tabs, toast } from 'components/shared'
 import { ButtonSquareLink } from 'components/shared/Buttons'
-import { toastError } from 'components/toast'
+import { API } from 'config/api'
 import { coursePageUrl } from 'helpers/format'
 import { useResponsive } from 'hooks'
-import { selectSemesters } from 'store/courseSlice'
+import { selectCurrentSemester } from 'store/courseSlice'
 import { selectAllTimetable, updateTimetable } from 'store/userSlice'
 
 const SemesterItem = ({ data }) => {
@@ -55,7 +54,7 @@ const SemesterItem = ({ data }) => {
 
       dispatch(updateTimetable(id))
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     } finally {
       setLoading(false)
     }
@@ -111,7 +110,7 @@ const CourseItemSub = ({ courseData }) => {
   const { isMobile, isMobileS } = useResponsive()
 
   const { code, title, semester, reviews, resources } = courseData
-  const [latestSemester] = useSelector(selectSemesters)?.slice(-1)
+  const latestSemester = useSelector(selectCurrentSemester)
 
   const timetable = {
     autumn: semester?.find(({ season }) => season === 'autumn').timetable,
@@ -205,21 +204,21 @@ export default CourseItemSub
 const Title = styled.p`
   display: block;
   margin: 0 0.25rem 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 1.5px;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
 `
 
 const SpaceBetween = styled.div`
   display: flex;
-  width: 100%;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
 `
 
 const FlexGap = styled.div`
   display: flex;
-  width: 100%;
   gap: 0.5rem;
+  width: 100%;
 `

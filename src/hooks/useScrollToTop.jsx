@@ -1,22 +1,20 @@
 import { useEffect } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
-export const scrollToTop = () => window.scrollTo(0, 0)
-
-// hash does not work yet
+// ? hash does not work yet
 export const scrollToHash = (hash) => {
-  const ele = document.getElementById(hash.slice(1)) // Hash string contains the '#' character
-  if (ele) ele.scrollIntoView(true)
+  // ? hash string contains the '#' character
+  const element = document.getElementById(hash.slice(1))
+  if (element) element.scrollIntoView(true)
 }
 
 export const useScrollToTop = () => {
-  const { hash } = useLocation()
-  const history = useHistory()
+  const location = useLocation()
 
   useEffect(() => {
-    if (hash) scrollToHash(hash)
-    else history.listen(scrollToTop)
-  }, [history, hash])
+    if (location.hash) scrollToHash(location.hash)
+    else window.scrollTo(0, 0)
+  }, [location.pathname, location.hash, location.search])
 }
 
 export default useScrollToTop

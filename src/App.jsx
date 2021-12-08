@@ -3,10 +3,8 @@ import { Suspense } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { pdfjs } from 'react-pdf'
 import { useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
 import { ThemeProvider } from 'styled-components/macro'
 
-import { Header } from 'components/header'
 import { LoaderAnimation } from 'components/shared'
 import { AppRoutes } from 'routes'
 import { selectAuthLoading } from 'store/authSlice'
@@ -17,7 +15,6 @@ import { themes, GlobalStyles } from 'styles'
 pdfjs.GlobalWorkerOptions.workerSrc = worker
 
 const App = () => {
-  toast.configure()
   const selectedTheme = useSelector(selectTheme)
   const authLoading = useSelector(selectAuthLoading)
 
@@ -33,7 +30,6 @@ const App = () => {
       <GlobalStyles />
       <LoaderAnimation fixed disable={!authLoading} />
 
-      <Header />
       <Suspense fallback={<LoaderAnimation fixed />}>
         <AppRoutes />
       </Suspense>

@@ -1,0 +1,74 @@
+@import url('antd/dist/antd.css');
+@import url('react-pdf/dist/esm/Page/AnnotationLayer.css');
+@import url('react-quill/dist/quill.snow.css');
+
+/* ? custom fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600;700;900&display=swap');
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  line-height: calc(1.618em + (1ex - 1ch));
+  text-decoration: none;
+  list-style: none;
+  border: 0;
+  outline: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  transition: color 200ms;
+}
+
+a:hover {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  color: inherit;
+}
+
+* {
+  font-family: Montserrat, sans-serif;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: inherit;
+  border-radius: 0.5rem;
+}
+
+*::-webkit-scrollbar {
+  width: 0.375rem;
+  height: 0.375rem;
+}
+
+*:hover::-webkit-scrollbar-thumb {
+  background-color: #90909065;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #90909065;
+}
+
+p {
+  font-family: 'Source Sans Pro', sans-serif;
+}
