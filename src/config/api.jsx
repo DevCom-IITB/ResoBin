@@ -168,7 +168,7 @@ export const API = {
     getContributors: async () => {
       const ignoredContributors = ['ImgBotApp']
       return axios
-        .get('https://api.github.com/repos/arya2331/ResoBin/contributors')
+        .get('https://api.github.com/repos/wncc/ResoBin/contributors')
         .then((response) =>
           response.data.filter(
             (contributor) =>

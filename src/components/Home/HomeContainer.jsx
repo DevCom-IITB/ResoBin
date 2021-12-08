@@ -3,15 +3,9 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import {
-  Aside,
-  PageHeading,
-  PageSubtitle,
-  PageTitle,
-  Card,
-  toast,
-} from 'components/shared'
+import { Aside, Card, toast } from 'components/shared'
 import { AsideHeader } from 'components/shared/Aside'
+import { PageHeading, PageSubtitle, PageTitle } from 'components/shared/Layout'
 import { API } from 'config/api'
 import { coursePageUrl } from 'helpers/format'
 
