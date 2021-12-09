@@ -68,7 +68,7 @@ const Login = () => {
           <h4>Welcome to ResoBin!</h4>
 
           <SSOButton type="primary" onClick={redirectLogin}>
-            Login with SSO
+            Login via SSO
           </SSOButton>
         </BoxContainer>
       </Container>
@@ -82,37 +82,29 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  background-color: ${({ theme }) => theme.secondary};
+  height: calc(100vh - ${({ theme }) => theme.headerHeight});
 `
 
 const BoxContainer = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 1rem;
   justify-content: flex-start;
-  padding: 1.5rem 0;
-  background-color: ${({ theme }) => theme.darksecondary};
+  padding: 1.5rem;
+  background: ${({ theme }) => theme.secondary};
   border-radius: 0.5rem;
   box-shadow: 0 0 0.75rem rgb(0 0 0 / 40%);
+  color: ${({ theme }) => theme.textColor};
 
   h4 {
-    padding: 0 1.5rem;
-    color: ${({ theme }) => theme.textColor};
-    font-weight: 300;
+    font-weight: 400;
     font-size: ${fontSize.responsive.lg};
-    letter-spacing: 2px;
-    text-align: center;
   }
 `
 
 const SSOButton = styled(Button)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 2.25rem;
-  margin: 1.5rem 1.5rem 0;
-  font-weight: 500;
-  font-size: 1rem;
+  height: 2.5rem;
+  font-size: ${fontSize.responsive.sm};
   background-color: #303f9f;
   border-color: #303f9f;
   border-radius: 0.5rem;

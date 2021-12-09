@@ -61,7 +61,7 @@ const ContributorList = () => {
 
   return (
     <Aside
-      title="Made with ❤️ by"
+      title="Contributors"
       visible={isDesktop}
       loading={loading}
       loadingComponent={<DeveloperSkeleton />}

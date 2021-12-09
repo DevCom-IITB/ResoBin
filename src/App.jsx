@@ -1,7 +1,7 @@
-import worker from 'pdfjs-dist/build/pdf.worker.entry'
+// import worker from 'pdfjs-dist/build/pdf.worker.entry'
 import { Suspense } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { pdfjs } from 'react-pdf'
+// import { pdfjs } from 'react-pdf'
 import { useSelector } from 'react-redux'
 import { ThemeProvider } from 'styled-components/macro'
 
@@ -12,7 +12,7 @@ import { selectTheme } from 'store/settingsSlice'
 import { themes, GlobalStyles } from 'styles'
 
 // ? for viewing course resource pdfs
-pdfjs.GlobalWorkerOptions.workerSrc = worker
+// pdfjs.GlobalWorkerOptions.workerSrc = worker
 
 const App = () => {
   const selectedTheme = useSelector(selectTheme)

@@ -33,7 +33,7 @@ const CourseFinderList = ({
     <>
       <PageHeading>
         <PageTitle>{title}</PageTitle>
-        {!loading && <PageSubtitle>{count}&nbsp;results found</PageSubtitle>}
+        {!loading && <PageSubtitle>{count}&nbsp;results</PageSubtitle>}
       </PageHeading>
 
       <CardSplitSkeleton active={loading} />

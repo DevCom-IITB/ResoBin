@@ -22,20 +22,23 @@ const baseStyles = css`
 const StyledPagination = styled(Pagination)`
   display: flex;
   justify-content: center;
-  margin: 1rem 0;
-
-  .ant-pagination-disabled {
-    display: none;
-  }
+  margin-bottom: 1rem;
 
   .ant-pagination-prev,
   .ant-pagination-next {
+    display: flex;
+    align-items: center;
+
     .ant-pagination-item-link {
       ${baseStyles}
 
       color: ${({ theme }) => theme.primary};
       background-color: transparent;
     }
+  }
+
+  .ant-pagination-disabled {
+    display: none;
   }
 
   .ant-pagination-item {

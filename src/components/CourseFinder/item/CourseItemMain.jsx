@@ -95,23 +95,18 @@ const CourseItemMain = ({ courseData }) => {
 
         <RightIcons>
           <TagsContainer>
+            {credits > 0 && (
+              <StyledTag style={{ color: creditColorPicker(credits) }}>
+                {credits} credit{credits > 1 ? 's' : ''}
+              </StyledTag>
+            )}
+
             {tags.map((tag) => (
               <StyledTag key={tag} style={{ color: tagColorPicker(tag) }}>
                 {tag}
               </StyledTag>
             ))}
           </TagsContainer>
-
-          {credits > 0 && (
-            <StyledTag
-              style={{
-                color: creditColorPicker(credits),
-                marginRight: '0.5rem',
-              }}
-            >
-              {credits} credit{credits > 1 ? 's' : ''}
-            </StyledTag>
-          )}
 
           <ButtonIcon
             tooltip="Add to favorites"
@@ -177,6 +172,10 @@ const SubTitle = styled.div`
   align-items: center;
   height: 2rem;
   margin-bottom: 0.5rem;
+
+  @media ${device.max.xs}, ${device.min.lg} and ${device.max.xl} {
+    height: 3rem;
+  }
 `
 
 const DepartmentContainer = styled.span`
@@ -199,12 +198,14 @@ const RightIcons = styled.div`
 
 const TagsContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  height: 2rem;
   margin-left: 0.5rem;
   gap: 0.25rem;
   overflow-y: scroll;
+
+  @media ${device.max.xs}, ${device.min.lg} and ${device.max.xl} {
+    flex-wrap: wrap;
+  }
 `
 
 const StyledTag = styled(Tag)`
