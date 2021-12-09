@@ -10,7 +10,7 @@ const LightTheme = {
   headerNumber: '#FFF',
   activeMenu: '#585280',
   courseBG: '#B2BFE1',
-  logo: '#726E95',
+  logo: '#707aff',
   dividerColor: '#5d598039',
   ...globalConfig,
 }
