@@ -4,7 +4,7 @@ import { Divider, LoaderAnimation } from 'components/shared'
 import { useResponsive } from 'hooks'
 
 export const AsideHeader = ({ title, subtitle, loading, loadingComponent }) => (
-  <>
+  <div>
     <Header>
       <Title>{title}</Title>
       {subtitle}
@@ -18,7 +18,7 @@ export const AsideHeader = ({ title, subtitle, loading, loadingComponent }) => (
         {loadingComponent}
       </>
     )}
-  </>
+  </div>
 )
 
 export const AsideContainer = ({
@@ -62,27 +62,27 @@ const Container = styled.div`
   height: calc(100vh - 3rem);
   padding: 0 1rem;
   background: ${({ theme }) => theme.secondary};
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 0 5px rgb(0 0 0 / 30%);
   transition: right 200ms ease-in;
 `
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: baseline;
+  justify-content: space-between;
   height: 2.25rem;
   margin-top: 1rem;
   padding-bottom: 0.5rem;
 `
 
 const Title = styled.h4`
-  font-size: 1.25rem;
-  font-weight: 500;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 500;
+  font-size: 1.25rem;
 `
 
 const Children = styled.div`
-  overflow-y: auto;
   height: 100%;
   padding: 1rem 0 20rem;
+  overflow-y: auto;
 `

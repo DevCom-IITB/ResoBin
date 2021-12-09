@@ -1,18 +1,17 @@
 import { CloudUpload } from '@styled-icons/heroicons-outline'
 import { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { API } from 'api'
 import { CourseContentRequest } from 'components/CoursePage'
-import { ButtonSquare, LoaderAnimation } from 'components/shared'
-import { toastError } from 'components/toast'
+import { ButtonSquare, LoaderAnimation, toast } from 'components/shared'
+import { API } from 'config/api'
 
 import { CourseResourceGrid } from './CourseResourceItem'
 
 const CourseResourceContainer = () => {
-  const { courseCode } = useParams()
-  const history = useHistory()
+  const { code } = useParams()
+  const navigate = useNavigate()
 
   const [resources, setResources] = useState([])
   const [loading, setLoading] = useState(false)
@@ -21,21 +20,19 @@ const CourseResourceContainer = () => {
     const fetchResources = async () => {
       try {
         setLoading(true)
-        const response = await API.courses.listResources({ code: courseCode })
+        const response = await API.courses.listResources({ code })
         setResources(response)
       } catch (error) {
-        toastError(error)
+        toast({ status: 'error', content: error })
       } finally {
         setLoading(false)
       }
     }
 
     fetchResources()
-  }, [courseCode])
+  }, [code])
 
-  const redirectContribute = () => {
-    history.push(`/contribute?course=${courseCode}`)
-  }
+  const redirectContribute = () => navigate(`/contribute?course=${code}`)
 
   if (loading) return <LoaderAnimation />
 
@@ -46,7 +43,7 @@ const CourseResourceContainer = () => {
 
         <ButtonContainer>
           <CourseContentRequest
-            code={courseCode}
+            code={code}
             type="resources"
             style={{ marginRight: '0.75rem' }}
           />
@@ -75,7 +72,7 @@ const ButtonContainer = styled.div`
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 1rem 0;
 `

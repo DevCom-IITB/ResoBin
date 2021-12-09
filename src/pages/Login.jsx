@@ -3,12 +3,11 @@ import { lighten } from 'polished'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { getLoginURL, SSO } from 'api'
-import { LoaderAnimation } from 'components/shared'
-import { toastError } from 'components/toast'
+import { LoaderAnimation, PageContainer, toast } from 'components/shared'
+import { getLoginURL, SSO } from 'config/sso'
 import { CSRFToken } from 'helpers'
 import { useQueryString } from 'hooks'
 import { getAuthStatusAction, loginAction } from 'store/authSlice'
@@ -16,7 +15,7 @@ import { fontSize } from 'styles/responsive'
 
 const Login = () => {
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
   const location = useLocation()
   const { deleteQueryString, getQueryString } = useQueryString()
   const { isAuthenticated, loading } = useSelector((state) => state.auth)
@@ -28,7 +27,7 @@ const Login = () => {
 
     if (isAuthenticated) {
       const state = JSON.parse(getQueryString('state')) ?? '/'
-      history.replace(state)
+      navigate(state, { replace: true })
     } else if (isAuthenticated === null) {
       dispatch(getAuthStatusAction())
     } else {
@@ -44,11 +43,11 @@ const Login = () => {
 
       // ? If SSO login is unsuccessfull, an error param appears in the query string
       if (error) {
-        toastError(`Error: ${error}`)
+        toast({ status: 'error', content: `Error: ${error}` })
         deleteQueryString('error')
       }
     }
-  }, [dispatch, history, getQueryString, deleteQueryString, isAuthenticated])
+  }, [dispatch, navigate, getQueryString, deleteQueryString, isAuthenticated])
 
   const redirectLogin = () => {
     window.location.href = getLoginURL(location.state?.from)
@@ -57,70 +56,61 @@ const Login = () => {
   if (loading) return <LoaderAnimation fixed />
 
   return (
-    <>
+    <PageContainer disable={['menu', 'aside', 'footer']}>
       <Helmet>
         <title>Log In - ResoBin</title>
         <meta name="description" content="Login to continue" />
       </Helmet>
       <CSRFToken />
 
-      <PageContainer>
+      <Container>
         <BoxContainer>
           <h4>Welcome to ResoBin!</h4>
 
           <SSOButton type="primary" onClick={redirectLogin}>
-            Login with SSO
+            Login via SSO
           </SSOButton>
         </BoxContainer>
-      </PageContainer>
-    </>
+      </Container>
+    </PageContainer>
   )
 }
 
 export default Login
 
-const PageContainer = styled.div`
+const Container = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: calc(100vh - 3rem);
-  background-color: ${({ theme }) => theme.secondary};
+  justify-content: center;
+  height: calc(100vh - ${({ theme }) => theme.headerHeight});
 `
 
 const BoxContainer = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 1rem;
   justify-content: flex-start;
-  padding: 1.5rem 0;
+  padding: 1.5rem;
+  background: ${({ theme }) => theme.secondary};
   border-radius: 0.5rem;
-  background-color: ${({ theme }) => theme.darksecondary};
-  box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0.75rem rgb(0 0 0 / 40%);
+  color: ${({ theme }) => theme.textColor};
 
   h4 {
-    padding: 0 1.5rem;
+    font-weight: 400;
     font-size: ${fontSize.responsive.lg};
-    font-weight: 300;
-    text-align: center;
-    letter-spacing: 2px;
-    color: ${({ theme }) => theme.textColor};
   }
 `
 
 const SSOButton = styled(Button)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 2.25rem;
-  margin: 1.5rem 1.5rem 0;
-  border-color: #303f9f;
-  border-radius: 0.25rem;
-  font-size: 1rem;
-  font-weight: 500;
+  height: 2.5rem;
+  font-size: ${fontSize.responsive.sm};
   background-color: #303f9f;
-  box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.3);
+  border-color: #303f9f;
+  border-radius: 0.5rem;
 
   &:hover {
-    border-color: ${lighten(0.1, '#303f9f')};
     background-color: ${lighten(0.1, '#303f9f')};
+    border-color: ${lighten(0.1, '#303f9f')};
   }
 `

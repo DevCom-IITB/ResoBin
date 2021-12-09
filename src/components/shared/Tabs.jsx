@@ -16,14 +16,14 @@ const StyledTabs = styled(Tabs)`
 
   .ant-tabs-tab {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     width: ${({ tabwidth }) => tabwidth};
     height: ${({ tabheight }) => tabheight};
     padding: 0;
+    font-size: 0.75rem;
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
-    font-size: 0.75rem;
 
     & + .ant-tabs-tab {
       margin: 0;

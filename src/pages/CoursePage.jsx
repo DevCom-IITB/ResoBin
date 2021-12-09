@@ -1,20 +1,19 @@
-import { isEmpty } from 'lodash'
+import { isEmpty, kebabCase } from 'lodash'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Redirect, useLocation, useParams } from 'react-router-dom'
+import { Navigate, useLocation, useParams } from 'react-router-dom'
 
-import { API } from 'api'
 import {
   CoursePageContainer,
   CoursePageBreadcrumbs,
 } from 'components/CoursePage'
-import { LoaderAnimation, PageContainer } from 'components/shared'
-import { toastError } from 'components/toast'
+import { LoaderAnimation, PageContainer, toast } from 'components/shared'
+import { API } from 'config/api'
 import { coursePageUrl } from 'helpers/format'
 
-const CoursePage = ({ match }) => {
+const CoursePage = () => {
   const location = useLocation()
-  const { courseCode } = useParams()
+  const { code, titleSlug } = useParams()
   const [courseData, setCourseData] = useState({})
   const [loading, setLoading] = useState(true)
 
@@ -22,28 +21,27 @@ const CoursePage = ({ match }) => {
     const getCourseData = async () => {
       setLoading(true)
       try {
-        const response = await API.courses.read({ code: courseCode })
+        const response = await API.courses.read({ code })
         setCourseData(response)
       } catch (error) {
-        toastError(error)
+        toast({ status: 'error', content: error })
       } finally {
         setLoading(false)
       }
     }
 
     getCourseData()
-  }, [courseCode])
+  }, [code])
 
   if (loading) return <LoaderAnimation />
-
-  if (isEmpty(courseData)) return <Redirect to="/404" />
-
-  const title = `${courseData.code}: ${courseData.title}`
+  if (isEmpty(courseData)) return <Navigate to="/404" replace />
 
   // ? redirect to canonical URL (eg: /courses/CL152/introduction-to-chemical-engineering)
-  const canonicalUrl = coursePageUrl(courseData.code, courseData.title)
-  if (match.url !== canonicalUrl)
-    return <Redirect to={{ ...location, pathname: canonicalUrl }} />
+  const pathname = coursePageUrl(courseData.code, courseData.title)
+  const title = `${courseData.code}: ${courseData.title}`
+
+  if (titleSlug !== kebabCase(courseData.title))
+    return <Navigate to={{ ...location, pathname }} replace />
 
   return (
     <PageContainer>

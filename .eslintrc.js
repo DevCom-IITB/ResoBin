@@ -1,5 +1,5 @@
-const warnInDevelopment =
-  process.env.NODE_ENV === 'production' ? 'error' : 'warn'
+const isDev = process.env.NODE_ENV === 'development'
+const warnInDevelopment = isDev ? 'warn' : 'error'
 
 module.exports = {
   env: {
@@ -8,8 +8,6 @@ module.exports = {
   },
 
   extends: [
-    'plugin:react-hooks/recommended',
-    'plugin:react/recommended',
     'react-app',
     'react-app/jest',
     'plugin:promise/recommended',
@@ -27,25 +25,45 @@ module.exports = {
     sourceType: 'module',
   },
 
-  plugins: [
-    'react',
-    'prettier',
-    'import',
-    'jsx-a11y',
-    'react-hooks',
-    'promise',
-  ],
+  plugins: ['prettier', 'promise'],
 
   rules: {
-    // Allow debugger and console statement in development
-    'no-debugger': warnInDevelopment,
-    'no-console': warnInDevelopment,
-
-    // Enable i++ in for loops
-    'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
     'arrow-body-style': ['off'],
     'comma-dangle': 'off',
-
+    // ? git handles this instead
+    'linebreak-style': 'off',
+    // ? allow debugger and console statement in development
+    'no-console': warnInDevelopment,
+    'no-debugger': warnInDevelopment,
+    // ? for use with redux-toolkit (immer)
+    'no-param-reassign': [
+      'error',
+      {
+        ignorePropertyModificationsFor: ['state'],
+        props: true,
+      },
+    ],
+    'no-restricted-imports': [
+      'error',
+      {
+        paths: [
+          {
+            name: 'styled-components',
+            message: "Please import from 'styled-components/macro.'",
+          },
+        ],
+        patterns: ['!styled-components/macro'],
+      },
+    ],
+    'no-unused-expressions': 'warn',
+    'no-unused-vars': [
+      warnInDevelopment,
+      {
+        args: 'none',
+        vars: 'all',
+      },
+    ],
+    semi: 'off',
     'import/extensions': [
       warnInDevelopment,
       'always',
@@ -54,7 +72,6 @@ module.exports = {
         jsx: 'never',
       },
     ],
-
     'import/no-extraneous-dependencies': [
       'off',
       {
@@ -63,7 +80,6 @@ module.exports = {
         peerDependencies: true,
       },
     ],
-
     'import/order': [
       'error',
       {
@@ -85,54 +101,20 @@ module.exports = {
         warnOnUnassignedImports: true,
       },
     ],
-
-    // Git handles this instead
-    'linebreak-style': 'off',
-
-    // For use with redux-toolkit (immer)
-    'no-param-reassign': [
+    'react/function-component-definition': [
       'error',
       {
-        ignorePropertyModificationsFor: ['state'],
-        props: true,
-      },
-    ],
-
-    'no-restricted-imports': [
-      'error',
-      {
-        paths: [
-          {
-            name: 'styled-components',
-            message: "Please import from 'styled-components/macro.'",
-          },
-        ],
-        patterns: ['!styled-components/macro'],
-      },
-    ],
-
-    'no-unused-expressions': 'warn',
-    'no-unused-vars': [
-      warnInDevelopment,
-      {
-        args: 'none',
-        vars: 'all',
+        namedComponents: 'arrow-function',
+        unnamedComponents: 'arrow-function',
       },
     ],
     'react/jsx-props-no-spreading': 'off',
-
-    // Shift to TypeScript for this
+    // ? shift to TypeScript for this
     'react/prop-types': 'off',
-
-    // React 17 doesn't need this
+    // ? react 17 doesn't need this
     'react/react-in-jsx-scope': 'off',
-
-    // Checks rules of Hooks
-    'react-hooks/rules-of-hooks': 'error',
-    // Checks effect dependencies
+    // ? checks effect dependencies
     'react-hooks/exhaustive-deps': 'warn',
-
-    semi: 'off',
   },
 
   settings: {

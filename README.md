@@ -1,4 +1,4 @@
-# [`ResoBin`](https://resobin.netlify.app/) - Easily Share Course Material
+# `ResoBin` - Easily Share Course Material
 
 ## Requirements
 

@@ -1,6 +1,6 @@
 import { createSlice, createSelector, createAsyncThunk } from '@reduxjs/toolkit'
 
-import { API } from 'api'
+import { API } from 'config/api'
 
 export const getProfileAction = createAsyncThunk(
   'user/getProfileAction',

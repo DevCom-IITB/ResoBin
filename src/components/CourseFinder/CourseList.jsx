@@ -1,14 +1,18 @@
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import styled from 'styled-components/macro'
 
-import { CourseItem, CourseItemLoading } from 'components/CourseFinder'
 import {
   PageHeading,
   PageTitle,
   NotFoundSearch,
   Pagination,
   PageSubtitle,
+  CardSplit,
+  CardSplitSkeleton,
 } from 'components/shared'
 import { useQueryString } from 'hooks'
+
+import { CourseItemMain, CourseItemSub } from './item'
 
 const CourseFinderList = ({
   title,
@@ -29,10 +33,10 @@ const CourseFinderList = ({
     <>
       <PageHeading>
         <PageTitle>{title}</PageTitle>
-        {!loading && <PageSubtitle>{count}&nbsp;results found</PageSubtitle>}
+        {!loading && <PageSubtitle>{count}&nbsp;results</PageSubtitle>}
       </PageHeading>
 
-      <CourseItemLoading active={loading} />
+      <CardSplitSkeleton active={loading} />
       <NotFoundSearch active={!loading && !count} />
 
       <TransitionGroup>
@@ -42,9 +46,15 @@ const CourseFinderList = ({
               key={courseData.code}
               timeout={200}
               unmountOnExit
-              classNames="course_item"
+              classNames="card"
             >
-              <CourseItem courseData={courseData} />
+              <CardTransition>
+                <CardSplit
+                  main={<CourseItemMain courseData={courseData} />}
+                  sub={<CourseItemSub courseData={courseData} />}
+                  subWidth="13rem"
+                />
+              </CardTransition>
             </CSSTransition>
           ))}
       </TransitionGroup>
@@ -65,3 +75,30 @@ const CourseFinderList = ({
 }
 
 export default CourseFinderList
+
+// ? react animation classes
+const CardTransition = styled.div`
+  margin-bottom: 1rem;
+
+  &.card-enter {
+    transform: scale(1.01);
+    opacity: 0;
+  }
+
+  &.card-enter-active {
+    transform: scale(1);
+    opacity: 1;
+    transition: opacity 200ms, transform 200ms;
+  }
+
+  &.card-exit {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  &.card-exit-active {
+    transform: scale(0.9);
+    opacity: 0;
+    transition: opacity 100ms, transform 100ms;
+  }
+`

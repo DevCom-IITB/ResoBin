@@ -6,42 +6,6 @@ import styled from 'styled-components/macro'
 import { GoogleAuth } from 'components/login'
 import { ButtonSquare, InputRounded as Input } from 'components/shared'
 
-const FormContainer = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 0 1.5rem;
-  margin-top: 1rem;
-  > * {
-    margin-bottom: 1.5rem;
-  }
-`
-
-const ContainerSpaceBetween = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-`
-
-const ForgotPassword = styled(Link)`
-  margin-left: 1rem;
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: ${({ theme }) => theme.textColor};
-
-  &:hover {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 1px;
-    color: ${({ theme }) => theme.textColor};
-  }
-`
-
-const buttonStyle = {
-  fontSize: '1rem',
-}
-
 const LoginBody = ({ onChange, onSubmit, user }) => {
   // const [rememberMe, setRememberMe] = useState(false)
   const handleClick = ({ target }) => {
@@ -76,7 +40,7 @@ const LoginBody = ({ onChange, onSubmit, user }) => {
         <ForgotPassword to="/forgot-password">Forgot password?</ForgotPassword>
       </ContainerSpaceBetween>
 
-      <ButtonSquare type="submit" style={buttonStyle}>
+      <ButtonSquare type="submit" style={{ fontSize: '1rem' }}>
         Login
       </ButtonSquare>
     </FormContainer>
@@ -84,3 +48,36 @@ const LoginBody = ({ onChange, onSubmit, user }) => {
 }
 
 export default LoginBody
+
+const FormContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0 1.5rem;
+
+  > * {
+    margin-bottom: 1.5rem;
+  }
+`
+
+const ContainerSpaceBetween = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+`
+
+const ForgotPassword = styled(Link)`
+  margin-left: 1rem;
+  color: ${({ theme }) => theme.textColor};
+  font-weight: 400;
+  font-size: 0.875rem;
+
+  &:hover {
+    color: ${({ theme }) => theme.textColor};
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 1px;
+  }
+`

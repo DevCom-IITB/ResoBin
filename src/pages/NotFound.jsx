@@ -1,15 +1,18 @@
 import { Helmet } from 'react-helmet-async'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import NotFoundImg from 'assets/images/NotFound.png'
-import { device, fontSize } from 'styles/responsive'
+import { PageContainer } from 'components/shared'
+import { fontSize } from 'styles/responsive'
 
 const NotFound = () => {
-  const history = useHistory()
+  const navigate = useNavigate()
+  const goHome = () => navigate('/')
+  const goBack = () => navigate(-1)
 
   return (
-    <Container>
+    <PageContainer disable={['aside', 'menu']}>
       <Helmet>
         <title>404 Not Found</title>
         <meta name="description" content="Page not found" />
@@ -21,50 +24,37 @@ const NotFound = () => {
         <Subtitle>
           This page is not available.
           <br />
-          <GoBack onClick={history.goBack}>Take me back!</GoBack>
+          <GoBack onClick={goBack}>Return back</GoBack>, or&nbsp;
+          <GoBack onClick={goHome}>take me home!</GoBack>
         </Subtitle>
       </Box>
-    </Container>
+    </PageContainer>
   )
 }
 
-const Container = styled.div`
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${({ theme }) => theme.secondary};
-`
+export default NotFound
 
 const Box = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 1rem;
-  margin: 0.75rem;
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.darksecondary};
-  box-shadow: 0 0 1rem 2px rgba(0, 0, 0, 0.2);
-
-  @media ${device.min.md} {
-    padding: 1rem 2rem;
-  }
+  justify-content: center;
+  padding: 2rem 0 1rem;
+  border-radius: 0.5rem;
+  background: ${({ theme }) => theme.secondary};
 `
 
 const Subtitle = styled.p`
-  margin: 1rem;
-  font-size: ${fontSize.responsive.$2xl};
-  font-weight: 300;
-  text-align: center;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 300;
+  font-size: ${fontSize.responsive.$2xl};
+  text-align: center;
 `
 
 const GoBack = styled.button`
-  font-size: ${fontSize.responsive.xl};
-  font-weight: 400;
   color: inherit;
+  font-weight: 400;
+  font-size: ${fontSize.responsive.xl};
   background-color: transparent;
   cursor: pointer;
 
@@ -78,5 +68,3 @@ const GoBack = styled.button`
 const Image = styled.img`
   width: clamp(13rem, 30vw, 20rem);
 `
-
-export default NotFound

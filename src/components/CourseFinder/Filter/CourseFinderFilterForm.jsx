@@ -1,16 +1,16 @@
 import { X } from '@styled-icons/heroicons-outline'
-import { Checkbox, Select, Slider, Switch } from 'antd'
+import { Checkbox, Select } from 'antd'
 import { kebabCase } from 'lodash'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { Form, PageHeading } from 'components/shared'
+import { Form, PageHeading, Slider, Switch } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
 import tags from 'data/tags.json'
 import { useQueryString } from 'hooks'
 import { selectDepartments } from 'store/courseSlice'
 
-const FilterItem = ({ label, onClear, content }) => (
+const CourseFinderFilterItem = ({ label, onClear, content }) => (
   <PageHeading style={{ margin: 0 }}>
     <FilterTitle>{label}</FilterTitle>
     {content || (
@@ -24,7 +24,7 @@ const FilterItem = ({ label, onClear, content }) => (
 )
 
 // TODO: (Known bug) Changing from mobile to desktop view resets filters but query string isnt affected
-const FilterContainer = ({ setLoading }) => {
+const CourseFinderFilterForm = ({ setLoading }) => {
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
   const [form] = Form.useForm()
 
@@ -103,7 +103,7 @@ const FilterContainer = ({ setLoading }) => {
         tags: getQueryString('tags')?.split(',') ?? [],
       }}
     >
-      <FilterItem
+      <CourseFinderFilterItem
         label="Semesters"
         onClear={handleFilterClear('semester', ['semester'])}
       />
@@ -111,7 +111,7 @@ const FilterContainer = ({ setLoading }) => {
         <Checkbox.Group options={semesterOptions} />
       </Form.Item>
 
-      <FilterItem
+      <CourseFinderFilterItem
         label="Half semester only"
         onClear={handleFilterClear('halfsem', ['halfsem'])}
         content={
@@ -121,7 +121,7 @@ const FilterContainer = ({ setLoading }) => {
         }
       />
 
-      <FilterItem
+      <CourseFinderFilterItem
         label="Running courses only"
         onClear={handleFilterClear('running', ['running'])}
         content={
@@ -131,7 +131,7 @@ const FilterContainer = ({ setLoading }) => {
         }
       />
 
-      <FilterItem
+      <CourseFinderFilterItem
         label="Credits"
         onClear={handleFilterClear('credits', ['credits_min', 'credits_max'])}
       />
@@ -156,7 +156,7 @@ const FilterContainer = ({ setLoading }) => {
         />
       </Form.Item>
 
-      <FilterItem
+      <CourseFinderFilterItem
         label="Departments"
         onClear={handleFilterClear('department', ['department'])}
       />
@@ -169,7 +169,10 @@ const FilterContainer = ({ setLoading }) => {
         />
       </Form.Item>
 
-      <FilterItem label="Tags" onClear={handleFilterClear('tags', ['tags'])} />
+      <CourseFinderFilterItem
+        label="Tags"
+        onClear={handleFilterClear('tags', ['tags'])}
+      />
       <Form.Item name="tags">
         <Select
           mode="multiple"
@@ -182,12 +185,12 @@ const FilterContainer = ({ setLoading }) => {
   )
 }
 
-export default FilterContainer
+export default CourseFinderFilterForm
 
 const FilterTitle = styled.span`
   display: inline-block;
   margin-bottom: 0.75rem;
-  font-size: 1rem;
-  font-weight: 600;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 600;
+  font-size: 1rem;
 `

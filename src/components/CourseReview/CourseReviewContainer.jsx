@@ -1,12 +1,11 @@
 import { Divider } from 'antd'
 import { Fragment, useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import { useParams } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { API } from 'api'
 import { CourseContentRequest } from 'components/CoursePage'
-import { LoaderAnimation } from 'components/shared'
-import { toastError } from 'components/toast'
+import { LoaderAnimation, toast } from 'components/shared'
+import { API } from 'config/api'
 
 import CourseReviewItem from './CourseReviewItem'
 import { ReviewEditor } from './Editor'
@@ -37,7 +36,7 @@ const recursiveApply = (array, callback) =>
   )
 
 const CourseReviewContainer = () => {
-  const { courseCode } = useParams()
+  const { code } = useParams()
 
   const [reviewsData, setReviewsData] = useState([])
   const [APILoading, setAPILoading] = useState(true)
@@ -46,18 +45,18 @@ const CourseReviewContainer = () => {
     const fetchReviews = async () => {
       try {
         setAPILoading(true)
-        let response = await API.courses.listReviews({ code: courseCode })
+        let response = await API.courses.listReviews({ code })
         response = nestComments(response)
         setReviewsData(response)
       } catch (error) {
-        toastError(error)
+        toast({ status: 'error', content: error })
       } finally {
         setAPILoading(false)
       }
     }
 
     fetchReviews()
-  }, [courseCode])
+  }, [code])
 
   const handleUpdateContent = ({ id, payload }) => {
     if (id === null) {
@@ -84,7 +83,7 @@ const CourseReviewContainer = () => {
     try {
       const response = await API.reviews.create({
         payload: {
-          course: courseCode,
+          course: code,
           parent: null,
           body: review,
         },
@@ -92,7 +91,7 @@ const CourseReviewContainer = () => {
 
       handleUpdateContent({ id: null, payload: { ...response, children: [] } })
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     }
   }
 
@@ -103,7 +102,7 @@ const CourseReviewContainer = () => {
       <Header>
         <h1 style={{ fontSize: '1.25rem' }}>Reviews</h1>
 
-        <CourseContentRequest code={courseCode} type="reviews" />
+        <CourseContentRequest code={code} type="reviews" />
       </Header>
 
       <ReviewEditor
@@ -117,7 +116,7 @@ const CourseReviewContainer = () => {
           <CourseReviewItem
             content={review}
             updateContent={handleUpdateContent}
-            course={courseCode}
+            course={code}
             depth={0}
           />
           <StyledDivider />
@@ -131,12 +130,12 @@ export default CourseReviewContainer
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 1rem 0;
 `
 
 const StyledDivider = styled(Divider)`
   margin: 1rem 0;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgb(255 255 255 / 20%);
 `

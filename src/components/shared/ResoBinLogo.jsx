@@ -8,11 +8,11 @@ const LogoContainer = styled(Link)`
 `
 
 const Title = styled.div`
+  color: ${({ theme }) => theme.logo};
+  font-weight: 600;
   font-size: ${({ size }) => size};
   font-family: Montserrat, sans-serif;
-  font-weight: 600;
   line-height: 110%;
-  color: ${({ theme }) => theme.logo};
 `
 
 const Underline = styled.div`

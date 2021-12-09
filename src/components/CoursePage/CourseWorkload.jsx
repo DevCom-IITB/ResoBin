@@ -54,36 +54,36 @@ export default CourseWorkload
 
 const Container = styled.div`
   display: flex;
-  width: 10rem;
-  overflow: auto;
   flex-wrap: wrap;
-  padding: 4px;
+  width: 10rem;
   margin-bottom: 1rem;
-  border-radius: 10px;
+  padding: 4px;
+  overflow: auto;
   background: ${({ theme }) => theme.darksecondary};
+  border-radius: 10px;
 `
 
 const BoxContainer = styled(Tooltip)`
   display: flex;
   flex-wrap: wrap;
+  gap: 2px;
   height: 1.5rem;
   margin: 4px;
   border-radius: 4px;
-  gap: 2px;
 `
 
 const Box = styled.div`
   width: 1rem;
   height: 100%;
-  border-radius: 4px;
   background-color: ${({ color }) => color};
+  border-radius: 4px;
 `
 
 const Title = styled.span`
   display: block;
   margin: 0 0.25rem 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 1.5px;
   color: ${({ theme }) => theme.textColor};
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
 `

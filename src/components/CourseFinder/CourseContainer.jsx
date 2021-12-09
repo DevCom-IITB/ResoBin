@@ -1,11 +1,18 @@
+import axios from 'axios'
 import { useState, useEffect } from 'react'
 
-import { API } from 'api'
-import { CourseList, CourseSearch } from 'components/CourseFinder'
-import { FilterAside, FilterFloatButton } from 'components/filter'
-import { toastError } from 'components/toast'
+import { toast } from 'components/shared'
+import { API } from 'config/api'
 import { useQueryString, useResponsive } from 'hooks'
 
+import CourseList from './CourseList'
+import CourseSearch from './CourseSearch'
+import {
+  CourseFinderFilterAside,
+  CourseFinderFilterFloatButton,
+} from './Filter'
+
+let ajaxRequest = null
 const CourseFinderContainer = () => {
   const { isDesktop } = useResponsive()
   const { getQueryString } = useQueryString()
@@ -15,15 +22,23 @@ const CourseFinderContainer = () => {
   const [loading, setLoading] = useState(true)
 
   const fetchCourses = async (params) => {
+    setLoading(true)
+
     try {
-      setLoading(true)
-      const response = await API.courses.list({ params })
+      if (ajaxRequest) ajaxRequest.cancel()
+      ajaxRequest = axios.CancelToken.source()
+
+      const response = await API.courses.list({
+        params,
+        cancelToken: ajaxRequest.token,
+      })
       setCourseData(response)
     } catch (error) {
-      toastError(error)
-    } finally {
-      setLoading(false)
+      if (axios.isCancel(error)) return
+      toast({ status: 'error', content: error })
     }
+
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -53,8 +68,8 @@ const CourseFinderContainer = () => {
       />
 
       {/* For desktops */}
-      <FilterAside setLoading={setLoading} />
-      <FilterFloatButton
+      <CourseFinderFilterAside setLoading={setLoading} />
+      <CourseFinderFilterFloatButton
         showFilter={showFilter}
         setShowFilter={setShowFilter}
       />

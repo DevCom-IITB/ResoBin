@@ -6,16 +6,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { API } from 'api'
 import {
   Aside,
   Card,
   LoaderAnimation,
   PageHeading,
   PageTitle,
+  toast,
 } from 'components/shared'
 import { ButtonIcon, ButtonIconDanger } from 'components/shared/Buttons'
-import { toastError } from 'components/toast'
+import { API } from 'config/api'
 import { displayYear, coursePageUrl } from 'helpers/format'
 import {
   selectCourseAPILoading,
@@ -70,7 +70,7 @@ const TimetableContainer = () => {
         const response = await API.profile.timetable.read(_semester)
         setCourseTimetableList(response)
       } catch (error) {
-        toastError(error)
+        toast({ status: 'error', content: error })
       } finally {
         setLoading(false)
       }
@@ -94,7 +94,7 @@ const TimetableContainer = () => {
       )
       dispatch(updateTimetable(id))
     } catch (error) {
-      toastError(error)
+      toast({ status: 'error', content: error })
     } finally {
       setLoading(false)
     }
@@ -161,12 +161,12 @@ export default TimetableContainer
 
 const TimetableSemesterTitle = styled.div`
   display: flex;
+  gap: 0.5rem;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
   margin: 0.75rem 0;
-  font-size: 1.25rem;
   color: white;
+  font-size: 1.25rem;
   text-transform: capitalize;
 `
 
@@ -179,7 +179,7 @@ const AsideList = styled.div`
 
 const TimetableCardTitle = styled.div`
   display: flex;
-  width: 100%;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 `

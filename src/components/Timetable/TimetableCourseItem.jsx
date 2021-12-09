@@ -1,5 +1,6 @@
 import { Tooltip } from 'antd'
 import { darken } from 'polished'
+import { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import styled, { css } from 'styled-components/macro'
 
@@ -12,33 +13,32 @@ const TimetableCourseItem = ({ data, colorCode = 0 }) => {
   const { course: code, lectureSlots } = data
   const title = useSelector(selectCourseTitle(code))
 
-  if (!lectureSlots || lectureSlots.length === 0) return null
+  const TimetableCourseLectureItem = useCallback(
+    ({ gridCol, gridRow }) => (
+      <GridItem row={gridRow} col={gridCol}>
+        <Tooltip title={title}>
+          <Item id={colorCode}>
+            <h3>{code}</h3>
+            <span>
+              {gridRow.start.title} - {gridRow.end.title}
+            </span>
+          </Item>
+        </Tooltip>
+      </GridItem>
+    ),
+    [code, colorCode, title]
+  )
+
+  if (lectureSlots?.length === 0) return null
   const courseSlots = lectureSlots.map((slot) => slots[slot])
 
-  const TimetableCourseLectureItem = ({ gridCol, gridRow }) => (
-    <GridItem row={gridRow} col={gridCol}>
-      <Tooltip title={title}>
-        <Item id={colorCode}>
-          <h3>{code}</h3>
-          <span>
-            {gridRow.start.title} - {gridRow.end.title}
-          </span>
-        </Item>
-      </Tooltip>
-    </GridItem>
-  )
-
-  return (
-    <>
-      {courseSlots.map(({ row, col }, idx) => (
-        <TimetableCourseLectureItem
-          key={String(idx)}
-          gridCol={cols[col - 1]}
-          gridRow={{ start: rows[row.start], end: rows[row.end] }}
-        />
-      ))}
-    </>
-  )
+  return courseSlots?.map(({ row, col }, idx) => (
+    <TimetableCourseLectureItem
+      key={String(idx)}
+      gridCol={cols[col - 1]}
+      gridRow={{ start: rows[row.start], end: rows[row.end] }}
+    />
+  ))
 }
 
 export default TimetableCourseItem
@@ -50,9 +50,9 @@ const GridItem = styled.div`
 `
 
 const getTile = (color) => css`
-  border-left: 4px solid ${darken(0.2, color)};
   color: ${darken(0.7, color)};
   background: ${makeGradient(color)};
+  border-left: 4px solid ${darken(0.2, color)};
 `
 
 const Item = styled.div`
@@ -74,6 +74,6 @@ const Item = styled.div`
   }
 
   &:hover {
-    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0.5rem rgb(0 0 0 / 40%);
   }
 `

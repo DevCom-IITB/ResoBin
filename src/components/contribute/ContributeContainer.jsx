@@ -1,13 +1,12 @@
 import { nanoid } from 'nanoid'
 import { useCallback, useEffect, useState } from 'react'
-import { useLocation } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import { Plus } from 'styled-icons/heroicons-outline'
 
-import { API } from 'api'
 import { CourseResourceGrid } from 'components/CourseResource'
-import { Aside, ButtonSquare, PageTitle } from 'components/shared'
-import { toastError } from 'components/toast'
+import { Aside, ButtonSquare, PageTitle, toast } from 'components/shared'
+import { API } from 'config/api'
 import { defaultFile, fileTypes } from 'data/CourseResources'
 import { useResponsive } from 'hooks'
 
@@ -39,7 +38,7 @@ const ContributeContainer = ({ visible, setVisible }) => {
         const response = await API.profile.resources.list()
         setMyResources(response)
       } catch (error) {
-        toastError(error)
+        toast({ status: 'error', content: error })
       } finally {
         setAPILoading(false)
       }
@@ -106,6 +105,6 @@ export default ContributeContainer
 const FileList = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 1.5rem 0;
   gap: 1rem;
+  margin: 1.5rem 0;
 `

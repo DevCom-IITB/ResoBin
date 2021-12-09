@@ -1,7 +1,7 @@
 // Reference: www.usehooks.com/useLocalStorage
 import { useState } from 'react'
 
-import { toastError } from 'components/toast'
+import { toast } from 'components/shared'
 
 const useLocalStorage = (key, initialValue) => {
   const [storedValue, setStoredValue] = useState(() => {
@@ -9,7 +9,7 @@ const useLocalStorage = (key, initialValue) => {
       const item = window.localStorage.getItem(key)
       return item ? JSON.parse(item) : initialValue
     } catch (error) {
-      toastError(error.message)
+      toast({ status: 'error', content: error })
       return initialValue
     }
   })
@@ -21,7 +21,7 @@ const useLocalStorage = (key, initialValue) => {
       setStoredValue(valueToStore)
       window.localStorage.setItem(key, JSON.stringify(valueToStore))
     } catch (error) {
-      toastError(error.message)
+      toast({ status: 'error', content: error })
     }
   }
   return [storedValue, setValue]

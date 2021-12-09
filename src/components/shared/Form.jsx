@@ -24,8 +24,8 @@ const StyledForm = styled(Form)`
 
   .ant-select-selection-overflow-item .ant-select-selection-item {
     height: 1.5rem;
-    border: 1px solid ${({ theme }) => rgba(theme.textColorInactive, 0.3)};
     background-color: ${({ theme }) => theme.darksecondary};
+    border: 1px solid ${({ theme }) => rgba(theme.textColorInactive, 0.3)};
   }
 
   .ant-select-focused,
@@ -45,12 +45,12 @@ const StyledForm = styled(Form)`
   .ant-input {
     display: flex;
     align-items: center;
+    color: ${({ theme }) => theme.textColor};
+    font-size: 0.75rem;
+    background-color: transparent;
     border: none;
     border-bottom: solid 1px
       ${({ theme }) => rgba(theme.textColorInactive, 0.3)};
-    font-size: 0.75rem;
-    color: ${({ theme }) => theme.textColor};
-    background-color: transparent;
 
     &:hover,
     &:focus {
@@ -62,15 +62,15 @@ const StyledForm = styled(Form)`
   /* Checkbox */
   .ant-checkbox-wrapper {
     margin: 0;
-    font-size: 0.75rem;
-    font-weight: 400;
     color: ${({ theme }) => theme.textColor};
+    font-weight: 400;
+    font-size: 0.75rem;
   }
 
   .ant-checkbox-checked {
     .ant-checkbox-inner {
-      border-color: ${({ theme }) => theme.logo};
       background: ${({ theme }) => theme.logo};
+      border-color: ${({ theme }) => theme.logo};
     }
   }
 

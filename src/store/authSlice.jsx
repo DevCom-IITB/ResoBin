@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { API } from 'api'
+import { API } from 'config/api'
 
 const initialState = {
   isAuthenticated: null,
@@ -66,5 +66,6 @@ const authSlice = createSlice({
 })
 
 export const selectAuthLoading = (state) => state.auth.loading
+export const selectIsAuthenticated = (state) => state.auth.isAuthenticated
 
 export default authSlice.reducer

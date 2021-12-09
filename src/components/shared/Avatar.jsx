@@ -4,8 +4,8 @@ import styled from 'styled-components/macro'
 
 const StyledAvatar = styled(Avatar)`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   min-width: ${({ size }) => size};
   min-height: ${({ size }) => size};
   border: 1px solid ${({ theme }) => theme.textColor};
