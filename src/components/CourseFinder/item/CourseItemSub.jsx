@@ -163,10 +163,10 @@ const CourseItemSub = ({ courseData }) => {
       )}
 
       <div>
-        <FlexGap>
+        <FlexGap style={{ marginBottom: '0.75rem' }}>
           <ButtonSquareLink
             to={`${coursePageUrl(code, title)}#reviews`}
-            style={{ width: '100%', marginBottom: '0.75rem' }}
+            style={{ width: '100%', borderRadius: '0.5rem 0 0 0.5rem' }}
           >
             <ChatAlt size="18" style={{ marginRight: '0.5rem' }} />
             Reviews {reviewCount > 0 && `(${reviewCount})`}
@@ -176,12 +176,13 @@ const CourseItemSub = ({ courseData }) => {
             code={code}
             type="reviews"
             tooltip="Request reviews"
+            style={{ borderRadius: '0 0.5rem 0.5rem 0' }}
           />
         </FlexGap>
 
         <FlexGap>
           <ButtonSquareLink
-            style={{ width: '100%' }}
+            style={{ width: '100%', borderRadius: '0.5rem 0 0 0.5rem' }}
             to={`${coursePageUrl(code, title)}#resources`}
           >
             <DocumentText size="18" style={{ marginRight: '0.5rem' }} />
@@ -192,6 +193,7 @@ const CourseItemSub = ({ courseData }) => {
             code={code}
             type="resources"
             tooltip="Request resources"
+            style={{ borderRadius: '0 0.5rem 0.5rem 0' }}
           />
         </FlexGap>
       </div>
@@ -219,6 +221,6 @@ const SpaceBetween = styled.div`
 
 const FlexGap = styled.div`
   display: flex;
-  gap: 0.5rem;
+  gap: 0.25rem;
   width: 100%;
 `

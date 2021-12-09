@@ -44,28 +44,27 @@ const StyledSkeleton = styled(Skeleton)`
 const Container = styled.li`
   display: grid;
   grid-column-gap: 1rem;
-  grid-template-columns:
-    [main] 1fr
-    [sub] auto;
-  width: 100%;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: 'main sub';
   padding: 1rem;
   background: ${({ theme }) => theme.secondary};
   border-radius: 0.5rem;
   box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
 
   @media ${device.max.md} {
-    grid-column-gap: 0;
-    grid-template-rows:
-      [main] 1fr
-      [divider] auto
-      [sub] auto;
-    grid-template-columns: none;
+    padding: 0.75rem;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto auto;
+    grid-template-areas:
+      'main'
+      'divider'
+      'sub';
   }
 `
 
 const MainContainer = styled.div`
   grid-area: main;
-  width: 100%;
 `
 
 const SubContainer = styled.div`
@@ -81,6 +80,9 @@ const SubContainer = styled.div`
     gap: 1rem;
     align-items: center;
     justify-content: space-between;
+  }
+
+  @media ${device.max.md} {
     width: 100%;
   }
 `

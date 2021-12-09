@@ -198,18 +198,26 @@ const RightIcons = styled.div`
 
 const TagsContainer = styled.div`
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
   margin-left: 0.5rem;
   gap: 0.25rem;
   overflow-y: scroll;
+  height: 3rem;
 
   @media ${device.max.xs}, ${device.min.lg} and ${device.max.xl} {
-    flex-wrap: wrap;
+    display: block;
+    max-width: 6rem;
+
+    > :not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
   }
 `
 
 const StyledTag = styled(Tag)`
   height: 1.25rem;
+  width: 100%;
   display: flex;
   margin: 0;
   align-items: center;
