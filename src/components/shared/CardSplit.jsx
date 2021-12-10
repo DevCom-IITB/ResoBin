@@ -31,7 +31,7 @@ export default CardSplit
 
 const StyledSkeleton = styled(Skeleton)`
   width: 100%;
-  margin: 1rem 0;
+  margin-bottom: 1rem;
 
   .ant-skeleton-content {
     padding: 1.5rem 1rem;

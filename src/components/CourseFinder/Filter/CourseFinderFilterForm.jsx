@@ -11,8 +11,9 @@ import { useQueryString } from 'hooks'
 import { selectDepartments } from 'store/courseSlice'
 
 const CourseFinderFilterItem = ({ label, onClear, content }) => (
-  <PageHeading style={{ margin: 0 }}>
+  <PageHeading style={{ margin: '0' }}>
     <FilterTitle>{label}</FilterTitle>
+
     {content || (
       <ButtonIconDanger
         tooltip="Reset"
@@ -102,14 +103,20 @@ const CourseFinderFilterForm = ({ setLoading }) => {
         department: getQueryString('department')?.split(',') ?? [],
         tags: getQueryString('tags')?.split(',') ?? [],
       }}
+      style={{ gap: '1.25rem' }}
     >
-      <CourseFinderFilterItem
-        label="Semesters"
-        onClear={handleFilterClear('semester', ['semester'])}
-      />
-      <Form.Item name="semester">
-        <Checkbox.Group options={semesterOptions} />
-      </Form.Item>
+      <div>
+        <CourseFinderFilterItem
+          label="Semesters"
+          onClear={handleFilterClear('semester', ['semester'])}
+        />
+        <Form.Item name="semester">
+          <Checkbox.Group
+            options={semesterOptions}
+            style={{ display: 'flex', gap: '1rem' }}
+          />
+        </Form.Item>
+      </div>
 
       <CourseFinderFilterItem
         label="Half semester only"
@@ -131,56 +138,62 @@ const CourseFinderFilterForm = ({ setLoading }) => {
         }
       />
 
-      <CourseFinderFilterItem
-        label="Credits"
-        onClear={handleFilterClear('credits', ['credits_min', 'credits_max'])}
-      />
-      <Form.Item name="credits">
-        <Slider
-          range
-          min={2}
-          step={null}
-          max={9}
-          marks={{
-            2: '<3',
-            3: '3',
-            4: '4',
-            5: '5',
-            6: '6',
-            7: '7',
-            8: '8',
-            9: '>8',
-          }}
-          tipFormatter={null}
-          style={{ marginRight: '1rem', marginLeft: '0.5rem' }}
+      <div>
+        <CourseFinderFilterItem
+          label="Credits"
+          onClear={handleFilterClear('credits', ['credits_min', 'credits_max'])}
         />
-      </Form.Item>
+        <Form.Item name="credits">
+          <Slider
+            range
+            min={2}
+            step={null}
+            max={9}
+            marks={{
+              2: '<3',
+              3: '3',
+              4: '4',
+              5: '5',
+              6: '6',
+              7: '7',
+              8: '8',
+              9: '>8',
+            }}
+            tipFormatter={null}
+            style={{ marginRight: '1rem', marginLeft: '0.5rem' }}
+          />
+        </Form.Item>
+      </div>
 
-      <CourseFinderFilterItem
-        label="Departments"
-        onClear={handleFilterClear('department', ['department'])}
-      />
-      <Form.Item name="department">
-        <Select
-          mode="multiple"
-          options={departmentOptions}
-          placeholder="Type something..."
-          showArrow
+      <div>
+        <CourseFinderFilterItem
+          label="Departments"
+          onClear={handleFilterClear('department', ['department'])}
         />
-      </Form.Item>
+        <Form.Item name="department">
+          <Select
+            mode="multiple"
+            options={departmentOptions}
+            placeholder="Type something..."
+            showArrow
+          />
+        </Form.Item>
+      </div>
 
-      <CourseFinderFilterItem
-        label="Tags"
-        onClear={handleFilterClear('tags', ['tags'])}
-      />
-      <Form.Item name="tags">
-        <Select
-          mode="multiple"
-          options={tagOptions}
-          placeholder="Select something..."
-          showArrow
+      <div>
+        <CourseFinderFilterItem
+          label="Tags"
+          onClear={handleFilterClear('tags', ['tags'])}
         />
-      </Form.Item>
+        <Form.Item name="tags">
+          <Select
+            mode="multiple"
+            options={tagOptions}
+            placeholder="Select something..."
+            showArrow
+          />
+        </Form.Item>
+      </div>
     </Form>
   )
 }
@@ -189,8 +202,7 @@ export default CourseFinderFilterForm
 
 const FilterTitle = styled.span`
   display: inline-block;
-  margin-bottom: 0.75rem;
   color: ${({ theme }) => theme.textColor};
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.875rem;
 `

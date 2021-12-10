@@ -4,8 +4,13 @@ import styled from 'styled-components/macro'
 
 const StyledForm = styled(Form)`
   display: flex;
+  gap: 0.75rem;
   flex-direction: column;
   width: 100%;
+
+  .ant-form-item {
+    margin: 0;
+  }
 
   /* Icons */
   span.anticon {
@@ -24,7 +29,7 @@ const StyledForm = styled(Form)`
 
   .ant-select-selection-overflow-item .ant-select-selection-item {
     height: 1.5rem;
-    background-color: ${({ theme }) => theme.darksecondary};
+    background: ${({ theme }) => theme.darksecondary};
     border: 1px solid ${({ theme }) => rgba(theme.textColorInactive, 0.3)};
   }
 
@@ -36,9 +41,9 @@ const StyledForm = styled(Form)`
     }
   }
 
-  .ant-input {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+  .ant-form-item-has-error
+    :not(.ant-input-disabled):not(.ant-input-borderless).ant-input {
+    background: transparent;
   }
 
   .ant-select .ant-select-selector,
@@ -47,7 +52,7 @@ const StyledForm = styled(Form)`
     align-items: center;
     color: ${({ theme }) => theme.textColor};
     font-size: 0.75rem;
-    background-color: transparent;
+    background: transparent;
     border: none;
     border-bottom: solid 1px
       ${({ theme }) => rgba(theme.textColorInactive, 0.3)};

@@ -7,7 +7,7 @@ import { buttonStyles } from './buttonStyles'
 
 const ButtonSquare = styled(Button)`
   ${buttonStyles}
-  background: ${({ theme }) => theme.secondary};
+  background: ${({ theme }) => theme.ssecondary};
 
   &.ant-btn-primary {
     background: ${({ theme }) => theme.logo};

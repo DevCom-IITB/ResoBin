@@ -44,6 +44,7 @@ const Container = styled.div`
     [times] 2.5rem
     ${cols.map(({ id, title }, index) => `[${id}] 1fr `)};
   padding: 0.75rem;
+  margin-bottom: 1rem;
   overflow-x: scroll;
   background: ${({ theme }) => theme.secondary};
   border-radius: 0.5rem;
