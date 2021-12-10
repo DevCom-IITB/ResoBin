@@ -54,6 +54,8 @@ const printSize = (_size) => {
   return `${Math.round(size * 100) / 100} ${sizes[i]}`
 }
 
+// ? creates initial title for a file
+// * remove non letters and numbers and replace underscores with spaces
 const getTitle = (fileName) =>
   fileName
     .replace(/\.[^/.]+$/, '')
