@@ -7,12 +7,14 @@ import { buttonStyles } from './buttonStyles'
 
 const ButtonSquare = styled(Button)`
   ${buttonStyles}
+  background: ${({ theme }) => theme.secondary};
 
-  background-color: ${({ theme }) => theme.logo};
+  &.ant-btn-primary {
+    background: ${({ theme }) => theme.logo};
+  }
 
   &:hover,
   &:active {
-    background-color: ${({ theme }) => theme.logo};
     opacity: 0.9;
   }
 
@@ -25,12 +27,12 @@ export const ButtonSquareLink = styled(Link)`
   ${buttonStyles}
 
   padding: 0.25rem 0.75rem;
-  background-color: ${({ type, theme }) =>
+  background: ${({ type, theme }) =>
     type === 'primary' ? theme.logo : theme.darksecondary};
 
   &:hover,
   &:active {
-    background-color: ${({ type, theme }) =>
+    background: ${({ type, theme }) =>
       type === 'primary' ? theme.logoHover : theme.darksecondaryHover};
     box-shadow: inset 0 0 5px ${rgba('#000', 0.1)};
   }

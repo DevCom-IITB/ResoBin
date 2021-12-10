@@ -24,7 +24,12 @@ export const fileTypes = [
 ]
 
 export const defaultFile = {
-  name: 'Upload document',
+  name: (
+    <div style={{ textAlign: 'center' }}>
+      <h3>Select a document</h3>
+      <code>({fileTypes.map((type) => `.${type.extention}`).join(', ')})</code>
+    </div>
+  ),
   title: null,
   description: null,
   tags: [],
