@@ -11,14 +11,15 @@ import { useQueryString } from 'hooks'
 import { selectDepartments } from 'store/courseSlice'
 
 const CourseFinderFilterItem = ({ label, onClear, content }) => (
-  <PageHeading style={{ margin: '0' }}>
+  <PageHeading style={{ margin: '0 0 0.25rem' }}>
     <FilterTitle>{label}</FilterTitle>
 
     {content || (
       <ButtonIconDanger
         tooltip="Reset"
         onClick={onClear}
-        icon={<X size="18" />}
+        size="default"
+        icon={<X size="20" />}
       />
     )}
   </PageHeading>
@@ -103,7 +104,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
         department: getQueryString('department')?.split(',') ?? [],
         tags: getQueryString('tags')?.split(',') ?? [],
       }}
-      style={{ gap: '1.25rem' }}
+      style={{ gap: '1.5rem', padding: '0 0.5rem' }}
     >
       <div>
         <CourseFinderFilterItem

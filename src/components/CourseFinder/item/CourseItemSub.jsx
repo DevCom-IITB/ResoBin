@@ -76,7 +76,7 @@ const SemesterItem = ({ data }) => {
       <ButtonSwitch
         type="primary"
         $active={selected !== null}
-        icon={<Calendar size="18" style={{ marginRight: '0.5rem' }} />}
+        icon={<Calendar size="16" />}
         loading={loading}
         style={{ margin: '0.75rem 0 0', width: '100%' }}
       >
@@ -94,12 +94,14 @@ const SemesterItem = ({ data }) => {
     <ButtonSwitch
       type="primary"
       $active={selected !== null}
-      icon={<Calendar size="18" style={{ marginRight: '0.5rem' }} />}
+      icon={<Calendar size="16" />}
       onClick={handleClick(selected ? selected.id : data[0].id)}
       loading={loading}
       style={{ margin: '0.75rem 0 0', width: '100%' }}
     >
-      {selected !== null ? `Remove ${selected.division}` : 'Timetable'}
+      {selected !== null
+        ? `Remove from slot: ${selected.division}`
+        : 'Timetable'}
     </ButtonSwitch>
   )
 }
@@ -168,7 +170,7 @@ const CourseItemSub = ({ courseData }) => {
             to={`${coursePageUrl(code, title)}#reviews`}
             style={{ width: '100%', borderRadius: '0.5rem 0 0 0.5rem' }}
           >
-            <ChatAlt size="18" style={{ marginRight: '0.5rem' }} />
+            <ChatAlt size="16" />
             Reviews {reviewCount > 0 && `(${reviewCount})`}
           </ButtonSquareLink>
 
@@ -185,7 +187,7 @@ const CourseItemSub = ({ courseData }) => {
             style={{ width: '100%', borderRadius: '0.5rem 0 0 0.5rem' }}
             to={`${coursePageUrl(code, title)}#resources`}
           >
-            <DocumentText size="18" style={{ marginRight: '0.5rem' }} />
+            <DocumentText size="16" />
             Resources {resourceCount > 0 && `(${resourceCount})`}
           </ButtonSquareLink>
 

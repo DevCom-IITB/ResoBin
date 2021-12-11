@@ -1,5 +1,5 @@
-import { ThumbUp as HeartOutlined } from '@styled-icons/heroicons-outline'
-import { ThumbUp as HeartFilled } from '@styled-icons/heroicons-solid'
+import { ThumbUp as ThumbUpOutlined } from '@styled-icons/heroicons-outline'
+import { ThumbUp as ThumbUpFilled } from '@styled-icons/heroicons-solid'
 import { Button, Comment } from 'antd'
 import DOMPurify from 'dompurify'
 import { useState } from 'react'
@@ -97,7 +97,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       color="white"
       size="middle"
       icon={
-        voteStatus ? <HeartFilled size="18" /> : <HeartOutlined size="18" />
+        voteStatus ? <ThumbUpFilled size="16" /> : <ThumbUpOutlined size="16" />
       }
       onClick={vote}
     >
