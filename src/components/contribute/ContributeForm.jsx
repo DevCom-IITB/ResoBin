@@ -35,7 +35,11 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
     >
       <Form.Item
         name="title"
-        rules={[{ required: true, message: 'Please input the title!' }]}
+        rules={[
+          { required: true, message: 'Title is required.' },
+          { min: 5, message: 'Title must be atleast 5 characters.' },
+          { max: 80, message: 'Title must be atmost 100 characters.' },
+        ]}
       >
         <Input placeholder="Title" />
       </Form.Item>
@@ -44,12 +48,15 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
         <Input.TextArea
           autoSize={{ minRows: 1, maxRows: 10 }}
           placeholder="Description"
+          rules={[
+            { max: 500, message: 'Title must be atmost 500 characters.' },
+          ]}
         />
       </Form.Item>
 
       <Form.Item
         name="course"
-        rules={[{ required: true, message: 'Please input the course!' }]}
+        rules={[{ required: true, message: 'Course is required.' }]}
       >
         <Select showSearch placeholder="Course" options={courseOptions} />
       </Form.Item>

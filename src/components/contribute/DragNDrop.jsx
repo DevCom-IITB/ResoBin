@@ -103,8 +103,8 @@ const UploadBoxSub = styled.div`
   justify-content: center;
   gap: 0.5rem;
   width: 15rem;
-  height: 9rem;
-  padding: 2rem 1rem;
+  height: initial;
+  padding: 1.5rem 1rem;
   cursor: pointer;
   background: ${({ theme }) => theme.secondary};
   color: ${({ theme, error }) => (error ? '#f34a4a' : theme.textColorInactive)};
@@ -113,7 +113,7 @@ const UploadBoxSub = styled.div`
   border-radius: 0.5rem;
 
   h2 {
-    font-size: ${fontSize.responsive.xs};
+    font-size: ${fontSize.static.xs};
     text-align: center;
   }
 
@@ -124,6 +124,8 @@ const UploadBoxSub = styled.div`
   }
 
   @media ${device.max.xs} {
+    padding: 1rem 1rem;
     width: 100%;
+    height: 11rem;
   }
 `

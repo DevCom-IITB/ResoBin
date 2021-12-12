@@ -1,15 +1,15 @@
-import { Progress } from 'antd'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 import { DocumentAdd } from 'styled-icons/heroicons-outline'
 
-import { LoaderAnimation, toast } from 'components/shared'
+import { LoaderAnimation, Progress, toast } from 'components/shared'
 import { API } from 'config/api'
 import { selectCourseAPILoading } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
 import ContributeForm from './ContributeForm'
 import { DragNDropSub } from './DragNDrop'
+import { getFileDetails } from './fileDetails'
 
 const ContributeItem = ({
   fileItem,
@@ -23,6 +23,7 @@ const ContributeItem = ({
       updateFileItem({
         file: acceptedFiles[0],
         status: 'success',
+        details: getFileDetails(acceptedFiles[0]),
       })
   }
 
@@ -71,7 +72,7 @@ const ContributeItem = ({
     <ItemContainer>
       <DragNDropSub onDrop={onDrop}>
         {/* <img src={fileItem.details.icon} className="icon" alt="icon" /> */}
-        <DocumentAdd size="28" />
+        <DocumentAdd size="24" />
 
         <h2>
           {fileItem.details.name}
@@ -81,8 +82,15 @@ const ContributeItem = ({
           )}
         </h2>
 
-        {fileItem.progress > 0 && fileItem.progress < 100 && (
-          <Progress size="small" percent={fileItem.progress} />
+        {fileItem.progress > 0 && (
+          <Progress
+            size="small"
+            percent={fileItem.progress}
+            style={{
+              top: '10px',
+              marginTop: '-10px',
+            }}
+          />
         )}
       </DragNDropSub>
 
