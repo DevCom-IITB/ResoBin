@@ -48,11 +48,8 @@ const ContributeContainer = ({ visible, setVisible }) => {
   const deleteFileItem = (id) => () =>
     setFilesSelected((prevItems) => prevItems.filter((item) => item.id !== id))
 
-  const addUploadedFile = (file) => {
-    setLoading(true)
+  const addUploadedFile = (file) =>
     setUploadedFiles((prevItems) => [file, ...prevItems])
-    setLoading(false)
-  }
 
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {

@@ -1,9 +1,9 @@
 import { Bookmark, BookmarkOutline } from '@styled-icons/zondicons'
 import { Tag } from 'antd'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import styled, { css } from 'styled-components/macro'
+import { Link, useLocation } from 'react-router-dom'
+import styled from 'styled-components/macro'
 
 import { ButtonIcon, toast, Typography } from 'components/shared'
 import { API } from 'config/api'
@@ -26,33 +26,23 @@ const creditColorPicker = (credits) => {
 const tagColorPicker = (tag) =>
   colorPicker(defaultTags.courseTags.findIndex((t) => t === tag))
 
-// TODO: Add highlight for keywords
-// const HighlightMatches = ({ content }) => {
-//   const location = useLocation()
-//   const queryString = new URLSearchParams(location.search)
-//   const search = (queryString.get('q') || '').toLowerCase()
+// TODO: Add highlight for description
+const HighlightMatches = ({ content }) => {
+  const location = useLocation()
+  const queryString = new URLSearchParams(location.search)
+  const search = (queryString.get('q') || '').toLowerCase()
+  const re = new RegExp(`(${search})`, 'gi')
 
-//   const re = new RegExp(`(${search})`, 'gi')
-//   const parts = content.split(re)
-
-//   return search
-//     ? parts.map((part, index) =>
-//         part.toLowerCase() === search ? (
-//           <mark key={String(index)} mark>
-//             {part}
-//           </mark>
-//         ) : (
-//           <span key={String(index)}>{part}</span>
-//         )
-//       )
-//     : content
-// }
-
-// {description?.length ? (
-//   <HighlightMatches content={description} />
-// ) : (
-//   <>No description available</>
-// )}
+  return content
+    .split(re)
+    .map((part, index) =>
+      part.toLowerCase() === search ? (
+        <Mark key={String(index)}>{part}</Mark>
+      ) : (
+        <span key={String(index)}>{part}</span>
+      )
+    )
+}
 
 const CourseItemMain = ({ courseData }) => {
   const dispatch = useDispatch()
@@ -121,8 +111,13 @@ const CourseItemMain = ({ courseData }) => {
       </SubTitle>
 
       <TitleContainer to={coursePageUrl(code, title)}>
-        <CourseCode>{code}</CourseCode>
-        <CourseTitle>{title}</CourseTitle>
+        <h1>
+          <HighlightMatches content={code} />
+        </h1>
+
+        <h2>
+          <HighlightMatches content={title} />
+        </h2>
       </TitleContainer>
 
       <Typography.Paragraph
@@ -138,33 +133,31 @@ const CourseItemMain = ({ courseData }) => {
 export default CourseItemMain
 
 const TitleContainer = styled(Link)`
-  display: inline;
-`
-
-const CourseHeader = css`
-  display: inline;
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
   color: ${({ theme }) => theme.textColor};
 
-  ${TitleContainer}:hover & {
+  h1 {
+    font-size: ${fontSize.responsive.xl};
+    font-weight: 600;
+  }
+
+  h2 {
+    font-size: ${fontSize.responsive.md};
+    font-weight: 400;
+  }
+
+  &:hover {
+    color: ${({ theme }) => theme.textColor};
     text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 1.5px;
   }
 `
 
-const CourseCode = styled.span`
-  margin-right: 0.375rem;
-  font-size: ${fontSize.responsive.xl};
-  font-weight: 600;
-
-  ${CourseHeader}
-`
-
-const CourseTitle = styled.span`
-  font-size: ${fontSize.responsive.md};
-  font-weight: 400;
-
-  ${CourseHeader}
+const Mark = styled.mark`
+  color: ${({ theme }) => theme.secondary};
+  background: ${({ theme }) => theme.primary};
+  padding: 0;
 `
 
 const SubTitle = styled.div`
