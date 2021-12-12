@@ -1,26 +1,31 @@
-import { Divider } from 'antd'
 import styled from 'styled-components/macro'
 
+import { Divider } from 'components/shared'
+import { TimetableSelector } from 'components/Timetable'
 import { device, fontSize } from 'styles/responsive'
 
 import CourseWorkload from './CourseWorkload'
 
 const CoursePageBody = ({ courseData }) => {
   return (
-    <Container id="details">
-      <CourseCode>{courseData.code}</CourseCode>
-      <CourseTitle>{courseData.title}</CourseTitle>
-      <CourseDepartment>
-        {courseData.department.name} | {courseData.credits} credits
-      </CourseDepartment>
-      <Divider
-        style={{ backgroundColor: '#ffffff', margin: '1rem 0', opacity: 0.3 }}
-      />
-      <CourseDescription>
-        {courseData.description || 'Not available'}
-      </CourseDescription>
+    <Container>
+      <CourseInfo>
+        <CourseCode>{courseData.code}</CourseCode>
+        <CourseTitle>{courseData.title}</CourseTitle>
+        <CourseDepartment>
+          {courseData.department.name} | {courseData.credits} credits
+        </CourseDepartment>
+        <Divider margin="1rem 0" />
+        <CourseDescription>
+          {courseData.description || 'Not available'}
+        </CourseDescription>
+      </CourseInfo>
 
-      <CourseWorkload workload={courseData.workload} />
+      <FlexGap>
+        <CourseWorkload workload={courseData.workload} />
+
+        <TimetableSelector semester={courseData.semester} />
+      </FlexGap>
     </Container>
   )
 }
@@ -28,7 +33,7 @@ const CoursePageBody = ({ courseData }) => {
 export default CoursePageBody
 
 const Container = styled.div`
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
   padding: 1.5rem 1rem;
   color: ${({ theme }) => theme.textColor};
   background: ${({ theme }) => theme.secondary};
@@ -37,6 +42,10 @@ const Container = styled.div`
   @media ${device.max.md} {
     margin-top: 0.75rem;
   }
+`
+
+const CourseInfo = styled.div`
+  /*  */
 `
 
 const CourseCode = styled.h1`
@@ -60,4 +69,11 @@ const CourseDescription = styled.p`
   font-weight: 300;
   font-size: ${fontSize.responsive.md};
   text-align: justify;
+`
+
+const FlexGap = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
 `

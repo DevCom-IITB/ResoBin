@@ -39,7 +39,7 @@ export const useCourseContentRequest = ({ code, type }) => {
 }
 
 // * type = reviews | resources
-const CourseContentRequestButtonSquare = ({ code, type, ...props }) => {
+export const CourseContentRequestSquare = ({ code, type, ...props }) => {
   const { requestStatus, handleRequest, loading } = useCourseContentRequest({
     code,
     type,
@@ -59,7 +59,7 @@ const CourseContentRequestButtonSquare = ({ code, type, ...props }) => {
   )
 }
 
-export const CourseContentRequestButtonIcon = ({ code, type, ...props }) => {
+export const CourseContentRequestIcon = ({ code, type, ...props }) => {
   const { requestStatus, handleRequest, loading } = useCourseContentRequest({
     code,
     type,
@@ -80,4 +80,4 @@ export const CourseContentRequestButtonIcon = ({ code, type, ...props }) => {
   )
 }
 
-export default CourseContentRequestButtonSquare
+export default CourseContentRequestSquare

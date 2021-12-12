@@ -7,12 +7,16 @@ import { CourseReviewContainer } from 'components/CourseReview'
 import { Aside, PageSubtitle, Tabs } from 'components/shared'
 
 import CoursePageBody from './CoursePageBody'
+import CoursePageBreadcrumbs from './CoursePageBreadcrumbs'
 
 const CoursePageContainer = ({ courseData }) => {
   const { hash } = useLocation()
+  const title = `${courseData.code}: ${courseData.title}`
 
   return (
     <>
+      <CoursePageBreadcrumbs courseTitle={title} />
+
       <CoursePageBody courseData={courseData} />
 
       <Container>

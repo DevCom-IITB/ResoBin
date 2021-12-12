@@ -5,11 +5,11 @@ import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { CourseContentRequestButtonIcon } from 'components/CoursePage/CourseContentRequest'
+import { CourseContentRequestIcon } from 'components/CoursePage'
 import { FavoriteToggle } from 'components/Favourites'
 import { Divider, Typography, CardSplit } from 'components/shared'
 import { ButtonSquareLink } from 'components/shared/Buttons'
-import TimetableSelector from 'components/Timetable'
+import { TimetableSelector } from 'components/Timetable'
 import defaultTags from 'data/tags.json'
 import { coursePageUrl } from 'helpers/format'
 import { useResponsive } from 'hooks'
@@ -49,7 +49,6 @@ const HighlightMatches = ({ content }) => {
 
 const CourseItemMain = ({ courseData }) => {
   const { code, credits, department, title, description, tags } = courseData
-
   const departmentList = useSelector(selectDepartments)
 
   return (
@@ -132,7 +131,7 @@ const CourseItemSub = ({ courseData }) => {
             Reviews {reviewCount > 0 && `(${reviewCount})`}
           </ButtonSquareLink>
 
-          <CourseContentRequestButtonIcon
+          <CourseContentRequestIcon
             code={code}
             type="reviews"
             tooltip="Request reviews"
@@ -149,7 +148,7 @@ const CourseItemSub = ({ courseData }) => {
             Resources {resourceCount > 0 && `(${resourceCount})`}
           </ButtonSquareLink>
 
-          <CourseContentRequestButtonIcon
+          <CourseContentRequestIcon
             code={code}
             type="resources"
             tooltip="Request resources"
