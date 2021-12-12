@@ -10,16 +10,19 @@ import { device } from 'styles/responsive'
 
 import ContributeForm from './ContributeForm'
 import { DragNDropSub } from './DragNDrop'
-import { getFileDetails } from './fileDetails'
 
-const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
+const ContributeItem = ({
+  fileItem,
+  updateFileItem,
+  deleteFileItem,
+  addUploadedFile,
+}) => {
   // ? If no file is valid, reset the file list item
   const onDrop = (acceptedFiles) => {
     if (acceptedFiles.length !== 0)
       updateFileItem({
         file: acceptedFiles[0],
         status: 'success',
-        details: getFileDetails(acceptedFiles[0], fileItem.details),
       })
   }
 
@@ -28,55 +31,37 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
       progress: Math.round((100 * event.loaded) / event.total),
     })
 
-  const isValid = (fileDetails) => {
-    if (fileDetails.status === 'success') return true
-    return false
-  }
-
   const handleUpload = async (fileDetails) => {
     updateFileItem({ status: 'uploading' })
 
-    if (!isValid(fileItem)) {
+    const MAX_FILE_SIZE = 26214400 // 25MB
+
+    if (!fileItem.file || fileItem.file.size > MAX_FILE_SIZE) {
       updateFileItem({ status: 'error' })
       return
     }
 
+    const { title, course, description, tags } = fileDetails
+
     const fd = new FormData()
     fd.append('file', fileItem.file, fileItem.file.name)
-    fd.append('title', fileItem.details.title)
-    fd.append('course', fileItem.details.course)
-    fd.append('description', fileItem.details.description ?? '')
-    fd.append('tags', JSON.stringify(fileItem.details.tags))
+    fd.append('title', title)
+    fd.append('course', course)
+    fd.append('description', description || 'No description available.')
+    fd.append('tags', JSON.stringify(tags))
 
     try {
       const response = await API.resources.create({
         payload: fd,
         onUploadProgress,
       })
-      const { id, timestamp, url } = response
 
-      updateFileItem({
-        status: 'uploaded',
-        response: { id, timestamp, url },
-      })
+      addUploadedFile(response)
+      deleteFileItem()
     } catch (error) {
       toast({ status: 'error', content: error })
       updateFileItem({ status: 'error', progress: 0 })
     }
-  }
-
-  const handleDelete = async () => {
-    if (fileItem.status === 'uploaded') {
-      try {
-        await API.resources.delete({ id: fileItem.response.id })
-      } catch (error) {
-        toast({ status: 'error', content: error })
-        updateFileItem({ status: 'error', progress: 0 })
-        return
-      }
-    }
-
-    deleteFileItem(fileItem.id)
   }
 
   const APILoading = useSelector(selectCourseAPILoading)
@@ -103,9 +88,8 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
 
       <ContributeForm
         fileItem={fileItem}
-        updateFileItem={updateFileItem}
         handleUpload={handleUpload}
-        handleDelete={handleDelete}
+        handleDelete={deleteFileItem}
       />
     </ItemContainer>
   )

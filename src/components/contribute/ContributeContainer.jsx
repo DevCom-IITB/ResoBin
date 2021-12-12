@@ -11,16 +11,12 @@ import {
   toast,
 } from 'components/shared'
 import { API } from 'config/api'
-import { useQueryString } from 'hooks'
 
 import ContributeItem from './ContributeItem'
 import DragNDrop from './DragNDrop'
 import { getFileDetails } from './fileDetails'
 
 const ContributeContainer = ({ visible, setVisible }) => {
-  const { getQueryString } = useQueryString()
-  const course = getQueryString('course')
-
   const [filesSelected, setFilesSelected] = useState([])
   const [uploadedFiles, setUploadedFiles] = useState([])
   const [loading, setLoading] = useState(false)
@@ -49,26 +45,28 @@ const ContributeContainer = ({ visible, setVisible }) => {
     )
   }
 
-  const deleteFileItem = (id) => () => {
+  const deleteFileItem = (id) => () =>
     setFilesSelected((prevItems) => prevItems.filter((item) => item.id !== id))
+
+  const addUploadedFile = (file) => {
+    setLoading(true)
+    setUploadedFiles((prevItems) => [file, ...prevItems])
+    setLoading(false)
   }
 
-  const onDrop = useCallback(
-    (acceptedFiles) => {
-      acceptedFiles.forEach((file) => {
-        const fileItem = {
-          id: nanoid(),
-          status: null,
-          progress: 0,
-          file: null,
-          details: { ...getFileDetails(file), course },
-        }
+  const onDrop = useCallback((acceptedFiles) => {
+    acceptedFiles.forEach((file) => {
+      const fileItem = {
+        id: nanoid(),
+        status: null,
+        progress: 0,
+        file,
+        details: getFileDetails(file),
+      }
 
-        setFilesSelected((prevItems) => [...prevItems, fileItem])
-      })
-    },
-    [course]
-  )
+      setFilesSelected((prevItems) => [...prevItems, fileItem])
+    })
+  }, [])
 
   return (
     <>
@@ -76,12 +74,7 @@ const ContributeContainer = ({ visible, setVisible }) => {
         <PageTitle>Contribute</PageTitle>
       </PageHeading>
 
-      {/* <span>
-        By contributing you accept our{' '}
-        <Link to="/contribute/guidelines">Community Guidelines</Link> before
-      </span> */}
-
-      <DragNDrop onDrop={onDrop}>{/*  */}</DragNDrop>
+      <DragNDrop onDrop={onDrop} />
 
       {filesSelected.length > 0 && (
         <FileList>
@@ -93,6 +86,7 @@ const ContributeContainer = ({ visible, setVisible }) => {
               fileItem={fileItem}
               updateFileItem={updateFileItem(fileItem.id)}
               deleteFileItem={deleteFileItem(fileItem.id)}
+              addUploadedFile={addUploadedFile}
             />
           ))}
         </FileList>

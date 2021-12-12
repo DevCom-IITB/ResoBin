@@ -13,6 +13,10 @@ const ButtonSquare = styled(Button)`
     background: ${({ theme }) => theme.logo};
   }
 
+  .anticon.anticon-loading.anticon-spin {
+    padding: 0;
+  }
+
   &:hover,
   &:active {
     opacity: 0.9;

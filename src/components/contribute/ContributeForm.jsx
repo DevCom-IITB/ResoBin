@@ -2,13 +2,16 @@ import { Button, Input, Select } from 'antd'
 import { kebabCase } from 'lodash'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
-import { CloudUpload, Trash } from 'styled-icons/heroicons-outline'
 
 import { ButtonSquare, Form } from 'components/shared'
 import tags from 'data/tags.json'
+import { useQueryString } from 'hooks'
 import { selectCourseListMinified } from 'store/courseSlice'
 
 const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
+  const { getQueryString } = useQueryString()
+  const course = getQueryString('course')
+
   const tagOptions = tags.resourceTags.map((tag) => ({
     label: tag,
     value: kebabCase(tag),
@@ -28,23 +31,16 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
       name="contribute"
       onFinish={handleUpload}
       layout="vertical"
-      initialValues={{
-        ...fileItem.details,
-        // description: 'No description available.',
-      }}
+      initialValues={{ ...fileItem.details, course }}
     >
       <Form.Item
         name="title"
-        // label="Title"
         rules={[{ required: true, message: 'Please input the title!' }]}
       >
         <Input placeholder="Title" />
       </Form.Item>
 
-      <Form.Item
-        name="description"
-        // label="Description"
-      >
+      <Form.Item name="description">
         <Input.TextArea
           autoSize={{ minRows: 1, maxRows: 10 }}
           placeholder="Description"
@@ -53,16 +49,12 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
 
       <Form.Item
         name="course"
-        // label="Course"
         rules={[{ required: true, message: 'Please input the course!' }]}
       >
         <Select showSearch placeholder="Course" options={courseOptions} />
       </Form.Item>
 
-      <Form.Item
-        name="tags"
-        // label="Tags"
-      >
+      <Form.Item name="tags">
         <Select
           mode="tags"
           placeholder="Add tags"
@@ -75,25 +67,18 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
       <ButtonContainer>
         <ButtonSquare
           type="primary"
-          icon={<CloudUpload size="16" />}
-          onClick={handleUpload}
+          htmlType="submit"
           loading={fileItem.status === 'uploading'}
         >
-          Upload
+          Submit
         </ButtonSquare>
 
         <Button
           type="primary"
           danger
-          icon={<Trash size="16" />}
           onClick={handleDelete}
-          loading={fileItem.status === 'uploading'}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            borderRadius: '0.5rem',
-            gap: '0.5rem',
-          }}
+          hidden={fileItem.status === 'uploading'}
+          style={{ borderRadius: '0.5rem' }}
         >
           Delete
         </Button>
