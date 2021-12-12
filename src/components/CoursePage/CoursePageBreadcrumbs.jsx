@@ -6,8 +6,8 @@ import styled from 'styled-components/macro'
 import { useResponsive } from 'hooks'
 
 const CoursePageBreadcrumbs = ({ courseTitle }) => {
-  const { isMobile } = useResponsive()
-  if (isMobile) return null
+  const { isMobileS } = useResponsive()
+  if (isMobileS) return null
 
   return (
     <StyledBreadcrumb separator={<StyledIcon Icon={ChevronRight} />}>

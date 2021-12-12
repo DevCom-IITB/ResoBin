@@ -1,6 +1,7 @@
 import { Tooltip } from 'antd'
 import styled from 'styled-components/macro'
 
+import { device } from 'styles/responsive'
 import { colorPicker } from 'styles/utils'
 
 // ? repeat n times a Box component with color = color
@@ -32,9 +33,9 @@ const CourseWorkload = ({ workload }) => {
     return <Title style={{ opacity: 0.8 }}>Workload not found</Title>
 
   return (
-    <div>
+    <Container>
       <Title>Workload</Title>
-      <Container>
+      <WorkloadContainer>
         {workloadItems.map(({ title, value }, idx) => (
           <CourseWorkloadItem
             key={title}
@@ -44,14 +45,23 @@ const CourseWorkload = ({ workload }) => {
             style={{ marginLeft: idx > 0 ? '0' : 'initial' }}
           />
         ))}
-      </Container>
-    </div>
+      </WorkloadContainer>
+    </Container>
   )
 }
 
 export default CourseWorkload
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media ${device.max.xs} {
+    align-items: center;
+  }
+`
+
+const WorkloadContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 10rem;
