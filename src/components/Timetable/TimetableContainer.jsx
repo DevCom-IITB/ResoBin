@@ -164,7 +164,7 @@ const TimetableSemesterTitle = styled.div`
   gap: 0.5rem;
   align-items: center;
   justify-content: center;
-  margin: 0.75rem 0;
+  margin-bottom: 1rem;
   color: white;
   font-size: 1.25rem;
   text-transform: capitalize;

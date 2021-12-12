@@ -51,14 +51,18 @@ const CourseResourceContainer = () => {
           <ButtonSquare
             type="primary"
             onClick={redirectContribute}
-            icon={<CloudUpload size="18" style={{ marginRight: '0.25rem' }} />}
+            icon={<CloudUpload size="16" />}
           >
             Upload
           </ButtonSquare>
         </ButtonContainer>
       </Header>
 
-      <CourseResourceGrid items={resources} />
+      {resources.length ? (
+        <CourseResourceGrid items={resources} />
+      ) : (
+        <span style={{ fontSize: '0.875rem' }}>No resources found</span>
+      )}
     </>
   )
 }
@@ -74,5 +78,5 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 0;
+  margin: 1rem 0;
 `

@@ -1,9 +1,10 @@
 import { Tooltip } from 'antd'
 import styled from 'styled-components/macro'
 
+import { device } from 'styles/responsive'
 import { colorPicker } from 'styles/utils'
 
-// repeat n times a Box component with color = color
+// ? repeat n times a Box component with color = color
 const CourseWorkloadItem = ({ value, color, title }) =>
   value <= 0 ? null : (
     <BoxContainer
@@ -28,10 +29,13 @@ const CourseWorkload = ({ workload }) => {
 
   const totalWorkload = workloadItems.reduce((acc, item) => acc + item.value, 0)
 
-  return totalWorkload > 0 ? (
-    <>
+  if (totalWorkload === 0)
+    return <Title style={{ opacity: 0.8 }}>Workload not found</Title>
+
+  return (
+    <Container>
       <Title>Workload</Title>
-      <Container>
+      <WorkloadContainer>
         {workloadItems.map(({ title, value }, idx) => (
           <CourseWorkloadItem
             key={title}
@@ -41,12 +45,8 @@ const CourseWorkload = ({ workload }) => {
             style={{ marginLeft: idx > 0 ? '0' : 'initial' }}
           />
         ))}
-      </Container>
-    </>
-  ) : (
-    <Title style={{ marginBottom: '1rem', opacity: 0.8 }}>
-      Workload not found
-    </Title>
+      </WorkloadContainer>
+    </Container>
   )
 }
 
@@ -54,9 +54,17 @@ export default CourseWorkload
 
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
+
+  @media ${device.max.xs} {
+    align-items: center;
+  }
+`
+
+const WorkloadContainer = styled.div`
+  display: flex;
   flex-wrap: wrap;
   width: 10rem;
-  margin-bottom: 1rem;
   padding: 4px;
   overflow: auto;
   background: ${({ theme }) => theme.darksecondary};
@@ -79,11 +87,8 @@ const Box = styled.div`
   border-radius: 4px;
 `
 
-const Title = styled.span`
-  display: block;
+const Title = styled.h3`
   margin: 0 0.25rem 0.25rem;
   color: ${({ theme }) => theme.textColor};
   font-weight: 400;
-  font-size: 0.75rem;
-  letter-spacing: 1.5px;
 `

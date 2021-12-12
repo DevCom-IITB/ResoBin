@@ -1,26 +1,41 @@
-import { Divider } from 'antd'
 import styled from 'styled-components/macro'
 
+import { FavoriteToggle } from 'components/Favourites'
+import { Divider } from 'components/shared'
+import { TimetableSelector } from 'components/Timetable'
 import { device, fontSize } from 'styles/responsive'
 
 import CourseWorkload from './CourseWorkload'
 
 const CoursePageBody = ({ courseData }) => {
-  return (
-    <Container id="details">
-      <CourseCode>{courseData.code}</CourseCode>
-      <CourseTitle>{courseData.title}</CourseTitle>
-      <CourseDepartment>
-        {courseData.department.name} | {courseData.credits} credits
-      </CourseDepartment>
-      <Divider
-        style={{ backgroundColor: '#ffffff', margin: '1rem 0', opacity: 0.3 }}
-      />
-      <CourseDescription>
-        {courseData.description || 'Not available'}
-      </CourseDescription>
+  const { code, title, department, credits, description, workload, semester } =
+    courseData
 
-      <CourseWorkload workload={courseData.workload} />
+  return (
+    <Container>
+      <CourseInfo>
+        <h1>{code}</h1>
+        <FavoriteContainer>
+          <FavoriteToggle code={code} />
+        </FavoriteContainer>
+
+        <h2>{title}</h2>
+        <h3>
+          {department.name} &ensp;&#9679;&ensp; {credits} credits
+        </h3>
+
+        <Divider margin="0.25rem 0" />
+
+        <p>{description || 'Not available'}</p>
+      </CourseInfo>
+
+      <Divider margin="0.75rem 0" />
+
+      <FlexGap>
+        <CourseWorkload workload={workload} />
+
+        <TimetableSelector semester={semester} />
+      </FlexGap>
     </Container>
   )
 }
@@ -28,36 +43,70 @@ const CoursePageBody = ({ courseData }) => {
 export default CoursePageBody
 
 const Container = styled.div`
-  margin-bottom: 0.75rem;
+  position: relative;
+  margin-bottom: 1.5rem;
   padding: 1.5rem 1rem;
-  color: ${({ theme }) => theme.textColor};
   background: ${({ theme }) => theme.secondary};
   border-radius: ${({ theme }) => theme.borderRadius};
 
-  @media ${device.max.md} {
+  @media ${device.max.xs} {
     margin-top: 0.75rem;
+    padding: 0.75rem;
   }
 `
 
-const CourseCode = styled.h1`
-  color: ${({ theme }) => theme.primary};
-  font-weight: 600;
-  font-size: ${fontSize.responsive.$4xl};
+const CourseInfo = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  color: ${({ theme }) => theme.textColor};
+
+  h1 {
+    line-height: 1;
+    color: ${({ theme }) => theme.primary};
+    font-weight: 600;
+    font-size: ${fontSize.responsive.$4xl};
+  }
+
+  h2 {
+    font-size: ${fontSize.responsive.xl};
+  }
+
+  h3 {
+    display: flex;
+    font-weight: 400;
+    font-size: ${fontSize.responsive.xs};
+  }
+
+  p {
+    font-weight: 300;
+    font-size: ${fontSize.responsive.sm};
+    text-align: justify;
+    font-family: 'Source Sans Pro', sans-serif;
+    margin: 0;
+  }
 `
 
-const CourseTitle = styled.h1`
-  font-size: ${fontSize.responsive.$2xl};
+const FavoriteContainer = styled.div`
+  position: absolute;
+  margin: 1.5rem 1rem;
+  right: 0;
+  top: 0;
+
+  @media ${device.max.xs} {
+    margin: 0.75rem 0.5rem;
+    flex-direction: column;
+  }
 `
 
-const CourseDepartment = styled.h3`
-  margin-top: 0.5rem;
-  font-weight: 400;
-  font-size: ${fontSize.responsive.sm};
-`
+const FlexGap = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
 
-const CourseDescription = styled.p`
-  color: lightgray;
-  font-weight: 300;
-  font-size: ${fontSize.responsive.md};
-  text-align: justify;
+  @media ${device.max.xs} {
+    flex-direction: column;
+    align-items: center;
+  }
 `

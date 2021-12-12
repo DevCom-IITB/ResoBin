@@ -2,7 +2,7 @@ import styled from 'styled-components/macro'
 
 export const PageHeading = styled.h3`
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   margin: 0.75rem;
 `

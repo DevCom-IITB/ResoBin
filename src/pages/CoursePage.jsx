@@ -3,10 +3,7 @@ import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Navigate, useLocation, useParams } from 'react-router-dom'
 
-import {
-  CoursePageContainer,
-  CoursePageBreadcrumbs,
-} from 'components/CoursePage'
+import { CoursePageContainer } from 'components/CoursePage'
 import { LoaderAnimation, PageContainer, toast } from 'components/shared'
 import { API } from 'config/api'
 import { coursePageUrl } from 'helpers/format'
@@ -19,8 +16,8 @@ const CoursePage = () => {
 
   useEffect(() => {
     const getCourseData = async () => {
-      setLoading(true)
       try {
+        setLoading(true)
         const response = await API.courses.read({ code })
         setCourseData(response)
       } catch (error) {
@@ -37,20 +34,17 @@ const CoursePage = () => {
   if (isEmpty(courseData)) return <Navigate to="/404" replace />
 
   // ? redirect to canonical URL (eg: /courses/CL152/introduction-to-chemical-engineering)
-  const pathname = coursePageUrl(courseData.code, courseData.title)
-  const title = `${courseData.code}: ${courseData.title}`
-
-  if (titleSlug !== kebabCase(courseData.title))
+  if (titleSlug !== kebabCase(courseData.title)) {
+    const pathname = coursePageUrl(courseData.code, courseData.title)
     return <Navigate to={{ ...location, pathname }} replace />
+  }
 
   return (
     <PageContainer>
       <Helmet>
-        <title>{`${title} - ResoBin`}</title>
+        <title>{`${courseData.code}: ${courseData.title} - ResoBin`}</title>
         <meta property="description" content={courseData.description} />
       </Helmet>
-
-      <CoursePageBreadcrumbs courseTitle={title} />
 
       <CoursePageContainer courseData={courseData} />
     </PageContainer>

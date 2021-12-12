@@ -1,44 +1,30 @@
-import { Button, Input, Progress, Select, Tooltip } from 'antd'
-import { kebabCase } from 'lodash'
-import { rgba } from 'polished'
-import { useDropzone } from 'react-dropzone'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
-import { X, ExclamationCircle, Upload } from 'styled-icons/heroicons-outline'
+import { DocumentAdd } from 'styled-icons/heroicons-outline'
 
-import { Form, LoaderAnimation, toast } from 'components/shared'
-import { ButtonIconDanger } from 'components/shared/Buttons'
+import { LoaderAnimation, Progress, toast } from 'components/shared'
 import { API } from 'config/api'
-import { defaultFile, fileTypes, getFileDetails } from 'data/CourseResources'
-import tags from 'data/tags.json'
-import {
-  selectCourseListMinified,
-  selectCourseAPILoading,
-} from 'store/courseSlice'
+import { selectCourseAPILoading } from 'store/courseSlice'
+import { device } from 'styles/responsive'
 
-const ToolTipTitle = () => (
-  <TooltipContainer>
-    <ExclamationCircle size="16" />
-    <span>Please upload valid file</span>
-  </TooltipContainer>
-)
+import ContributeForm from './ContributeForm'
+import { DragNDropSub } from './DragNDrop'
+import { getFileDetails } from './fileDetails'
 
-const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
+const ContributeItem = ({
+  fileItem,
+  updateFileItem,
+  deleteFileItem,
+  addUploadedFile,
+}) => {
   // ? If no file is valid, reset the file list item
   const onDrop = (acceptedFiles) => {
-    if (acceptedFiles.length === 0) {
-      updateFileItem({
-        file: null,
-        status: 'error',
-        details: defaultFile,
-      })
-    } else {
+    if (acceptedFiles.length !== 0)
       updateFileItem({
         file: acceptedFiles[0],
         status: 'success',
-        details: getFileDetails(acceptedFiles[0], fileItem.details),
+        details: getFileDetails(acceptedFiles[0]),
       })
-    }
   }
 
   const onUploadProgress = (event) =>
@@ -46,188 +32,72 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
       progress: Math.round((100 * event.loaded) / event.total),
     })
 
-  const isValid = (fileDetails) => {
-    if (fileDetails.status === 'success') return true
-    return false
-  }
-
-  const handleUpload = async () => {
+  const handleUpload = async (fileDetails) => {
     updateFileItem({ status: 'uploading' })
 
-    if (!isValid(fileItem)) {
+    const MAX_FILE_SIZE = 26214400 // 25MB
+
+    if (!fileItem.file || fileItem.file.size > MAX_FILE_SIZE) {
       updateFileItem({ status: 'error' })
       return
     }
 
+    const { title, course, description, tags } = fileDetails
+
     const fd = new FormData()
     fd.append('file', fileItem.file, fileItem.file.name)
-    fd.append('title', fileItem.details.title)
-    fd.append('course', fileItem.details.course)
-    fd.append('description', fileItem.details.description ?? '')
-    fd.append('tags', JSON.stringify(fileItem.details.tags))
+    fd.append('title', title)
+    fd.append('course', course)
+    fd.append('description', description || 'No description available.')
+    fd.append('tags', JSON.stringify(tags))
 
     try {
       const response = await API.resources.create({
         payload: fd,
         onUploadProgress,
       })
-      const { id, timestamp, url } = response
 
-      updateFileItem({
-        status: 'uploaded',
-        response: { id, timestamp, url },
-      })
+      addUploadedFile(response)
+      deleteFileItem()
     } catch (error) {
       toast({ status: 'error', content: error })
       updateFileItem({ status: 'error', progress: 0 })
     }
   }
 
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: fileTypes.map((file) => file.type),
-    maxFiles: 1,
-    onDrop,
-    // onDragEnter: () => setStatus('active'),
-    // onDragLeave: () => setStatus('inactive'),
-    // onDragOver: () => setStatus('active'),
-  })
-
-  const handleDelete = async () => {
-    if (fileItem.status === 'uploaded') {
-      try {
-        await API.resources.delete({ id: fileItem.response.id })
-      } catch (error) {
-        toast({ status: 'error', content: error })
-        updateFileItem({ status: 'error', progress: 0 })
-        return
-      }
-    }
-
-    deleteFileItem(fileItem.id)
-  }
-
-  const tagOptions = tags.resourceTags.map((tag) => ({
-    label: tag,
-    value: kebabCase(tag),
-  }))
-
-  const courseOptions = useSelector(selectCourseListMinified)?.map(
-    ({ code, title }) => ({
-      label: `${code}: ${title}`,
-      value: code,
-    })
-  )
-
   const APILoading = useSelector(selectCourseAPILoading)
+  if (APILoading) return <LoaderAnimation />
 
-  return APILoading ? (
-    <LoaderAnimation />
-  ) : (
+  return (
     <ItemContainer>
-      <StyledTooltip
-        color="white"
-        visible={fileItem.status === 'error'}
-        title={<ToolTipTitle />}
-      >
-        <UploadBox {...getRootProps()} status={fileItem.status}>
-          <img src={fileItem.details.icon} className="icon" alt="icon" />
+      <DragNDropSub onDrop={onDrop}>
+        {/* <img src={fileItem.details.icon} className="icon" alt="icon" /> */}
+        <DocumentAdd size="24" />
 
-          <h3>
-            {fileItem.details.name}
-            <br />
-            {fileItem.details.size && (
-              <small>{` (${fileItem.details.size})`}</small>
-            )}
-          </h3>
+        <h2>
+          {fileItem.details.name}
+          <br />
+          {fileItem.details.size && (
+            <small>{` (${fileItem.details.size})`}</small>
+          )}
+        </h2>
 
-          {/* File input */}
-          <input {...getInputProps()} />
-        </UploadBox>
-
-        {fileItem.progress > 0 && fileItem.progress < 100 && (
-          <Progress size="small" percent={fileItem.progress} />
+        {fileItem.progress > 0 && (
+          <Progress
+            size="small"
+            percent={fileItem.progress}
+            style={{
+              top: '10px',
+              marginTop: '-10px',
+            }}
+          />
         )}
-      </StyledTooltip>
+      </DragNDropSub>
 
-      <Form style={{ marginLeft: '1rem', gap: '1rem' }}>
-        <Input
-          type="text"
-          name="uploadTitle"
-          placeholder="Title"
-          value={fileItem.details.title}
-          onChange={(e) =>
-            updateFileItem({
-              details: {
-                ...fileItem.details,
-                title: e.target.value,
-              },
-            })
-          }
-        />
-
-        <Input.TextArea
-          autoSize={{ minRows: 1, maxRows: 10 }}
-          placeholder="Description"
-          value={fileItem.details.description}
-          defaultValue="Not available"
-          onChange={(e) =>
-            updateFileItem({
-              details: {
-                ...fileItem.details,
-                description: e.target.value,
-              },
-            })
-          }
-        />
-
-        <Select
-          showSearch
-          placeholder="Course"
-          options={courseOptions}
-          value={fileItem.details.course}
-          onChange={(value) =>
-            updateFileItem({
-              details: {
-                ...fileItem.details,
-                course: value,
-              },
-            })
-          }
-        />
-
-        <Select
-          mode="tags"
-          placeholder="Add tags"
-          showArrow
-          tokenSeparators={[',']}
-          options={tagOptions}
-          value={fileItem.details.tags}
-          onChange={(values) =>
-            updateFileItem({
-              details: {
-                ...fileItem.details,
-                tags: values,
-              },
-            })
-          }
-        />
-
-        <Button
-          style={{ marginTop: '0.5rem' }}
-          icon={<Upload size="18" />}
-          onClick={handleUpload}
-          loading={fileItem.status === 'uploading'}
-        >
-          Upload
-        </Button>
-      </Form>
-
-      <ButtonIconDanger
-        icon={<X size="20" />}
-        popover={fileItem.details !== defaultFile}
-        popoverTitle="Discard this upload?"
-        onClick={handleDelete}
-        defaultstyle={{ marginLeft: '0.5rem' }}
+      <ContributeForm
+        fileItem={fileItem}
+        handleUpload={handleUpload}
+        handleDelete={deleteFileItem}
       />
     </ItemContainer>
   )
@@ -235,49 +105,15 @@ const ContributeItem = ({ fileItem, updateFileItem, deleteFileItem }) => {
 
 export default ContributeItem
 
-const StyledTooltip = styled(Tooltip)`
-  cursor: pointer;
-`
-
-const TooltipContainer = styled.div`
-  display: flex;
-  gap: 3px;
-  align-items: center;
-  justify-content: center;
-  color: red;
-`
-
 const ItemContainer = styled.div`
   display: flex;
-  padding: 1.5rem 1rem;
+  gap: 1rem;
+  padding: 1rem 0.75rem;
   background-color: ${({ theme }) => theme.secondary};
   border-radius: 0.5rem;
-`
 
-const UploadBox = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  width: 12rem;
-  height: 100%;
-  padding: 0.5rem;
-  color: ${({ status, theme }) =>
-    status === 'success' ? theme.textColor : theme.textColorInactive};
-  background-color: transparent;
-
-  /* padding-bottom: 1rem; */
-  border: 2px dashed ${({ theme }) => rgba(theme.textColorInactive, 0.3)};
-  border-radius: 0.5rem;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.darksecondary};
-  }
-
-  img {
-    width: 1.5rem;
-  }
-
-  span {
-    font-size: 0.75rem;
+  @media ${device.max.xs} {
+    padding: 1rem 0.75rem;
+    flex-direction: column;
   }
 `

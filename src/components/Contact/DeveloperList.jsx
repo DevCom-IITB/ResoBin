@@ -4,7 +4,6 @@ import styled from 'styled-components/macro'
 
 import { Aside, Card, CardSkeleton, toast } from 'components/shared'
 import { API } from 'config/api'
-import { useResponsive } from 'hooks'
 
 const DeveloperItem = ({ name, avatar, url, contributions }) => {
   return (
@@ -30,8 +29,6 @@ const DeveloperSkeleton = () => (
 )
 
 const ContributorList = () => {
-  const { isDesktop } = useResponsive()
-
   const [contributors, setContributors] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -62,7 +59,6 @@ const ContributorList = () => {
   return (
     <Aside
       title="Contributors"
-      visible={isDesktop}
       loading={loading}
       loadingComponent={<DeveloperSkeleton />}
     >
