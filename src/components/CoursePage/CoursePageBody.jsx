@@ -29,6 +29,8 @@ const CoursePageBody = ({ courseData }) => {
         <p>{description || 'Not available'}</p>
       </CourseInfo>
 
+      <Divider margin="0.75rem 0" />
+
       <FlexGap>
         <CourseWorkload workload={workload} />
 
@@ -81,6 +83,7 @@ const CourseInfo = styled.div`
     font-size: ${fontSize.responsive.sm};
     text-align: justify;
     font-family: 'Source Sans Pro', sans-serif;
+    margin: 0;
   }
 `
 
