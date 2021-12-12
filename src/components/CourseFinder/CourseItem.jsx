@@ -1,16 +1,19 @@
-import { Bookmark, BookmarkOutline } from '@styled-icons/zondicons'
+import { ChatAlt, DocumentText } from '@styled-icons/heroicons-outline'
 import { Tag } from 'antd'
-import { Fragment, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { Fragment } from 'react'
+import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { ButtonIcon, toast, Typography } from 'components/shared'
-import { API } from 'config/api'
+import { CourseContentRequestButtonIcon } from 'components/CoursePage/CourseContentRequest'
+import { FavoriteToggle } from 'components/Favourites'
+import { Divider, Typography, CardSplit } from 'components/shared'
+import { ButtonSquareLink } from 'components/shared/Buttons'
+import TimetableSelector from 'components/Timetable'
 import defaultTags from 'data/tags.json'
 import { coursePageUrl } from 'helpers/format'
+import { useResponsive } from 'hooks'
 import { selectDepartments } from 'store/courseSlice'
-import { selectFavouriteStatus, updateFavourite } from 'store/userSlice'
 import { device, fontSize } from 'styles/responsive'
 import { colorPicker } from 'styles/utils'
 
@@ -45,30 +48,9 @@ const HighlightMatches = ({ content }) => {
 }
 
 const CourseItemMain = ({ courseData }) => {
-  const dispatch = useDispatch()
   const { code, credits, department, title, description, tags } = courseData
 
-  const [loading, setLoading] = useState(false)
-
-  const favourite = useSelector(selectFavouriteStatus(code))
   const departmentList = useSelector(selectDepartments)
-
-  const favouriteClick = async () => {
-    try {
-      setLoading(true)
-      if (favourite) {
-        await API.courses.favorite.remove({ code })
-      } else {
-        await API.courses.favorite.add({ code })
-      }
-
-      dispatch(updateFavourite(code))
-    } catch (error) {
-      toast({ status: 'error', content: error })
-    } finally {
-      setLoading(false)
-    }
-  }
 
   return (
     <>
@@ -98,15 +80,7 @@ const CourseItemMain = ({ courseData }) => {
             ))}
           </TagsContainer>
 
-          <ButtonIcon
-            tooltip="Add to favorites"
-            onClick={favouriteClick}
-            icon={
-              favourite ? <Bookmark size="25" /> : <BookmarkOutline size="25" />
-            }
-            color="white"
-            loading={loading}
-          />
+          <FavoriteToggle code={code} />
         </RightIcons>
       </SubTitle>
 
@@ -130,7 +104,74 @@ const CourseItemMain = ({ courseData }) => {
   )
 }
 
-export default CourseItemMain
+// TODO: Improve responsiveness
+const CourseItemSub = ({ courseData }) => {
+  const { isMobile, isMobileS } = useResponsive()
+
+  const { code, title, semester, reviews, resources } = courseData
+
+  const reviewCount = reviews?.length
+  const resourceCount = resources?.length
+
+  return (
+    <>
+      <TimetableSelector semester={semester} />
+
+      {(isMobileS || !isMobile) && <Divider margin="0.75rem 0" />}
+      {isMobile && !isMobileS && (
+        <Divider style={{ width: '1px' }} type="vertical" />
+      )}
+
+      <div>
+        <FlexGap style={{ marginBottom: '0.75rem' }}>
+          <ButtonSquareLink
+            to={`${coursePageUrl(code, title)}#reviews`}
+            style={{ width: '100%', borderRadius: '0.5rem 0 0 0.5rem' }}
+          >
+            <ChatAlt size="16" />
+            Reviews {reviewCount > 0 && `(${reviewCount})`}
+          </ButtonSquareLink>
+
+          <CourseContentRequestButtonIcon
+            code={code}
+            type="reviews"
+            tooltip="Request reviews"
+            style={{ borderRadius: '0 0.5rem 0.5rem 0' }}
+          />
+        </FlexGap>
+
+        <FlexGap>
+          <ButtonSquareLink
+            style={{ width: '100%', borderRadius: '0.5rem 0 0 0.5rem' }}
+            to={`${coursePageUrl(code, title)}#resources`}
+          >
+            <DocumentText size="16" />
+            Resources {resourceCount > 0 && `(${resourceCount})`}
+          </ButtonSquareLink>
+
+          <CourseContentRequestButtonIcon
+            code={code}
+            type="resources"
+            tooltip="Request resources"
+            style={{ borderRadius: '0 0.5rem 0.5rem 0' }}
+          />
+        </FlexGap>
+      </div>
+    </>
+  )
+}
+
+const CourseItem = ({ courseData }) => {
+  return (
+    <CardSplit
+      main={<CourseItemMain courseData={courseData} />}
+      sub={<CourseItemSub courseData={courseData} />}
+      subWidth="13rem"
+    />
+  )
+}
+
+export default CourseItem
 
 const TitleContainer = styled(Link)`
   display: flex;
@@ -221,4 +262,10 @@ const StyledTag = styled(Tag)`
   border-radius: 0.5rem;
   border: none;
   background: ${({ theme }) => theme.darksecondary};
+`
+
+const FlexGap = styled.div`
+  display: flex;
+  gap: 0.25rem;
+  width: 100%;
 `

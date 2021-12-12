@@ -1,23 +1,15 @@
-import {
-  Calendar,
-  ChatAlt,
-  ChevronDown,
-  DocumentText,
-} from '@styled-icons/heroicons-outline'
+import { Calendar, ChevronDown } from '@styled-icons/heroicons-outline'
 import { Dropdown, Menu } from 'antd'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { CourseContentRequestButtonIcon } from 'components/CoursePage/CourseContentRequest'
-import { ButtonSwitch, Divider, Tabs, toast } from 'components/shared'
-import { ButtonSquareLink } from 'components/shared/Buttons'
+import { ButtonSwitch, Tabs, toast } from 'components/shared'
 import { API } from 'config/api'
-import { coursePageUrl } from 'helpers/format'
-import { useResponsive } from 'hooks'
 import { selectCurrentSemester } from 'store/courseSlice'
 import { selectAllTimetable, updateTimetable } from 'store/userSlice'
 
+// ? semester = ['autumn', 'spring']
 const SemesterItem = ({ data }) => {
   const dispatch = useDispatch()
   const userTimetableList = useSelector(selectAllTimetable)
@@ -106,21 +98,13 @@ const SemesterItem = ({ data }) => {
   )
 }
 
-// TODO: Improve responsiveness
-// ? semester = ['autumn', 'spring']
-const CourseItemSub = ({ courseData }) => {
-  const { isMobile, isMobileS } = useResponsive()
-
-  const { code, title, semester, reviews, resources } = courseData
+const TimetableSelector = ({ semester }) => {
   const latestSemester = useSelector(selectCurrentSemester)
 
   const timetable = {
     autumn: semester?.find(({ season }) => season === 'autumn').timetable,
     spring: semester?.find(({ season }) => season === 'spring').timetable,
   }
-
-  const reviewCount = reviews?.length
-  const resourceCount = resources?.length
 
   let semTabInitialValue = latestSemester?.season
   if (!timetable.spring.length && !timetable.autumn.length) {
@@ -129,81 +113,34 @@ const CourseItemSub = ({ courseData }) => {
     semTabInitialValue = 'spring'
   }
 
-  return (
-    <>
-      {semTabInitialValue ? (
-        <Tabs
-          tabheight="1.75rem"
-          tabwidth="6.5rem"
-          defaultActiveKey={semTabInitialValue}
-        >
-          <Tabs.TabPane
-            key="autumn"
-            tab="Autumn"
-            disabled={!timetable.autumn.length}
-          >
-            <SemesterItem semester="autumn" data={timetable.autumn} />
-          </Tabs.TabPane>
+  return semTabInitialValue ? (
+    <Tabs
+      tabheight="1.75rem"
+      tabwidth="6.5rem"
+      defaultActiveKey={semTabInitialValue}
+    >
+      <Tabs.TabPane
+        key="autumn"
+        tab="Autumn"
+        disabled={!timetable.autumn.length}
+      >
+        <SemesterItem semester="autumn" data={timetable.autumn} />
+      </Tabs.TabPane>
 
-          <Tabs.TabPane
-            key="spring"
-            tab="Spring"
-            disabled={!timetable.spring.length}
-          >
-            <SemesterItem semester="spring" data={timetable.spring} />
-          </Tabs.TabPane>
-        </Tabs>
-      ) : (
-        <Title style={{ margin: 0, opacity: 0.8 }}>
-          Timetable entry not found
-        </Title>
-      )}
-
-      {(isMobileS || !isMobile) && <Divider margin="0.75rem 0" />}
-      {isMobile && !isMobileS && (
-        <Divider style={{ width: '1px' }} type="vertical" />
-      )}
-
-      <div>
-        <FlexGap style={{ marginBottom: '0.75rem' }}>
-          <ButtonSquareLink
-            to={`${coursePageUrl(code, title)}#reviews`}
-            style={{ width: '100%', borderRadius: '0.5rem 0 0 0.5rem' }}
-          >
-            <ChatAlt size="16" />
-            Reviews {reviewCount > 0 && `(${reviewCount})`}
-          </ButtonSquareLink>
-
-          <CourseContentRequestButtonIcon
-            code={code}
-            type="reviews"
-            tooltip="Request reviews"
-            style={{ borderRadius: '0 0.5rem 0.5rem 0' }}
-          />
-        </FlexGap>
-
-        <FlexGap>
-          <ButtonSquareLink
-            style={{ width: '100%', borderRadius: '0.5rem 0 0 0.5rem' }}
-            to={`${coursePageUrl(code, title)}#resources`}
-          >
-            <DocumentText size="16" />
-            Resources {resourceCount > 0 && `(${resourceCount})`}
-          </ButtonSquareLink>
-
-          <CourseContentRequestButtonIcon
-            code={code}
-            type="resources"
-            tooltip="Request resources"
-            style={{ borderRadius: '0 0.5rem 0.5rem 0' }}
-          />
-        </FlexGap>
-      </div>
-    </>
+      <Tabs.TabPane
+        key="spring"
+        tab="Spring"
+        disabled={!timetable.spring.length}
+      >
+        <SemesterItem semester="spring" data={timetable.spring} />
+      </Tabs.TabPane>
+    </Tabs>
+  ) : (
+    <Title style={{ margin: 0, opacity: 0.8 }}>Timetable entry not found</Title>
   )
 }
 
-export default CourseItemSub
+export default TimetableSelector
 
 const Title = styled.p`
   display: block;
@@ -218,11 +155,5 @@ const SpaceBetween = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-`
-
-const FlexGap = styled.div`
-  display: flex;
-  gap: 0.25rem;
   width: 100%;
 `
