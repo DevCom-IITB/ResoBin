@@ -76,6 +76,11 @@ const ContributeContainer = ({ visible, setVisible }) => {
         <PageTitle>Contribute</PageTitle>
       </PageHeading>
 
+      {/* <span>
+        By contributing you accept our{' '}
+        <Link to="/contribute/guidelines">Community Guidelines</Link> before
+      </span> */}
+
       <DragNDrop onDrop={onDrop}>{/*  */}</DragNDrop>
 
       {filesSelected.length > 0 && (
