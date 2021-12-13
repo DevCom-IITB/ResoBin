@@ -90,7 +90,7 @@ const Container = styled.nav`
   justify-content: space-between;
   width: 100%;
   height: 3rem;
-  padding: 0 1.5rem;
+  padding: 0 0.75rem;
   background: ${({ theme }) => theme.secondary};
   box-shadow: 0 0 0.5rem rgb(0 0 0 / 50%);
 

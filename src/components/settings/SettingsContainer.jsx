@@ -33,8 +33,8 @@ const SettingsContainer = () => {
           main={<Heading>Dark mode</Heading>}
           sub={
             <Switch
-              checkedChildren={<Moon size="18" />}
-              unCheckedChildren={<Sun size="18" />}
+              checkedChildren={<Moon size="16" />}
+              unCheckedChildren={<Sun size="16" />}
               defaultChecked={theme === 'dark'}
               onChange={switchTheme}
             />

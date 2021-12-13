@@ -7,12 +7,16 @@ import { CourseReviewContainer } from 'components/CourseReview'
 import { Aside, PageSubtitle, Tabs } from 'components/shared'
 
 import CoursePageBody from './CoursePageBody'
+import CoursePageBreadcrumbs from './CoursePageBreadcrumbs'
 
 const CoursePageContainer = ({ courseData }) => {
   const { hash } = useLocation()
+  const title = `${courseData.code}: ${courseData.title}`
 
   return (
     <>
+      <CoursePageBreadcrumbs courseTitle={title} />
+
       <CoursePageBody courseData={courseData} />
 
       <Container>
@@ -57,6 +61,7 @@ export default CoursePageContainer
 
 const Container = styled.div`
   padding: 1.5rem 1rem;
+  margin-bottom: 1rem;
   color: ${({ theme }) => theme.textColor};
   background: ${({ theme }) => theme.secondary};
   border-radius: ${({ theme }) => theme.borderRadius};

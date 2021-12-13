@@ -24,7 +24,12 @@ export const fileTypes = [
 ]
 
 export const defaultFile = {
-  name: 'Upload document',
+  name: (
+    <div style={{ textAlign: 'center' }}>
+      <h3>Select a document</h3>
+      <code>({fileTypes.map((type) => `.${type.extention}`).join(', ')})</code>
+    </div>
+  ),
   title: null,
   description: null,
   tags: [],
@@ -49,6 +54,8 @@ const printSize = (_size) => {
   return `${Math.round(size * 100) / 100} ${sizes[i]}`
 }
 
+// ? creates initial title for a file
+// * remove non letters and numbers and replace underscores with spaces
 const getTitle = (fileName) =>
   fileName
     .replace(/\.[^/.]+$/, '')

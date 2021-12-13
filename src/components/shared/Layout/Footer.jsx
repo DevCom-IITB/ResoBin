@@ -10,13 +10,13 @@ const Footer = () => {
     <StyledLayoutFooter>
       <Divider style={{ margin: '0.5rem 0 1.5rem' }} />
       <Icons>
-        <LinkIcon
+        <a
           href="https://www.github.com/wncc/resobin"
           target="_blank"
           rel="noreferrer"
         >
           <Github size="28" />
-        </LinkIcon>
+        </a>
       </Icons>
 
       <h4>ResoBin</h4>
@@ -42,9 +42,15 @@ const StyledLayoutFooter = styled(Layout.Footer)`
 
   a:hover {
     text-decoration: underline;
+    color: ${({ theme }) => theme.textColor};
+  }
+
+  svg:hover {
+    color: ${({ theme }) => theme.logo};
   }
 
   h4 {
+    color: ${({ theme }) => theme.textColor};
     margin-bottom: 0.25rem;
   }
 
@@ -59,10 +65,4 @@ const Icons = styled.div`
   justify-content: center;
   align-items: center;
   margin: 0.5rem 0;
-`
-
-const LinkIcon = styled.a`
-  &:hover {
-    color: ${({ theme }) => theme.logo};
-  }
 `

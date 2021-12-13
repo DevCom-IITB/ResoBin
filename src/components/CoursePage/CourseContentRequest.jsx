@@ -39,7 +39,7 @@ export const useCourseContentRequest = ({ code, type }) => {
 }
 
 // * type = reviews | resources
-const CourseContentRequestButtonSquare = ({ code, type, ...props }) => {
+export const CourseContentRequestSquare = ({ code, type, ...props }) => {
   const { requestStatus, handleRequest, loading } = useCourseContentRequest({
     code,
     type,
@@ -50,7 +50,7 @@ const CourseContentRequestButtonSquare = ({ code, type, ...props }) => {
       type="primary"
       $active={requestStatus}
       onClick={handleRequest}
-      icon={<UserGroup size="18" style={{ marginRight: '0.25rem' }} />}
+      icon={<UserGroup size="16" />}
       loading={loading}
       {...props}
     >
@@ -59,7 +59,7 @@ const CourseContentRequestButtonSquare = ({ code, type, ...props }) => {
   )
 }
 
-export const CourseContentRequestButtonIcon = ({ code, type, ...props }) => {
+export const CourseContentRequestIcon = ({ code, type, ...props }) => {
   const { requestStatus, handleRequest, loading } = useCourseContentRequest({
     code,
     type,
@@ -71,7 +71,7 @@ export const CourseContentRequestButtonIcon = ({ code, type, ...props }) => {
       color="white"
       shape="round"
       size="default"
-      icon={<UserGroup size="18" />}
+      icon={<UserGroup size="16" />}
       $active={requestStatus}
       onClick={handleRequest}
       loading={loading}
@@ -80,4 +80,4 @@ export const CourseContentRequestButtonIcon = ({ code, type, ...props }) => {
   )
 }
 
-export default CourseContentRequestButtonSquare
+export default CourseContentRequestSquare

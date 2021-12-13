@@ -4,6 +4,7 @@ import { css } from 'styled-components/macro'
 export const buttonStyles = css`
   display: flex;
   align-items: center;
+  gap: 0.5rem;
   color: ${({ theme }) => theme.textColor};
   border: none;
   border-radius: 0.5rem;

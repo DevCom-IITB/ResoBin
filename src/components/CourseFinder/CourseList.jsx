@@ -7,12 +7,11 @@ import {
   NotFoundSearch,
   Pagination,
   PageSubtitle,
-  CardSplit,
   CardSplitSkeleton,
 } from 'components/shared'
 import { useQueryString } from 'hooks'
 
-import { CourseItemMain, CourseItemSub } from './item'
+import CourseItem from './CourseItem'
 
 const CourseFinderList = ({
   title,
@@ -49,11 +48,7 @@ const CourseFinderList = ({
               classNames="card"
             >
               <CardTransition>
-                <CardSplit
-                  main={<CourseItemMain courseData={courseData} />}
-                  sub={<CourseItemSub courseData={courseData} />}
-                  subWidth="13rem"
-                />
+                <CourseItem courseData={courseData} />
               </CardTransition>
             </CSSTransition>
           ))}
