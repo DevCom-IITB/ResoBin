@@ -27,6 +27,7 @@ export const { applyTheme, toggleDropdown } = settingsSlice.actions
 // * naming convention: https://twitter.com/_jayphelps/status/739905438116806656
 // * avoid using inline selectors
 export const selectTheme = (state) => state.settings.theme
+export const selectIsDropdownActive = (state) => state.settings.isDropdownActive
 
 // ? reducer
 // * always export reducer as default
