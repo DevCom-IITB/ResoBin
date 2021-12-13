@@ -42,7 +42,7 @@ const HighlightMatches = ({ content }) => {
       part.toLowerCase() === search ? (
         <Mark key={String(index)}>{part}</Mark>
       ) : (
-        <span key={String(index)}>{part}</span>
+        <Fragment key={String(index)}>{part}</Fragment>
       )
     )
 }

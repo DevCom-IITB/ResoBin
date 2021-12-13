@@ -1,6 +1,6 @@
 {
   "name": "resobin",
-  "version": "1.2.2",
+  "version": "1.4.1",
   "private": true,
   "repository": {
     "type": "git",
@@ -17,9 +17,9 @@
     "lint:styles": "stylelint src/**/*.{js,jsx} --fix"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^1.6.2",
-    "@sentry/react": "^6.16.0",
-    "@sentry/tracing": "^6.16.0",
+    "@reduxjs/toolkit": "^1.7.0",
+    "@sentry/react": "^6.16.1",
+    "@sentry/tracing": "^6.16.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -38,7 +38,7 @@
     "react-pdf": "^5.5.0",
     "react-quill": "2.0.0-beta.4",
     "react-redux": "^7.2.6",
-    "react-router-dom": "^6.0.2",
+    "react-router-dom": "^6.1.1",
     "react-scripts": "4.0.3",
     "react-transition-group": "^4.4.2",
     "redux-persist": "^6.0.0",

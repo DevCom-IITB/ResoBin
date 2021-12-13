@@ -1,4 +1,4 @@
-export { default as Aside } from './Aside'
+export { Aside } from './Aside'
 export { default as Avatar, UserAvatar } from './Avatar'
 export {
   ButtonIcon,
