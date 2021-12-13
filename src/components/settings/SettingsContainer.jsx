@@ -14,6 +14,8 @@ import { PageHeading, PageTitle } from 'components/shared/Layout'
 import { useTheme } from 'hooks'
 import { logoutAction } from 'store/authSlice'
 
+import Profile from './Profile'
+
 const SettingsContainer = () => {
   const dispatch = useDispatch()
   const { theme, switchTheme } = useTheme()
@@ -78,7 +80,8 @@ const SettingsContainer = () => {
           </Typography.Link>
         }
       >
-        <Empty description={<PageSubtitle>Coming soon!</PageSubtitle>} />
+        {/* <Empty description={<PageSubtitle>Coming soon!</PageSubtitle>} /> */}
+        <Profile/>
       </Aside>
     </>
   )
