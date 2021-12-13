@@ -7,8 +7,9 @@ import { UserAvatar } from 'components/shared'
 import { selectUserProfile } from 'store/userSlice'
 
 const Profile = () => {
+
     const profile = useSelector(selectUserProfile)
-    console.log(profile)
+    
     return (
         <>
             <AvatarContainer>
