@@ -1,17 +1,17 @@
 import globalConfig from './common'
 
 const LightTheme = {
-  primary: '#ffffff',
-  secondary: '#F8F8F8',
-  darksecondary: '#DADAEA',
-  textColor: '#585280',
-  textColorInactive: '#AAA5A5',
-  header: '#585280',
+  primary: '#c7ab59',
+  secondary: '#ffffff',
+  darksecondary: '#f3f2f0',
+  textColor: '#302718',
+  textColorInactive: '#6d6c6a',
+  header: '#ff5200',
   headerNumber: '#FFF',
-  activeMenu: '#585280',
-  courseBG: '#B2BFE1',
-  logo: '#707aff',
-  dividerColor: '#5d598039',
+  activeMenu: '#c7ab59',
+  courseBG: '#f3f2f0',
+  logo: '#302718',
+  dividerColor: '#c7ab5989',
   ...globalConfig,
 }
 
