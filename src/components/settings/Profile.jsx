@@ -1,4 +1,3 @@
-import { UserOutlined } from '@ant-design/icons'
 import { Descriptions } from 'antd'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
