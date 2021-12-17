@@ -51,7 +51,6 @@ const CourseResourceItem = ({ content: initialContent }) => {
 
           <Row>
             <ButtonIcon
-              color="white"
               size="default"
               icon={<Download size="20" />}
               onClick={handleDownload}
@@ -60,7 +59,6 @@ const CourseResourceItem = ({ content: initialContent }) => {
 
             {isOwner && (
               <ButtonIcon
-                color="white"
                 size="default"
                 icon={<PencilAlt size="20" />}
                 onClick={() => setEditModalVisible(true)}
@@ -71,20 +69,25 @@ const CourseResourceItem = ({ content: initialContent }) => {
             <Popover
               content={
                 <>
-                  {content?.userProfile.name}
+                  <div style={{display: 'flex', paddingBottom:10}}>
                   <UserAvatar
-                    size="2rem"
-                    src={content?.userProfile.profilePicture}
-                    alt="Profile picture"
-                  />
+                      size="2rem"
+                      src={content?.userProfile.profilePicture}
+                      alt="Profile picture"
+                    />  
+                    <div style={{padding:5}}>
+                      {content?.userProfile.name}   
+                    </div>
+                                   
+                  </div>
                   <Timestamp time={content?.timestamp} />
                 </>
               }
               title="Uploaded by"
               trigger="click"
+              style={{background: 'red'}}
             >
               <ButtonIcon
-                color="white"
                 size="default"
                 icon={<InformationCircle size="20" />}
                 hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
