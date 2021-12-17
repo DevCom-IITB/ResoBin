@@ -14,39 +14,11 @@ const TimetableCourseItem = ({ data, colorCode = 0 }) => {
   const title = useSelector(selectCourseTitle(code))
   const colorPicker = useColorPicker()
 
-  const getTile = (color) => css`
-  color: ${darken(0.7, color)};
-  background: ${makeGradient(color)};
-  border-left: 4px solid ${darken(0.2, color)};
-`
-  const Item = styled.div`
-    height: 100%;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: all 200ms ease-out;
-
-    ${({ id }) => getTile(colorPicker(id))}
-
-    & > h3 {
-      font-size: 1rem;
-    }
-
-    & > span {
-      display: block;
-      font-size: 0.75rem;
-    }
-
-    &:hover {
-      box-shadow: 0 0 0.5rem rgb(0 0 0 / 40%);
-    }
-  `
-
   const TimetableCourseLectureItem = useCallback(
     ({ gridCol, gridRow }) => (
       <GridItem row={gridRow} col={gridCol}>
         <Tooltip title={title}>
-          <Item id={colorCode} textColor={colorPicker(colorCode)}>
+          <Item color={colorPicker(colorCode)}>
             <h3>{code}</h3>
             <span>
               {gridRow.start.title} - {gridRow.end.title}
@@ -55,7 +27,7 @@ const TimetableCourseItem = ({ data, colorCode = 0 }) => {
         </Tooltip>
       </GridItem>
     ),
-    [code, colorCode, title]
+    [code, colorCode, title, colorPicker]
   )
 
   if (lectureSlots?.length === 0) return null
@@ -78,4 +50,30 @@ const GridItem = styled.div`
   color: ${({ theme }) => theme.textColor};
 `
 
+const getTile = (color) => css`
+  color: ${darken(0.7, color)};
+  background: ${makeGradient(color)};
+  border-left: 4px solid ${darken(0.2, color)};
+`
 
+const Item = styled.div`
+  height: 100%;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 200ms ease-out;
+  ${({ color }) => getTile(color)}
+
+  & > h3 {
+    font-size: 1rem;
+  }
+
+  & > span {
+    display: block;
+    font-size: 0.75rem;
+  }
+
+  &:hover {
+    box-shadow: 0 0 0.5rem rgb(0 0 0 / 40%);
+  }
+`

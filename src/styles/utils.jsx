@@ -8,7 +8,7 @@ export const makeGradient = (color) =>
 
 // ? standard paint palette row 2
 export const palette = {
-    dark : [
+  dark: [
     '#FF6766',
     '#FF9968',
     '#FFCC66',
@@ -28,7 +28,7 @@ export const palette = {
     '#FE66CB',
     '#FF669A',
   ],
-  light : [
+  light: [
     '#009899',
     '#006697',
     '#003399',
@@ -54,7 +54,11 @@ export const useColorPicker = () => {
   const theme = useSelector(selectTheme)
   const paletteTheme = palette[theme]
 
-  const colorPicker = (id) => paletteTheme?.[id % paletteTheme.length]
+  if (!paletteTheme) {
+    throw new Error(`No palette theme found for ${theme}`)
+  }
+
+  const colorPicker = (id) => paletteTheme[id % paletteTheme.length]
 
   return colorPicker
 }

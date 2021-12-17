@@ -17,7 +17,6 @@ import { selectDepartments } from 'store/courseSlice'
 import { device, fontSize } from 'styles/responsive'
 import { useColorPicker } from 'styles/utils'
 
-
 // TODO: Add highlight for description
 const HighlightMatches = ({ content }) => {
   const location = useLocation()
