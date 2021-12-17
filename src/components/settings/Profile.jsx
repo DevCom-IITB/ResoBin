@@ -1,4 +1,3 @@
-import { UserOutlined } from '@ant-design/icons'
 import { Descriptions } from 'antd'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
@@ -7,51 +6,87 @@ import { UserAvatar } from 'components/shared'
 import { selectUserProfile } from 'store/userSlice'
 
 const Profile = () => {
+  const profile = useSelector(selectUserProfile)
 
-    const profile = useSelector(selectUserProfile)
-    
-    return (
-        <>
-            <AvatarContainer>
-                <UserAvatar size={72} src={profile?.profilePicture}/>
-            </AvatarContainer>
-            
-            <StyledDescriptions 
-            // title="User Info"
-            column={1}
-            >
-                <Descriptions.Item label="Name">{profile.name}</Descriptions.Item>
-                <Descriptions.Item label="Department">{profile.department}</Descriptions.Item>
-                <Descriptions.Item label="LDAP ID">{profile.ldapId}</Descriptions.Item>
-                <Descriptions.Item label="Email">{profile.email}</Descriptions.Item>
-            </StyledDescriptions>
-        </>
-    )
+  return (
+    <FlexVerticalGap>
+      <UserAvatar size={72} src={profile?.profilePicture} />
+
+      <UserInfo>
+        <h2>{profile.name}</h2>
+        <span>({profile.ldapId})</span>
+      </UserInfo>
+
+      <StyledDescriptions column={1} layout="vertical">
+        <Descriptions.Item label="Email">{profile.email}</Descriptions.Item>
+
+        <Descriptions.Item label="Department">
+          {profile.department}
+        </Descriptions.Item>
+      </StyledDescriptions>
+
+      <StyledDescriptions column={1} layout="vertical">
+        <Descriptions.Item label="Favorites courses">
+          {profile.favoriteCourses.length
+            ? profile.favoriteCourses.join(', ')
+            : 'None'}
+        </Descriptions.Item>
+
+        <Descriptions.Item label="Resources requested for">
+          {profile.resourcesRequested.length
+            ? profile.resourcesRequested.join(', ')
+            : 'None'}
+        </Descriptions.Item>
+
+        <Descriptions.Item label="Reviews requested for">
+          {profile.reviewsRequested.length
+            ? profile.reviewsRequested.join(', ')
+            : 'None'}
+        </Descriptions.Item>
+      </StyledDescriptions>
+    </FlexVerticalGap>
+  )
 }
 
 export default Profile
 
+const FlexVerticalGap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+`
 
 const StyledDescriptions = styled(Descriptions)`
-    padding-left: 0.5rem;
+  padding: 0.75rem 0.75rem 0;
+  border-radius: 0.5rem;
+  background: ${({ theme }) => theme.darksecondary};
 
-    .ant-descriptions-title{
-        color: ${({ theme }) => theme.textColor};
-    }  
-    .ant-descriptions-item{
-        padding-bottom:0.75rem;
-    }
-    .ant-descriptions-item-label{
-        color: ${({ theme }) => theme.primary};
-    }
-    .ant-descriptions-item-content{
-        color: ${({ theme }) => theme.textColor};
-    }
+  .ant-descriptions-item {
+    padding-bottom: 0.25rem;
+  }
+
+  .ant-descriptions-item-label {
+    color: ${({ theme }) => theme.primary};
+    font-weight: 400;
+    font-size: 0.75rem;
+  }
+
+  .ant-descriptions-item-content {
+    color: ${({ theme }) => theme.textColor};
+    margin-bottom: 0.5rem;
+  }
 `
 
-const AvatarContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    padding-bottom: 1rem;
-`
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: ${({ theme }) => theme.textColor};
 
+  h2 {
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+`
