@@ -107,7 +107,7 @@ export default Editor
 
 const StyledReactQuill = styled(ReactQuill)`
   color: #000000;
-  background-color: ${({ theme }) => theme.textColor};
+  background-color: white;
   border: 1px solid #000000;
   border-radius: 0.5rem;
   box-shadow: 0 0 1rem 4px rgb(0 0 0 / 20%);

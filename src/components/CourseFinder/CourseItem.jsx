@@ -15,19 +15,8 @@ import { coursePageUrl } from 'helpers/format'
 import { useResponsive } from 'hooks'
 import { selectDepartments } from 'store/courseSlice'
 import { device, fontSize } from 'styles/responsive'
-import { colorPicker } from 'styles/utils'
+import { useColorPicker } from 'styles/utils'
 
-const creditColorPicker = (credits) => {
-  if (credits >= 10) return colorPicker(0)
-  if (credits >= 8) return colorPicker(1)
-  if (credits >= 6) return colorPicker(2)
-  if (credits >= 4) return colorPicker(3)
-  if (credits >= 2) return colorPicker(4)
-  return colorPicker(5)
-}
-
-const tagColorPicker = (tag) =>
-  colorPicker(defaultTags.courseTags.findIndex((t) => t === tag))
 
 // TODO: Add highlight for description
 const HighlightMatches = ({ content }) => {
@@ -50,6 +39,19 @@ const HighlightMatches = ({ content }) => {
 const CourseItemMain = ({ courseData }) => {
   const { code, credits, department, title, description, tags } = courseData
   const departmentList = useSelector(selectDepartments)
+  const colorPicker = useColorPicker()
+
+  const creditColorPicker = (_credits) => {
+    if (_credits >= 10) return colorPicker(0)
+    if (_credits >= 8) return colorPicker(1)
+    if (_credits >= 6) return colorPicker(2)
+    if (_credits >= 4) return colorPicker(3)
+    if (_credits >= 2) return colorPicker(4)
+    return colorPicker(5)
+  }
+
+  const tagColorPicker = (tag) =>
+    colorPicker(defaultTags.courseTags.findIndex((t) => t === tag))
 
   return (
     <>
