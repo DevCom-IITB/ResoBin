@@ -68,10 +68,9 @@ export const CourseContentRequestIcon = ({ code, type, ...props }) => {
   return (
     <ButtonIcon
       type="primary"
-      color="white"
       shape="round"
       size="default"
-      icon={<UserGroup size="16" />}
+      icon={<UserGroup size="16"/>}
       $active={requestStatus}
       onClick={handleRequest}
       loading={loading}
