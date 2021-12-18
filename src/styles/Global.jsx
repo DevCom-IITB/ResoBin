@@ -15,6 +15,25 @@ const GlobalStyles = createGlobalStyle`
     }
 
   }
+
+  #toolbar {
+    background: ${({ theme }) => theme.darksecondary};
+    color : ${({ theme }) => theme.textColor};
+    border-radius: 0.5rem;
+    border: none;
+  }
+
+  .ql-snow .ql-stroke {
+    fill: none;
+    stroke: ${({ theme }) => theme.textColor};
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+  }
+
+  .ql-snow .ql-picker-label::before {
+    color: ${({ theme }) => theme.textColor}
+  }
 `
 
 export default GlobalStyles
