@@ -1,25 +1,40 @@
 {
+  "name": "ResoBin by DevCom, IIT Bombay",
   "short_name": "ResoBin",
-  "name": "A course planner by DevCom, IIT Bombay.",
+  "description": "Your true study buddy.",
   "icons": [
     {
-      "src": "static/favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
     },
     {
-      "src": "static/logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "static/logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ],
-  "start_url": ".",
+  "start_url": "/?source=pwa",
+  "background_color": "#1b1728",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "scope": "/",
+  "theme_color": "#ffffff",
+  "shortcuts": [
+    {
+      "short_name": "Courses",
+      "name": "Course Finder",
+      "description": "Search and filter for courses.",
+      "url": "/courses?source=pwa"
+    },
+    {
+      "short_name": "Timetable",
+      "name": "My timetable",
+      "description": "View and modify timetable.",
+      "url": "/timetable?source=pwa"
+    }
+  ],
+  "lang": "en-US",
+  "categories": [
+    "education"
+  ]
 }

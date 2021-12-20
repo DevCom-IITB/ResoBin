@@ -108,7 +108,6 @@ const TimetableContainer = () => {
 
       <TimetableSemesterTitle>
         <ButtonIcon
-          color="primary"
           icon={<ChevronLeft size="20" />}
           onClick={handleClickPrev}
           disabled={loading || !(semIdx - 1 in semesterList)}
@@ -117,7 +116,6 @@ const TimetableContainer = () => {
         {semesterList[semIdx]?.season ?? 'Click next'}&nbsp;
         {displayYear(semesterList[semIdx]?.year)}
         <ButtonIcon
-          color="primary"
           icon={<ChevronRight size="20" />}
           disabled={loading || !(semIdx + 1 in semesterList)}
           onClick={handleClickNext}

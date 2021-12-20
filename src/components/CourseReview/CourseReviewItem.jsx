@@ -16,6 +16,8 @@ import {
 
 import { Editor, ReviewEditor } from './Editor'
 
+// TODO: Add icons to actions
+// TODO: Improve styling for mobile view
 const CourseReviewItem = ({ content, updateContent, depth }) => {
   const dispatch = useDispatch()
 
@@ -112,7 +114,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
 
     isOwner && (
       <Button key="content-edit" type="link" onClick={showEditForm}>
-        Edit
+        {action === 'edit' ? 'Cancel editing' : 'Edit'}
       </Button>
     ),
 
@@ -191,17 +193,17 @@ const LikeCount = styled.span`
 `
 
 const CommentHeader = styled.h2`
-  color: ${({ theme }) => theme.header};
+  color: ${({ theme }) => theme.textColor};
   font-weight: 600;
   font-size: 0.75rem;
 
   &:hover {
-    color: ${({ theme }) => theme.header};
+    color: ${({ theme }) => theme.textColor};
   }
 `
 
 const CommentText = styled.div`
   width: 80%;
-  color: ${({ theme }) => theme.header};
+  color: ${({ theme }) => theme.textColor};
   font-weight: 400;
 `

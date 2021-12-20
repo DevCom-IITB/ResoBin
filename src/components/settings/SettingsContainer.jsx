@@ -3,12 +3,7 @@ import { Button } from 'antd'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import {
-  Aside,
-  CardSplit,
-  Switch,
-  Typography,
-} from 'components/shared'
+import { Aside, CardSplit, Switch, Typography } from 'components/shared'
 import { PageHeading, PageTitle } from 'components/shared/Layout'
 import { useTheme } from 'hooks'
 import { logoutAction } from 'store/authSlice'
@@ -79,8 +74,7 @@ const SettingsContainer = () => {
           </Typography.Link>
         }
       >
-        {/* <Empty description={<PageSubtitle>Coming soon!</PageSubtitle>} /> */}
-        <Profile/>
+        <Profile />
       </Aside>
     </>
   )
