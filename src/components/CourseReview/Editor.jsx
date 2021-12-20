@@ -1,3 +1,4 @@
+import { DocumentText } from "@styled-icons/heroicons-outline"
 import { Button, Comment } from 'antd'
 import { useState } from 'react'
 import ReactQuill from 'react-quill'
@@ -6,6 +7,19 @@ import styled from 'styled-components/macro'
 
 import { toast, UserAvatar } from 'components/shared'
 import { selectUserProfile } from 'store/userSlice'
+
+import reviewTemplate from './reviewTemplate'
+
+function loadTemplate() {
+  const delta = this.quill.clipboard.convert(reviewTemplate)
+  this.quill.setContents(delta, 'api')
+}
+
+const CustomTemplateLoad = () => {
+  return (
+    <DocumentText size="24"/>
+  )
+}
 
 const formats = [
   'header',
@@ -22,25 +36,33 @@ const formats = [
   'link',
 ]
 
-// const modules = {
-//   toolbar: [
-//     [{ header: '1' }, { header: '2' }, { font: [] }],
-//     [{ size: [] }],
-//     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-//     [
-//       { list: 'ordered' },
-//       { list: 'bullet' },
-//       { indent: '-1' },
-//       { indent: '+1' },
-//     ],
-//     ['link', 'image', 'video'],
-//     ['clean'],
-//   ],
-//   clipboard: {
-//     // toggle to add extra line breaks when pasting HTML:
-//     matchVisual: false,
-//   },
-// }
+const modules = {
+  toolbar: {
+    container: '#toolbar',
+    handlers: {
+      loadTemplate,
+    }
+  },
+  clipboard: {
+    // toggle to add extra line breaks when pasting HTML:
+    matchVisual: false,
+  },
+};
+
+const CustomToolbar = () => (
+  <div id="toolbar">
+    <select className="ql-header" defaultValue="" onChange={e => e.persist()}>
+      <option aria-label="button" value="1" />
+      <option aria-label="button" value="2" />
+      <option aria-label="button" selected />
+    </select>
+    <button type="button" aria-label="button" className="ql-bold" />
+    <button type="button" aria-label="button" className="ql-italic" />
+    <button type="button" className="ql-loadTemplate">
+      <CustomTemplateLoad />
+    </button>
+  </div>
+);
 
 export const Editor = ({ visible, onSubmit, initialValue = '' }) => {
   const [content, setContent] = useState(initialValue)
@@ -62,11 +84,12 @@ export const Editor = ({ visible, onSubmit, initialValue = '' }) => {
   return (
     visible && (
       <>
+        <CustomToolbar/>
         <StyledReactQuill
-          placeholder="Write something"
-          value={content}
+          placeholder="Write your review here..."
           onChange={handleChange}
           formats={formats}
+          modules={modules}
         />
 
         <StyledButton
