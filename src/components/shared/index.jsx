@@ -6,9 +6,10 @@ export {
   ButtonDropdown,
   ButtonSwitch,
 } from './Buttons'
-export { default as Checkbox } from './Checkbox'
 export { default as Card, CardSkeleton } from './Card'
 export { default as CardSplit, CardSplitSkeleton } from './CardSplit'
+export { default as Checkbox } from './Checkbox'
+export { default as Comment } from './Comment'
 export { default as Divider } from './Divider'
 export { default as Form } from './Form'
 export { InputRounded, InputSquared, TextAreaSquared } from './Inputs'

@@ -1,11 +1,10 @@
 import { DocumentText } from '@styled-icons/heroicons-outline'
-import { Comment } from 'antd'
 import { useState } from 'react'
 import ReactQuill from 'react-quill'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { ButtonSquare, toast, UserAvatar } from 'components/shared'
+import { ButtonSquare, Comment, toast, UserAvatar } from 'components/shared'
 import { selectUserProfile } from 'store/userSlice'
 
 import reviewTemplate from './reviewTemplate'

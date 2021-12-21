@@ -1,12 +1,18 @@
 import { ThumbUp as ThumbUpOutlined } from '@styled-icons/heroicons-outline'
 import { ThumbUp as ThumbUpFilled } from '@styled-icons/heroicons-solid'
-import { Button, Comment } from 'antd'
+import { Button } from 'antd'
 import DOMPurify from 'dompurify'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { ButtonIcon, Timestamp, toast, UserAvatar } from 'components/shared'
+import {
+  ButtonIcon,
+  Comment,
+  Timestamp,
+  toast,
+  UserAvatar,
+} from 'components/shared'
 import { API } from 'config/api'
 import {
   selectUserProfile,
@@ -126,14 +132,10 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
   ]
 
   return (
-    <StyledComment
+    <Comment
       key={content?.id}
       actions={actions}
-      author={
-        <a href={`/profile/${content?.userProfile?.ldapId}`}>
-          <CommentHeader>{content?.userProfile?.name}</CommentHeader>
-        </a>
-      }
+      author={<CommentHeader>{content?.userProfile?.name}</CommentHeader>}
       avatar={
         <UserAvatar
           size="2rem"
@@ -168,23 +170,11 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
           depth={depth + 1}
         />
       ))}
-    </StyledComment>
+    </Comment>
   )
 }
 
 export default CourseReviewItem
-
-const StyledComment = styled(Comment)`
-  .ant-comment-avatar {
-    cursor: default;
-  }
-
-  .ant-comment-actions {
-    display: flex;
-    align-items: center;
-    height: 1.75rem;
-  }
-`
 
 const LikeCount = styled.span`
   margin-left: 0.5rem;
