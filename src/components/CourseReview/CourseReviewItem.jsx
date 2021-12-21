@@ -112,7 +112,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       <LikeCount>{voteCount}</LikeCount>
     </ButtonIcon>,
 
-    depth < 4 && (
+    depth < 1 && (
       <Button key="content-reply" type="link" onClick={showReplyForm}>
         Reply
       </Button>

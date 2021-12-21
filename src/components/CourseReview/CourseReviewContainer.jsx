@@ -1,10 +1,9 @@
-import { Divider } from 'antd'
 import { Fragment, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { CourseContentRequest } from 'components/CoursePage'
-import { LoaderAnimation, toast } from 'components/shared'
+import { Divider, LoaderAnimation, toast } from 'components/shared'
 import { API } from 'config/api'
 
 import CourseReviewItem from './CourseReviewItem'
@@ -60,7 +59,7 @@ const CourseReviewContainer = () => {
   const handleUpdateContent = ({ id, payload }) => {
     if (id === null) {
       // ? create review
-      setReviewsData((_reviewsData) => _reviewsData.concat([payload]))
+      setReviewsData([payload, ...reviewsData])
     } else if (payload === null) {
       // ? delete review / reply
       setReviewsData((_reviewsData) =>
@@ -108,13 +107,14 @@ const CourseReviewContainer = () => {
 
       {reviewsData.map((review) => (
         <Fragment key={review.id}>
+          <Divider margin="1rem 0" />
+
           <CourseReviewItem
             content={review}
             updateContent={handleUpdateContent}
             course={code}
             depth={0}
           />
-          <StyledDivider />
         </Fragment>
       ))}
     </>
@@ -128,9 +128,4 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 1rem 0;
-`
-
-const StyledDivider = styled(Divider)`
-  margin: 1rem 0;
-  background-color: rgb(255 255 255 / 20%);
 `
