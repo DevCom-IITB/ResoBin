@@ -43,7 +43,7 @@ const modules = {
   },
 }
 
-const CustomToolbar = () => (
+const CustomToolbar = ({ templateHandler }) => (
   <Toolbar id="toolbar" style={{ border: 'none' }}>
     <select className="ql-header" defaultValue="" onChange={(e) => e.persist()}>
       <option aria-label="button" value="1" />
@@ -55,13 +55,20 @@ const CustomToolbar = () => (
 
     <button type="button" aria-label="button" className="ql-italic" />
 
-    <button type="button" className="ql-loadTemplate">
-      <DocumentText size="24" />
-    </button>
+    {templateHandler && (
+      <button type="button" className="ql-loadTemplate">
+        <DocumentText size="24" />
+      </button>
+    )}
   </Toolbar>
 )
 
-export const Editor = ({ visible, onSubmit, initialValue = '' }) => {
+export const Editor = ({
+  onSubmit,
+  initialValue = '',
+  submitText = 'Post',
+  templateHandler,
+}) => {
   const [content, setContent] = useState(initialValue)
   const [loading, setLoading] = useState(false)
   const handleChange = (value) => setContent(value)
@@ -79,48 +86,42 @@ export const Editor = ({ visible, onSubmit, initialValue = '' }) => {
   }
 
   return (
-    visible && (
-      <div>
-        <CustomToolbar />
-        <StyledReactQuill
-          placeholder="Write your review here..."
-          onChange={handleChange}
-          value={content}
-          formats={formats}
-          modules={modules}
-        />
+    <>
+      <CustomToolbar templateHandler={templateHandler} />
+      <StyledReactQuill
+        placeholder="Write your review here..."
+        onChange={handleChange}
+        value={content}
+        formats={formats}
+        modules={modules}
+      />
 
-        <ButtonSquare
-          type="primary"
-          htmlType="submit"
-          onClick={handleSubmit}
-          loading={loading}
-        >
-          Post
-        </ButtonSquare>
-      </div>
-    )
+      <ButtonSquare
+        type="primary"
+        htmlType="submit"
+        onClick={handleSubmit}
+        loading={loading}
+      >
+        {submitText}
+      </ButtonSquare>
+    </>
   )
 }
 
-export const ReviewEditor = ({ visible, initialValue, onSubmit }) => {
+export const ReviewEditor = ({ ...editorProps }) => {
   const profile = useSelector(selectUserProfile)
 
   return (
-    visible && (
-      <Comment
-        avatar={
-          <UserAvatar
-            size="2rem"
-            src={profile.profilePicture}
-            alt="Profile picture"
-          />
-        }
-        content={
-          <Editor visible onSubmit={onSubmit} initialValue={initialValue} />
-        }
-      />
-    )
+    <Comment
+      avatar={
+        <UserAvatar
+          size="2rem"
+          src={profile.profilePicture}
+          alt="Profile picture"
+        />
+      }
+      content={<Editor visible {...editorProps} />}
+    />
   )
 }
 
@@ -133,7 +134,7 @@ const StyledReactQuill = styled(ReactQuill)`
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
   box-shadow: 0 0 1rem 4px rgb(0 0 0 / 20%);
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 
   .ql-container {
     border: none;
@@ -162,5 +163,10 @@ const Toolbar = styled.div`
 
   .ql-picker-label::before {
     color: ${({ theme }) => theme.textColor};
+  }
+
+  button,
+  select {
+    background: none;
   }
 `

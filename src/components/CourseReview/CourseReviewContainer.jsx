@@ -104,7 +104,7 @@ const CourseReviewContainer = () => {
         <CourseContentRequest code={code} type="reviews" />
       </Header>
 
-      <ReviewEditor visible onSubmit={createContent} />
+      <ReviewEditor onSubmit={createContent} templateHandler />
 
       {reviewsData.map((review) => (
         <Fragment key={review.id}>

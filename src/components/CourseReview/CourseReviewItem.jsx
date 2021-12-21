@@ -144,9 +144,9 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       content={
         action === 'edit' ? (
           <Editor
-            visible
             initialValue={DOMPurify.sanitize(content?.body)}
             onSubmit={handleUpdate}
+            submitText="Save"
           />
         ) : (
           <CommentText
@@ -158,7 +158,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       }
       datetime={<Timestamp time={content.timestamp} />}
     >
-      <ReviewEditor visible={action === 'reply'} onSubmit={handleCreateChild} />
+      {action === 'reply' && <ReviewEditor onSubmit={handleCreateChild} />}
 
       {content?.children?.map((child) => (
         <CourseReviewItem
