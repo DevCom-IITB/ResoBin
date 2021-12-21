@@ -9,7 +9,6 @@ import { API } from 'config/api'
 
 import CourseReviewItem from './CourseReviewItem'
 import { ReviewEditor } from './Editor'
-import reviewTemplate from './reviewTemplate'
 
 const nestComments = (commentsList) => {
   const commentsMap = {}
@@ -105,11 +104,7 @@ const CourseReviewContainer = () => {
         <CourseContentRequest code={code} type="reviews" />
       </Header>
 
-      <ReviewEditor
-        visible
-        initialValue={reviewTemplate}
-        onSubmit={createContent}
-      />
+      <ReviewEditor visible onSubmit={createContent} />
 
       {reviewsData.map((review) => (
         <Fragment key={review.id}>
