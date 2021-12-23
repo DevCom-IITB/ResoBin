@@ -2,25 +2,46 @@
 
 ## Requirements
 
-* React 16.8+
+* React 17+
 
 ## Getting started
 
+* Note: Enviroment variables are located [here](https://drive.google.com/drive/folders/1HCzepWZyzKJg0-yOyt4ZW46gO3z4-mHv?usp=sharing), and will only be accessible to the core developers.
+* Before starting, make sure to [install Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable). Also, **avoid** using npm in this repository.
+
 ### Development
 
-* Install required modules:
+* Clone this repository
+
+  ```powershell
+  git clone https://github.com/wncc/ResoBin.git
+  cd ResoBin
+  ```
+
+* Install dependencies:
 
   ```powershell
   yarn install
   ```
 
-* Run development server:
+* Copy the environment variables to the base directory (current directory)
+* Finally, run the development server:
 
   ```powershell
   yarn start
   ```
 
-* Frontend server runs at [`http://localhost:3000`](http://localhost:3000)
+* The frontend server runs at [`http://localhost:3000`](http://localhost:3000), and might take a few minutes to start.
+
+### Production
+
+* Build the project
+
+  ```powershell
+  yarn build
+  ```
+
+* Serve the `/build` directory using your webserver (Nginx or Apache)
 
 ### Production (deployment with Docker)
 

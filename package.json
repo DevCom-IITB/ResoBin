@@ -1,6 +1,6 @@
 {
   "name": "resobin",
-  "version": "1.2.2",
+  "version": "1.4.1",
   "private": true,
   "repository": {
     "type": "git",
@@ -54,7 +54,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "prettier": "^2.5.1",
     "redux-logger": "^3.0.6",
-    "stylelint": "^14.1.0",
+    "stylelint": "^14.2.0",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-standard": "^24.0.0",

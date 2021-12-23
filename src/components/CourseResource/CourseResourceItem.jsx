@@ -30,7 +30,7 @@ const CourseResourceItem = ({ content: initialContent }) => {
   const [content, setContent] = useState(initialContent)
 
   const handleDownload = () => {
-    window.location.href = content.file
+    window.open(content.file, '_blank', 'noopener,noreferrer')
   }
 
   const handleEdit = async (payload) => {
