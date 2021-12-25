@@ -98,22 +98,31 @@ const SemesterItem = ({ data }) => {
   )
 }
 
+const semesters = ['autumn', 'spring']
+
 const TimetableSelector = ({ semester }) => {
   const latestSemester = useSelector(selectCurrentSemester)
 
-  const timetable = {
-    autumn: semester?.find(({ season }) => season === 'autumn').timetable,
-    spring: semester?.find(({ season }) => season === 'spring').timetable,
-  }
+  const timetable = semesters.reduce(
+    (accumulator, value) => ({
+      ...accumulator,
+      [value]: semester.find(({ season }) => season === value).timetable,
+    }),
+    {}
+  )
+
+  if (!timetable.spring.length && !timetable.autumn.length)
+    return (
+      <Title style={{ margin: 0, opacity: 0.8 }}>
+        Timetable entry not found
+      </Title>
+    )
 
   let semTabInitialValue = latestSemester?.season
-  if (!timetable.spring.length && !timetable.autumn.length) {
-    semTabInitialValue = null
-  } else if (!timetable.autumn.length) {
-    semTabInitialValue = 'spring'
-  }
+  if (!timetable[semTabInitialValue].length)
+    semTabInitialValue = semesters.find((sem) => sem !== semTabInitialValue)
 
-  return semTabInitialValue ? (
+  return (
     <Tabs
       tabheight="1.75rem"
       tabwidth="6.5rem"
@@ -135,8 +144,6 @@ const TimetableSelector = ({ semester }) => {
         <SemesterItem semester="spring" data={timetable.spring} />
       </Tabs.TabPane>
     </Tabs>
-  ) : (
-    <Title style={{ margin: 0, opacity: 0.8 }}>Timetable entry not found</Title>
   )
 }
 

@@ -114,7 +114,7 @@ const TimetableContainer = () => {
           hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
         />
         {semesterList[semIdx]?.season ?? 'Click next'}&nbsp;
-        {displayYear(semesterList[semIdx]?.year)}
+        {displayYear(semesterList[semIdx])}
         <ButtonIcon
           icon={<ChevronRight size="20" />}
           disabled={loading || !(semIdx + 1 in semesterList)}
