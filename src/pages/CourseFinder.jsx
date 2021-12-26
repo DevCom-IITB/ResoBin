@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 
-import CourseFinderContainer from 'components/CourseFinder/CourseContainer'
+import { CourseFinderContainer } from 'components/CourseFinder'
 import { PageContainer } from 'components/shared'
 
 const CourseFinder = () => {

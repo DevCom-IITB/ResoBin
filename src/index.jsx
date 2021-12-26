@@ -6,6 +6,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 
 import App from 'App'
 import initSentry from 'config/sentry'
+import * as serviceWorkerRegistration from 'serviceWorkerRegistration'
 import { store } from 'store'
 import 'styles/styles.css'
 
@@ -30,3 +31,5 @@ if (rootElement.hasChildNodes()) {
 } else {
   ReactDOM.render(<StrictApp />, rootElement)
 }
+
+serviceWorkerRegistration.register()

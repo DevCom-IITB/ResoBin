@@ -1,23 +1,29 @@
 import { Filter, X } from '@styled-icons/heroicons-outline'
 import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { useResponsive } from 'hooks'
+import { selectIsDropdownActive, toggleDropdown } from 'store/settingsSlice'
 
-const FilterFloatButton = ({ showFilter, setShowFilter }) => {
+const FilterFloatButton = () => {
   const [Icon, setIcon] = useState(Filter)
   const { isDesktop } = useResponsive()
+  const isDropdownActive = useSelector(selectIsDropdownActive)
+  const dispatch = useDispatch()
 
   // ? show or hide dropdown filters state
-  const toggleFilter = () => setShowFilter(!showFilter)
+  const toggleFilter = () => dispatch(toggleDropdown(!isDropdownActive))
 
   // ? dropdown disabled on wide screens
   useEffect(() => {
     if (isDesktop) {
-      setShowFilter(false)
+      dispatch(toggleDropdown(false))
       setIcon(null)
-    } else setIcon(showFilter ? X : Filter)
-  }, [showFilter, setShowFilter, isDesktop])
+    } else {
+      setIcon(isDropdownActive ? X : Filter)
+    }
+  }, [isDropdownActive, isDesktop, dispatch])
 
   return (
     Icon && (

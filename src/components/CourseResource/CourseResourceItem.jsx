@@ -3,14 +3,19 @@ import {
   InformationCircle,
   PencilAlt,
 } from '@styled-icons/heroicons-outline'
-import { Popover } from 'antd'
 import { rgba } from 'polished'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import placeholderImg from 'assets/images/ResourcePlaceholder.jpg'
-import { ButtonIcon, Timestamp, toast, UserAvatar } from 'components/shared'
+import {
+  ButtonIcon,
+  Popover,
+  Timestamp,
+  toast,
+  UserAvatar,
+} from 'components/shared'
 import { API } from 'config/api'
 import { selectUserProfile } from 'store/userSlice'
 import { limitLines } from 'styles/mixins'
@@ -25,7 +30,7 @@ const CourseResourceItem = ({ content: initialContent }) => {
   const [content, setContent] = useState(initialContent)
 
   const handleDownload = () => {
-    window.location.href = content.file
+    window.open(content.file, '_blank', 'noopener,noreferrer')
   }
 
   const handleEdit = async (payload) => {
@@ -51,7 +56,6 @@ const CourseResourceItem = ({ content: initialContent }) => {
 
           <Row>
             <ButtonIcon
-              color="white"
               size="default"
               icon={<Download size="20" />}
               onClick={handleDownload}
@@ -60,7 +64,6 @@ const CourseResourceItem = ({ content: initialContent }) => {
 
             {isOwner && (
               <ButtonIcon
-                color="white"
                 size="default"
                 icon={<PencilAlt size="20" />}
                 onClick={() => setEditModalVisible(true)}
@@ -70,21 +73,26 @@ const CourseResourceItem = ({ content: initialContent }) => {
 
             <Popover
               content={
-                <>
-                  {content?.userProfile.name}
+                <PopoverContent>
                   <UserAvatar
                     size="2rem"
                     src={content?.userProfile.profilePicture}
                     alt="Profile picture"
                   />
-                  <Timestamp time={content?.timestamp} />
-                </>
+
+                  <PopoverHeading>
+                    <h2>{content?.userProfile.name}</h2>
+                    <span>
+                      Uploaded <Timestamp time={content?.timestamp} />
+                    </span>
+                  </PopoverHeading>
+                </PopoverContent>
               }
-              title="Uploaded by"
+              title="Information"
               trigger="click"
+              getPopupContainer={(triggerNode) => triggerNode}
             >
               <ButtonIcon
-                color="white"
                 size="default"
                 icon={<InformationCircle size="20" />}
                 hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
@@ -166,4 +174,19 @@ const ItemInfo = styled.figcaption`
   padding: 0.5rem;
   color: ${({ theme }) => theme.textColorInactive};
   background: ${({ theme }) => rgba(theme.darksecondary, 0.95)};
+`
+
+const PopoverContent = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+`
+
+const PopoverHeading = styled.div`
+  color: ${({ theme }) => theme.textColorInactive};
+
+  h2 {
+    font-size: 0.75rem;
+    color: ${({ theme }) => theme.textColor};
+  }
 `

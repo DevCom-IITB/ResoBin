@@ -15,7 +15,7 @@ const Header = () => {
       <ResoBinLogo size="1.5rem" />
       {isAuthenticated && latestSemester && (
         <Term>
-          AY {displayYear(latestSemester.year)}
+          AY {displayYear(latestSemester)}
           &nbsp;| {latestSemester.season}
         </Term>
       )}
@@ -47,7 +47,7 @@ const Term = styled.span`
     right: 0;
     display: flex;
     padding: 0 1.5rem;
-    color: lightgray;
+    color: ${({ theme }) => theme.textColor};
     font-weight: 400;
     font-size: 0.875rem;
     line-height: 80%;

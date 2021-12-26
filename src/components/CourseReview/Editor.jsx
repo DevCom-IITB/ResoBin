@@ -1,11 +1,13 @@
-import { Button, Comment } from 'antd'
+import { DocumentText } from '@styled-icons/heroicons-outline'
 import { useState } from 'react'
 import ReactQuill from 'react-quill'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { toast, UserAvatar } from 'components/shared'
+import { ButtonSquare, Comment, toast, UserAvatar } from 'components/shared'
 import { selectUserProfile } from 'store/userSlice'
+
+import reviewTemplate from './reviewTemplate'
 
 const formats = [
   'header',
@@ -22,27 +24,50 @@ const formats = [
   'link',
 ]
 
-// const modules = {
-//   toolbar: [
-//     [{ header: '1' }, { header: '2' }, { font: [] }],
-//     [{ size: [] }],
-//     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-//     [
-//       { list: 'ordered' },
-//       { list: 'bullet' },
-//       { indent: '-1' },
-//       { indent: '+1' },
-//     ],
-//     ['link', 'image', 'video'],
-//     ['clean'],
-//   ],
-//   clipboard: {
-//     // toggle to add extra line breaks when pasting HTML:
-//     matchVisual: false,
-//   },
-// }
+function loadTemplate() {
+  const delta = this.quill.clipboard.convert(reviewTemplate)
+  this.quill.setContents(delta, 'api')
+}
 
-export const Editor = ({ visible, onSubmit, initialValue = '' }) => {
+const modules = {
+  toolbar: {
+    container: '#toolbar',
+    handlers: {
+      loadTemplate,
+    },
+  },
+  clipboard: {
+    // toggle to add extra line breaks when pasting HTML:
+    matchVisual: false,
+  },
+}
+
+const CustomToolbar = ({ templateHandler }) => (
+  <Toolbar id="toolbar" style={{ border: 'none' }}>
+    <select className="ql-header" defaultValue="" onChange={(e) => e.persist()}>
+      <option aria-label="button" value="1" />
+      <option aria-label="button" value="2" />
+      <option aria-label="button" selected />
+    </select>
+
+    <button type="button" aria-label="button" className="ql-bold" />
+
+    <button type="button" aria-label="button" className="ql-italic" />
+
+    {templateHandler && (
+      <button type="button" className="ql-loadTemplate">
+        <DocumentText size="24" />
+      </button>
+    )}
+  </Toolbar>
+)
+
+export const Editor = ({
+  onSubmit,
+  initialValue = '',
+  submitText = 'Post',
+  templateHandler,
+}) => {
   const [content, setContent] = useState(initialValue)
   const [loading, setLoading] = useState(false)
   const handleChange = (value) => setContent(value)
@@ -60,79 +85,87 @@ export const Editor = ({ visible, onSubmit, initialValue = '' }) => {
   }
 
   return (
-    visible && (
-      <>
-        <StyledReactQuill
-          placeholder="Write something"
-          value={content}
-          onChange={handleChange}
-          formats={formats}
-        />
+    <>
+      <CustomToolbar templateHandler={templateHandler} />
+      <StyledReactQuill
+        placeholder="Write your review here..."
+        onChange={handleChange}
+        value={content}
+        formats={formats}
+        modules={modules}
+      />
 
-        <StyledButton
-          htmlType="submit"
-          loading={loading}
-          onClick={handleSubmit}
-          type="primary"
-        >
-          Submit
-        </StyledButton>
-      </>
-    )
+      <ButtonSquare
+        type="primary"
+        htmlType="submit"
+        onClick={handleSubmit}
+        loading={loading}
+      >
+        {submitText}
+      </ButtonSquare>
+    </>
   )
 }
 
-export const ReviewEditor = ({ visible, initialValue, onSubmit }) => {
+export const ReviewEditor = ({ ...editorProps }) => {
   const profile = useSelector(selectUserProfile)
 
   return (
-    visible && (
-      <Comment
-        avatar={
-          <UserAvatar
-            size="2rem"
-            src={profile.profilePicture}
-            alt="Profile picture"
-          />
-        }
-        content={
-          <Editor visible onSubmit={onSubmit} initialValue={initialValue} />
-        }
-      />
-    )
+    <Comment
+      avatar={
+        <UserAvatar
+          size="2rem"
+          src={profile.profilePicture}
+          alt="Profile picture"
+        />
+      }
+      content={<Editor visible {...editorProps} />}
+    />
   )
 }
 
 export default Editor
 
 const StyledReactQuill = styled(ReactQuill)`
-  color: #000000;
-  background-color: ${({ theme }) => theme.textColor};
-  border: 1px solid #000000;
-  border-radius: 0.5rem;
+  background: ${({ theme }) => theme.darksecondary};
+  color: ${({ theme }) => theme.textColor};
+  border-top: 1px solid ${({ theme }) => theme.dividerColor};
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
   box-shadow: 0 0 1rem 4px rgb(0 0 0 / 20%);
+  margin-bottom: 0.75rem;
 
-  .ql-toolbar.ql-snow {
-    display: block;
-    background: #eaecec;
+  .ql-container {
     border: none;
-    border-bottom: 1px solid #000000;
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
-  }
-
-  .ql-container.ql-snow {
-    border: none;
-    border-top: 1px solid #000000;
   }
 
   .ql-editor {
-    overflow-y: scroll;
-    resize: vertical;
+    &.ql-blank::before {
+      color: ${({ theme }) => theme.textColorInactive};
+    }
   }
 `
 
-const StyledButton = styled(Button)`
-  margin-top: 1rem;
-  border-radius: 0.5rem;
+const Toolbar = styled.div`
+  background: ${({ theme }) => theme.darksecondary};
+  color: ${({ theme }) => theme.textColor};
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+
+  .ql-stroke {
+    fill: none;
+    stroke: ${({ theme }) => theme.textColor};
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+  }
+
+  .ql-picker-label::before {
+    color: ${({ theme }) => theme.textColor};
+  }
+
+  button,
+  select {
+    background: none;
+  }
 `

@@ -3,15 +3,22 @@ import { Search } from '@styled-icons/heroicons-outline'
 import { Input } from 'antd'
 import { rgba } from 'polished'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { useQueryString } from 'hooks'
+import { useQueryString, useResponsive } from 'hooks'
+import { selectIsDropdownActive } from 'store/settingsSlice'
 
-import { CourseFinderFilterDropdown } from './Filter'
+import {
+  CourseFinderFilterDropdown,
+  CourseFinderFilterFloatButton,
+} from './Filter'
 
 // ? Disable filter will disable the filter entirely, show filter will trigger on/off animation
-const CourseSearch = ({ showFilter, loading, setLoading }) => {
+const CourseSearch = ({ loading, setLoading }) => {
+  const { isDesktop } = useResponsive()
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
+  const showFilter = useSelector(selectIsDropdownActive)
 
   const [search, setSearch] = useState(getQueryString('q'))
 
@@ -24,23 +31,27 @@ const CourseSearch = ({ showFilter, loading, setLoading }) => {
   }
 
   return (
-    <SearchContainer>
-      <CourseFinderFilterDropdown
-        showFilter={showFilter}
-        setLoading={setLoading}
-      />
-      {showFilter && <Overlay />}
+    <>
+      <SearchContainer>
+        <CourseFinderFilterDropdown
+          showFilter={showFilter && isDesktop}
+          setLoading={setLoading}
+        />
+        {showFilter && isDesktop && <Overlay />}
 
-      <StyledInput
-        size="large"
-        placeholder="Course code, name or description"
-        allowClear
-        maxLength={100}
-        onChange={handleSearch}
-        value={search}
-        prefix={<StyledIcon Icon={loading ? LoadingOutlined : Search} />}
-      />
-    </SearchContainer>
+        <StyledInput
+          size="large"
+          placeholder="Course code, name or description"
+          allowClear
+          maxLength={100}
+          onChange={handleSearch}
+          value={search}
+          prefix={<StyledIcon Icon={loading ? LoadingOutlined : Search} />}
+        />
+      </SearchContainer>
+
+      <CourseFinderFilterFloatButton />
+    </>
   )
 }
 

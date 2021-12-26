@@ -2,7 +2,7 @@ import { Tooltip } from 'antd'
 import styled from 'styled-components/macro'
 
 import { device } from 'styles/responsive'
-import { colorPicker } from 'styles/utils'
+import { useColorPicker } from 'styles/utils'
 
 // ? repeat n times a Box component with color = color
 const CourseWorkloadItem = ({ value, color, title }) =>
@@ -17,6 +17,8 @@ const CourseWorkloadItem = ({ value, color, title }) =>
   )
 
 const CourseWorkload = ({ workload }) => {
+  const colorPicker = useColorPicker()
+
   const workloadItems = [
     { title: 'Lecture', value: workload.lecture },
     { title: 'Tutorial', value: workload.tutorial },

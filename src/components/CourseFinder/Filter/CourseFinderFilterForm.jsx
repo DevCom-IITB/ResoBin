@@ -204,6 +204,6 @@ export default CourseFinderFilterForm
 const FilterTitle = styled.span`
   display: inline-block;
   color: ${({ theme }) => theme.textColor};
-  font-weight: 600;
+  font-weight: 500;
   font-size: 0.875rem;
 `

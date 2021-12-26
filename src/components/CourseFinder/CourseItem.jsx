@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { CourseContentRequestIcon } from 'components/CoursePage'
-import { FavoriteToggle } from 'components/Favourites'
+import { CourseContentRequestIcon } from 'components/CoursePage/CourseContentRequest'
+import FavoriteToggle from 'components/Favourites/FavoriteToggle'
 import { Divider, Typography, CardSplit } from 'components/shared'
 import { ButtonSquareLink } from 'components/shared/Buttons'
 import { TimetableSelector } from 'components/Timetable'
@@ -15,19 +15,7 @@ import { coursePageUrl } from 'helpers/format'
 import { useResponsive } from 'hooks'
 import { selectDepartments } from 'store/courseSlice'
 import { device, fontSize } from 'styles/responsive'
-import { colorPicker } from 'styles/utils'
-
-const creditColorPicker = (credits) => {
-  if (credits >= 10) return colorPicker(0)
-  if (credits >= 8) return colorPicker(1)
-  if (credits >= 6) return colorPicker(2)
-  if (credits >= 4) return colorPicker(3)
-  if (credits >= 2) return colorPicker(4)
-  return colorPicker(5)
-}
-
-const tagColorPicker = (tag) =>
-  colorPicker(defaultTags.courseTags.findIndex((t) => t === tag))
+import { useColorPicker } from 'styles/utils'
 
 // TODO: Add highlight for description
 const HighlightMatches = ({ content }) => {
@@ -42,7 +30,7 @@ const HighlightMatches = ({ content }) => {
       part.toLowerCase() === search ? (
         <Mark key={String(index)}>{part}</Mark>
       ) : (
-        <span key={String(index)}>{part}</span>
+        <Fragment key={String(index)}>{part}</Fragment>
       )
     )
 }
@@ -50,6 +38,19 @@ const HighlightMatches = ({ content }) => {
 const CourseItemMain = ({ courseData }) => {
   const { code, credits, department, title, description, tags } = courseData
   const departmentList = useSelector(selectDepartments)
+  const colorPicker = useColorPicker()
+
+  const creditColorPicker = (_credits) => {
+    if (_credits >= 10) return colorPicker(0)
+    if (_credits >= 8) return colorPicker(1)
+    if (_credits >= 6) return colorPicker(2)
+    if (_credits >= 4) return colorPicker(3)
+    if (_credits >= 2) return colorPicker(4)
+    return colorPicker(5)
+  }
+
+  const tagColorPicker = (tag) =>
+    colorPicker(defaultTags.courseTags.findIndex((t) => t === tag))
 
   return (
     <>

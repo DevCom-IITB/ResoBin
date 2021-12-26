@@ -6,18 +6,19 @@ import styled, { css } from 'styled-components/macro'
 
 import { cols, rows, slots } from 'data/timetable'
 import { selectCourseTitle } from 'store/courseSlice'
-import { colorPicker, makeGradient } from 'styles/utils'
+import { useColorPicker, makeGradient } from 'styles/utils'
 
 // * id refers to the color of the timetable item
 const TimetableCourseItem = ({ data, colorCode = 0 }) => {
   const { course: code, lectureSlots } = data
   const title = useSelector(selectCourseTitle(code))
+  const colorPicker = useColorPicker()
 
   const TimetableCourseLectureItem = useCallback(
     ({ gridCol, gridRow }) => (
       <GridItem row={gridRow} col={gridCol}>
         <Tooltip title={title}>
-          <Item id={colorCode}>
+          <Item color={colorPicker(colorCode)}>
             <h3>{code}</h3>
             <span>
               {gridRow.start.title} - {gridRow.end.title}
@@ -26,7 +27,7 @@ const TimetableCourseItem = ({ data, colorCode = 0 }) => {
         </Tooltip>
       </GridItem>
     ),
-    [code, colorCode, title]
+    [code, colorCode, title, colorPicker]
   )
 
   if (lectureSlots?.length === 0) return null
@@ -61,8 +62,7 @@ const Item = styled.div`
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 200ms ease-out;
-
-  ${({ id }) => getTile(colorPicker(id))}
+  ${({ color }) => getTile(color)}
 
   & > h3 {
     font-size: 1rem;

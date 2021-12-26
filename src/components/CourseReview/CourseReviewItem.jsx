@@ -1,12 +1,18 @@
 import { ThumbUp as ThumbUpOutlined } from '@styled-icons/heroicons-outline'
 import { ThumbUp as ThumbUpFilled } from '@styled-icons/heroicons-solid'
-import { Button, Comment } from 'antd'
+import { Button } from 'antd'
 import DOMPurify from 'dompurify'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { ButtonIcon, Timestamp, toast, UserAvatar } from 'components/shared'
+import {
+  ButtonIcon,
+  Comment,
+  Timestamp,
+  toast,
+  UserAvatar,
+} from 'components/shared'
 import { API } from 'config/api'
 import {
   selectUserProfile,
@@ -16,6 +22,8 @@ import {
 
 import { Editor, ReviewEditor } from './Editor'
 
+// TODO: Add icons to actions
+// TODO: Improve styling for mobile view
 const CourseReviewItem = ({ content, updateContent, depth }) => {
   const dispatch = useDispatch()
 
@@ -104,7 +112,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       <LikeCount>{voteCount}</LikeCount>
     </ButtonIcon>,
 
-    depth < 4 && (
+    depth < 1 && (
       <Button key="content-reply" type="link" onClick={showReplyForm}>
         Reply
       </Button>
@@ -112,7 +120,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
 
     isOwner && (
       <Button key="content-edit" type="link" onClick={showEditForm}>
-        Edit
+        {action === 'edit' ? 'Cancel editing' : 'Edit'}
       </Button>
     ),
 
@@ -124,14 +132,10 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
   ]
 
   return (
-    <StyledComment
+    <Comment
       key={content?.id}
       actions={actions}
-      author={
-        <a href={`/profile/${content?.userProfile?.ldapId}`}>
-          <CommentHeader>{content?.userProfile?.name}</CommentHeader>
-        </a>
-      }
+      author={<CommentHeader>{content?.userProfile?.name}</CommentHeader>}
       avatar={
         <UserAvatar
           size="2rem"
@@ -142,9 +146,9 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       content={
         action === 'edit' ? (
           <Editor
-            visible
             initialValue={DOMPurify.sanitize(content?.body)}
             onSubmit={handleUpdate}
+            submitText="Save"
           />
         ) : (
           <CommentText
@@ -156,7 +160,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       }
       datetime={<Timestamp time={content.timestamp} />}
     >
-      <ReviewEditor visible={action === 'reply'} onSubmit={handleCreateChild} />
+      {action === 'reply' && <ReviewEditor onSubmit={handleCreateChild} />}
 
       {content?.children?.map((child) => (
         <CourseReviewItem
@@ -166,23 +170,11 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
           depth={depth + 1}
         />
       ))}
-    </StyledComment>
+    </Comment>
   )
 }
 
 export default CourseReviewItem
-
-const StyledComment = styled(Comment)`
-  .ant-comment-avatar {
-    cursor: default;
-  }
-
-  .ant-comment-actions {
-    display: flex;
-    align-items: center;
-    height: 1.75rem;
-  }
-`
 
 const LikeCount = styled.span`
   margin-left: 0.5rem;
@@ -191,17 +183,17 @@ const LikeCount = styled.span`
 `
 
 const CommentHeader = styled.h2`
-  color: ${({ theme }) => theme.header};
+  color: ${({ theme }) => theme.textColor};
   font-weight: 600;
   font-size: 0.75rem;
 
   &:hover {
-    color: ${({ theme }) => theme.header};
+    color: ${({ theme }) => theme.textColor};
   }
 `
 
 const CommentText = styled.div`
   width: 80%;
-  color: ${({ theme }) => theme.header};
+  color: ${({ theme }) => theme.textColor};
   font-weight: 400;
 `

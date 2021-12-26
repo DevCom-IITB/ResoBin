@@ -108,16 +108,14 @@ const TimetableContainer = () => {
 
       <TimetableSemesterTitle>
         <ButtonIcon
-          color="white"
           icon={<ChevronLeft size="20" />}
           onClick={handleClickPrev}
           disabled={loading || !(semIdx - 1 in semesterList)}
           hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
         />
         {semesterList[semIdx]?.season ?? 'Click next'}&nbsp;
-        {displayYear(semesterList[semIdx]?.year)}
+        {displayYear(semesterList[semIdx])}
         <ButtonIcon
-          color="white"
           icon={<ChevronRight size="20" />}
           disabled={loading || !(semIdx + 1 in semesterList)}
           onClick={handleClickNext}
@@ -165,7 +163,7 @@ const TimetableSemesterTitle = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
-  color: white;
+  color: ${({ theme }) => theme.textColor};
   font-size: 1.25rem;
   text-transform: capitalize;
 `
