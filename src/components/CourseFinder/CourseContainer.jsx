@@ -1,23 +1,19 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
-import { toast } from 'components/shared'
+import { Aside, toast } from 'components/shared'
 import { API } from 'config/api'
-import { useQueryString, useResponsive } from 'hooks'
+import { useQueryString } from 'hooks'
 
 import CourseList from './CourseList'
 import CourseSearch from './CourseSearch'
-import {
-  CourseFinderFilterAside,
-  CourseFinderFilterFloatButton,
-} from './Filter'
+import { ClearAll, filterKeys } from './Filter/CourseFinderFilterContainer'
+import CourseFinderFilterForm from './Filter/CourseFinderFilterForm'
 
 let ajaxRequest = null
 const CourseFinderContainer = () => {
-  const { isDesktop } = useResponsive()
-  const { getQueryString } = useQueryString()
+  const { getQueryString, deleteQueryString } = useQueryString()
 
-  const [showFilter, setShowFilter] = useState(false)
   const [courseData, setCourseData] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -61,18 +57,7 @@ const CourseFinderContainer = () => {
 
   return (
     <>
-      <CourseSearch
-        loading={loading}
-        setLoading={setLoading}
-        showFilter={!isDesktop && showFilter}
-      />
-
-      {/* For desktops */}
-      <CourseFinderFilterAside setLoading={setLoading} />
-      <CourseFinderFilterFloatButton
-        showFilter={showFilter}
-        setShowFilter={setShowFilter}
-      />
+      <CourseSearch loading={loading} setLoading={setLoading} />
 
       <CourseList
         title="Courses"
@@ -81,6 +66,18 @@ const CourseFinderContainer = () => {
         loading={loading}
         setLoading={setLoading}
       />
+
+      <Aside
+        title="Filter"
+        subtitle={
+          <ClearAll onClick={() => deleteQueryString(...filterKeys)}>
+            Reset all
+          </ClearAll>
+        }
+        loading={loading}
+      >
+        <CourseFinderFilterForm setLoading={setLoading} />
+      </Aside>
     </>
   )
 }

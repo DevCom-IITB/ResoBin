@@ -21,7 +21,7 @@ export const AsideHeader = ({ title, subtitle, loading, loadingComponent }) => (
   </div>
 )
 
-export const AsideContainer = ({
+const AsideContainer = ({
   title,
   subtitle,
   loading,

@@ -1,13 +1,15 @@
 import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { Aside, Divider } from 'components/shared'
+import { Divider } from 'components/shared'
 import { useQueryString } from 'hooks'
+import { selectIsDropdownActive } from 'store/settingsSlice'
 import { device } from 'styles/responsive'
 
 import CourseFinderFilterForm from './CourseFinderFilterForm'
 
-const filterKeys = [
+export const filterKeys = [
   'semester',
   'department',
   'p',
@@ -18,8 +20,9 @@ const filterKeys = [
   'tags',
 ]
 
-export const CourseFinderFilterDropdown = ({ showFilter, setLoading }) => {
+export const CourseFinderFilterDropdown = ({ setLoading }) => {
   const { deleteQueryString } = useQueryString()
+  const showFilter = useSelector(selectIsDropdownActive)
 
   useEffect(() => {
     document.body.style.overflow = showFilter ? 'hidden' : 'auto'
@@ -36,29 +39,13 @@ export const CourseFinderFilterDropdown = ({ showFilter, setLoading }) => {
           Reset all
         </ClearAll>
       </Header>
-      <Divider style={{ margin: '0 1rem', width: 'auto' }} />
+
+      <Divider margin="0.75rem 0" />
 
       <ListDropdown showFilter={showFilter}>
         <CourseFinderFilterForm setLoading={setLoading} />
       </ListDropdown>
     </ContainerDropdown>
-  )
-}
-
-export const CourseFinderFilterAside = ({ setLoading }) => {
-  const { deleteQueryString } = useQueryString()
-
-  return (
-    <Aside
-      title="Filter"
-      subtitle={
-        <ClearAll onClick={() => deleteQueryString(...filterKeys)}>
-          Reset all
-        </ClearAll>
-      }
-    >
-      <CourseFinderFilterForm setLoading={setLoading} />
-    </Aside>
   )
 }
 
@@ -68,7 +55,7 @@ const ContainerDropdown = styled.div`
   z-index: 5;
   width: 100%;
   height: ${({ showFilter }) => (showFilter ? 'calc(100vh - 5rem)' : '0')};
-  padding: ${({ showFilter }) => (showFilter ? '1rem 0 20rem' : '0')};
+  padding: ${({ showFilter }) => (showFilter ? '1rem 1rem 20rem' : '0')};
   overflow: auto;
   background: ${({ theme }) => theme.secondary};
   box-shadow: 2px 0 5px rgb(0 0 0 / 30%);
@@ -79,13 +66,11 @@ const Header = styled.div`
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  height: 3rem;
-  margin-bottom: 0.5rem;
-  padding: 1.25rem 1rem 0;
+  margin-top: 1.25rem;
 
   @media ${device.min.lg} {
     margin: 0;
-    padding: 1rem 1rem 0.5rem;
+    padding: 1rem 0 0.5rem;
   }
 `
 
@@ -93,10 +78,9 @@ const Title = styled.h4`
   color: ${({ theme }) => theme.textColor};
   font-weight: 700;
   font-size: 1.25rem;
-  letter-spacing: 1px;
 `
 
-const ClearAll = styled.button`
+export const ClearAll = styled.button`
   color: ${({ theme }) => theme.textColor};
   font-weight: 400;
   font-size: 0.75rem;
@@ -106,11 +90,10 @@ const ClearAll = styled.button`
 
   &:hover {
     text-decoration: underline;
-    text-underline-offset: 1px;
   }
 `
 
 const ListDropdown = styled.div`
   display: ${({ showFilter }) => (showFilter ? 'block' : 'none')};
-  padding: 1rem 1rem 2rem;
+  margin-bottom: 2rem;
 `

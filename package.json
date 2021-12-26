@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@stylelint/postcss-css-in-js": "^0.37.2",
-    "eslint-config-airbnb": "^19.0.2",
+    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^6.0.0",

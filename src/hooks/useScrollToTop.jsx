@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom'
 export const scrollToHash = (hash) => {
   // ? hash string contains the '#' character
   const element = document.getElementById(hash.slice(1))
-  if (element) element.scrollIntoView(true)
+  if (element) element.scrollIntoView()
 }
 
 export const useScrollToTop = () => {
