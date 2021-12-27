@@ -1,4 +1,3 @@
-import { DocumentText } from '@styled-icons/heroicons-outline'
 import { useState } from 'react'
 import ReactQuill from 'react-quill'
 import { useSelector } from 'react-redux'
@@ -56,7 +55,7 @@ const CustomToolbar = ({ templateHandler }) => (
 
     {templateHandler && (
       <button type="button" className="ql-loadTemplate">
-        <DocumentText size="24" />
+        Load template
       </button>
     )}
   </Toolbar>
@@ -167,5 +166,10 @@ const Toolbar = styled.div`
   button,
   select {
     background: none;
+  }
+
+  button.ql-loadTemplate {
+    color: ${({ theme }) => theme.textColor};
+    width: fit-content;
   }
 `
