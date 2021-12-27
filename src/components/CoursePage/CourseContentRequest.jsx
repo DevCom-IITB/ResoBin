@@ -78,9 +78,13 @@ export const CourseContentRequestIcon = ({
       shape="round"
       size="default"
       icon={
-        <Badge scale={0.625} count={count} overflowCount={9}>
-          <UserGroup size="30" />
-        </Badge>
+        initialCount ? (
+          <Badge scale={0.625} count={count} overflowCount={9}>
+            <UserGroup size="30" />
+          </Badge>
+        ) : (
+          <UserGroup size="20" />
+        )
       }
       $active={requestStatus}
       onClick={handleRequest}

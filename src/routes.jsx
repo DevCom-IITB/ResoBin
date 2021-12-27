@@ -23,9 +23,9 @@ export const DashboardRoutes = () => (
     <Route path="/" element={<Home />} />
     <Route path="/courses">
       <Route path="" element={<CourseFinder />} />
-      <Route path=":code" element={<CoursePage />}>
-        <Route path="" />
-        <Route path=":titleSlug" />
+      <Route path=":code">
+        <Route path="" element={<CoursePage />} />
+        <Route path=":titleSlug" element={<CoursePage />} />
       </Route>
     </Route>
     <Route path="/contribute" element={<Contribute />} />

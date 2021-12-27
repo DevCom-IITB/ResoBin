@@ -43,10 +43,14 @@ const modules = {
 
 const CustomToolbar = ({ templateHandler }) => (
   <Toolbar id="toolbar" style={{ border: 'none' }}>
-    <select className="ql-header" defaultValue="" onChange={(e) => e.persist()}>
+    <select
+      className="ql-header"
+      defaultValue="3"
+      onChange={(e) => e.persist()}
+    >
       <option aria-label="button" value="1" />
       <option aria-label="button" value="2" />
-      <option aria-label="button" selected />
+      <option aria-label="button" value="3" />
     </select>
 
     <button type="button" aria-label="button" className="ql-bold" />
