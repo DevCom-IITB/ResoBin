@@ -36,7 +36,16 @@ const HighlightMatches = ({ content }) => {
 }
 
 const CourseItemMain = ({ courseData }) => {
-  const { code, credits, department, title, description, tags } = courseData
+  const {
+    code,
+    credits,
+    department,
+    title,
+    description,
+    tags,
+    favoritedByCount,
+  } = courseData
+
   const departmentList = useSelector(selectDepartments)
   const colorPicker = useColorPicker()
 
@@ -80,7 +89,7 @@ const CourseItemMain = ({ courseData }) => {
             ))}
           </TagsContainer>
 
-          <FavoriteToggle code={code} />
+          <FavoriteToggle code={code} initialCount={favoritedByCount} />
         </RightIcons>
       </SubTitle>
 
@@ -108,10 +117,15 @@ const CourseItemMain = ({ courseData }) => {
 const CourseItemSub = ({ courseData }) => {
   const { isMobile, isMobileS } = useResponsive()
 
-  const { code, title, semester, reviews, resources } = courseData
-
-  const reviewCount = reviews?.length
-  const resourceCount = resources?.length
+  const {
+    code,
+    title,
+    semester,
+    reviewsCount,
+    resourcesCount,
+    reviewRequestersCount,
+    resourceRequestersCount,
+  } = courseData
 
   return (
     <>
@@ -129,14 +143,14 @@ const CourseItemSub = ({ courseData }) => {
             style={{ width: '100%', borderRadius: '0.5rem 0 0 0.5rem' }}
           >
             <ChatAlt size="16" />
-            Reviews {reviewCount > 0 && `(${reviewCount})`}
+            Reviews {reviewsCount > 0 && `(${reviewsCount})`}
           </ButtonSquareLink>
 
           <CourseContentRequestIcon
             code={code}
             type="reviews"
+            initialCount={reviewRequestersCount}
             tooltip="Request reviews"
-            style={{ borderRadius: '0 0.5rem 0.5rem 0' }}
           />
         </FlexGap>
 
@@ -146,14 +160,14 @@ const CourseItemSub = ({ courseData }) => {
             to={`${coursePageUrl(code, title)}#resources`}
           >
             <DocumentText size="16" />
-            Resources {resourceCount > 0 && `(${resourceCount})`}
+            Resources {resourcesCount > 0 && `(${resourcesCount})`}
           </ButtonSquareLink>
 
           <CourseContentRequestIcon
             code={code}
             type="resources"
+            initialCount={resourceRequestersCount}
             tooltip="Request resources"
-            style={{ borderRadius: '0 0.5rem 0.5rem 0' }}
           />
         </FlexGap>
       </div>

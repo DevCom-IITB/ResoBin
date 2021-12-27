@@ -8,15 +8,23 @@ import { device, fontSize } from 'styles/responsive'
 import CourseWorkload from './CourseWorkload'
 
 const CoursePageBody = ({ courseData }) => {
-  const { code, title, department, credits, description, workload, semester } =
-    courseData
+  const {
+    code,
+    title,
+    department,
+    credits,
+    description,
+    workload,
+    semester,
+    favoritedByCount,
+  } = courseData
 
   return (
     <Container>
       <CourseInfo>
         <h1>{code}</h1>
         <FavoriteContainer>
-          <FavoriteToggle code={code} />
+          <FavoriteToggle code={code} initialCount={favoritedByCount} />
         </FavoriteContainer>
 
         <h2>{title}</h2>
