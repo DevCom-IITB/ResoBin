@@ -6,6 +6,7 @@ export {
   ButtonDropdown,
   ButtonSwitch,
 } from './Buttons'
+export { default as Badge } from './Badge'
 export { default as Card, CardSkeleton } from './Card'
 export { default as CardSplit, CardSplitSkeleton } from './CardSplit'
 export { default as Checkbox } from './Checkbox'

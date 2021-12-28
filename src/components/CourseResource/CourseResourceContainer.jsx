@@ -3,15 +3,20 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { CourseContentRequest } from 'components/CoursePage'
+import {
+  CourseContentRequest,
+  CourseContentRequestIcon,
+} from 'components/CoursePage'
 import { ButtonSquare, LoaderAnimation, toast } from 'components/shared'
 import { API } from 'config/api'
+import { useResponsive } from 'hooks'
 
 import { CourseResourceGrid } from './CourseResourceItem'
 
 const CourseResourceContainer = () => {
   const { code } = useParams()
   const navigate = useNavigate()
+  const { isMobileS } = useResponsive()
 
   const [resources, setResources] = useState([])
   const [loading, setLoading] = useState(false)
@@ -42,11 +47,19 @@ const CourseResourceContainer = () => {
         <h1 style={{ fontSize: '1.25rem' }}>Resources</h1>
 
         <ButtonContainer>
-          <CourseContentRequest
-            code={code}
-            type="resources"
-            style={{ marginRight: '0.75rem' }}
-          />
+          {isMobileS ? (
+            <CourseContentRequestIcon
+              code={code}
+              type="resources"
+              style={{ marginRight: '0.75rem' }}
+            />
+          ) : (
+            <CourseContentRequest
+              code={code}
+              type="resources"
+              style={{ marginRight: '0.75rem' }}
+            />
+          )}
 
           <ButtonSquare
             type="primary"

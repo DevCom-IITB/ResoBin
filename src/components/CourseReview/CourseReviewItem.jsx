@@ -193,7 +193,14 @@ const CommentHeader = styled.h2`
 `
 
 const CommentText = styled.div`
-  width: 80%;
   color: ${({ theme }) => theme.textColor};
-  font-weight: 400;
+  margin-top: 0.5rem;
+
+  a {
+    color: #239afc;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `

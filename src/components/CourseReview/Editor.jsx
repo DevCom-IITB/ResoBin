@@ -1,4 +1,3 @@
-import { DocumentText } from '@styled-icons/heroicons-outline'
 import { useState } from 'react'
 import ReactQuill from 'react-quill'
 import { useSelector } from 'react-redux'
@@ -44,10 +43,14 @@ const modules = {
 
 const CustomToolbar = ({ templateHandler }) => (
   <Toolbar id="toolbar" style={{ border: 'none' }}>
-    <select className="ql-header" defaultValue="" onChange={(e) => e.persist()}>
+    <select
+      className="ql-header"
+      defaultValue="3"
+      onChange={(e) => e.persist()}
+    >
       <option aria-label="button" value="1" />
       <option aria-label="button" value="2" />
-      <option aria-label="button" selected />
+      <option aria-label="button" value="3" />
     </select>
 
     <button type="button" aria-label="button" className="ql-bold" />
@@ -56,7 +59,7 @@ const CustomToolbar = ({ templateHandler }) => (
 
     {templateHandler && (
       <button type="button" className="ql-loadTemplate">
-        <DocumentText size="24" />
+        Load template
       </button>
     )}
   </Toolbar>
@@ -167,5 +170,10 @@ const Toolbar = styled.div`
   button,
   select {
     background: none;
+  }
+
+  button.ql-loadTemplate {
+    color: ${({ theme }) => theme.textColor};
+    width: fit-content;
   }
 `
