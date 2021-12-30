@@ -23,12 +23,7 @@ const Footer = () => {
 
       <h5>
         Created with ❤️ by&nbsp;
-        <a
-          href="https://www.devcom-iitb.org"
-          target="_blank"
-          rel="noreferrer"
-          style={{ color: 'white' }}
-        >
+        <a href="https://www.devcom-iitb.org" target="_blank" rel="noreferrer">
           DevCom
         </a>
         &nbsp;in collaboration with&nbsp;
@@ -36,7 +31,6 @@ const Footer = () => {
           href="https://www.insti.app/org/ugac"
           target="_blank"
           rel="noreferrer"
-          style={{ color: 'white' }}
         >
           UGAC
         </a>
@@ -55,9 +49,13 @@ const StyledLayoutFooter = styled(Layout.Footer)`
   text-align: center;
   padding: 0 0.75rem 1.5rem;
 
-  a:hover {
-    text-decoration: underline;
+  a {
     color: ${({ theme }) => theme.textColor};
+
+    &:hover {
+      text-decoration: underline;
+      color: ${({ theme }) => theme.textColor};
+    }
   }
 
   svg:hover {
@@ -72,6 +70,7 @@ const StyledLayoutFooter = styled(Layout.Footer)`
   h5 {
     color: ${({ theme }) => theme.textColorInactive};
     font-weight: 400;
+    margin-top: 0.5rem;
   }
 `
 

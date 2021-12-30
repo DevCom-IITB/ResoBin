@@ -5,18 +5,26 @@ import styled from 'styled-components/macro'
 
 import { Aside, CardSplit, Switch, Typography } from 'components/shared'
 import { PageHeading, PageTitle } from 'components/shared/Layout'
-import { useTheme } from 'hooks'
 import { logoutAction } from 'store/authSlice'
-import { selectTracking, setTracking } from 'store/settingsSlice'
+import {
+  selectTheme,
+  selectTracking,
+  setTheme,
+  setTracking,
+} from 'store/settingsSlice'
 
 import Profile from './Profile'
 
 const SettingsContainer = () => {
-  const dispatch = useDispatch()
-  const { theme, switchTheme } = useTheme()
   const tracking = useSelector(selectTracking)
+  const theme = useSelector(selectTheme)
 
+  const dispatch = useDispatch()
   const switchTracking = () => dispatch(setTracking(!tracking))
+  const switchTheme = () => {
+    if (theme === 'dark') dispatch(setTheme('light'))
+    else if (theme === 'light') dispatch(setTheme('dark'))
+  }
   const handleLogout = () => dispatch(logoutAction())
 
   return (
