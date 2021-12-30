@@ -1,19 +1,22 @@
 import { Sun, Moon } from '@styled-icons/heroicons-outline/'
 import { Button } from 'antd'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { Aside, CardSplit, Switch, Typography } from 'components/shared'
 import { PageHeading, PageTitle } from 'components/shared/Layout'
 import { useTheme } from 'hooks'
 import { logoutAction } from 'store/authSlice'
+import { selectTracking, setTracking } from 'store/settingsSlice'
 
 import Profile from './Profile'
 
 const SettingsContainer = () => {
   const dispatch = useDispatch()
   const { theme, switchTheme } = useTheme()
+  const tracking = useSelector(selectTracking)
 
+  const switchTracking = () => dispatch(setTracking(!tracking))
   const handleLogout = () => dispatch(logoutAction())
 
   return (
@@ -51,7 +54,7 @@ const SettingsContainer = () => {
               </SubHeading>
             </>
           }
-          sub={<Switch defaultChecked />}
+          sub={<Switch defaultChecked={tracking} onChange={switchTracking} />}
           subWidth="5rem"
         />
 
@@ -96,9 +99,12 @@ const SubHeading = styled.p`
 `
 
 const StyledButton = styled(Button)`
-  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.75rem;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.75rem;
   border-radius: 0.5rem;
 `
 
