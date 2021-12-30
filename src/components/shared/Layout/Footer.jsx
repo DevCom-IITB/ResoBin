@@ -22,10 +22,25 @@ const Footer = () => {
       <h4>ResoBin</h4>
 
       <h5>
-        Created with ❤️ by{' '}
-        <a href="https://www.devcom-iitb.org" target="_blank" rel="noreferrer">
-          DevCom, IIT Bombay.
+        Created with ❤️ by&nbsp;
+        <a
+          href="https://www.devcom-iitb.org"
+          target="_blank"
+          rel="noreferrer"
+          style={{ color: 'white' }}
+        >
+          DevCom
         </a>
+        &nbsp;in collaboration with&nbsp;
+        <a
+          href="https://www.insti.app/org/ugac"
+          target="_blank"
+          rel="noreferrer"
+          style={{ color: 'white' }}
+        >
+          UGAC
+        </a>
+        .
       </h5>
     </StyledLayoutFooter>
   )
