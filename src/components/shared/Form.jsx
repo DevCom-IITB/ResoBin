@@ -52,14 +52,16 @@ const StyledForm = styled(Form)`
     align-items: center;
     color: ${({ theme }) => theme.textColor};
     font-size: 0.75rem;
-    background: transparent;
+    background: ${({ theme }) => rgba(theme.darksecondary, 0.3)};
+    border-radius: 0.5rem;
+    padding: 0.375rem 0.75rem;
     border: none;
     border-bottom: solid 1px
       ${({ theme }) => rgba(theme.textColorInactive, 0.3)};
 
     &:hover,
     &:focus {
-      border-color: ${({ theme }) => theme.textColorInactive};
+      border-color: ${({ theme }) => rgba(theme.textColorInactive, 0.6)};
       box-shadow: none !important;
     }
   }
@@ -91,6 +93,7 @@ const StyledForm = styled(Form)`
   .ant-form-item-label label {
     color: ${({ theme }) => theme.textColor};
     font-size: 0.875rem;
+    margin-bottom: 0.25rem;
   }
 `
 

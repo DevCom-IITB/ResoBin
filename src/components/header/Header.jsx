@@ -15,24 +15,24 @@ const Header = () => {
 
   return (
     <Container>
-      {!isMobile && (
-        <TextContainer to="/">
-          <ResoBinText size="1.5rem" />
-        </TextContainer>
-      )}
-
       <LogoContainer to="/">
         <ResoBinLogo width="36" alt="logo" />
       </LogoContainer>
 
       {!isMobile && latestSemester && (
-        <Term>
-          <span>{latestSemester.season} sem</span>
+        <>
+          <TextContainer to="/">
+            <ResoBinText size="1.5rem" />
+          </TextContainer>
 
-          <Divider dashed margin="2px 0" style={{ borderColor: '#ffffff' }} />
+          <Term>
+            <span>{latestSemester.season} sem</span>
 
-          <span>AY {displayYear(latestSemester)}</span>
-        </Term>
+            <Divider dashed margin="2px 0" style={{ borderColor: '#ffffff' }} />
+
+            <span>AY {displayYear(latestSemester)}</span>
+          </Term>
+        </>
       )}
     </Container>
   )

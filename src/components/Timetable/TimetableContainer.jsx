@@ -58,9 +58,10 @@ const TimetableAsideItem = ({ code, handleRemove, loading }) => {
 const TimetableContainer = () => {
   const dispatch = useDispatch()
   const semesterList = useSelector(selectSemesters)
+  const courseAPILoading = useSelector(selectCourseAPILoading)
 
   const [courseTimetableList, setCourseTimetableList] = useState([])
-  const [loading, setLoading] = useState(useSelector(selectCourseAPILoading))
+  const [loading, setLoading] = useState(courseAPILoading)
   const [semIdx, setSemIdx] = useState(null)
 
   useEffect(() => {
@@ -80,7 +81,8 @@ const TimetableContainer = () => {
       }
     }
 
-    if (semIdx) fetchUserTimetable(semesterList[semIdx])
+    if (semIdx !== null) fetchUserTimetable(semesterList[semIdx])
+    else setLoading(true)
   }, [semesterList, semIdx])
 
   const handleClickPrev = () =>
@@ -104,30 +106,30 @@ const TimetableContainer = () => {
     }
   }
 
-  if (!semIdx) return <LoaderAnimation />
-
   return (
     <>
       <PageHeading>
         <PageTitle>Timetable</PageTitle>
       </PageHeading>
 
-      <TimetableSemesterTitle>
-        <ButtonIcon
-          icon={<ChevronLeft size="20" />}
-          onClick={handleClickPrev}
-          disabled={loading || !(semIdx - 1 in semesterList)}
-          hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-        />
-        {semesterList[semIdx].season}&nbsp;
-        {displayYear(semesterList[semIdx])}
-        <ButtonIcon
-          icon={<ChevronRight size="20" />}
-          disabled={loading || !(semIdx + 1 in semesterList)}
-          onClick={handleClickNext}
-          hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-        />
-      </TimetableSemesterTitle>
+      {semesterList[semIdx] && (
+        <TimetableSemesterTitle>
+          <ButtonIcon
+            icon={<ChevronLeft size="20" />}
+            onClick={handleClickPrev}
+            disabled={loading || !(semIdx - 1 in semesterList)}
+            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+          />
+          {semesterList[semIdx].season}&nbsp;
+          {displayYear(semesterList[semIdx])}
+          <ButtonIcon
+            icon={<ChevronRight size="20" />}
+            disabled={loading || !(semIdx + 1 in semesterList)}
+            onClick={handleClickNext}
+            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+          />
+        </TimetableSemesterTitle>
+      )}
 
       {loading && <LoaderAnimation />}
 

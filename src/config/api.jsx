@@ -37,7 +37,7 @@ APIInstance.interceptors.response.use(
       if (error.response.status === 401)
         toast({ status: 'error', content: 'Please login again' })
     } catch (e) {
-      toast({ status: 'error', content: 'Server is offline' })
+      toast({ status: 'error', content: 'Server did not respond' })
     }
 
     return Promise.reject(error.message)
