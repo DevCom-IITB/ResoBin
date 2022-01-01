@@ -3,7 +3,7 @@ import { Button } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { Aside, CardSplit, Switch, Typography } from 'components/shared'
+import { Aside, CardSplit, Switch, toast, Typography } from 'components/shared'
 import { PageHeading, PageTitle } from 'components/shared/Layout'
 import { logoutAction } from 'store/authSlice'
 import {
@@ -25,7 +25,15 @@ const SettingsContainer = () => {
     if (theme === 'dark') dispatch(setTheme('light'))
     else if (theme === 'light') dispatch(setTheme('dark'))
   }
-  const handleLogout = () => dispatch(logoutAction())
+
+  const handleLogout = async () => {
+    try {
+      const response = await dispatch(logoutAction())
+      toast({ status: 'success', content: response?.payload?.detail })
+    } catch (error) {
+      toast({ status: 'error', content: error })
+    }
+  }
 
   return (
     <>

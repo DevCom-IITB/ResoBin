@@ -10,8 +10,7 @@ import reviewTemplate from './reviewTemplate'
 
 const formats = [
   'header',
-  'font',
-  'size',
+  'code',
   'bold',
   'italic',
   'underline',

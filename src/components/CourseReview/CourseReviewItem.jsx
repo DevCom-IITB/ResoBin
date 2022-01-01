@@ -59,9 +59,9 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
     try {
       const payload = { ...content, body }
       await API.reviews.update({ id: content.id, payload })
-
       updateContent({ id: content.id, payload })
       setAction(null)
+      toast({ status: 'success', content: 'Successfully updated content' })
     } catch (error) {
       toast({ status: 'error', content: error })
     }
@@ -71,6 +71,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
     try {
       await API.reviews.delete({ id: content.id })
       updateContent({ id: content.id, payload: null })
+      toast({ status: 'success', content: 'Successfully deleted content' })
     } catch (error) {
       toast({ status: 'error', content: error })
     }
@@ -86,6 +87,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
           status: false,
         },
       })
+      toast({ status: 'success', content: 'Successfully replied' })
 
       const payload = content
       if (payload?.children) payload.children.push(response)

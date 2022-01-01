@@ -88,6 +88,7 @@ const CourseReviewContainer = () => {
       })
 
       handleUpdateContent({ id: null, payload: { ...response, children: [] } })
+      toast({ status: 'success', content: 'Successfully posted review' })
     } catch (error) {
       toast({ status: 'error', content: error })
     }
