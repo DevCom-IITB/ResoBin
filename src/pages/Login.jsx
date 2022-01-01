@@ -32,16 +32,24 @@ const Login = () => {
       dispatch(getAuthStatusAction())
     } else {
       // ? If user is not authenticated
-      const error = getQueryString('error')
       const code = getQueryString('code')
-
       if (code) {
+        const loginUser = async (params) => {
+          try {
+            const response = await dispatch(loginAction({ params }))
+            toast({ status: 'success', content: response?.payload?.detail })
+          } catch (error) {
+            toast({ status: 'error', content: error })
+          }
+        }
+
         const params = { code, redir: SSO.BASE_REDIRECT_URI }
         deleteQueryString('code')
-        dispatch(loginAction({ params }))
+        loginUser(params)
       }
 
       // ? If SSO login is unsuccessfull, an error param appears in the query string
+      const error = getQueryString('error')
       if (error) {
         toast({ status: 'error', content: `Error: ${error}` })
         deleteQueryString('error')

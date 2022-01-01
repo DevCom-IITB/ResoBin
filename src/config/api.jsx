@@ -37,7 +37,7 @@ APIInstance.interceptors.response.use(
       if (error.response.status === 401)
         toast({ status: 'error', content: 'Please login again' })
     } catch (e) {
-      toast({ status: 'error', content: 'Server is offline' })
+      toast({ status: 'error', content: 'Server did not respond' })
     }
 
     return Promise.reject(error.message)
@@ -52,6 +52,12 @@ export const API = {
     logout: async () => APIInstance.get('/accounts/logout'),
     authenticate: async () => APIInstance.get('/accounts/authenticate'),
     csrftoken: async () => APIInstance.get('/accounts/csrftoken'),
+  },
+
+  // * User feedback endpoints
+  feedback: {
+    share: async ({ payload }) =>
+      APIInstance.post('/accounts/feedback', payload),
   },
 
   // * User profile endpoints
