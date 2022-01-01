@@ -54,6 +54,12 @@ export const API = {
     csrftoken: async () => APIInstance.get('/accounts/csrftoken'),
   },
 
+  // * User feedback endpoints
+  feedback: {
+    share: async ({ payload }) =>
+      APIInstance.post('/accounts/feedback', payload),
+  },
+
   // * User profile endpoints
   profile: {
     read: async () => APIInstance.get('/accounts/profile'),

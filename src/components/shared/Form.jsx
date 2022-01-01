@@ -87,6 +87,11 @@ const StyledForm = styled(Form)`
       color: ${({ theme }) => theme.textColor};
     }
   }
+
+  .ant-form-item-label label {
+    color: ${({ theme }) => theme.textColor};
+    font-size: 0.875rem;
+  }
 `
 
 export default StyledForm
