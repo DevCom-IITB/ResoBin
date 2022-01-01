@@ -29,7 +29,7 @@ const Header = () => {
         <Term>
           <span>{latestSemester.season} sem</span>
 
-          <Divider margin="1px 0" style={{ borderColor: '#ffffff88' }} />
+          <Divider dashed margin="2px 0" style={{ borderColor: '#ffffff' }} />
 
           <span>AY {displayYear(latestSemester)}</span>
         </Term>
@@ -75,15 +75,8 @@ const Term = styled.span`
   right: 0;
   padding: 0 1.5rem;
   color: ${({ theme }) => theme.textColor};
-  font-weight: 400;
   font-size: 0.75rem;
-  line-height: 80%;
-  letter-spacing: 1.5px;
-  white-space: nowrap;
   text-transform: uppercase;
   text-align: center;
-
-  @media ${device.min.lg} {
-    padding: 0 0.75rem;
-  }
+  opacity: 0.8;
 `

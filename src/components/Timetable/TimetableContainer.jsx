@@ -61,7 +61,11 @@ const TimetableContainer = () => {
 
   const [courseTimetableList, setCourseTimetableList] = useState([])
   const [loading, setLoading] = useState(useSelector(selectCourseAPILoading))
-  const [semIdx, setSemIdx] = useState(semesterList.length - 1)
+  const [semIdx, setSemIdx] = useState(null)
+
+  useEffect(() => {
+    if (semesterList.length) setSemIdx(semesterList.length - 1)
+  }, [semesterList])
 
   useEffect(() => {
     const fetchUserTimetable = async (_semester) => {
@@ -76,7 +80,7 @@ const TimetableContainer = () => {
       }
     }
 
-    fetchUserTimetable(semesterList[semIdx])
+    if (semIdx) fetchUserTimetable(semesterList[semIdx])
   }, [semesterList, semIdx])
 
   const handleClickPrev = () =>
@@ -100,6 +104,8 @@ const TimetableContainer = () => {
     }
   }
 
+  if (!semIdx) return <LoaderAnimation />
+
   return (
     <>
       <PageHeading>
@@ -113,7 +119,7 @@ const TimetableContainer = () => {
           disabled={loading || !(semIdx - 1 in semesterList)}
           hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
         />
-        {semesterList[semIdx]?.season ?? 'Click next'}&nbsp;
+        {semesterList[semIdx].season}&nbsp;
         {displayYear(semesterList[semIdx])}
         <ButtonIcon
           icon={<ChevronRight size="20" />}

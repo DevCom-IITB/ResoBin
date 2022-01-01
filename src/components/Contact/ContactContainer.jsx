@@ -1,7 +1,14 @@
 // import { useState } from 'react'
 import styled from 'styled-components/macro'
 
-import { ButtonSquare, InputSquared, TextAreaSquared } from 'components/shared'
+import { DeveloperList } from 'components/Contact'
+import {
+  PageHeading,
+  PageTitle,
+  ButtonSquare,
+  InputSquared,
+  TextAreaSquared,
+} from 'components/shared'
 
 const ContactContainer = () => {
   // const [state, setState] = useState(initalState)
@@ -13,13 +20,21 @@ const ContactContainer = () => {
   // }
 
   return (
-    <ContainerForm>
-      <InputSquared placeholder="Subject" type="text" />
+    <>
+      <PageHeading>
+        <PageTitle>Contact us</PageTitle>
+      </PageHeading>
 
-      <TextAreaSquared placeholder="Message" />
+      <ContainerForm>
+        <InputSquared placeholder="Subject" type="text" />
 
-      <ButtonSquare type="submit">Send Message</ButtonSquare>
-    </ContainerForm>
+        <TextAreaSquared placeholder="Message" />
+
+        <ButtonSquare type="submit">Send Message</ButtonSquare>
+      </ContainerForm>
+
+      <DeveloperList />
+    </>
   )
 }
 
@@ -28,6 +43,7 @@ const ContainerForm = styled.form`
   background: ${({ theme }) => theme.secondary};
   border-radius: 0.5rem;
   box-shadow: 0 0 0.5rem rgb(0 0 0 / 50%);
+  margin-bottom: 1rem;
 `
 
 export default ContactContainer
