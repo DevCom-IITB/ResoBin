@@ -55,7 +55,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
   const showEditForm = () =>
     isOwner && (action === 'edit' ? setAction(null) : setAction('edit'))
 
-  const handleUpdate = async (body) => {
+  const handleUpdate = async ({ body }) => {
     try {
       const payload = { ...content, body }
       await API.reviews.update({ id: content.id, payload })
@@ -77,13 +77,13 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
     }
   }
 
-  const handleCreateChild = async (reply) => {
+  const handleCreateChild = async ({ body }) => {
     try {
       const response = await API.reviews.create({
         payload: {
           course: content.course,
           parent: content.id,
-          body: reply,
+          body,
           status: false,
         },
       })

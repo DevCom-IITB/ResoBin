@@ -16,7 +16,7 @@ const nestComments = (commentsList) => {
   })
 
   commentsList.forEach((comment) => {
-    if (comment.parent !== null) {
+    if (comment.parent !== null && commentsMap[comment.parent]) {
       if (commentsMap[comment.parent].children === undefined)
         commentsMap[comment.parent].children = []
       commentsMap[comment.parent].children.push(comment)
@@ -77,14 +77,10 @@ const CourseReviewContainer = () => {
     }
   }
 
-  const createContent = async (review) => {
+  const createContent = async ({ body }) => {
     try {
       const response = await API.reviews.create({
-        payload: {
-          course: code,
-          parent: null,
-          body: review,
-        },
+        payload: { course: code, parent: null, body },
       })
 
       handleUpdateContent({ id: null, payload: { ...response, children: [] } })
