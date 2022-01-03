@@ -1,5 +1,6 @@
 import { Github } from '@styled-icons/fa-brands'
 import { Layout } from 'antd'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { Divider } from 'components/shared'
@@ -21,7 +22,7 @@ const Footer = () => {
 
       <h4>ResoBin</h4>
 
-      <h5>
+      <h5 style={{ fontWeight: '400' }}>
         Created with ❤️ by&nbsp;
         <a href="https://www.devcom-iitb.org" target="_blank" rel="noreferrer">
           DevCom
@@ -36,6 +37,13 @@ const Footer = () => {
         </a>
         .
       </h5>
+
+      <h5>Copyright &copy; 2021 DevCom, IIT Bombay - All Rights Reserved.</h5>
+
+      <h5>
+        <Link to="/privacy-policy">Privacy</Link> &bull;&nbsp;
+        <Link to="/terms-and-conditions">Terms</Link>
+      </h5>
     </StyledLayoutFooter>
   )
 }
@@ -43,6 +51,11 @@ const Footer = () => {
 export default Footer
 
 const StyledLayoutFooter = styled(Layout.Footer)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   background: transparent;
   color: ${({ theme }) => theme.textColor};
   font-size: ${fontSize.responsive.sm};
@@ -50,11 +63,8 @@ const StyledLayoutFooter = styled(Layout.Footer)`
   padding: 0 0.75rem 1.5rem;
 
   a {
-    color: ${({ theme }) => theme.textColor};
-
     &:hover {
       text-decoration: underline;
-      color: ${({ theme }) => theme.textColor};
     }
   }
 
@@ -62,15 +72,8 @@ const StyledLayoutFooter = styled(Layout.Footer)`
     color: ${({ theme }) => theme.logo};
   }
 
-  h4 {
-    color: ${({ theme }) => theme.textColor};
-    margin-bottom: 0.25rem;
-  }
-
   h5 {
-    color: ${({ theme }) => theme.textColorInactive};
-    font-weight: 400;
-    margin-top: 0.5rem;
+    font-weight: 300;
   }
 `
 
