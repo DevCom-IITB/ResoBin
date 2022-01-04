@@ -59,6 +59,10 @@ const ContributeItem = ({
 
       addUploadedFile(response)
       deleteFileItem()
+      toast({
+        status: 'success',
+        content: 'Resource uploaded successfully!',
+      })
     } catch (error) {
       toast({ status: 'error', content: error })
       updateFileItem({ status: 'error', progress: 0 })

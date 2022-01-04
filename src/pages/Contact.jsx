@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 
-import { ContactContainer, DeveloperList } from 'components/Contact'
-import { PageHeading, PageTitle, PageContainer } from 'components/shared'
+import { ContactContainer } from 'components/Contact'
+import { PageContainer } from 'components/shared'
 
 const Contribute = () => {
   return (
@@ -11,12 +11,7 @@ const Contribute = () => {
         <meta name="description" content="Contact us to clarify any issues" />
       </Helmet>
 
-      <PageHeading>
-        <PageTitle>Contact us</PageTitle>
-      </PageHeading>
-
       <ContactContainer />
-      <DeveloperList />
     </PageContainer>
   )
 }

@@ -38,7 +38,7 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
         rules={[
           { required: true, message: 'Title is required.' },
           { min: 5, message: 'Title must be atleast 5 characters.' },
-          { max: 80, message: 'Title must be atmost 100 characters.' },
+          { max: 100, message: 'Title must be atmost 100 characters.' },
         ]}
       >
         <Input placeholder="Title" />

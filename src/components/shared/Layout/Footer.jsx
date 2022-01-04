@@ -1,5 +1,6 @@
 import { Github } from '@styled-icons/fa-brands'
 import { Layout } from 'antd'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { Divider } from 'components/shared'
@@ -21,11 +22,27 @@ const Footer = () => {
 
       <h4>ResoBin</h4>
 
-      <h5>
-        Created with ❤️ by{' '}
+      <h5 style={{ fontWeight: '400' }}>
+        Created with ❤️ by&nbsp;
         <a href="https://www.devcom-iitb.org" target="_blank" rel="noreferrer">
-          DevCom, IIT Bombay.
+          DevCom
         </a>
+        &nbsp;in collaboration with&nbsp;
+        <a
+          href="https://www.insti.app/org/ugac"
+          target="_blank"
+          rel="noreferrer"
+        >
+          UGAC
+        </a>
+        .
+      </h5>
+
+      <h5>Copyright &copy; 2021 DevCom, IIT Bombay - All Rights Reserved.</h5>
+
+      <h5>
+        <Link to="/privacy-policy">Privacy</Link> &bull;&nbsp;
+        <Link to="/terms-and-conditions">Terms</Link>
       </h5>
     </StyledLayoutFooter>
   )
@@ -34,29 +51,29 @@ const Footer = () => {
 export default Footer
 
 const StyledLayoutFooter = styled(Layout.Footer)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   background: transparent;
   color: ${({ theme }) => theme.textColor};
   font-size: ${fontSize.responsive.sm};
   text-align: center;
   padding: 0 0.75rem 1.5rem;
 
-  a:hover {
-    text-decoration: underline;
-    color: ${({ theme }) => theme.textColor};
+  a {
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   svg:hover {
     color: ${({ theme }) => theme.logo};
   }
 
-  h4 {
-    color: ${({ theme }) => theme.textColor};
-    margin-bottom: 0.25rem;
-  }
-
   h5 {
-    color: ${({ theme }) => theme.textColorInactive};
-    font-weight: 400;
+    font-weight: 300;
   }
 `
 
