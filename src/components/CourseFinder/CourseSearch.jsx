@@ -77,7 +77,7 @@ const Overlay = styled.div`
   position: fixed;
   inset: 0;
   z-index: 4;
-  background-color: rgb(0 0 0 / 55%);
+  background: rgb(0 0 0 / 55%);
 `
 
 const StyledIcon = styled(({ Icon, className, ...props }) => {

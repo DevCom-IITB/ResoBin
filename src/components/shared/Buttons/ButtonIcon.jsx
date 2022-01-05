@@ -96,7 +96,7 @@ const StyledButton = styled(Button)`
   }
 
   &.ant-btn-primary {
-    background-color: ${({ $active, theme }) =>
+    background: ${({ $active, theme }) =>
       lighten($active ? 0.4 : 0, theme.darksecondary)};
 
     &:hover {

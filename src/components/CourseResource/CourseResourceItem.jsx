@@ -186,7 +186,7 @@ const PopoverHeading = styled.div`
   color: ${({ theme }) => theme.textColorInactive};
 
   h2 {
-    font-size: 0.75rem;
     color: ${({ theme }) => theme.textColor};
+    font-size: 0.75rem;
   }
 `

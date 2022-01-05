@@ -15,8 +15,8 @@ const StyledDivider = styled(Divider)`
   }
 
   .ant-divider-inner-text {
-    font-size: ${fontSize.responsive.md};
     color: ${({ theme }) => theme.textColorInactive};
+    font-size: ${fontSize.responsive.md};
   }
 `
 

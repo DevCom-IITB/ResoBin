@@ -32,9 +32,9 @@ const Terms = () => {
 export default Terms
 
 const Content = styled.div`
+  padding: 0.75rem;
   color: ${({ theme }) => theme.textColor};
+  font-size: ${fontSize.responsive.md};
   background: ${({ theme }) => theme.secondary};
   border-radius: ${({ theme }) => theme.borderRadius};
-  padding: 0.75rem;
-  font-size: ${fontSize.responsive.md};
 `

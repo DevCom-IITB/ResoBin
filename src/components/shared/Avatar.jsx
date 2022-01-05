@@ -35,7 +35,7 @@ export const UserAvatar = ({
     <StyledAvatar
       size={size}
       icon={<User size={`calc(${size}/1.5)`} />}
-      style={{ backgroundColor: colorPicker() }}
+      style={{ background: colorPicker() }}
       alt={alt}
     />
   )

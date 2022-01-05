@@ -10,12 +10,12 @@ const baseStyles = css`
   height: 2rem;
   margin: 0 0.25rem;
   font-size: 1rem;
-  background-color: transparent;
+  background: transparent;
   border: none;
   border-radius: ${({ theme }) => theme.borderRadius};
 
   &:hover {
-    background: ${({ theme }) => rgba(theme.primary, 0.1)};
+    background: ${({ theme }) => rgb(theme.primary 0.1)};
   }
 `
 
@@ -33,7 +33,7 @@ const StyledPagination = styled(Pagination)`
       ${baseStyles}
 
       color: ${({ theme }) => theme.primary};
-      background-color: transparent;
+      background: transparent;
     }
   }
 
@@ -47,7 +47,7 @@ const StyledPagination = styled(Pagination)`
     font-weight: 600;
 
     &-active {
-      border: 2px solid ${({ theme }) => rgba(theme.primary, 0.7)};
+      border: 2px solid ${({ theme }) => rgb(theme.primary 0.7)};
     }
 
     a {

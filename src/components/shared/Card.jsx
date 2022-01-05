@@ -24,7 +24,7 @@ export const CardSkeleton = styled(Skeleton)`
 export const StyledCard = styled(Card)`
   .ant-card-body {
     display: flex;
-    background-color: ${({ theme }) => rgba(theme.darksecondary, 0.5)};
+    background: ${({ theme }) => rgba(theme.darksecondary, 0.5)};
     border-radius: ${({ theme }) => theme.borderRadius};
   }
 
@@ -32,13 +32,13 @@ export const StyledCard = styled(Card)`
     transition: 100ms;
 
     &:hover {
-      background-color: rgb(0 0 0 / 30%);
+      background: rgb(0 0 0 / 30%);
       border-radius: ${({ theme }) => theme.borderRadius};
     }
   }
 
   &.ant-card-bordered {
-    background-color: transparent;
+    background: transparent;
     border: 0;
   }
 

@@ -54,14 +54,14 @@ export default Footer
 const StyledLayoutFooter = styled(Layout.Footer)`
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  background: transparent;
+  padding: 0 0.75rem 1.5rem;
   color: ${({ theme }) => theme.textColor};
   font-size: ${fontSize.responsive.sm};
   text-align: center;
-  padding: 0 0.75rem 1.5rem;
+  background: transparent;
 
   svg {
     color: ${({ theme }) => theme.textColor};
@@ -78,6 +78,6 @@ const StyledLayoutFooter = styled(Layout.Footer)`
 
 const Icons = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 `
