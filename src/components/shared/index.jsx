@@ -1,4 +1,5 @@
 export { Aside } from './Aside'
+export { AuthButton, AuthBoxContainer } from './Authentication'
 export { default as Avatar, UserAvatar } from './Avatar'
 export {
   ButtonIcon,
