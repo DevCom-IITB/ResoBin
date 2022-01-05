@@ -15,7 +15,7 @@ const baseStyles = css`
   border-radius: ${({ theme }) => theme.borderRadius};
 
   &:hover {
-    background: ${({ theme }) => rgb(theme.primary 0.1)};
+    background: ${({ theme }) => rgba(theme.primary, 0.1)};
   }
 `
 
@@ -47,7 +47,7 @@ const StyledPagination = styled(Pagination)`
     font-weight: 600;
 
     &-active {
-      border: 2px solid ${({ theme }) => rgb(theme.primary 0.7)};
+      border: 2px solid ${({ theme }) => rgba(theme.primary, 0.7)};
     }
 
     a {
