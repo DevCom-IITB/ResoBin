@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { ReactComponent as ResoBinLogo } from 'assets/svgs/logo.svg'
-import { Divider, ResoBinLogo as ResoBinText } from 'components/shared'
+import { Divider, ResoBinText } from 'components/shared'
 import { displayYear } from 'helpers/format'
 import { useResponsive } from 'hooks'
 import { selectCurrentSemester } from 'store/courseSlice'
@@ -41,18 +41,18 @@ const Header = () => {
 export default Header
 
 const TextContainer = styled(Link)`
+  position: absolute;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  left: 0;
   width: ${({ theme }) => theme.asideWidthLeft};
 `
 
 const LogoContainer = styled(Link)`
-  height: 100%;
   display: flex;
   align-items: center;
+  height: 100%;
 `
 
 const Container = styled.div`
@@ -69,14 +69,14 @@ const Container = styled.div`
 `
 
 const Term = styled.span`
-  display: flex;
-  flex-direction: column;
   position: absolute;
   right: 0;
+  display: flex;
+  flex-direction: column;
   padding: 0 1.5rem;
   color: ${({ theme }) => theme.textColor};
   font-size: 0.75rem;
-  text-transform: uppercase;
   text-align: center;
+  text-transform: uppercase;
   opacity: 0.8;
 `

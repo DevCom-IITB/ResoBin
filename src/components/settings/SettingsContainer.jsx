@@ -108,10 +108,10 @@ const Heading = styled.h1`
 `
 
 const SubHeading = styled.p`
-  color: ${({ theme }) => theme.textColorInactive};
-  font-size: 0.875rem;
   margin-top: 0.5rem;
   margin-bottom: 0;
+  color: ${({ theme }) => theme.textColorInactive};
+  font-size: 0.875rem;
 `
 
 const StyledButton = styled(Button)`
@@ -121,7 +121,7 @@ const StyledButton = styled(Button)`
   height: 1.75rem;
   font-weight: 500;
   font-size: 0.75rem;
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 `
 
 const SettingCards = styled.div`

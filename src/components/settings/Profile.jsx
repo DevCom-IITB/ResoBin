@@ -53,15 +53,15 @@ export default Profile
 const FlexVerticalGap = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 1rem;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
 `
 
 const StyledDescriptions = styled(Descriptions)`
   padding: 0.75rem 0.75rem 0;
-  border-radius: 0.5rem;
   background: ${({ theme }) => theme.darksecondary};
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   .ant-descriptions-item {
     padding-bottom: 0.25rem;
@@ -74,8 +74,8 @@ const StyledDescriptions = styled(Descriptions)`
   }
 
   .ant-descriptions-item-content {
-    color: ${({ theme }) => theme.textColor};
     margin-bottom: 0.5rem;
+    color: ${({ theme }) => theme.textColor};
   }
 `
 

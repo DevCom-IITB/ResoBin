@@ -142,7 +142,7 @@ const GridItem = styled.figure`
   justify-content: flex-end;
   overflow: hidden;
   color: ${({ theme }) => theme.textColor};
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0 0 5px rgb(0 0 0 / 30%);
 `
 
@@ -186,7 +186,7 @@ const PopoverHeading = styled.div`
   color: ${({ theme }) => theme.textColorInactive};
 
   h2 {
-    font-size: 0.75rem;
     color: ${({ theme }) => theme.textColor};
+    font-size: 0.75rem;
   }
 `

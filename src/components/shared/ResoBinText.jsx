@@ -1,13 +1,13 @@
 import styled from 'styled-components/macro'
 
-const ResoBinLogo = ({ size }) => (
+const ResoBinText = ({ size }) => (
   <div>
     <Title size={size}>ResoBin</Title>
     <Underline size={size} />
   </div>
 )
 
-export default ResoBinLogo
+export default ResoBinText
 
 const Title = styled.div`
   color: ${({ theme }) => theme.logo};

@@ -195,11 +195,11 @@ const CommentHeader = styled.h2`
 `
 
 const CommentText = styled.div`
-  color: ${({ theme }) => theme.textColor};
   margin-top: 0.5rem;
+  color: ${({ theme }) => theme.textColor};
 
   a {
-    color: #239afc;
+    color: ${({ theme }) => theme.primary};
 
     &:hover {
       text-decoration: underline;

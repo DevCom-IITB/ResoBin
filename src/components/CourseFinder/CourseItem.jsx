@@ -189,18 +189,18 @@ export default CourseItem
 
 const TitleContainer = styled(Link)`
   display: flex;
-  align-items: baseline;
   gap: 0.375rem;
+  align-items: baseline;
   color: ${({ theme }) => theme.textColor};
 
   h1 {
-    font-size: ${fontSize.responsive.xl};
     font-weight: 600;
+    font-size: ${fontSize.responsive.xl};
   }
 
   h2 {
-    font-size: ${fontSize.responsive.md};
     font-weight: 400;
+    font-size: ${fontSize.responsive.md};
   }
 
   &:hover {
@@ -210,9 +210,9 @@ const TitleContainer = styled(Link)`
 `
 
 const Mark = styled.mark`
+  padding: 0;
   color: ${({ theme }) => theme.secondary};
   background: ${({ theme }) => theme.primary};
-  padding: 0;
 `
 
 const SubTitle = styled.div`
@@ -231,7 +231,7 @@ const DepartmentContainer = styled.span`
   color: ${({ theme }) => theme.primary};
   font-weight: 600;
   font-size: ${fontSize.responsive.xs};
-  opacity: 85%;
+  opacity: 0.85;
 
   @media ${device.min.md} {
     font-weight: 500;
@@ -247,11 +247,11 @@ const RightIcons = styled.div`
 const TagsContainer = styled.div`
   display: flex;
   flex-direction: row-reverse;
-  align-items: center;
-  margin-left: 0.5rem;
   gap: 0.25rem;
-  overflow-y: scroll;
+  align-items: center;
   height: 3rem;
+  margin-left: 0.5rem;
+  overflow-y: scroll;
 
   @media ${device.max.xs}, ${device.min.lg} and ${device.max.xl} {
     display: block;
@@ -264,18 +264,18 @@ const TagsContainer = styled.div`
 `
 
 const StyledTag = styled(Tag)`
-  height: 1.25rem;
-  width: 100%;
   display: flex;
-  margin: 0;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.textColor};
+  width: 100%;
+  height: 1.25rem;
+  margin: 0;
   padding: 0 0.75rem;
+  color: ${({ theme }) => theme.textColor};
   font-weight: 500;
-  border-radius: 0.5rem;
-  border: none;
   background: ${({ theme }) => theme.darksecondary};
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius};
 `
 
 const FlexGap = styled.div`

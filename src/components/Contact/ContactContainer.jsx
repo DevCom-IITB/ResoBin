@@ -82,9 +82,9 @@ const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  margin-bottom: 1rem;
   padding: 1rem;
   background: ${({ theme }) => theme.secondary};
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0 0 0.5rem rgb(0 0 0 / 50%);
-  margin-bottom: 1rem;
 `

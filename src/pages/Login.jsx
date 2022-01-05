@@ -1,17 +1,19 @@
-import { Button } from 'antd'
-import { lighten } from 'polished'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
-import styled from 'styled-components/macro'
 
-import { LoaderAnimation, PageContainer, toast } from 'components/shared'
+import {
+  AuthBoxContainer,
+  AuthButton,
+  LoaderAnimation,
+  PageContainer,
+  toast,
+} from 'components/shared'
 import { getLoginURL, SSO } from 'config/sso'
 import { CSRFToken } from 'helpers'
 import { useQueryString } from 'hooks'
 import { getAuthStatusAction, loginAction } from 'store/authSlice'
-import { fontSize } from 'styles/responsive'
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -71,54 +73,15 @@ const Login = () => {
       </Helmet>
       <CSRFToken />
 
-      <Container>
-        <BoxContainer>
-          <h4>Welcome to ResoBin!</h4>
+      <AuthBoxContainer>
+        <h4>Welcome to ResoBin!</h4>
 
-          <SSOButton type="primary" onClick={redirectLogin}>
-            Login via SSO
-          </SSOButton>
-        </BoxContainer>
-      </Container>
+        <AuthButton color="#303f9f" type="primary" onClick={redirectLogin}>
+          Login via SSO
+        </AuthButton>
+      </AuthBoxContainer>
     </PageContainer>
   )
 }
 
 export default Login
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: calc(100vh - ${({ theme }) => theme.headerHeight});
-`
-
-const BoxContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  justify-content: flex-start;
-  padding: 1.5rem;
-  background: ${({ theme }) => theme.secondary};
-  border-radius: 0.5rem;
-  box-shadow: 0 0 0.75rem rgb(0 0 0 / 40%);
-  color: ${({ theme }) => theme.textColor};
-
-  h4 {
-    font-weight: 400;
-    font-size: ${fontSize.responsive.lg};
-  }
-`
-
-const SSOButton = styled(Button)`
-  height: 2.5rem;
-  font-size: ${fontSize.responsive.sm};
-  background-color: #303f9f;
-  border-color: #303f9f;
-  border-radius: 0.5rem;
-
-  &:hover {
-    background-color: ${lighten(0.1, '#303f9f')};
-    border-color: ${lighten(0.1, '#303f9f')};
-  }
-`

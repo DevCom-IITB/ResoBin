@@ -15,8 +15,8 @@ const ButtonDropdown = styled(Dropdown.Button)`
     border-radius: 0;
 
     &:first-child:not(:last-child) {
-      border-top-left-radius: 0.5rem;
-      border-bottom-left-radius: 0.5rem;
+      border-top-left-radius: ${({ theme }) => theme.borderRadius};
+      border-bottom-left-radius: ${({ theme }) => theme.borderRadius};
     }
   }
 
@@ -27,8 +27,8 @@ const ButtonDropdown = styled(Dropdown.Button)`
     width: 2rem;
 
     &:last-child:not(:first-child) {
-      border-top-right-radius: 0.5rem;
-      border-bottom-right-radius: 0.5rem;
+      border-top-right-radius: ${({ theme }) => theme.borderRadius};
+      border-bottom-right-radius: ${({ theme }) => theme.borderRadius};
     }
   }
 `

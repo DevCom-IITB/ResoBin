@@ -113,11 +113,11 @@ const ItemContainer = styled.div`
   display: flex;
   gap: 1rem;
   padding: 1rem 0.75rem;
-  background-color: ${({ theme }) => theme.secondary};
-  border-radius: 0.5rem;
+  background: ${({ theme }) => theme.secondary};
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   @media ${device.max.xs} {
-    padding: 1rem 0.75rem;
     flex-direction: column;
+    padding: 1rem 0.75rem;
   }
 `

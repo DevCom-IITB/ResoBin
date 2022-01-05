@@ -3,7 +3,7 @@ import { Layout } from 'antd'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { Divider } from 'components/shared'
+import { ResoBinText, Divider } from 'components/shared'
 import { fontSize } from 'styles/responsive'
 
 const Footer = () => {
@@ -20,7 +20,7 @@ const Footer = () => {
         </a>
       </Icons>
 
-      <h4>ResoBin</h4>
+      <ResoBinText size="1rem" />
 
       <h5 style={{ fontWeight: '400' }}>
         Created with ❤️ by&nbsp;
@@ -41,6 +41,7 @@ const Footer = () => {
       <h5>Copyright &copy; 2021 DevCom, IIT Bombay - All Rights Reserved.</h5>
 
       <h5>
+        <Link to="/contact">Contact</Link> &bull;&nbsp;
         <Link to="/privacy-policy">Privacy</Link> &bull;&nbsp;
         <Link to="/terms-and-conditions">Terms</Link>
       </h5>
@@ -53,23 +54,21 @@ export default Footer
 const StyledLayoutFooter = styled(Layout.Footer)`
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  background: transparent;
+  padding: 0 0.75rem 1.5rem;
   color: ${({ theme }) => theme.textColor};
   font-size: ${fontSize.responsive.sm};
   text-align: center;
-  padding: 0 0.75rem 1.5rem;
+  background: transparent;
 
-  a {
-    &:hover {
-      text-decoration: underline;
+  svg {
+    color: ${({ theme }) => theme.textColor};
+
+    :hover {
+      color: ${({ theme }) => theme.logo};
     }
-  }
-
-  svg:hover {
-    color: ${({ theme }) => theme.logo};
   }
 
   h5 {
@@ -79,7 +78,6 @@ const StyledLayoutFooter = styled(Layout.Footer)`
 
 const Icons = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin: 0.5rem 0;
+  justify-content: center;
 `

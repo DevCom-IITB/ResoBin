@@ -12,7 +12,7 @@ module.exports = {
   defaultSeverity: warnInDevelopment,
   overrides: [
     {
-      files: ['**/*.{js,ts,jsx,tsx}'],
+      files: ['**/*.jsx'],
       customSyntax: '@stylelint/postcss-css-in-js',
     },
   ],

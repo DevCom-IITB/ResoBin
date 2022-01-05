@@ -59,7 +59,7 @@ const getTile = (color) => css`
 const Item = styled.div`
   height: 100%;
   padding: 0.25rem 0.5rem;
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
   cursor: pointer;
   transition: all 200ms ease-out;
   ${({ color }) => getTile(color)}

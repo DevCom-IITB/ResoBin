@@ -71,19 +71,19 @@ export default DragNDrop
 const UploadBox = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 1rem;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
   width: 100%;
   height: 16rem;
+  margin-bottom: 1rem;
   padding: 3rem 1rem;
-  cursor: pointer;
-  background: ${({ theme }) => theme.secondary};
   color: ${({ theme, error }) => (error ? '#f34a4a' : theme.textColorInactive)};
+  background: ${({ theme }) => theme.secondary};
+  border-radius: ${({ theme }) => theme.borderRadius};
   outline: 3px dashed ${({ theme }) => rgba(theme.textColorInactive, 0.4)};
   outline-offset: -0.75rem;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
+  cursor: pointer;
 
   h2 {
     font-size: ${fontSize.responsive.md};
@@ -99,18 +99,18 @@ const UploadBox = styled.div`
 const UploadBoxSub = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
   width: 15rem;
   height: initial;
   padding: 1.5rem 1rem;
-  cursor: pointer;
-  background: ${({ theme }) => theme.secondary};
   color: ${({ theme, error }) => (error ? '#f34a4a' : theme.textColorInactive)};
+  background: ${({ theme }) => theme.secondary};
+  border-radius: ${({ theme }) => theme.borderRadius};
   outline: 3px dashed ${({ theme }) => rgba(theme.textColorInactive, 0.4)};
   outline-offset: -0.75rem;
-  border-radius: 0.5rem;
+  cursor: pointer;
 
   h2 {
     font-size: ${fontSize.static.xs};
@@ -124,8 +124,8 @@ const UploadBoxSub = styled.div`
   }
 
   @media ${device.max.xs} {
-    padding: 1rem 1rem;
     width: 100%;
     height: 11rem;
+    padding: 1rem;
   }
 `
