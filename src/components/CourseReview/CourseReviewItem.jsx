@@ -199,7 +199,7 @@ const CommentText = styled.div`
   margin-top: 0.5rem;
 
   a {
-    color: #239afc;
+    color: ${({ theme }) => theme.primary};
 
     &:hover {
       text-decoration: underline;

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { ReactComponent as ResoBinLogo } from 'assets/svgs/logo.svg'
-import { Divider, ResoBinLogo as ResoBinText } from 'components/shared'
+import { Divider, ResoBinText } from 'components/shared'
 import { displayYear } from 'helpers/format'
 import { useResponsive } from 'hooks'
 import { selectCurrentSemester } from 'store/courseSlice'

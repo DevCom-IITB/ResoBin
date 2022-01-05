@@ -3,7 +3,7 @@ import { Layout } from 'antd'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { Divider } from 'components/shared'
+import { ResoBinText, Divider } from 'components/shared'
 import { fontSize } from 'styles/responsive'
 
 const Footer = () => {
@@ -20,7 +20,7 @@ const Footer = () => {
         </a>
       </Icons>
 
-      <h4>ResoBin</h4>
+      <ResoBinText size="1rem" />
 
       <h5 style={{ fontWeight: '400' }}>
         Created with ❤️ by&nbsp;
@@ -63,14 +63,12 @@ const StyledLayoutFooter = styled(Layout.Footer)`
   text-align: center;
   padding: 0 0.75rem 1.5rem;
 
-  a {
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+  svg {
+    color: ${({ theme }) => theme.textColor};
 
-  svg:hover {
-    color: ${({ theme }) => theme.logo};
+    :hover {
+      color: ${({ theme }) => theme.logo};
+    }
   }
 
   h5 {
@@ -82,5 +80,4 @@ const Icons = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0.5rem 0;
 `

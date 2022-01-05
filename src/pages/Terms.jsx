@@ -37,13 +37,4 @@ const Content = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
   padding: 0.75rem;
   font-size: ${fontSize.responsive.md};
-
-  a {
-    color: ${({ theme }) => theme.primary};
-    /* font-family:  */
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 `

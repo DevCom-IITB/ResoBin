@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { useResponsive } from 'hooks'
+import { fontSize } from 'styles/responsive'
 
 const CoursePageBreadcrumbs = ({ courseTitle }) => {
   const { isMobileS } = useResponsive()
@@ -38,7 +39,7 @@ const StyledBreadcrumb = styled(Breadcrumb)`
   display: flex;
   align-items: center;
   margin: 1rem;
-  font-size: 1rem;
+  font-size: ${fontSize.responsive.xs};
 
   & > span {
     display: flex;
@@ -67,6 +68,6 @@ const StyledBreadcrumb = styled(Breadcrumb)`
 const StyledIcon = styled(({ Icon, className, ...props }) => (
   <Icon {...props} className={className} />
 ))`
-  height: 24px;
+  height: 20px;
   color: ${({ theme }) => theme.textColor};
 `
