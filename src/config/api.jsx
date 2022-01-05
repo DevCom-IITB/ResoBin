@@ -3,10 +3,10 @@ import axios from 'axios'
 import { toast } from 'components/shared'
 import { camelizeKeys, snakeizeKeys } from 'helpers/transformKeys'
 
-// ? waits for 30s before timing out
+// ? waits for 5 mins before timing out
 export const APIInstance = axios.create({
   baseURL: process.env.REACT_APP_API_HOST,
-  timeout: 30000,
+  timeout: 300000,
   xsrfCookieName: 'csrftoken',
   xsrfHeaderName: 'X-CSRFToken',
   withCredentials: true,
@@ -116,7 +116,7 @@ export const API = {
       APIInstance.post(`/resources`, payload, {
         headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress,
-        timeout: 900000,
+        timeout: 3600000,
       }),
     read: async ({ id }) => APIInstance.get(`/resources/${id}`),
     update: async ({ id, payload }) =>
