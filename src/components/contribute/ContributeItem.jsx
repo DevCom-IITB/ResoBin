@@ -114,7 +114,7 @@ const ItemContainer = styled.div`
   gap: 1rem;
   padding: 1rem 0.75rem;
   background-color: ${({ theme }) => theme.secondary};
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   @media ${device.max.xs} {
     padding: 1rem 0.75rem;

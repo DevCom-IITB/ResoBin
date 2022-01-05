@@ -94,7 +94,7 @@ const StyledInput = styled(Input)`
   padding: 0 0.75rem;
   background: ${({ theme }) => theme.secondary};
   border: 0;
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0 8px 5px rgb(0 0 0 / 30%);
 
   .ant-input {

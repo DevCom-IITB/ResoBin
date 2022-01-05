@@ -100,7 +100,7 @@ const BoxContainer = styled.div`
   justify-content: flex-start;
   padding: 1.5rem;
   background: ${({ theme }) => theme.secondary};
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0 0 0.75rem rgb(0 0 0 / 40%);
   color: ${({ theme }) => theme.textColor};
 
@@ -115,7 +115,7 @@ const SSOButton = styled(Button)`
   font-size: ${fontSize.responsive.sm};
   background-color: #303f9f;
   border-color: #303f9f;
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   &:hover {
     background-color: ${lighten(0.1, '#303f9f')};

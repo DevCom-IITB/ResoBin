@@ -273,7 +273,7 @@ const StyledTag = styled(Tag)`
   color: ${({ theme }) => theme.textColor};
   padding: 0 0.75rem;
   font-weight: 500;
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
   border: none;
   background: ${({ theme }) => theme.darksecondary};
 `

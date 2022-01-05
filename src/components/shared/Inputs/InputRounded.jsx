@@ -14,7 +14,7 @@ const InputBox = styled.div`
   height: 2rem;
   overflow: hidden;
   background: white;
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
 `
 

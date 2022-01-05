@@ -53,7 +53,7 @@ const StyledForm = styled(Form)`
     color: ${({ theme }) => theme.textColor};
     font-size: 0.75rem;
     background: ${({ theme }) => rgba(theme.darksecondary, 0.3)};
-    border-radius: 0.5rem;
+    border-radius: ${({ theme }) => theme.borderRadius};
     padding: 0.375rem 0.75rem;
     border: none;
     border-bottom: solid 1px

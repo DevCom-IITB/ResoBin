@@ -50,7 +50,7 @@ const BoxContainer = styled.div`
   justify-content: flex-start;
   padding: 1.5rem 0;
   background-color: ${({ theme }) => theme.darksecondary};
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0 0 0.75rem rgb(0 0 0 / 40%);
 
   h4 {

@@ -82,7 +82,7 @@ const UploadBox = styled.div`
   color: ${({ theme, error }) => (error ? '#f34a4a' : theme.textColorInactive)};
   outline: 3px dashed ${({ theme }) => rgba(theme.textColorInactive, 0.4)};
   outline-offset: -0.75rem;
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
   margin-bottom: 1rem;
 
   h2 {
@@ -110,7 +110,7 @@ const UploadBoxSub = styled.div`
   color: ${({ theme, error }) => (error ? '#f34a4a' : theme.textColorInactive)};
   outline: 3px dashed ${({ theme }) => rgba(theme.textColorInactive, 0.4)};
   outline-offset: -0.75rem;
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   h2 {
     font-size: ${fontSize.static.xs};

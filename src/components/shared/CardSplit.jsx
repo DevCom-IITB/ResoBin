@@ -36,7 +36,7 @@ const StyledSkeleton = styled(Skeleton)`
   .ant-skeleton-content {
     padding: 1rem;
     background: ${({ theme }) => theme.secondary};
-    border-radius: 0.5rem;
+    border-radius: ${({ theme }) => theme.borderRadius};
     box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
 
     @media ${device.max.xs} {
@@ -53,7 +53,7 @@ const Container = styled.li`
   grid-template-areas: 'main sub';
   padding: 1rem;
   background: ${({ theme }) => theme.secondary};
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
 
   @media ${device.max.md} {

@@ -98,7 +98,7 @@ const StatsContainer = styled.div`
   gap: 0.5rem;
   padding: 1rem;
   background: ${({ theme }) => theme.secondary};
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 `
 
 const Flex = styled.div`

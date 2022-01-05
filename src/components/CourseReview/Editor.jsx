@@ -188,8 +188,8 @@ const StyledReactQuill = styled(ReactQuill)`
   background: ${({ theme }) => theme.darksecondary};
   color: ${({ theme }) => theme.textColor};
   border-top: 1px solid ${({ theme }) => theme.dividerColor};
-  border-bottom-left-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: ${({ theme }) => theme.borderRadius};
+  border-bottom-right-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0 0 1rem 4px rgb(0 0 0 / 20%);
   margin-bottom: 0.75rem;
 
@@ -207,8 +207,8 @@ const StyledReactQuill = styled(ReactQuill)`
 const Toolbar = styled.div`
   background: ${({ theme }) => theme.darksecondary};
   color: ${({ theme }) => theme.textColor};
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
+  border-top-left-radius: ${({ theme }) => theme.borderRadius};
+  border-top-right-radius: ${({ theme }) => theme.borderRadius};
 
   .ql-stroke {
     fill: none;

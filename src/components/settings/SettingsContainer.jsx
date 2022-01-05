@@ -121,7 +121,7 @@ const StyledButton = styled(Button)`
   height: 1.75rem;
   font-weight: 500;
   font-size: 0.75rem;
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 `
 
 const SettingCards = styled.div`

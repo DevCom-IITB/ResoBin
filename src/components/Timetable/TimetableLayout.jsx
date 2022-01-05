@@ -47,7 +47,7 @@ const Container = styled.div`
   margin-bottom: 1rem;
   overflow-x: scroll;
   background: ${({ theme }) => theme.secondary};
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   > div {
     box-shadow: inset -1px -1px 0 ${({ theme }) => rgba(theme.primary, 0.1)};

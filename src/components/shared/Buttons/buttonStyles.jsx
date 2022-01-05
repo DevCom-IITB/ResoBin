@@ -7,7 +7,7 @@ export const buttonStyles = css`
   gap: 0.5rem;
   color: ${({ theme }) => theme.textColor};
   border: none;
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   &:active,
   &:focus {

@@ -40,7 +40,7 @@ const Box = styled.div`
   align-items: center;
   justify-content: center;
   padding: 2rem 0 1rem;
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
   background: ${({ theme }) => theme.secondary};
 `
 

@@ -12,7 +12,7 @@ const baseStyles = css`
   font-size: 1rem;
   background-color: transparent;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   &:hover {
     background: ${({ theme }) => rgba(theme.primary, 0.1)};

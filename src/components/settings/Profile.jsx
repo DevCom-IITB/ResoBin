@@ -60,7 +60,7 @@ const FlexVerticalGap = styled.div`
 
 const StyledDescriptions = styled(Descriptions)`
   padding: 0.75rem 0.75rem 0;
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
   background: ${({ theme }) => theme.darksecondary};
 
   .ant-descriptions-item {
