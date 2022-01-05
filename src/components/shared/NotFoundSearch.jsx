@@ -16,7 +16,7 @@ const NotFoundSearch = ({ active }) =>
 
       <Content style={{ fontSize: '0.75rem' }}>
         Think this is an error?&nbsp;
-        <StyledLink to="contact">Contact us</StyledLink>
+        <StyledLink to="/contact">Contact us</StyledLink>
       </Content>
     </Container>
   )
