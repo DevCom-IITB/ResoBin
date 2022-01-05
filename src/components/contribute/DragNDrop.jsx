@@ -124,7 +124,7 @@ const UploadBoxSub = styled.div`
   }
 
   @media ${device.max.xs} {
-    padding: 1rem 1rem;
+    padding: 1rem;
     width: 100%;
     height: 11rem;
   }

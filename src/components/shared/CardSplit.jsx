@@ -34,10 +34,14 @@ const StyledSkeleton = styled(Skeleton)`
   margin-bottom: 1rem;
 
   .ant-skeleton-content {
-    padding: 1.5rem 1rem;
+    padding: 1rem;
     background: ${({ theme }) => theme.secondary};
     border-radius: 0.5rem;
     box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
+
+    @media ${device.max.xs} {
+      padding: 0.75rem;
+    }
   }
 `
 

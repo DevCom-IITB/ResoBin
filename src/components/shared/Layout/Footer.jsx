@@ -41,6 +41,7 @@ const Footer = () => {
       <h5>Copyright &copy; 2021 DevCom, IIT Bombay - All Rights Reserved.</h5>
 
       <h5>
+        <Link to="/contact">Contact</Link> &bull;&nbsp;
         <Link to="/privacy-policy">Privacy</Link> &bull;&nbsp;
         <Link to="/terms-and-conditions">Terms</Link>
       </h5>
