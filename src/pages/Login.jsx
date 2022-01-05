@@ -71,27 +71,18 @@ const Login = () => {
       </Helmet>
       <CSRFToken />
 
-      <Container>
-        <BoxContainer>
-          <h4>Welcome to ResoBin!</h4>
+      <BoxContainer>
+        <h4>Welcome to ResoBin!</h4>
 
-          <SSOButton type="primary" onClick={redirectLogin}>
-            Login via SSO
-          </SSOButton>
-        </BoxContainer>
-      </Container>
+        <SSOButton type="primary" onClick={redirectLogin}>
+          Login via SSO
+        </SSOButton>
+      </BoxContainer>
     </PageContainer>
   )
 }
 
 export default Login
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: calc(100vh - ${({ theme }) => theme.headerHeight});
-`
 
 const BoxContainer = styled.div`
   display: flex;
@@ -99,15 +90,12 @@ const BoxContainer = styled.div`
   gap: 1rem;
   justify-content: flex-start;
   padding: 1.5rem;
+  margin: auto;
   background: ${({ theme }) => theme.secondary};
   border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0 0 0.75rem rgb(0 0 0 / 40%);
   color: ${({ theme }) => theme.textColor};
-
-  h4 {
-    font-weight: 400;
-    font-size: ${fontSize.responsive.lg};
-  }
+  font-size: ${fontSize.responsive.md};
 `
 
 const SSOButton = styled(Button)`
