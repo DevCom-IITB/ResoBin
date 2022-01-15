@@ -27,6 +27,7 @@ import { updateTimetable } from 'store/userSlice'
 
 import CurrentTime from './CurrentTime'
 import TimetableCourseItem from './TimetableCourseItem'
+import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableLayout from './TimetableLayout'
 
 const TimetableAsideItem = ({ code, handleRemove, loading }) => {
@@ -161,6 +162,10 @@ const TimetableContainer = () => {
           onClick={handleClickNext}
           hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
         />
+        <TimetableDownloadLink
+        coursesInTimetable={courseTimetableList}
+        />
+        
       </TimetableSemesterTitle>
 
       {loading && <LoaderAnimation />}
@@ -179,6 +184,19 @@ const TimetableContainer = () => {
       </Spin>
 
       <Aside title="My courses" loading={loading}>
+        <ClashAlerts>
+          {!loading &&
+            warnings.map(warning => (
+              <Alert
+              message="Warning"
+              description={warning}
+              type="warning"
+              showIcon
+              closable
+            />
+            ))
+          }
+        </ClashAlerts>
         <AsideList>
           {!loading &&
             courseTimetableList.map(({ id, course }) => (
@@ -189,20 +207,6 @@ const TimetableContainer = () => {
                 loading={loading}
               />
             ))}
-
-          <ClashAlerts>
-            {!loading &&
-              warnings.map(warning => (
-                <Alert
-                message="Warning"
-                description={warning}
-                type="warning"
-                showIcon
-                closable
-              />
-              ))
-            }
-          </ClashAlerts>
         </AsideList>
       </Aside>
 
@@ -214,6 +218,7 @@ export default TimetableContainer
 
 const TimetableSemesterTitle = styled.div`
   display: flex;
+  position: relative;
   gap: 0.5rem;
   align-items: center;
   justify-content: center;

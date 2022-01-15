@@ -13,15 +13,14 @@ const TimetableCourseItem = ({ data, colorCode = 0 }) => {
   const { course: code, lectureSlots } = data
   const title = useSelector(selectCourseTitle(code))
   const colorPicker = useColorPicker()
-
   const TimetableCourseLectureItem = useCallback(
-    ({ gridCol, gridRow }) => (
+    ({ gridCol, gridRow, slotName }) => (
       <GridItem row={gridRow} col={gridCol}>
         <Tooltip title={title}>
           <Item color={colorPicker(colorCode)}>
             <h3>{code}</h3>
             <span>
-              {gridRow.start.title} - {gridRow.end.title}
+              {gridRow.start.title} - {gridRow.end.title} | {slotName}
             </span>
           </Item>
         </Tooltip>
@@ -31,13 +30,13 @@ const TimetableCourseItem = ({ data, colorCode = 0 }) => {
   )
 
   if (lectureSlots?.length === 0) return null
-  const courseSlots = lectureSlots.map((slot) => slots[slot])
-
-  return courseSlots?.map(({ row, col }, idx) => (
+  const courseSlots = lectureSlots.map((slot) => ({slot, grid: slots[slot]}))
+  return courseSlots?.map(({ slot, grid }, idx) => (
     <TimetableCourseLectureItem
       key={String(idx)}
-      gridCol={cols[col - 1]}
-      gridRow={{ start: rows[row.start], end: rows[row.end] }}
+      gridCol={cols[grid.col - 1]}
+      gridRow={{ start: rows[grid.row.start], end: rows[grid.row.end] }}
+      slotName={slot}
     />
   ))
 }
