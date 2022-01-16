@@ -104,26 +104,38 @@ const TimetableContainer = () => {
 
   const getSlotClashes = () => {
     const courseAndSlotList = []
-    courseTimetableList.forEach(({course, lectureSlots}) => {
+    courseTimetableList.forEach(({ course, lectureSlots }) => {
       lectureSlots.forEach((lecSlot) => {
         courseAndSlotList.push({
           course,
-          slotName: lecSlot
+          slotName: lecSlot,
         })
       })
     })
-    const courseTimetableSlots = courseAndSlotList.map(({course, slotName}) => (
-      {course, slotName, grid: slots[slotName]}
-    )).sort((a, b) => (a.grid.col*1000 + a.grid.row.start) - (b.grid.col*1000 + b.grid.row.start) )
+    const courseTimetableSlots = courseAndSlotList
+      .map(({ course, slotName }) => ({
+        course,
+        slotName,
+        grid: slots[slotName],
+      }))
+      .sort(
+        (a, b) =>
+          a.grid.col * 1000 +
+          a.grid.row.start -
+          (b.grid.col * 1000 + b.grid.row.start)
+      )
     const clashes = []
-    for (let i = 1; i < courseTimetableSlots.length; i += 1){
-
+    for (let i = 1; i < courseTimetableSlots.length; i += 1) {
       const prev = courseTimetableSlots[i - 1]
       const next = courseTimetableSlots[i]
-      if (prev.grid.col === next.grid.col && prev.grid.row.end > next.grid.row.start) clashes.push({
-        first: courseTimetableSlots[i - 1],
-        second: courseTimetableSlots[i]
-      })
+      if (
+        prev.grid.col === next.grid.col &&
+        prev.grid.row.end > next.grid.row.start
+      )
+        clashes.push({
+          first: courseTimetableSlots[i - 1],
+          second: courseTimetableSlots[i],
+        })
     }
     return clashes
   }
@@ -131,8 +143,8 @@ const TimetableContainer = () => {
   const slotClashWarnings = (clashes) => {
     const warnings = []
     clashes.forEach((clash) => {
-      const {first} = clash
-      const {second} = clash
+      const { first } = clash
+      const { second } = clash
       warnings.push(`${first.course} (Slot ${first.slotName})
       is clashing with ${second.course} (Slot ${second.slotName})`)
     })
@@ -162,10 +174,7 @@ const TimetableContainer = () => {
           onClick={handleClickNext}
           hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
         />
-        <TimetableDownloadLink
-        coursesInTimetable={courseTimetableList}
-        />
-        
+        <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
       </TimetableSemesterTitle>
 
       {loading && <LoaderAnimation />}
@@ -186,16 +195,15 @@ const TimetableContainer = () => {
       <Aside title="My courses" loading={loading}>
         <ClashAlerts>
           {!loading &&
-            warnings.map(warning => (
+            warnings.map((warning) => (
               <Alert
-              message="Warning"
-              description={warning}
-              type="warning"
-              showIcon
-              closable
-            />
-            ))
-          }
+                message="Warning"
+                description={warning}
+                type="warning"
+                showIcon
+                closable
+              />
+            ))}
         </ClashAlerts>
         <AsideList>
           {!loading &&
@@ -209,7 +217,6 @@ const TimetableContainer = () => {
             ))}
         </AsideList>
       </Aside>
-
     </>
   )
 }
