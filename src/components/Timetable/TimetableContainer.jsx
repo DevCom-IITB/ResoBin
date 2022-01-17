@@ -1,6 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import { ChevronLeft, ChevronRight, X } from '@styled-icons/heroicons-outline'
-import { Spin } from 'antd'
+import { Spin, Alert } from 'antd'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -16,6 +16,7 @@ import {
 } from 'components/shared'
 import { ButtonIcon, ButtonIconDanger } from 'components/shared/Buttons'
 import { API } from 'config/api'
+import { slots } from 'data/timetable'
 import { displayYear, coursePageUrl } from 'helpers/format'
 import {
   selectCourseAPILoading,
@@ -26,6 +27,7 @@ import { updateTimetable } from 'store/userSlice'
 
 import CurrentTime from './CurrentTime'
 import TimetableCourseItem from './TimetableCourseItem'
+import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableLayout from './TimetableLayout'
 
 const TimetableAsideItem = ({ code, handleRemove, loading }) => {
@@ -106,6 +108,57 @@ const TimetableContainer = () => {
     }
   }
 
+  const getSlotClashes = () => {
+    const courseAndSlotList = []
+    courseTimetableList.forEach(({ course, lectureSlots }) => {
+      lectureSlots.forEach((lecSlot) => {
+        courseAndSlotList.push({
+          course,
+          slotName: lecSlot,
+        })
+      })
+    })
+    const courseTimetableSlots = courseAndSlotList
+      .map(({ course, slotName }) => ({
+        course,
+        slotName,
+        grid: slots[slotName],
+      }))
+      .sort(
+        (a, b) =>
+          a.grid.col * 1000 +
+          a.grid.row.start -
+          (b.grid.col * 1000 + b.grid.row.start)
+      )
+    const clashes = []
+    for (let i = 1; i < courseTimetableSlots.length; i += 1) {
+      const prev = courseTimetableSlots[i - 1]
+      const next = courseTimetableSlots[i]
+      if (
+        prev.grid.col === next.grid.col &&
+        prev.grid.row.end > next.grid.row.start
+      )
+        clashes.push({
+          first: courseTimetableSlots[i - 1],
+          second: courseTimetableSlots[i],
+        })
+    }
+    return clashes
+  }
+
+  const slotClashWarnings = (clashes) => {
+    const warnings = []
+    clashes.forEach((clash) => {
+      const { first } = clash
+      const { second } = clash
+      warnings.push(`${first.course} (Slot ${first.slotName})
+      is clashing with ${second.course} (Slot ${second.slotName})`)
+    })
+    return warnings
+  }
+
+  const warnings = slotClashWarnings(getSlotClashes())
+
   return (
     <>
       <PageHeading>
@@ -128,6 +181,7 @@ const TimetableContainer = () => {
             onClick={handleClickNext}
             hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
           />
+        <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
         </TimetableSemesterTitle>
       )}
 
@@ -147,6 +201,18 @@ const TimetableContainer = () => {
       </Spin>
 
       <Aside title="My courses" loading={loading}>
+        <ClashAlerts>
+          {!loading &&
+            warnings.map((warning) => (
+              <Alert
+                message="Warning"
+                description={warning}
+                type="warning"
+                showIcon
+                closable
+              />
+            ))}
+        </ClashAlerts>
         <AsideList>
           {!loading &&
             courseTimetableList.map(({ id, course }) => (
@@ -167,6 +233,7 @@ export default TimetableContainer
 
 const TimetableSemesterTitle = styled.div`
   display: flex;
+  position: relative;
   gap: 0.5rem;
   align-items: center;
   justify-content: center;
@@ -188,4 +255,7 @@ const TimetableCardTitle = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+`
+const ClashAlerts = styled.div`
+  margin-top: 1rem;
 `

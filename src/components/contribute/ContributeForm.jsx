@@ -44,6 +44,10 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
         <Input placeholder="Title" />
       </Form.Item>
 
+      <Form.Item name="author" rules={[{ required: false }]}>
+        <Input placeholder="Title" />
+      </Form.Item>
+
       <Form.Item name="description">
         <Input.TextArea
           autoSize={{ minRows: 1, maxRows: 10 }}
