@@ -42,11 +42,12 @@ const ContributeItem = ({
       return
     }
 
-    const { title, course, description, tags } = fileDetails
+    const { title, course, description, tags, author } = fileDetails
 
     const fd = new FormData()
     fd.append('file', fileItem.file, fileItem.file.name)
     fd.append('title', title)
+    fd.append('author', author)
     fd.append('course', course)
     fd.append('description', description || 'No description available.')
     fd.append('tags', JSON.stringify(tags))
@@ -75,7 +76,6 @@ const ContributeItem = ({
   return (
     <ItemContainer>
       <DragNDropSub onDrop={onDrop}>
-        {/* <img src={fileItem.details.icon} className="icon" alt="icon" /> */}
         <DocumentAdd size="24" />
 
         <h2>

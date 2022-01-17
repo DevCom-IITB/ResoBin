@@ -181,7 +181,7 @@ const TimetableContainer = () => {
             onClick={handleClickNext}
             hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
           />
-        <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
+          <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
         </TimetableSemesterTitle>
       )}
 

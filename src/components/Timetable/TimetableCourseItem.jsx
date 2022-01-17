@@ -14,7 +14,7 @@ const TimetableCourseItem = ({ data, colorCode = 0 }) => {
   const title = useSelector(selectCourseTitle(code))
   const colorPicker = useColorPicker()
   const displayIfTutorial = (isTutorial) => {
-    if (isTutorial) return " | Tut"
+    if (isTutorial) return ' | Tut'
     return null
   }
   const TimetableCourseLectureItem = useCallback(
@@ -22,7 +22,9 @@ const TimetableCourseItem = ({ data, colorCode = 0 }) => {
       <GridItem row={gridRow} col={gridCol}>
         <Tooltip title={title}>
           <Item color={colorPicker(colorCode)}>
-            <h3>{code} {displayIfTutorial(isTutorial)}</h3>
+            <h3>
+              {code} {displayIfTutorial(isTutorial)}
+            </h3>
             <span>
               {gridRow.start.title} - {gridRow.end.title} | {slotName}
             </span>
@@ -34,9 +36,15 @@ const TimetableCourseItem = ({ data, colorCode = 0 }) => {
   )
 
   if (lectureSlots?.length === 0) return null
-  const courseSlots = lectureSlots.map((slot) => ({slot, grid: slots[slot], isTutorial: false})).concat(
-    tutorialSlots.map((slot) => ({slot, grid: slots[slot], isTutorial: true}))
-  )
+  const courseSlots = lectureSlots
+    .map((slot) => ({ slot, grid: slots[slot], isTutorial: false }))
+    .concat(
+      tutorialSlots.map((slot) => ({
+        slot,
+        grid: slots[slot],
+        isTutorial: true,
+      }))
+    )
   return courseSlots?.map(({ slot, grid, isTutorial }, idx) => (
     <TimetableCourseLectureItem
       key={String(idx)}
