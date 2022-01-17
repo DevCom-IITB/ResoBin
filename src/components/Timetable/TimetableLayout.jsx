@@ -43,11 +43,11 @@ const Container = styled.div`
   grid-template-columns:
     [times] 2.5rem
     ${cols.map(({ id, title }, index) => `[${id}] 1fr `)};
-  padding: 0.75rem;
   margin-bottom: 1rem;
+  padding: 0.75rem;
   overflow-x: scroll;
   background: ${({ theme }) => theme.secondary};
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   > div {
     box-shadow: inset -1px -1px 0 ${({ theme }) => rgba(theme.primary, 0.1)};

@@ -65,15 +65,15 @@ const Container = styled.div`
 
 const CourseInfo = styled.div`
   display: flex;
-  gap: 0.5rem;
   flex-direction: column;
+  gap: 0.5rem;
   color: ${({ theme }) => theme.textColor};
 
   h1 {
-    line-height: 1;
     color: ${({ theme }) => theme.primary};
     font-weight: 600;
     font-size: ${fontSize.responsive.$4xl};
+    line-height: 1;
   }
 
   h2 {
@@ -87,31 +87,31 @@ const CourseInfo = styled.div`
   }
 
   p {
+    margin: 0;
     font-weight: 300;
     font-size: ${fontSize.responsive.sm};
-    text-align: justify;
     font-family: 'Source Sans Pro', sans-serif;
-    margin: 0;
+    text-align: justify;
   }
 `
 
 const FavoriteContainer = styled.div`
   position: absolute;
-  margin: 1.5rem 1rem;
-  right: 0;
   top: 0;
+  right: 0;
+  margin: 1.5rem 1rem;
 
   @media ${device.max.xs} {
-    margin: 0.75rem 0.5rem;
     flex-direction: column;
+    margin: 0.75rem 0.5rem;
   }
 `
 
 const FlexGap = styled.div`
   display: flex;
+  gap: 0.75rem;
   align-items: baseline;
   justify-content: space-between;
-  gap: 0.75rem;
 
   @media ${device.max.xs} {
     flex-direction: column;

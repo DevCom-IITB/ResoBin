@@ -3,11 +3,11 @@ import { css } from 'styled-components/macro'
 
 export const buttonStyles = css`
   display: flex;
-  align-items: center;
   gap: 0.5rem;
+  align-items: center;
   color: ${({ theme }) => theme.textColor};
   border: none;
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   &:active,
   &:focus {
@@ -24,7 +24,7 @@ export const buttonStyles = css`
 
 export const switchStyles = css`
   &.ant-btn-primary {
-    background-color: ${({ $active, theme }) =>
+    background: ${({ $active, theme }) =>
       lighten($active ? 0.4 : 0, theme.darksecondary)};
 
     &:hover {

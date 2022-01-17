@@ -85,7 +85,7 @@ const BoxContainer = styled(Tooltip)`
 const Box = styled.div`
   width: 1rem;
   height: 100%;
-  background-color: ${({ color }) => color};
+  background: ${({ color }) => color};
   border-radius: 4px;
 `
 

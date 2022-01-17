@@ -11,7 +11,7 @@ const ButtonSwitch = styled(Button)`
   background: ${({ theme }) => theme.darksecondary};
 
   &.ant-btn-primary {
-    background-color: ${({ $active, theme }) =>
+    background: ${({ $active, theme }) =>
       lighten($active ? 0.4 : 0, theme.darksecondary)};
 
     &:hover {

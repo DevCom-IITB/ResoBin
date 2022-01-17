@@ -22,8 +22,8 @@ const StyledTabs = styled(Tabs)`
     height: ${({ tabheight }) => tabheight};
     padding: 0;
     font-size: 0.75rem;
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
+    border-top-left-radius: ${({ theme }) => theme.borderRadius};
+    border-top-right-radius: ${({ theme }) => theme.borderRadius};
 
     & + .ant-tabs-tab {
       margin: 0;

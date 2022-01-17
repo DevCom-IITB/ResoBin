@@ -16,6 +16,8 @@ const Favourites = lazy(() => import('pages/Favourites'))
 const Logout = lazy(() => import('pages/Logout'))
 const Settings = lazy(() => import('pages/Settings'))
 const TimeTable = lazy(() => import('pages/Timetable'))
+const Privacy = lazy(() => import('pages/Privacy'))
+const Terms = lazy(() => import('pages/Terms'))
 
 // ? authentication necessary for all dashboard routes
 export const DashboardRoutes = () => (
@@ -35,6 +37,8 @@ export const DashboardRoutes = () => (
     <Route path="/timetable" element={<TimeTable />} />
     <Route path="/logout" element={<Logout />} />
     <Route path="/404" element={<NotFound />} />
+    <Route path="/privacy-policy" element={<Privacy />} />
+    <Route path="/terms-and-conditions" element={<Terms />} />
     <Route path="*" element={<Navigate to="/404" replace />} />
   </AnimatedRoutes>
 )

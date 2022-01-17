@@ -3,15 +3,20 @@ import ReactQuill from 'react-quill'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { ButtonSquare, Comment, toast, UserAvatar } from 'components/shared'
+import {
+  ButtonSquare,
+  Comment,
+  Form,
+  toast,
+  UserAvatar,
+} from 'components/shared'
 import { selectUserProfile } from 'store/userSlice'
 
 import reviewTemplate from './reviewTemplate'
 
 const formats = [
   'header',
-  'font',
-  'size',
+  'code',
   'bold',
   'italic',
   'underline',
@@ -65,21 +70,50 @@ const CustomToolbar = ({ templateHandler }) => (
   </Toolbar>
 )
 
+export const QuillEditor = ({
+  value,
+  onChange,
+  placeholder,
+  templateHandler,
+  validate,
+}) => {
+  const handleChange = async (content, delta, source, editor) => {
+    validate(editor.getText().length)
+    onChange(content)
+  }
+
+  return (
+    <>
+      <CustomToolbar templateHandler={templateHandler} />
+      <StyledReactQuill
+        formats={formats}
+        modules={modules}
+        onChange={handleChange}
+        value={value}
+        placeholder={placeholder}
+      />
+    </>
+  )
+}
+
 export const Editor = ({
   onSubmit,
   initialValue = '',
   submitText = 'Post',
   templateHandler,
 }) => {
-  const [content, setContent] = useState(initialValue)
   const [loading, setLoading] = useState(false)
-  const handleChange = (value) => setContent(value)
+  const [form] = Form.useForm()
 
-  const handleSubmit = async () => {
-    setLoading(true)
+  const handleSubmit = async (values) => {
     try {
-      await onSubmit(content)
-      setContent(initialValue)
+      setLoading(true)
+      const errors = form.getFieldError('body')
+      if (errors.length) throw new Error(errors[0])
+
+      await onSubmit(values)
+      form.resetFields()
+      form.setFields([{ name: 'body', errors: [] }])
     } catch (error) {
       toast({ status: 'error', content: error })
     } finally {
@@ -87,26 +121,47 @@ export const Editor = ({
     }
   }
 
+  const validate = (length) => {
+    if (length <= 10) {
+      form.setFields([
+        {
+          name: 'body',
+          errors: ['Review must be atleast 10 characters long.'],
+        },
+      ])
+    } else if (length > 3000) {
+      form.setFields([
+        {
+          name: 'body',
+          errors: ['Review must be atmost 3000 characters long.'],
+        },
+      ])
+    } else {
+      form.setFields([{ name: 'body', errors: [] }])
+    }
+  }
+  // git imp "Add "
   return (
-    <>
-      <CustomToolbar templateHandler={templateHandler} />
-      <StyledReactQuill
-        placeholder="Write your review here..."
-        onChange={handleChange}
-        value={content}
-        formats={formats}
-        modules={modules}
-      />
+    <Form
+      layout="vertical"
+      form={form}
+      onFinish={handleSubmit}
+      initialValues={{ body: initialValue }}
+    >
+      <Form.Item name="body">
+        <QuillEditor
+          templateHandler={templateHandler}
+          placeholder="Write your review here..."
+          validate={validate}
+        />
+      </Form.Item>
 
-      <ButtonSquare
-        type="primary"
-        htmlType="submit"
-        onClick={handleSubmit}
-        loading={loading}
-      >
-        {submitText}
-      </ButtonSquare>
-    </>
+      <Form.Item>
+        <ButtonSquare type="primary" htmlType="submit" loading={loading}>
+          {submitText}
+        </ButtonSquare>
+      </Form.Item>
+    </Form>
   )
 }
 
@@ -122,7 +177,7 @@ export const ReviewEditor = ({ ...editorProps }) => {
           alt="Profile picture"
         />
       }
-      content={<Editor visible {...editorProps} />}
+      content={<Editor {...editorProps} />}
     />
   )
 }
@@ -130,13 +185,13 @@ export const ReviewEditor = ({ ...editorProps }) => {
 export default Editor
 
 const StyledReactQuill = styled(ReactQuill)`
-  background: ${({ theme }) => theme.darksecondary};
-  color: ${({ theme }) => theme.textColor};
-  border-top: 1px solid ${({ theme }) => theme.dividerColor};
-  border-bottom-left-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
-  box-shadow: 0 0 1rem 4px rgb(0 0 0 / 20%);
   margin-bottom: 0.75rem;
+  color: ${({ theme }) => theme.textColor};
+  background: ${({ theme }) => theme.darksecondary};
+  border-top: 1px solid ${({ theme }) => theme.dividerColor};
+  border-bottom-right-radius: ${({ theme }) => theme.borderRadius};
+  border-bottom-left-radius: ${({ theme }) => theme.borderRadius};
+  box-shadow: 0 0 1rem 4px rgb(0 0 0 / 20%);
 
   .ql-container {
     border: none;
@@ -150,10 +205,10 @@ const StyledReactQuill = styled(ReactQuill)`
 `
 
 const Toolbar = styled.div`
-  background: ${({ theme }) => theme.darksecondary};
   color: ${({ theme }) => theme.textColor};
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
+  background: ${({ theme }) => theme.darksecondary};
+  border-top-left-radius: ${({ theme }) => theme.borderRadius};
+  border-top-right-radius: ${({ theme }) => theme.borderRadius};
 
   .ql-stroke {
     fill: none;
@@ -173,7 +228,7 @@ const Toolbar = styled.div`
   }
 
   button.ql-loadTemplate {
-    color: ${({ theme }) => theme.textColor};
     width: fit-content;
+    color: ${({ theme }) => theme.textColor};
   }
 `

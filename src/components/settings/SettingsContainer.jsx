@@ -1,20 +1,39 @@
 import { Sun, Moon } from '@styled-icons/heroicons-outline/'
 import { Button } from 'antd'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { Aside, CardSplit, Switch, Typography } from 'components/shared'
+import { Aside, CardSplit, Switch, toast, Typography } from 'components/shared'
 import { PageHeading, PageTitle } from 'components/shared/Layout'
-import { useTheme } from 'hooks'
 import { logoutAction } from 'store/authSlice'
+import {
+  selectTheme,
+  selectTracking,
+  setTheme,
+  setTracking,
+} from 'store/settingsSlice'
 
 import Profile from './Profile'
 
 const SettingsContainer = () => {
-  const dispatch = useDispatch()
-  const { theme, switchTheme } = useTheme()
+  const tracking = useSelector(selectTracking)
+  const theme = useSelector(selectTheme)
 
-  const handleLogout = () => dispatch(logoutAction())
+  const dispatch = useDispatch()
+  const switchTracking = () => dispatch(setTracking(!tracking))
+  const switchTheme = () => {
+    if (theme === 'dark') dispatch(setTheme('light'))
+    else if (theme === 'light') dispatch(setTheme('dark'))
+  }
+
+  const handleLogout = async () => {
+    try {
+      const response = await dispatch(logoutAction())
+      toast({ status: 'success', content: response?.payload?.detail })
+    } catch (error) {
+      toast({ status: 'error', content: error })
+    }
+  }
 
   return (
     <>
@@ -51,7 +70,7 @@ const SettingsContainer = () => {
               </SubHeading>
             </>
           }
-          sub={<Switch defaultChecked />}
+          sub={<Switch defaultChecked={tracking} onChange={switchTracking} />}
           subWidth="5rem"
         />
 
@@ -89,17 +108,20 @@ const Heading = styled.h1`
 `
 
 const SubHeading = styled.p`
-  color: ${({ theme }) => theme.textColorInactive};
-  font-size: 0.875rem;
   margin-top: 0.5rem;
   margin-bottom: 0;
+  color: ${({ theme }) => theme.textColorInactive};
+  font-size: 0.875rem;
 `
 
 const StyledButton = styled(Button)`
-  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.75rem;
   font-weight: 500;
-  font-size: 1rem;
-  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 `
 
 const SettingCards = styled.div`
