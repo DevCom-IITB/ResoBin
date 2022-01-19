@@ -41,7 +41,6 @@ const FavoriteToggle = ({ code, initialCount }) => {
           {favourite ? <Bookmark size="30" /> : <BookmarkOutline size="30" />}
         </Badge>
       }
-      color="white"
       loading={loading}
     />
   )

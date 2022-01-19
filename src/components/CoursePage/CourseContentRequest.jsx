@@ -89,7 +89,7 @@ export const CourseContentRequestIcon = ({
       $active={requestStatus}
       onClick={handleRequest}
       loading={loading}
-      style={{ width: '2.5rem', borderRadius: '0 0.5rem 0.5rem 0' }}
+      style={{ width: '3rem', borderRadius: '0 0.5rem 0.5rem 0' }}
       {...props}
     />
   )

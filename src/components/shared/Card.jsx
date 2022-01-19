@@ -5,7 +5,6 @@ import styled from 'styled-components/macro'
 export const CardSkeleton = styled(Skeleton)`
   display: flex;
   align-items: center;
-  margin: 0.75rem 0;
   padding: 0.875rem 1.125rem;
   background: #1b172866;
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -26,6 +25,7 @@ export const StyledCard = styled(Card)`
     display: flex;
     background: ${({ theme }) => rgba(theme.darksecondary, 0.5)};
     border-radius: ${({ theme }) => theme.borderRadius};
+    padding: 0.75rem;
   }
 
   &.ant-card-hoverable {

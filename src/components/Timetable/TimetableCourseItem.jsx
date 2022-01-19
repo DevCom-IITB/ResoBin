@@ -1,28 +1,47 @@
+import { ExternalLink } from '@styled-icons/heroicons-outline'
 import { Tooltip } from 'antd'
 import { darken } from 'polished'
 import { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import styled, { css } from 'styled-components/macro'
 
+import { ButtonIcon } from 'components/shared'
 import { cols, rows, slots } from 'data/timetable'
+import { hash, coursePageUrl } from 'helpers'
+import { useColorPicker } from 'hooks'
 import { selectCourseTitle } from 'store/courseSlice'
-import { useColorPicker, makeGradient } from 'styles/utils'
+import { makeGradient } from 'styles'
+import { fontSize } from 'styles/responsive'
 
-// * id refers to the color of the timetable item
-const TimetableCourseItem = ({ data, colorCode = 0 }) => {
-  const { course: code, lectureSlots, tutorialSlots } = data
+const TimetableCourseItem = ({ data }) => {
+  const { id, course: code, lectureSlots, tutorialSlots } = data
+
   const title = useSelector(selectCourseTitle(code))
   const colorPicker = useColorPicker()
-  const displayIfTutorial = (isTutorial) => {
-    if (isTutorial) return " | Tut"
-    return null
-  }
+
+  const handleClickInfo = useCallback(() => {
+    window.open(coursePageUrl(code, title))
+  }, [code, title])
+
   const TimetableCourseLectureItem = useCallback(
     ({ gridCol, gridRow, slotName, isTutorial }) => (
       <GridItem row={gridRow} col={gridCol}>
         <Tooltip title={title}>
-          <Item color={colorPicker(colorCode)}>
-            <h3>{code} {displayIfTutorial(isTutorial)}</h3>
+          <Item color={colorPicker(hash(id))}>
+            <h3 style={{ paddingRight: '1rem' }}>
+              {code} {isTutorial && ' | Tut'}
+              <ButtonIcon
+                size="small"
+                onClick={handleClickInfo}
+                icon={<ExternalLink size="16" />}
+                color="#000000"
+                style={{
+                  position: 'absolute',
+                  top: '0.25rem',
+                  right: '0.25rem',
+                }}
+              />
+            </h3>
             <span>
               {gridRow.start.title} - {gridRow.end.title} | {slotName}
             </span>
@@ -30,13 +49,21 @@ const TimetableCourseItem = ({ data, colorCode = 0 }) => {
         </Tooltip>
       </GridItem>
     ),
-    [code, colorCode, title, colorPicker]
+    [code, id, title, colorPicker, handleClickInfo]
   )
 
   if (lectureSlots?.length === 0) return null
-  const courseSlots = lectureSlots.map((slot) => ({slot, grid: slots[slot], isTutorial: false})).concat(
-    tutorialSlots.map((slot) => ({slot, grid: slots[slot], isTutorial: true}))
-  )
+
+  const courseSlots = lectureSlots
+    .map((slot) => ({ slot, grid: slots[slot], isTutorial: false }))
+    .concat(
+      tutorialSlots.map((slot) => ({
+        slot,
+        grid: slots[slot],
+        isTutorial: true,
+      }))
+    )
+
   return courseSlots?.map(({ slot, grid, isTutorial }, idx) => (
     <TimetableCourseLectureItem
       key={String(idx)}
@@ -53,11 +80,15 @@ export default TimetableCourseItem
 const GridItem = styled.div`
   grid-row: ${({ row }) => row.start.id} / ${({ row }) => row.end.id};
   grid-column: ${({ col }) => col.id};
-  color: ${({ theme }) => theme.textColor};
+  position: relative;
+
+  &:hover {
+    text-decoration: none;
+  }
 `
 
 const getTile = (color) => css`
-  color: ${darken(0.7, color)};
+  color: ${({ theme }) => theme.darksecondary};
   background: ${makeGradient(color)};
   border-left: 4px solid ${darken(0.2, color)};
 `
@@ -71,12 +102,12 @@ const Item = styled.div`
   ${({ color }) => getTile(color)}
 
   & > h3 {
-    font-size: 1rem;
+    font-size: ${fontSize.responsive.sm};
   }
 
   & > span {
     display: block;
-    font-size: 0.75rem;
+    font-size: ${fontSize.responsive.xs};
   }
 
   &:hover {

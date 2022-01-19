@@ -45,7 +45,7 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
       </Form.Item>
 
       <Form.Item name="author" rules={[{ required: false }]}>
-        <Input placeholder="Title" />
+        <Input placeholder="Author" />
       </Form.Item>
 
       <Form.Item name="description">

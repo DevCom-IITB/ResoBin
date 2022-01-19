@@ -17,7 +17,7 @@ import {
 import { ButtonIcon, ButtonIconDanger } from 'components/shared/Buttons'
 import { API } from 'config/api'
 import { slots } from 'data/timetable'
-import { displayYear, coursePageUrl } from 'helpers/format'
+import { displayYear, coursePageUrl } from 'helpers'
 import {
   selectCourseAPILoading,
   selectCourseTitle,
@@ -34,7 +34,7 @@ const TimetableAsideItem = ({ code, handleRemove, loading }) => {
   const title = useSelector(selectCourseTitle(code))
 
   return (
-    <Link to={coursePageUrl(code, title)}>
+    <StyledLink to={coursePageUrl(code, title)}>
       <Card hoverable>
         <Card.Meta
           title={
@@ -53,9 +53,15 @@ const TimetableAsideItem = ({ code, handleRemove, loading }) => {
           description={title}
         />
       </Card>
-    </Link>
+    </StyledLink>
   )
 }
+
+const StyledLink = styled(Link)`
+  &:hover {
+    text-decoration: none;
+  }
+`
 
 const TimetableContainer = () => {
   const dispatch = useDispatch()
@@ -181,7 +187,7 @@ const TimetableContainer = () => {
             onClick={handleClickNext}
             hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
           />
-        <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
+          <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
         </TimetableSemesterTitle>
       )}
 
@@ -192,8 +198,8 @@ const TimetableContainer = () => {
         indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
       >
         <TimetableLayout>
-          {courseTimetableList.map((item, idx) => (
-            <TimetableCourseItem key={item.id} colorCode={idx} data={item} />
+          {courseTimetableList.map((item) => (
+            <TimetableCourseItem key={item.id} data={item} />
           ))}
 
           <CurrentTime mode="vertical" />
@@ -213,6 +219,7 @@ const TimetableContainer = () => {
               />
             ))}
         </ClashAlerts>
+
         <AsideList>
           {!loading &&
             courseTimetableList.map(({ id, course }) => (

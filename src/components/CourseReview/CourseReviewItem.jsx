@@ -29,6 +29,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
 
   const voteStatus = useSelector(selectReviewVoteStatus(content.id))
   const [voteCount, setVoteCount] = useState(content.votersCount)
+  const [loading, setLoading] = useState(false)
   const [action, setAction] = useState(null)
 
   const profile = useSelector(selectUserProfile)
@@ -36,6 +37,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
 
   const vote = async () => {
     try {
+      setLoading(true)
       if (voteStatus) {
         await API.reviews.vote.remove({ id: content.id })
         setVoteCount(voteCount - 1)
@@ -47,6 +49,8 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       dispatch(updateReviewsVoted(content.id))
     } catch (error) {
       toast({ status: 'error', content: error })
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -104,12 +108,12 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
     <ButtonIcon
       key="content-vote"
       shape="round"
-      color="white"
       size="middle"
       icon={
         voteStatus ? <ThumbUpFilled size="16" /> : <ThumbUpOutlined size="16" />
       }
       onClick={vote}
+      loading={loading}
     >
       <LikeCount>{voteCount}</LikeCount>
     </ButtonIcon>,

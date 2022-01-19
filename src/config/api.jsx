@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import { toast } from 'components/shared'
-import { camelizeKeys, snakeizeKeys } from 'helpers/transformKeys'
+import { camelizeKeys, snakeizeKeys } from 'helpers'
 
 // ? waits for 5 mins before timing out
 export const APIInstance = axios.create({

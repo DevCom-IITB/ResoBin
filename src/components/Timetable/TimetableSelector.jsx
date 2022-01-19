@@ -91,9 +91,13 @@ const SemesterItem = ({ data }) => {
       loading={loading}
       style={{ margin: '0.75rem 0 0', width: '100%' }}
     >
-      {selected !== null
-        ? `Remove from slot: ${selected.division}`
-        : 'Timetable'}
+      {selected !== null ? (
+        <span style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
+          Remove from: <b>{selected.division}</b>
+        </span>
+      ) : (
+        'Timetable'
+      )}
     </ButtonSwitch>
   )
 }

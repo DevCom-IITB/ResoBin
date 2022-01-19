@@ -1,8 +1,9 @@
 import { Tooltip } from 'antd'
 import styled from 'styled-components/macro'
 
+import { hash } from 'helpers'
+import { useColorPicker } from 'hooks'
 import { device } from 'styles/responsive'
-import { useColorPicker } from 'styles/utils'
 
 // ? repeat n times a Box component with color = color
 const CourseWorkloadItem = ({ value, color, title }) =>
@@ -43,7 +44,7 @@ const CourseWorkload = ({ workload }) => {
             key={title}
             title={title}
             value={value}
-            color={colorPicker(idx)}
+            color={colorPicker(hash(idx))}
             style={{ marginLeft: idx > 0 ? '0' : 'initial' }}
           />
         ))}

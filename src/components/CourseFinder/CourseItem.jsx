@@ -1,21 +1,16 @@
 import { ChatAlt, DocumentText } from '@styled-icons/heroicons-outline'
-import { Tag } from 'antd'
 import { Fragment } from 'react'
-import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { CourseContentRequestIcon } from 'components/CoursePage/CourseContentRequest'
 import FavoriteToggle from 'components/Favourites/FavoriteToggle'
-import { Divider, Typography, CardSplit } from 'components/shared'
+import { CardSplit, Divider, Tag, Typography } from 'components/shared'
 import { ButtonSquareLink } from 'components/shared/Buttons'
 import { TimetableSelector } from 'components/Timetable'
-import defaultTags from 'data/tags.json'
-import { coursePageUrl } from 'helpers/format'
-import { useResponsive } from 'hooks'
-import { selectDepartments } from 'store/courseSlice'
+import { hash, coursePageUrl } from 'helpers'
+import { useColorPicker, useResponsive } from 'hooks'
 import { device, fontSize } from 'styles/responsive'
-import { useColorPicker } from 'styles/utils'
 
 // TODO: Add highlight for description
 const HighlightMatches = ({ content }) => {
@@ -36,6 +31,7 @@ const HighlightMatches = ({ content }) => {
 }
 
 const CourseItemMain = ({ courseData }) => {
+  const colorPicker = useColorPicker()
   const {
     code,
     credits,
@@ -46,9 +42,6 @@ const CourseItemMain = ({ courseData }) => {
     favoritedByCount,
   } = courseData
 
-  const departmentList = useSelector(selectDepartments)
-  const colorPicker = useColorPicker()
-
   const creditColorPicker = (_credits) => {
     if (_credits >= 10) return colorPicker(0)
     if (_credits >= 8) return colorPicker(1)
@@ -58,18 +51,11 @@ const CourseItemMain = ({ courseData }) => {
     return colorPicker(5)
   }
 
-  const tagColorPicker = (tag) =>
-    colorPicker(defaultTags.courseTags.findIndex((t) => t === tag))
-
   return (
     <>
       <SubTitle>
         <DepartmentContainer
-          style={{
-            color: colorPicker(
-              departmentList.findIndex(({ name }) => name === department.name)
-            ),
-          }}
+          style={{ color: colorPicker(hash(department.name)) }}
         >
           {department.name}
         </DepartmentContainer>
@@ -77,15 +63,15 @@ const CourseItemMain = ({ courseData }) => {
         <RightIcons>
           <TagsContainer>
             {credits > 0 && (
-              <StyledTag style={{ color: creditColorPicker(credits) }}>
+              <Tag style={{ color: creditColorPicker(credits) }}>
                 {credits} credit{credits > 1 ? 's' : ''}
-              </StyledTag>
+              </Tag>
             )}
 
             {tags.map((tag) => (
-              <StyledTag key={tag} style={{ color: tagColorPicker(tag) }}>
+              <Tag key={tag} style={{ color: colorPicker(hash(tag)) }}>
                 {tag}
-              </StyledTag>
+              </Tag>
             ))}
           </TagsContainer>
 
@@ -261,21 +247,6 @@ const TagsContainer = styled.div`
       margin-bottom: 0.5rem;
     }
   }
-`
-
-const StyledTag = styled(Tag)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 1.25rem;
-  margin: 0;
-  padding: 0 0.75rem;
-  color: ${({ theme }) => theme.textColor};
-  font-weight: 500;
-  background: ${({ theme }) => theme.darksecondary};
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius};
 `
 
 const FlexGap = styled.div`

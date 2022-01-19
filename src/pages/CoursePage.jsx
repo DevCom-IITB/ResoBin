@@ -6,7 +6,7 @@ import { Navigate, useLocation, useParams } from 'react-router-dom'
 import { CoursePageContainer } from 'components/CoursePage'
 import { LoaderAnimation, PageContainer, toast } from 'components/shared'
 import { API } from 'config/api'
-import { coursePageUrl } from 'helpers/format'
+import { coursePageUrl } from 'helpers'
 
 const CoursePage = () => {
   const location = useLocation()
