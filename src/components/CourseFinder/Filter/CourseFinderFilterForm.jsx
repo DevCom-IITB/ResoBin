@@ -4,26 +4,25 @@ import { kebabCase } from 'lodash'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { Form, PageHeading, Slider, Switch } from 'components/shared'
+import { Form, Slider, Switch } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
 import tags from 'data/tags.json'
 import { useQueryString } from 'hooks'
 import { selectDepartments } from 'store/courseSlice'
 
 const CourseFinderFilterItem = ({ label, onClear, content }) => (
-  <PageHeading style={{ margin: '0 0 0.25rem' }}>
+  <CourseFinderFilterItemContainer>
     <FilterTitle>{label}</FilterTitle>
 
     {content || (
       <ButtonIconDanger
-        tooltip="Reset"
         onClick={onClear}
         size="default"
         icon={<X size="20" />}
         style={{ borderRadius: '50%' }}
       />
     )}
-  </PageHeading>
+  </CourseFinderFilterItemContainer>
 )
 
 // TODO: (Known bug) Changing from mobile to desktop view resets filters but query string isnt affected
@@ -207,4 +206,11 @@ const FilterTitle = styled.span`
   color: ${({ theme }) => theme.textColor};
   font-weight: 500;
   font-size: 0.875rem;
+`
+
+const CourseFinderFilterItemContainer = styled.h3`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 0.25rem;
 `

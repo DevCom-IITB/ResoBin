@@ -34,7 +34,7 @@ const TimetableAsideItem = ({ code, handleRemove, loading }) => {
   const title = useSelector(selectCourseTitle(code))
 
   return (
-    <Link to={coursePageUrl(code, title)}>
+    <StyledLink to={coursePageUrl(code, title)}>
       <Card hoverable>
         <Card.Meta
           title={
@@ -53,9 +53,15 @@ const TimetableAsideItem = ({ code, handleRemove, loading }) => {
           description={title}
         />
       </Card>
-    </Link>
+    </StyledLink>
   )
 }
+
+const StyledLink = styled(Link)`
+  &:hover {
+    text-decoration: none;
+  }
+`
 
 const TimetableContainer = () => {
   const dispatch = useDispatch()
@@ -213,6 +219,7 @@ const TimetableContainer = () => {
               />
             ))}
         </ClashAlerts>
+
         <AsideList>
           {!loading &&
             courseTimetableList.map(({ id, course }) => (

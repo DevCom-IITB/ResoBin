@@ -3,7 +3,6 @@ import { Tooltip } from 'antd'
 import { darken } from 'polished'
 import { useCallback } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
 
 import { ButtonIcon } from 'components/shared'
@@ -14,12 +13,15 @@ import { selectCourseTitle } from 'store/courseSlice'
 import { makeGradient } from 'styles'
 import { fontSize } from 'styles/responsive'
 
-// * id refers to the color of the timetable item
 const TimetableCourseItem = ({ data }) => {
   const { id, course: code, lectureSlots, tutorialSlots } = data
 
   const title = useSelector(selectCourseTitle(code))
   const colorPicker = useColorPicker()
+
+  const handleClickInfo = useCallback(() => {
+    window.open(coursePageUrl(code, title))
+  }, [code, title])
 
   const TimetableCourseLectureItem = useCallback(
     ({ gridCol, gridRow, slotName, isTutorial }) => (
@@ -28,19 +30,17 @@ const TimetableCourseItem = ({ data }) => {
           <Item color={colorPicker(hash(id))}>
             <h3 style={{ paddingRight: '1rem' }}>
               {code} {isTutorial && ' | Tut'}
-              <Link to={coursePageUrl(code, title)}>
-                <ButtonIcon
-                  size="small"
-                  onClick={() => {}}
-                  icon={<ExternalLink size="16" />}
-                  color="#000000"
-                  style={{
-                    position: 'absolute',
-                    top: '0.25rem',
-                    right: '0.25rem',
-                  }}
-                />
-              </Link>
+              <ButtonIcon
+                size="small"
+                onClick={handleClickInfo}
+                icon={<ExternalLink size="16" />}
+                color="#000000"
+                style={{
+                  position: 'absolute',
+                  top: '0.25rem',
+                  right: '0.25rem',
+                }}
+              />
             </h3>
             <span>
               {gridRow.start.title} - {gridRow.end.title} | {slotName}
@@ -49,7 +49,7 @@ const TimetableCourseItem = ({ data }) => {
         </Tooltip>
       </GridItem>
     ),
-    [code, id, title, colorPicker]
+    [code, id, title, colorPicker, handleClickInfo]
   )
 
   if (lectureSlots?.length === 0) return null

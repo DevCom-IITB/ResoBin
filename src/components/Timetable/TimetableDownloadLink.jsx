@@ -1,6 +1,6 @@
 import { Download } from '@styled-icons/heroicons-outline'
+import { Dropdown, Menu } from 'antd'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { ButtonIcon } from 'components/shared'
@@ -31,15 +31,14 @@ const TimetableDownloadLink = ({ coursesInTimetable }) => {
     endDate.setMinutes(endTime.minutes)
 
     const result = `
-      BEGIN:VEVENT
-      UID:${summary + startTime.hours + weekdayFirstTwoChars}
-      DTSTART:${ISOStringToICSDate(startDate.toISOString())}
-      DTEND:${ISOStringToICSDate(endDate.toISOString())}
-      RRULE:FREQ=WEEKLY;BYDAY=${weekdayFirstTwoChars}
-      SUMMARY:${summary}
-      DESCRIPTION:${description}
-      END:VEVENT
-    `
+BEGIN:VEVENT
+UID:${summary + startTime.hours + weekdayFirstTwoChars}
+DTSTART:${ISOStringToICSDate(startDate.toISOString())}
+DTEND:${ISOStringToICSDate(endDate.toISOString())}
+RRULE:FREQ=WEEKLY;BYDAY=${weekdayFirstTwoChars}
+SUMMARY:${summary}
+DESCRIPTION:${description}
+END:VEVENT`
 
     return result
   }
@@ -83,39 +82,53 @@ const TimetableDownloadLink = ({ coursesInTimetable }) => {
   }
 
   const generateICSFile = (eventList) => {
-    const beginning =
-      'BEGIN:VCALENDAR\n' +
-      'CALSCALE:GREGORIAN\n' +
-      'METHOD:PUBLISH\n' +
-      'PRODID:-//Test Cal//EN\n' +
-      'VERSION:2.0\n'
-    const ending = 'END:VCALENDAR'
+    const data = `
+BEGIN:VCALENDAR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+PRODID:-//Test Cal//EN
+VERSION:2.0
+${eventList.join('')}
+END:VCALENDAR`
 
-    const full = beginning + eventList.join('\n') + ending
-    const data = new File([full], { type: 'text/plain' })
+    const file = new File([data], 'semestertimetable.ics', {
+      type: 'text/calendar;charset=utf8',
+    })
 
-    return window.URL.createObjectURL(data)
+    return window.URL.createObjectURL(file)
   }
+  const menu = (
+    <Menu theme="dark">
+      <Menu.Item key="ics">
+        <a
+          href={generateICSFile(getAllEvents())}
+          target="_blank"
+          rel="noreferrer"
+          download
+        >
+          Google Calendar (.ics file) <b>(beta)</b>
+        </a>
+      </Menu.Item>
+    </Menu>
+  )
 
   return (
-    <DownloadButtonContainer
-      to={generateICSFile(getAllEvents())}
-      target="_blank"
-      download
-    >
-      <ButtonIcon
-        icon={<Download size="20" />}
-        onClick={() => {}}
-        tooltip="Download .ics file (which you can import in Google Calendar / ICal )"
-        hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-      />
+    <DownloadButtonContainer>
+      <Dropdown overlay={menu} trigger={['click']}>
+        <ButtonIcon
+          icon={<Download size="22" />}
+          onClick={() => {}}
+          tooltip="Download timetable"
+          hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+        />
+      </Dropdown>
     </DownloadButtonContainer>
   )
 }
 
 export default TimetableDownloadLink
 
-const DownloadButtonContainer = styled(Link)`
+const DownloadButtonContainer = styled.div`
   position: absolute;
   right: 0;
 `
