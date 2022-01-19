@@ -4,7 +4,7 @@ import styled from 'styled-components/macro'
 
 import { ReactComponent as ResoBinLogo } from 'assets/svgs/logo.svg'
 import { Divider, ResoBinText } from 'components/shared'
-import { displayYear } from 'helpers/format'
+import { displayYear } from 'helpers'
 import { useResponsive } from 'hooks'
 import { selectCurrentSemester } from 'store/courseSlice'
 import { device } from 'styles/responsive'

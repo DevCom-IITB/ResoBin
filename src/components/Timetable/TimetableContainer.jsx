@@ -17,7 +17,7 @@ import {
 import { ButtonIcon, ButtonIconDanger } from 'components/shared/Buttons'
 import { API } from 'config/api'
 import { slots } from 'data/timetable'
-import { displayYear, coursePageUrl } from 'helpers/format'
+import { displayYear, coursePageUrl } from 'helpers'
 import {
   selectCourseAPILoading,
   selectCourseTitle,

@@ -1,7 +1,7 @@
+import { CloudUpload } from '@styled-icons/heroicons-outline'
 import { lighten, rgba } from 'polished'
 import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components/macro'
-import { CloudUpload } from 'styled-icons/heroicons-outline'
 
 import { device, fontSize } from 'styles/responsive'
 

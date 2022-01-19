@@ -105,7 +105,6 @@ const TimetableDownloadLink = ({ coursesInTimetable }) => {
     >
       <ButtonIcon
         icon={<Download size="20" />}
-        color="white"
         onClick={() => {}}
         tooltip="Download .ics file (which you can import in Google Calendar / ICal )"
         hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}

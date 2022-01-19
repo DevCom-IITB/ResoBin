@@ -1,8 +1,8 @@
+import { ExclamationCircle } from '@styled-icons/heroicons-outline'
 import { Button, Popconfirm, Tooltip } from 'antd'
 import { lighten } from 'polished'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
-import { ExclamationCircle } from 'styled-icons/heroicons-outline'
 
 import { fontSize } from 'styles/responsive'
 

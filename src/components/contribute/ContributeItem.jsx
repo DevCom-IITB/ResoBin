@@ -1,6 +1,6 @@
+import { DocumentAdd } from '@styled-icons/heroicons-outline'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
-import { DocumentAdd } from 'styled-icons/heroicons-outline'
 
 import { LoaderAnimation, Progress, toast } from 'components/shared'
 import { API } from 'config/api'

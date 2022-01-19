@@ -18,8 +18,9 @@ const TimetableLayout = ({ children }) => {
         <ColHeader key={id} id={id} title={title} />
       ))}
 
-      {rows.map(({ id, title }, index) =>
-        index % 2 ? <RowHeader key={id} id={id} title={title} /> : null
+      {rows.map(
+        ({ id, title }, index) =>
+          index % 2 === 0 && <RowHeader key={id} id={id} title={title} />
       )}
 
       {cols.map((col, i) =>

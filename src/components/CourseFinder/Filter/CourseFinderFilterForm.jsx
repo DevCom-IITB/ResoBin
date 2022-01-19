@@ -20,6 +20,7 @@ const CourseFinderFilterItem = ({ label, onClear, content }) => (
         onClick={onClear}
         size="default"
         icon={<X size="20" />}
+        style={{ borderRadius: '50%' }}
       />
     )}
   </PageHeading>
