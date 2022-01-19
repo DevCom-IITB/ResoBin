@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 
 import { selectTheme } from 'store/settingsSlice'
-import { palette } from 'styles/utils'
+import { palette } from 'styles'
 
 const useColorPicker = () => {
   const theme = useSelector(selectTheme)

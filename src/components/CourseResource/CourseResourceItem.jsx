@@ -10,14 +10,23 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import placeholderImg from 'assets/images/ResourcePlaceholder.jpg'
-import { ButtonIcon, Timestamp, toast, UserAvatar } from 'components/shared'
+import {
+  ButtonIcon,
+  Tag,
+  Timestamp,
+  toast,
+  UserAvatar,
+} from 'components/shared'
 import { API } from 'config/api'
+import { hash } from 'helpers'
+import { useColorPicker } from 'hooks'
 import { selectUserProfile } from 'store/userSlice'
 import { limitLines } from 'styles/mixins'
 
 import CourseResourceItemEditModal from './CourseResourceItemEditModal'
 
 const CourseResourceItem = ({ content: initialContent }) => {
+  const colorPicker = useColorPicker()
   const { id } = useSelector(selectUserProfile)
   const isOwner = id === initialContent.uploadedBy.id
 
@@ -89,6 +98,11 @@ const CourseResourceItem = ({ content: initialContent }) => {
                     <span>
                       Uploaded <Timestamp time={content?.timestamp} />
                     </span>
+                    {content?.tags.map((tag) => (
+                      <Tag key={tag} style={{ color: colorPicker(hash(tag)) }}>
+                        {tag}
+                      </Tag>
+                    ))}
                   </PopoverHeading>
                 </PopoverContent>
               }

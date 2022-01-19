@@ -192,8 +192,8 @@ const TimetableContainer = () => {
         indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
       >
         <TimetableLayout>
-          {courseTimetableList.map((item, idx) => (
-            <TimetableCourseItem key={item.id} colorCode={idx} data={item} />
+          {courseTimetableList.map((item) => (
+            <TimetableCourseItem key={item.id} data={item} />
           ))}
 
           <CurrentTime mode="vertical" />

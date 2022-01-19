@@ -1,6 +1,7 @@
 /* eslint-disable no-bitwise */
 
-const cyrb53 = (str, seed = 0) => {
+const cyrb53 = (base, seed = 0) => {
+  const str = JSON.stringify(base)
   let h1 = 0xdeadbeef ^ seed
   let h2 = 0x41c6ce57 ^ seed
 

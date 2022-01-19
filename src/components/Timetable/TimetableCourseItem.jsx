@@ -5,25 +5,25 @@ import { useSelector } from 'react-redux'
 import styled, { css } from 'styled-components/macro'
 
 import { cols, rows, slots } from 'data/timetable'
+import { hash } from 'helpers'
+import { useColorPicker } from 'hooks'
 import { selectCourseTitle } from 'store/courseSlice'
-import { useColorPicker, makeGradient } from 'styles/utils'
+import { makeGradient } from 'styles'
 
 // * id refers to the color of the timetable item
 const TimetableCourseItem = ({ data, colorCode = 0 }) => {
-  const { course: code, lectureSlots, tutorialSlots } = data
+  const { id, course: code, lectureSlots, tutorialSlots } = data
+
   const title = useSelector(selectCourseTitle(code))
   const colorPicker = useColorPicker()
-  const displayIfTutorial = (isTutorial) => {
-    if (isTutorial) return ' | Tut'
-    return null
-  }
+
   const TimetableCourseLectureItem = useCallback(
     ({ gridCol, gridRow, slotName, isTutorial }) => (
       <GridItem row={gridRow} col={gridCol}>
         <Tooltip title={title}>
-          <Item color={colorPicker(colorCode)}>
+          <Item color={colorPicker(hash(id))}>
             <h3>
-              {code} {displayIfTutorial(isTutorial)}
+              {code} {isTutorial && ' | Tut'}
             </h3>
             <span>
               {gridRow.start.title} - {gridRow.end.title} | {slotName}
@@ -32,10 +32,11 @@ const TimetableCourseItem = ({ data, colorCode = 0 }) => {
         </Tooltip>
       </GridItem>
     ),
-    [code, colorCode, title, colorPicker]
+    [code, id, title, colorPicker]
   )
 
   if (lectureSlots?.length === 0) return null
+
   const courseSlots = lectureSlots
     .map((slot) => ({ slot, grid: slots[slot], isTutorial: false }))
     .concat(
@@ -45,6 +46,7 @@ const TimetableCourseItem = ({ data, colorCode = 0 }) => {
         isTutorial: true,
       }))
     )
+
   return courseSlots?.map(({ slot, grid, isTutorial }, idx) => (
     <TimetableCourseLectureItem
       key={String(idx)}
