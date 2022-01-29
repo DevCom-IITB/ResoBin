@@ -35,6 +35,7 @@ const userSlice = createSlice({
     resourcesPosted: [],
     resourcesRequested: [],
     timetable: [],
+    user: {},
   },
 
   reducers: {
@@ -74,6 +75,7 @@ const userSlice = createSlice({
         state.resourcesPosted = payload.resourcesPosted
         state.resourcesRequested = payload.resourcesRequested
         state.timetable = payload.timetable
+        state.user = payload.user
         state.loading = false
       })
       // .addCase(getProfileAction.loading, (state) => {

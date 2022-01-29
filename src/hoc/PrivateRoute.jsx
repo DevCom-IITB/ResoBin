@@ -4,13 +4,6 @@ import { Navigate, useLocation } from 'react-router-dom'
 
 import { getAuthStatusAction, selectIsAuthenticated } from 'store/authSlice'
 
-const isInvalidRoute = (path) => {
-  const ignore = ['/api', '/admin']
-  const matches = ignore.some((ignorePath) => path.startsWith(ignorePath))
-
-  return matches
-}
-
 const PrivateRoute = ({ component: RouteComponent, redirectTo }) => {
   const isAuthenticated = useSelector(selectIsAuthenticated)
   const dispatch = useDispatch()
@@ -20,7 +13,7 @@ const PrivateRoute = ({ component: RouteComponent, redirectTo }) => {
     dispatch(getAuthStatusAction())
   }, [dispatch])
 
-  if (isAuthenticated === null || isInvalidRoute(location.pathname)) return null
+  if (isAuthenticated === null) return null
   if (isAuthenticated) return <RouteComponent />
 
   return (

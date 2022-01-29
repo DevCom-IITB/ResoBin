@@ -4,8 +4,8 @@ import styled, { css } from 'styled-components/macro'
 import { UserAvatar } from 'components/shared'
 import { device } from 'styles/responsive'
 
-export const MenuItem = ({ title, icon: Icon, iconSize, to }) => (
-  <StyledNavLink to={to}>
+export const MenuItem = ({ title, icon: Icon, iconSize, ...navLinkProps }) => (
+  <StyledNavLink {...navLinkProps}>
     <IconContainer>
       <Icon size={iconSize} />
     </IconContainer>
