@@ -56,8 +56,8 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
 
   const showReplyForm = () =>
     action === 'reply' ? setAction(null) : setAction('reply')
-  const showEditForm = () =>
-    isOwner && (action === 'edit' ? setAction(null) : setAction('edit'))
+  // const showEditForm = () =>
+  //   isOwner && (action === 'edit' ? setAction(null) : setAction('edit'))
 
   const handleUpdate = async ({ body }) => {
     try {
@@ -65,7 +65,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       await API.reviews.update({ id: content.id, payload })
       updateContent({ id: content.id, payload })
       setAction(null)
-      toast({ status: 'success', content: 'Successfully updated content' })
+      toast({ status: 'success', content: 'Content update pending approval' })
     } catch (error) {
       toast({ status: 'error', content: error })
     }
@@ -91,7 +91,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
           status: false,
         },
       })
-      toast({ status: 'success', content: 'Successfully replied' })
+      toast({ status: 'success', content: 'Reply pending approval.' })
 
       const payload = content
       if (payload?.children) payload.children.push(response)
@@ -124,11 +124,11 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       </Button>
     ),
 
-    isOwner && (
-      <Button key="content-edit" type="link" onClick={showEditForm}>
-        {action === 'edit' ? 'Cancel editing' : 'Edit'}
-      </Button>
-    ),
+    // isOwner && (
+    //   <Button key="content-edit" type="link" onClick={showEditForm}>
+    //     {action === 'edit' ? 'Cancel editing' : 'Edit'}
+    //   </Button>
+    // ),
 
     isOwner && (
       <Button key="content-delete" type="link" onClick={handleDelete}>

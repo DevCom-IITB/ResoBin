@@ -83,7 +83,7 @@ export const selectCourseTitle = (code) =>
 
 export const selectCurrentSemester = createSelector(
   selectSemesters,
-  (semesters) => semesters.at(-1)
+  (semesters) => semesters?.at(-1)
 )
 
 export default courseSlice.reducer
