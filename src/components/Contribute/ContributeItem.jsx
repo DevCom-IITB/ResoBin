@@ -53,12 +53,13 @@ const ContributeItem = ({
     fd.append('tags', JSON.stringify(tags))
 
     try {
-      const response = await API.resources.create({
-        payload: fd,
-        onUploadProgress,
-      })
+      // const response = await API.resources.create({
+      //   payload: fd,
+      //   onUploadProgress,
+      // })
+      // addUploadedFile(response)
+      await API.resources.create({ payload: fd, onUploadProgress })
 
-      addUploadedFile(response)
       deleteFileItem()
       toast({
         status: 'success',
