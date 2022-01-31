@@ -1,21 +1,28 @@
+import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { Header } from 'components/Header'
 import { Menu } from 'components/Menu'
+import { selectIsAuthenticated } from 'store/authSlice'
 import { device } from 'styles/responsive'
 
 import Footer from './Footer'
 
-const PageContainer = ({ disable = [], children }) => (
-  <>
-    {!disable.includes('header') && <Header />}
-    {!disable.includes('menu') && <Menu />}
-    <PageContainerLayout disable={disable}>
-      {children}
-      {!disable.includes('footer') && <Footer />}
-    </PageContainerLayout>
-  </>
-)
+const PageContainer = ({ disable = [], children }) => {
+  const isAuthenticated = useSelector(selectIsAuthenticated)
+  if (!isAuthenticated) disable.push('menu')
+
+  return (
+    <>
+      {!disable.includes('header') && <Header />}
+      {!disable.includes('menu') && <Menu />}
+      <PageContainerLayout disable={disable}>
+        {children}
+        {!disable.includes('footer') && <Footer />}
+      </PageContainerLayout>
+    </>
+  )
+}
 
 export default PageContainer
 

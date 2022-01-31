@@ -16,7 +16,7 @@ const Header = () => {
   return (
     <Container>
       <LogoContainer to="/">
-        <ResoBinLogo width="36" alt="logo" />
+        <ResoBinLogo width="32" alt="logo" />
       </LogoContainer>
 
       {!isMobile && latestSemester && (

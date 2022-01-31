@@ -37,8 +37,6 @@ export const DashboardRoutes = () => (
     <Route path="/timetable" element={<TimeTable />} />
     <Route path="/logout" element={<Logout />} />
     <Route path="/404" element={<NotFound />} />
-    <Route path="/privacy-policy" element={<Privacy />} />
-    <Route path="/terms-and-conditions" element={<Terms />} />
     <Route path="*" element={<Navigate to="/404" replace />} />
   </AnimatedRoutes>
 )
@@ -47,6 +45,8 @@ export const DashboardRoutes = () => (
 export const AppRoutes = () => (
   <Routes>
     <Route path="/login" element={<Login />} />
+    <Route path="/privacy-policy" element={<Privacy />} />
+    <Route path="/terms-and-conditions" element={<Terms />} />
     <Route
       path="*"
       element={<PrivateRoute component={Dashboard} redirectTo="/login" />}

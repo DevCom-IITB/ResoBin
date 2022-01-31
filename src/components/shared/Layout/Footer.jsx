@@ -1,12 +1,16 @@
 import { Github } from '@styled-icons/fa-brands'
 import { Layout } from 'antd'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { ResoBinText, Divider } from 'components/shared'
+import { selectIsAuthenticated } from 'store/authSlice'
 import { fontSize } from 'styles/responsive'
 
 const Footer = () => {
+  const isAuthenticated = useSelector(selectIsAuthenticated)
+
   return (
     <StyledLayoutFooter>
       <Divider style={{ margin: '0.5rem 0 1.5rem' }} />
@@ -40,11 +44,13 @@ const Footer = () => {
 
       <h5>Copyright &copy; 2021 DevCom, IIT Bombay - All Rights Reserved.</h5>
 
-      <h5>
-        <Link to="/contact">Contact</Link> &bull;&nbsp;
-        <Link to="/privacy-policy">Privacy</Link> &bull;&nbsp;
-        <Link to="/terms-and-conditions">Terms</Link>
-      </h5>
+      {isAuthenticated && (
+        <h5>
+          <Link to="/contact">Contact</Link> &bull;&nbsp;
+          <Link to="/privacy-policy">Privacy</Link> &bull;&nbsp;
+          <Link to="/terms-and-conditions">Terms</Link>
+        </h5>
+      )}
     </StyledLayoutFooter>
   )
 }
