@@ -40,8 +40,8 @@ const Box = styled.div`
   align-items: center;
   justify-content: center;
   padding: 2rem 0 1rem;
-  border-radius: 0.5rem;
   background: ${({ theme }) => theme.secondary};
+  border-radius: ${({ theme }) => theme.borderRadius};
 `
 
 const Subtitle = styled.p`
@@ -55,7 +55,7 @@ const GoBack = styled.button`
   color: inherit;
   font-weight: 400;
   font-size: ${fontSize.responsive.xl};
-  background-color: transparent;
+  background: transparent;
   cursor: pointer;
 
   &:hover {

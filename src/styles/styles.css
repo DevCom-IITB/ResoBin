@@ -52,7 +52,7 @@ h6 {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: inherit;
+  background: inherit;
   border-radius: 0.5rem;
 }
 
@@ -62,11 +62,11 @@ h6 {
 }
 
 *:hover::-webkit-scrollbar-thumb {
-  background-color: #90909065;
+  background: #90909065;
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: #90909065;
+  background: #90909065;
 }
 
 p {

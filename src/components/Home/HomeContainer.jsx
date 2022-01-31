@@ -7,7 +7,7 @@ import { Aside, Card, toast } from 'components/shared'
 import { AsideHeader } from 'components/shared/Aside'
 import { PageHeading, PageSubtitle, PageTitle } from 'components/shared/Layout'
 import { API } from 'config/api'
-import { coursePageUrl } from 'helpers/format'
+import { coursePageUrl } from 'helpers'
 
 const HomeItem = ({ course, hash }) => {
   const { code, title } = course
@@ -98,7 +98,7 @@ const StatsContainer = styled.div`
   gap: 0.5rem;
   padding: 1rem;
   background: ${({ theme }) => theme.secondary};
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 `
 
 const Flex = styled.div`

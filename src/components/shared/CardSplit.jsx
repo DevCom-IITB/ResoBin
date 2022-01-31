@@ -34,32 +34,36 @@ const StyledSkeleton = styled(Skeleton)`
   margin-bottom: 1rem;
 
   .ant-skeleton-content {
-    padding: 1.5rem 1rem;
+    padding: 1rem;
     background: ${({ theme }) => theme.secondary};
-    border-radius: 0.5rem;
+    border-radius: ${({ theme }) => theme.borderRadius};
     box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
+
+    @media ${device.max.xs} {
+      padding: 0.75rem;
+    }
   }
 `
 
 const Container = styled.li`
   display: grid;
   grid-column-gap: 1rem;
+  grid-template-areas: 'main sub';
   grid-template-rows: 1fr;
   grid-template-columns: 1fr auto;
-  grid-template-areas: 'main sub';
   padding: 1rem;
   background: ${({ theme }) => theme.secondary};
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0 0 0.7rem rgb(0 0 0 / 30%);
 
   @media ${device.max.md} {
-    padding: 0.75rem;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr auto auto;
     grid-template-areas:
       'main'
       'divider'
       'sub';
+    grid-template-rows: 1fr auto auto;
+    grid-template-columns: 1fr;
+    padding: 0.75rem;
   }
 `
 

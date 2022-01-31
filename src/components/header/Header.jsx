@@ -1,29 +1,59 @@
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { ResoBinLogo } from 'components/shared'
-import { displayYear } from 'helpers/format'
+import { ReactComponent as ResoBinLogo } from 'assets/svgs/logo.svg'
+import { Divider, ResoBinText } from 'components/shared'
+import { displayYear } from 'helpers'
+import { useResponsive } from 'hooks'
 import { selectCurrentSemester } from 'store/courseSlice'
 import { device } from 'styles/responsive'
 
 const Header = () => {
-  const { isAuthenticated } = useSelector((state) => state.auth)
   const latestSemester = useSelector(selectCurrentSemester)
+  const { isMobile } = useResponsive(device.tablet)
 
   return (
     <Container>
-      <ResoBinLogo size="1.5rem" />
-      {isAuthenticated && latestSemester && (
-        <Term>
-          AY {displayYear(latestSemester)}
-          &nbsp;| {latestSemester.season}
-        </Term>
+      <LogoContainer to="/">
+        <ResoBinLogo width="36" alt="logo" />
+      </LogoContainer>
+
+      {!isMobile && latestSemester && (
+        <>
+          <TextContainer to="/">
+            <ResoBinText size="1.5rem" />
+          </TextContainer>
+
+          <Term>
+            <span>{latestSemester.season} sem</span>
+
+            <Divider dashed margin="2px 0" style={{ borderColor: '#ffffff' }} />
+
+            <span>AY {displayYear(latestSemester)}</span>
+          </Term>
+        </>
       )}
     </Container>
   )
 }
 
 export default Header
+
+const TextContainer = styled(Link)`
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: ${({ theme }) => theme.asideWidthLeft};
+`
+
+const LogoContainer = styled(Link)`
+  display: flex;
+  align-items: center;
+  height: 100%;
+`
 
 const Container = styled.div`
   position: sticky;
@@ -39,23 +69,14 @@ const Container = styled.div`
 `
 
 const Term = styled.span`
-  display: none;
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1.5rem;
+  color: ${({ theme }) => theme.textColor};
+  font-size: 0.75rem;
+  text-align: center;
   text-transform: uppercase;
-
-  @media ${device.min.md} {
-    position: absolute;
-    right: 0;
-    display: flex;
-    padding: 0 1.5rem;
-    color: ${({ theme }) => theme.textColor};
-    font-weight: 400;
-    font-size: 0.875rem;
-    line-height: 80%;
-    letter-spacing: 1.5px;
-    white-space: nowrap;
-  }
-
-  @media ${device.min.lg} {
-    padding: 0 0.75rem;
-  }
+  opacity: 0.8;
 `

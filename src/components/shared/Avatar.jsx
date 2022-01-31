@@ -2,8 +2,7 @@ import { User } from '@styled-icons/heroicons-outline'
 import { Avatar } from 'antd'
 import styled from 'styled-components/macro'
 
-import { useResponsive } from 'hooks'
-import { useColorPicker } from 'styles/utils'
+import { useColorPicker, useResponsive } from 'hooks'
 
 const StyledAvatar = styled(Avatar)`
   display: flex;
@@ -35,7 +34,7 @@ export const UserAvatar = ({
     <StyledAvatar
       size={size}
       icon={<User size={`calc(${size}/1.5)`} />}
-      style={{ backgroundColor: colorPicker() }}
+      style={{ background: colorPicker() }}
       alt={alt}
     />
   )

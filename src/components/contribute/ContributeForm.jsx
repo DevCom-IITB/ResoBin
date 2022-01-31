@@ -38,7 +38,7 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
         rules={[
           { required: true, message: 'Title is required.' },
           { min: 5, message: 'Title must be atleast 5 characters.' },
-          { max: 80, message: 'Title must be atmost 80 characters.' },
+          { max: 100, message: 'Title must be atmost 100 characters.' },
         ]}
       >
         <Input placeholder="Title" />
@@ -48,7 +48,7 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
         name="author"
         rules={[
           { required: false },
-          { max: 80, message: 'Author must be atmost 80 characters.' },
+          { max: 255, message: 'Author must be atmost 255 characters.' },
         ]}
       >
         <Input placeholder="Author" />
@@ -110,6 +110,6 @@ export default ContributeForm
 
 const ButtonContainer = styled.div`
   display: flex;
-  align-items: center;
   gap: 1rem;
+  align-items: center;
 `

@@ -58,5 +58,5 @@ const Highlight = styled.mark`
   font-weight: bold;
   font-family: inherit;
   text-decoration: underline;
-  background-color: transparent;
+  background: transparent;
 `

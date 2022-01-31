@@ -4,8 +4,8 @@ import styled from 'styled-components/macro'
 
 const StyledForm = styled(Form)`
   display: flex;
-  gap: 0.75rem;
   flex-direction: column;
+  gap: 0.75rem;
   width: 100%;
 
   .ant-form-item {
@@ -50,16 +50,18 @@ const StyledForm = styled(Form)`
   .ant-input {
     display: flex;
     align-items: center;
+    padding: 0.375rem 0.75rem;
     color: ${({ theme }) => theme.textColor};
     font-size: 0.75rem;
-    background: transparent;
+    background: ${({ theme }) => rgba(theme.darksecondary, 0.3)};
     border: none;
     border-bottom: solid 1px
       ${({ theme }) => rgba(theme.textColorInactive, 0.3)};
+    border-radius: ${({ theme }) => theme.borderRadius};
 
     &:hover,
     &:focus {
-      border-color: ${({ theme }) => theme.textColorInactive};
+      border-color: ${({ theme }) => rgba(theme.textColorInactive, 0.6)};
       box-shadow: none !important;
     }
   }
@@ -86,6 +88,12 @@ const StyledForm = styled(Form)`
     span {
       color: ${({ theme }) => theme.textColor};
     }
+  }
+
+  .ant-form-item-label label {
+    margin-bottom: 0.25rem;
+    color: ${({ theme }) => theme.textColor};
+    font-size: 0.875rem;
   }
 `
 

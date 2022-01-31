@@ -29,6 +29,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
 
   const voteStatus = useSelector(selectReviewVoteStatus(content.id))
   const [voteCount, setVoteCount] = useState(content.votersCount)
+  const [loading, setLoading] = useState(false)
   const [action, setAction] = useState(null)
 
   const profile = useSelector(selectUserProfile)
@@ -36,6 +37,7 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
 
   const vote = async () => {
     try {
+      setLoading(true)
       if (voteStatus) {
         await API.reviews.vote.remove({ id: content.id })
         setVoteCount(voteCount - 1)
@@ -47,6 +49,8 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       dispatch(updateReviewsVoted(content.id))
     } catch (error) {
       toast({ status: 'error', content: error })
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -55,13 +59,13 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
   const showEditForm = () =>
     isOwner && (action === 'edit' ? setAction(null) : setAction('edit'))
 
-  const handleUpdate = async (body) => {
+  const handleUpdate = async ({ body }) => {
     try {
       const payload = { ...content, body }
       await API.reviews.update({ id: content.id, payload })
-
       updateContent({ id: content.id, payload })
       setAction(null)
+      toast({ status: 'success', content: 'Successfully updated content' })
     } catch (error) {
       toast({ status: 'error', content: error })
     }
@@ -71,21 +75,23 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
     try {
       await API.reviews.delete({ id: content.id })
       updateContent({ id: content.id, payload: null })
+      toast({ status: 'success', content: 'Successfully deleted content' })
     } catch (error) {
       toast({ status: 'error', content: error })
     }
   }
 
-  const handleCreateChild = async (reply) => {
+  const handleCreateChild = async ({ body }) => {
     try {
       const response = await API.reviews.create({
         payload: {
           course: content.course,
           parent: content.id,
-          body: reply,
+          body,
           status: false,
         },
       })
+      toast({ status: 'success', content: 'Successfully replied' })
 
       const payload = content
       if (payload?.children) payload.children.push(response)
@@ -102,12 +108,12 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
     <ButtonIcon
       key="content-vote"
       shape="round"
-      color="white"
       size="middle"
       icon={
         voteStatus ? <ThumbUpFilled size="16" /> : <ThumbUpOutlined size="16" />
       }
       onClick={vote}
+      loading={loading}
     >
       <LikeCount>{voteCount}</LikeCount>
     </ButtonIcon>,
@@ -193,11 +199,11 @@ const CommentHeader = styled.h2`
 `
 
 const CommentText = styled.div`
-  color: ${({ theme }) => theme.textColor};
   margin-top: 0.5rem;
+  color: ${({ theme }) => theme.textColor};
 
   a {
-    color: #239afc;
+    color: ${({ theme }) => theme.primary};
 
     &:hover {
       text-decoration: underline;

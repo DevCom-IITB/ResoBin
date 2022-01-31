@@ -17,7 +17,7 @@ import {
 import { ButtonIcon, ButtonIconDanger } from 'components/shared/Buttons'
 import { API } from 'config/api'
 import { slots } from 'data/timetable'
-import { displayYear, coursePageUrl } from 'helpers/format'
+import { displayYear, coursePageUrl } from 'helpers'
 import {
   selectCourseAPILoading,
   selectCourseTitle,
@@ -34,7 +34,7 @@ const TimetableAsideItem = ({ code, handleRemove, loading }) => {
   const title = useSelector(selectCourseTitle(code))
 
   return (
-    <Link to={coursePageUrl(code, title)}>
+    <StyledLink to={coursePageUrl(code, title)}>
       <Card hoverable>
         <Card.Meta
           title={
@@ -53,17 +53,28 @@ const TimetableAsideItem = ({ code, handleRemove, loading }) => {
           description={title}
         />
       </Card>
-    </Link>
+    </StyledLink>
   )
 }
+
+const StyledLink = styled(Link)`
+  &:hover {
+    text-decoration: none;
+  }
+`
 
 const TimetableContainer = () => {
   const dispatch = useDispatch()
   const semesterList = useSelector(selectSemesters)
+  const courseAPILoading = useSelector(selectCourseAPILoading)
 
   const [courseTimetableList, setCourseTimetableList] = useState([])
-  const [loading, setLoading] = useState(useSelector(selectCourseAPILoading))
-  const [semIdx, setSemIdx] = useState(semesterList.length - 1)
+  const [loading, setLoading] = useState(courseAPILoading)
+  const [semIdx, setSemIdx] = useState(null)
+
+  useEffect(() => {
+    if (semesterList.length) setSemIdx(semesterList.length - 1)
+  }, [semesterList])
 
   useEffect(() => {
     const fetchUserTimetable = async (_semester) => {
@@ -78,7 +89,8 @@ const TimetableContainer = () => {
       }
     }
 
-    fetchUserTimetable(semesterList[semIdx])
+    if (semIdx !== null) fetchUserTimetable(semesterList[semIdx])
+    else setLoading(true)
   }, [semesterList, semIdx])
 
   const handleClickPrev = () =>
@@ -159,23 +171,25 @@ const TimetableContainer = () => {
         <PageTitle>Timetable</PageTitle>
       </PageHeading>
 
-      <TimetableSemesterTitle>
-        <ButtonIcon
-          icon={<ChevronLeft size="20" />}
-          onClick={handleClickPrev}
-          disabled={loading || !(semIdx - 1 in semesterList)}
-          hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-        />
-        {semesterList[semIdx]?.season ?? 'Click next'}&nbsp;
-        {displayYear(semesterList[semIdx])}
-        <ButtonIcon
-          icon={<ChevronRight size="20" />}
-          disabled={loading || !(semIdx + 1 in semesterList)}
-          onClick={handleClickNext}
-          hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-        />
-        <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
-      </TimetableSemesterTitle>
+      {semesterList[semIdx] && (
+        <TimetableSemesterTitle>
+          <ButtonIcon
+            icon={<ChevronLeft size="20" />}
+            onClick={handleClickPrev}
+            disabled={loading || !(semIdx - 1 in semesterList)}
+            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+          />
+          {semesterList[semIdx].season}&nbsp;
+          {displayYear(semesterList[semIdx])}
+          <ButtonIcon
+            icon={<ChevronRight size="20" />}
+            disabled={loading || !(semIdx + 1 in semesterList)}
+            onClick={handleClickNext}
+            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+          />
+          <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
+        </TimetableSemesterTitle>
+      )}
 
       {loading && <LoaderAnimation />}
 
@@ -184,8 +198,8 @@ const TimetableContainer = () => {
         indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
       >
         <TimetableLayout>
-          {courseTimetableList.map((item, idx) => (
-            <TimetableCourseItem key={item.id} colorCode={idx} data={item} />
+          {courseTimetableList.map((item) => (
+            <TimetableCourseItem key={item.id} data={item} />
           ))}
 
           <CurrentTime mode="vertical" />
@@ -205,6 +219,7 @@ const TimetableContainer = () => {
               />
             ))}
         </ClashAlerts>
+
         <AsideList>
           {!loading &&
             courseTimetableList.map(({ id, course }) => (

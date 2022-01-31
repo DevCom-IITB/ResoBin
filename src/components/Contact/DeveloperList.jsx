@@ -7,7 +7,7 @@ import { API } from 'config/api'
 
 const DeveloperItem = ({ name, avatar, url, contributions }) => {
   return (
-    <a key={name} href={url} target="_blank" rel="noreferrer">
+    <A href={url} target="_blank" rel="noreferrer">
       <Card hoverable>
         <Card.Meta
           avatar={<Avatar src={avatar} />}
@@ -20,7 +20,7 @@ const DeveloperItem = ({ name, avatar, url, contributions }) => {
           }
         />
       </Card>
-    </a>
+    </A>
   )
 }
 
@@ -77,4 +77,10 @@ const DeveloperList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+`
+
+const A = styled.a`
+  &:hover {
+    text-decoration: none;
+  }
 `

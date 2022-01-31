@@ -8,8 +8,8 @@ const StyledSlider = styled(Slider)`
 
   .ant-slider-handle,
   .ant-slider-dot {
-    border-color: ${({ theme }) => theme.primary};
     background: ${({ theme }) => theme.darksecondary};
+    border-color: ${({ theme }) => theme.primary};
   }
 `
 

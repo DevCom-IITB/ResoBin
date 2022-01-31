@@ -1,6 +1,6 @@
+import { DocumentAdd } from '@styled-icons/heroicons-outline'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
-import { DocumentAdd } from 'styled-icons/heroicons-outline'
 
 import { LoaderAnimation, Progress, toast } from 'components/shared'
 import { API } from 'config/api'
@@ -42,11 +42,12 @@ const ContributeItem = ({
       return
     }
 
-    const { title, course, description, tags } = fileDetails
+    const { title, course, description, tags, author } = fileDetails
 
     const fd = new FormData()
     fd.append('file', fileItem.file, fileItem.file.name)
     fd.append('title', title)
+    fd.append('author', author)
     fd.append('course', course)
     fd.append('description', description || 'No description available.')
     fd.append('tags', JSON.stringify(tags))
@@ -59,6 +60,10 @@ const ContributeItem = ({
 
       addUploadedFile(response)
       deleteFileItem()
+      toast({
+        status: 'success',
+        content: 'Resource uploaded successfully!',
+      })
     } catch (error) {
       toast({ status: 'error', content: error })
       updateFileItem({ status: 'error', progress: 0 })
@@ -71,7 +76,6 @@ const ContributeItem = ({
   return (
     <ItemContainer>
       <DragNDropSub onDrop={onDrop}>
-        {/* <img src={fileItem.details.icon} className="icon" alt="icon" /> */}
         <DocumentAdd size="24" />
 
         <h2>
@@ -109,11 +113,11 @@ const ItemContainer = styled.div`
   display: flex;
   gap: 1rem;
   padding: 1rem 0.75rem;
-  background-color: ${({ theme }) => theme.secondary};
-  border-radius: 0.5rem;
+  background: ${({ theme }) => theme.secondary};
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   @media ${device.max.xs} {
-    padding: 1rem 0.75rem;
     flex-direction: column;
+    padding: 1rem 0.75rem;
   }
 `

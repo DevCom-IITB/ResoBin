@@ -3,6 +3,7 @@ import {
   InformationCircle,
   PencilAlt,
 } from '@styled-icons/heroicons-outline'
+import { Popover } from 'antd'
 import { rgba } from 'polished'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -11,20 +12,23 @@ import styled from 'styled-components/macro'
 import placeholderImg from 'assets/images/ResourcePlaceholder.jpg'
 import {
   ButtonIcon,
-  Popover,
+  Tag,
   Timestamp,
   toast,
   UserAvatar,
 } from 'components/shared'
 import { API } from 'config/api'
+import { hash } from 'helpers'
+import { useColorPicker } from 'hooks'
 import { selectUserProfile } from 'store/userSlice'
 import { limitLines } from 'styles/mixins'
 
 import CourseResourceItemEditModal from './CourseResourceItemEditModal'
 
 const CourseResourceItem = ({ content: initialContent }) => {
+  const colorPicker = useColorPicker()
   const { id } = useSelector(selectUserProfile)
-  const isOwner = id === initialContent.userProfile.id
+  const isOwner = id === initialContent.uploadedBy.id
 
   const [editModalVisible, setEditModalVisible] = useState(false)
   const [content, setContent] = useState(initialContent)
@@ -46,7 +50,11 @@ const CourseResourceItem = ({ content: initialContent }) => {
   return (
     <>
       <GridItem>
-        <img src={content.image || placeholderImg} alt={content.title} />
+        <img
+          src={content.thumbnail || placeholderImg}
+          alt={content.title}
+          style={{ width: '100%', height: '100%' }}
+        />
 
         <ItemInfo>
           <ResourceTitle>{content.title}</ResourceTitle>
@@ -76,21 +84,30 @@ const CourseResourceItem = ({ content: initialContent }) => {
                 <PopoverContent>
                   <UserAvatar
                     size="2rem"
-                    src={content?.userProfile.profilePicture}
+                    src={content?.uploadedBy.profilePicture}
                     alt="Profile picture"
                   />
 
                   <PopoverHeading>
-                    <h2>{content?.userProfile.name}</h2>
+                    <h3>
+                      Uploaded by: <b>{content?.uploadedBy.name}</b>
+                    </h3>
+                    <h3>
+                      Author: <b>{content?.author || 'Not available'}</b>
+                    </h3>
                     <span>
                       Uploaded <Timestamp time={content?.timestamp} />
                     </span>
+                    {content?.tags.map((tag) => (
+                      <Tag key={tag} style={{ color: colorPicker(hash(tag)) }}>
+                        {tag}
+                      </Tag>
+                    ))}
                   </PopoverHeading>
                 </PopoverContent>
               }
               title="Information"
               trigger="click"
-              getPopupContainer={(triggerNode) => triggerNode}
             >
               <ButtonIcon
                 size="default"
@@ -142,7 +159,7 @@ const GridItem = styled.figure`
   justify-content: flex-end;
   overflow: hidden;
   color: ${({ theme }) => theme.textColor};
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0 0 5px rgb(0 0 0 / 30%);
 `
 
@@ -183,10 +200,14 @@ const PopoverContent = styled.div`
 `
 
 const PopoverHeading = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   color: ${({ theme }) => theme.textColorInactive};
 
-  h2 {
-    font-size: 0.75rem;
+  h3 {
     color: ${({ theme }) => theme.textColor};
+    font-size: 0.75rem;
+    font-weight: 400;
   }
 `

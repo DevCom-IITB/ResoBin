@@ -18,8 +18,9 @@ const TimetableLayout = ({ children }) => {
         <ColHeader key={id} id={id} title={title} />
       ))}
 
-      {rows.map(({ id, title }, index) =>
-        index % 2 ? <RowHeader key={id} id={id} title={title} /> : null
+      {rows.map(
+        ({ id, title }, index) =>
+          index % 2 === 0 && <RowHeader key={id} id={id} title={title} />
       )}
 
       {cols.map((col, i) =>
@@ -43,11 +44,11 @@ const Container = styled.div`
   grid-template-columns:
     [times] 2.5rem
     ${cols.map(({ id, title }, index) => `[${id}] 1fr `)};
-  padding: 0.75rem;
   margin-bottom: 1rem;
+  padding: 0.75rem;
   overflow-x: scroll;
   background: ${({ theme }) => theme.secondary};
-  border-radius: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   > div {
     box-shadow: inset -1px -1px 0 ${({ theme }) => rgba(theme.primary, 0.1)};

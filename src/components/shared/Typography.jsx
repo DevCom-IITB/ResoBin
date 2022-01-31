@@ -4,11 +4,11 @@ import styled from 'styled-components/macro'
 import { fontSize } from 'styles/responsive'
 
 export const Paragraph = styled(Typography.Paragraph)`
+  color: ${({ theme }) => theme.textColor};
   font-weight: 300;
   font-size: ${fontSize.static.md};
-  text-align: justify;
-  color: ${({ theme }) => theme.textColor};
   font-family: 'Source Sans Pro', sans-serif;
+  text-align: justify;
 
   .ant-typography-expand {
     color: ${({ theme }) => theme.textColorInactive};
