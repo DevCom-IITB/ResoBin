@@ -11,11 +11,12 @@ import { ContactSupport } from '@styled-icons/material-outlined'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { MenuItem, ProfileImgItem } from 'components/menu'
 import { Divider } from 'components/shared'
 import { useResponsive } from 'hooks'
 import { selectUserProfile } from 'store/userSlice'
 import { device } from 'styles/responsive'
+
+import { MenuItem, ProfileImgItem } from './MenuItem'
 
 const Menu = () => {
   // ? mobile devices horizontal menu & desktops vertical menu

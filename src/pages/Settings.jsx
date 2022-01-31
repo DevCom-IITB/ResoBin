@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 
-import { SettingsContainer } from 'components/settings'
+import { SettingsContainer } from 'components/Settings'
 import { PageContainer } from 'components/shared'
 
 const Settings = () => {

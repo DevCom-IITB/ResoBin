@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 
-import { Header } from 'components/header'
-import { Menu } from 'components/menu'
+import { Header } from 'components/Header'
+import { Menu } from 'components/Menu'
 import { device } from 'styles/responsive'
 
 import Footer from './Footer'
