@@ -63,7 +63,8 @@ const ContributeItem = ({
       deleteFileItem()
       toast({
         status: 'success',
-        content: 'Resource uploaded successfully!',
+        content:
+          'Resource uploaded successfully! Pending moderator approval (1-2 days).',
       })
     } catch (error) {
       toast({ status: 'error', content: error })

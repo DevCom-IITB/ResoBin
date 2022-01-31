@@ -20,7 +20,7 @@ const Terms = () => {
 
       <PageHeading>
         <PageTitle>Terms and Conditions</PageTitle>
-        <PageSubtitle>Last updated: January 05, 2022</PageSubtitle>
+        <PageSubtitle>Last updated: January 31, 2022</PageSubtitle>
       </PageHeading>
 
       <Content>
