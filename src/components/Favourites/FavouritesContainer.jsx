@@ -51,7 +51,7 @@ const FavouritesContainer = () => {
         setLoading={setLoading}
       />
 
-      <Aside title="My friends">
+      <Aside title="My contributions">
         <Empty description={<PageSubtitle>Coming soon!</PageSubtitle>} />
       </Aside>
     </>
