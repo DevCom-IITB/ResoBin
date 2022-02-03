@@ -1,27 +1,33 @@
 import { useEffect, useState } from 'react'
 import ReactGA from 'react-ga'
+import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
+
+import { selectTracking } from 'store/settingsSlice'
 
 const usePageTracking = () => {
   const location = useLocation()
-  const [initialized, setInitialized] = useState(false)
+  const [allow, setAllow] = useState(false)
+  const permitTracking = useSelector(selectTracking)
 
   useEffect(() => {
     if (
+      permitTracking &&
       process.env.NODE_ENV === 'production' &&
       process.env.REACT_APP_GA_TRACKING_ID
     ) {
       ReactGA.initialize(process.env.REACT_APP_GA_TRACKING_ID)
+      setAllow(true)
+    } else {
+      setAllow(false)
     }
-
-    setInitialized(true)
-  }, [])
+  }, [permitTracking])
 
   useEffect(() => {
-    if (initialized) {
-      ReactGA.pageview(location.pathname + location.search)
+    if (allow) {
+      ReactGA.pageview(location.pathname + location.search + location.hash)
     }
-  }, [initialized, location])
+  }, [allow, location.pathname, location.search, location.hash])
 }
 
 export default usePageTracking
