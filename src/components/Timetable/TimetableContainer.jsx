@@ -1,10 +1,5 @@
 import { LoadingOutlined } from '@ant-design/icons'
-import {
-  ChevronLeft,
-  ChevronRight,
-  X,
-  Share,
-} from '@styled-icons/heroicons-outline'
+import { ChevronLeft, ChevronRight, X } from '@styled-icons/heroicons-outline'
 import { Spin, Alert } from 'antd'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,7 +18,6 @@ import { ButtonIcon, ButtonIconDanger } from 'components/shared/Buttons'
 import { API } from 'config/api'
 import { slots } from 'data/timetable'
 import { displayYear, coursePageUrl } from 'helpers'
-import { useQueryString } from 'hooks'
 import {
   selectCourseAPILoading,
   selectCourseTitle,
@@ -35,6 +29,7 @@ import CurrentTime from './CurrentTime'
 import TimetableCourseItem from './TimetableCourseItem'
 import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableLayout from './TimetableLayout'
+import TimetableShareButton from './TimetableShareButton'
 
 const TimetableAsideItem = ({ code, handleRemove, loading }) => {
   const title = useSelector(selectCourseTitle(code))
@@ -77,15 +72,6 @@ const TimetableContainer = () => {
   const [courseTimetableList, setCourseTimetableList] = useState([])
   const [loading, setLoading] = useState(courseAPILoading)
   const [semIdx, setSemIdx] = useState(null)
-
-  const { setQueryString } = useQueryString()
-
-  const handleShare = () => {
-    setQueryString(
-      'id',
-      courseTimetableList.map(({ id }) => id)
-    )
-  }
 
   useEffect(() => {
     if (semesterList.length) setSemIdx(semesterList.length - 1)
@@ -202,7 +188,7 @@ const TimetableContainer = () => {
             onClick={handleClickNext}
             hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
           />
-          <ButtonIcon icon={<Share size="20" />} onClick={handleShare} />
+          <TimetableShareButton coursesInTimetable={courseTimetableList} />
           <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
         </TimetableSemesterTitle>
       )}
