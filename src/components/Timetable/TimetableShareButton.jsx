@@ -8,11 +8,9 @@ import { useQueryString } from 'hooks'
 const TimetableShareButton = ({ coursesInTimetable }) => {
   const { setQueryString } = useQueryString()
 
+  const coursesJSON = JSON.stringify(coursesInTimetable)
   const handleShare = () => {
-    setQueryString(
-      'id',
-      coursesInTimetable.map(({ id }) => id)
-    )
+    setQueryString('id', coursesJSON)
   }
 
   const getURL = () => {
@@ -24,9 +22,8 @@ const TimetableShareButton = ({ coursesInTimetable }) => {
   const menu = (
     <Menu theme="dark">
       <Menu.Item key="share_link">
-        Shareable Link <b>(beta)</b>: &nbsp;
         <a href={getURL()} target="_blank" rel="noreferrer">
-          {getURL()}
+          Shareable Link <b>(beta)</b>: &nbsp;
         </a>
       </Menu.Item>
     </Menu>

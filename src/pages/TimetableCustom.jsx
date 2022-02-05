@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 
 import { PageContainer } from 'components/shared'
-import { TimetableContainer } from 'components/Timetable'
+import { TimetableContainerCustom } from 'components/Timetable'
 
 const TimetableCustom = () => {
   return (
@@ -14,7 +14,7 @@ const TimetableCustom = () => {
         />
       </Helmet>
 
-      <TimetableContainer />
+      <TimetableContainerCustom />
     </PageContainer>
   )
 }
