@@ -15,7 +15,8 @@ const Contact = lazy(() => import('pages/Contact'))
 const Favourites = lazy(() => import('pages/Favourites'))
 const Logout = lazy(() => import('pages/Logout'))
 const Settings = lazy(() => import('pages/Settings'))
-const TimeTable = lazy(() => import('pages/Timetable'))
+const Timetable = lazy(() => import('pages/Timetable'))
+const TimetableCustom = lazy(() => import('pages/TimetableCustom'))
 const Privacy = lazy(() => import('pages/Privacy'))
 const Terms = lazy(() => import('pages/Terms'))
 
@@ -34,7 +35,10 @@ export const DashboardRoutes = () => (
     <Route path="/favourites" element={<Favourites />} />
     <Route path="/settings" element={<Settings />} />
     <Route path="/contact" element={<Contact />} />
-    <Route path="/timetable" element={<TimeTable />} />
+    <Route path="/timetable">
+      <Route path="" element={<Timetable />} />
+      <Route path="custom" element={<TimetableCustom />} />
+    </Route>
     <Route path="/logout" element={<Logout />} />
     <Route path="/404" element={<NotFound />} />
     <Route path="/privacy-policy" element={<Privacy />} />
