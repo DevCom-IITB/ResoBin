@@ -1,6 +1,5 @@
 import { Share } from '@styled-icons/heroicons-outline'
 import { Dropdown, Menu } from 'antd'
-import styled from 'styled-components/macro'
 
 import { ButtonIcon } from 'components/shared'
 import { useQueryString } from 'hooks'
@@ -8,9 +7,11 @@ import { useQueryString } from 'hooks'
 const TimetableShareButton = ({ coursesInTimetable }) => {
   const { setQueryString } = useQueryString()
 
-  const coursesJSON = JSON.stringify(coursesInTimetable)
   const handleShare = () => {
-    setQueryString('id', coursesJSON)
+    setQueryString(
+      'id',
+      coursesInTimetable.map(({ id }) => id)
+    )
   }
 
   const getURL = () => {
@@ -30,22 +31,15 @@ const TimetableShareButton = ({ coursesInTimetable }) => {
   )
 
   return (
-    <ShareButtonContainer>
-      <Dropdown overlay={menu} trigger={['click']}>
-        <ButtonIcon
-          icon={<Share size="22" />}
-          onClick={handleShare}
-          tooltip="Share Timetable as Link"
-          hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-        />
-      </Dropdown>
-    </ShareButtonContainer>
+    <Dropdown overlay={menu} trigger={['click']}>
+      <ButtonIcon
+        icon={<Share size="22" />}
+        onClick={handleShare}
+        tooltip="Share Timetable as Link"
+        hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+      />
+    </Dropdown>
   )
 }
 
 export default TimetableShareButton
-
-const ShareButtonContainer = styled.div`
-  position: absolute;
-  left: 0;
-`

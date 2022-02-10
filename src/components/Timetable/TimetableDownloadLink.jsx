@@ -1,7 +1,6 @@
 import { Download } from '@styled-icons/heroicons-outline'
 import { Dropdown, Menu } from 'antd'
 import { useSelector } from 'react-redux'
-import styled from 'styled-components/macro'
 
 import { ButtonIcon } from 'components/shared'
 import { cols, rows, slots } from 'data/timetable'
@@ -113,22 +112,15 @@ END:VCALENDAR`
   )
 
   return (
-    <DownloadButtonContainer>
-      <Dropdown overlay={menu} trigger={['click']}>
-        <ButtonIcon
-          icon={<Download size="22" />}
-          onClick={() => {}}
-          tooltip="Download timetable"
-          hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-        />
-      </Dropdown>
-    </DownloadButtonContainer>
+    <Dropdown overlay={menu} trigger={['click']}>
+      <ButtonIcon
+        icon={<Download size="22" />}
+        onClick={() => {}}
+        tooltip="Download timetable"
+        hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+      />
+    </Dropdown>
   )
 }
 
 export default TimetableDownloadLink
-
-const DownloadButtonContainer = styled.div`
-  position: absolute;
-  right: 0;
-`
