@@ -1,10 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-restricted-globals */
-
 // This service worker can be customized!
-// See https://developers.google.com/web/tools/workbox/modules
-// for the list of available Workbox modules, or add any other
-// code you'd like.
+// See https://developers.google.com/web/tools/workbox/modules for the
+// list of available Workbox modules, or add any other code you'd like.
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
 
@@ -22,36 +20,38 @@ clientsClaim()
 // even if you decide not to use precaching. See https://cra.link/PWA
 precacheAndRoute(self.__WB_MANIFEST)
 
+const ignoredRoutes = ['/_', '/admin', '/api']
+
 // Set up App Shell-style routing, so that all navigation requests
-// are fulfilled with your index.html shell. Learn more at
-// https://developers.google.com/web/fundamentals/architecture/app-shell
-registerRoute(
+// are fulfilled with your index.html shell.
+// Learn more at https://developers.google.com/web/fundamentals/architecture/app-shell
+registerRoute(({ request, url }) => {
+  // Return true to signal that we want to use the handler.
   // Return false to exempt requests from being fulfilled by index.html.
-  ({ request, url }) => {
-    // If this isn't a navigation, skip.
-    if (request.mode !== 'navigate') {
-      return false
-    } // If this is a URL that starts with /_, skip.
+  // If this isn't a navigation, skip.
+  if (request.mode !== 'navigate') {
+    return false
+  }
 
-    if (url.pathname.startsWith('/_')) {
-      return false
-    } // If this looks like a URL for a resource, because it contains // a file extension, skip.
+  // Skip urls that lie in the ignored routes.
+  if (ignoredRoutes.some((route) => url.pathname.startsWith(route))) {
+    return false
+  }
 
-    if (url.pathname.match('/[^/?]+\\.[^/]+$')) {
-      return false
-    } // Return true to signal that we want to use the handler.
+  // Skip resource URLs (contain a file extension)
+  if (url.pathname.match('/[^/?]+\\.[^/]+$')) {
+    return false
+  }
 
-    return true
-  },
-  createHandlerBoundToURL(`${process.env.PUBLIC_URL}/index.html`)
-)
+  return true
+}, createHandlerBoundToURL(`${process.env.PUBLIC_URL}/index.html`))
 
 // An example runtime caching route for requests that aren't handled by the
 // precache, in this case same-origin .png requests like those from in public/
+// Customize this strategy as needed, e.g., by changing to CacheFirst.
 registerRoute(
-  // Add in any other file extensions or routing criteria as needed.
   ({ url }) =>
-    url.origin === self.location.origin && url.pathname.endsWith('.png'), // Customize this strategy as needed, e.g., by changing to CacheFirst.
+    url.origin === self.location.origin && url.pathname.endsWith('.png'),
   new StaleWhileRevalidate({
     cacheName: 'images',
     plugins: [

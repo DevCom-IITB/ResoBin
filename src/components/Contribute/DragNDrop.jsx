@@ -13,6 +13,7 @@ export const DragNDropSub = ({ onDrop, children }) => {
       accept: fileTypes.map((file) => file.type),
       maxFiles: 1,
       onDrop,
+      maxSize: 30 * 1024 * 1024, // 30MB
     })
 
   let message = children
@@ -60,7 +61,7 @@ const DragNDrop = ({ onDrop, children }) => {
       <span>
         Accepted formats: .pdf, .doc, .ppt
         <br />
-        Maximum upload file size: 20MB
+        Maximum upload file size: 30MB
       </span>
     </UploadBox>
   )
