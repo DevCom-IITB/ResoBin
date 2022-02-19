@@ -2,6 +2,7 @@ import { Whatsapp } from '@styled-icons/fa-brands'
 import { ClipboardCopy, Mail, Share } from '@styled-icons/heroicons-outline'
 import { Button, Input } from 'antd'
 import { rgba } from 'polished'
+import QRCode from 'qrcode.react'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 
@@ -59,16 +60,43 @@ const TimetableShareButton = ({ coursesInTimetable }) => {
         visible={isModalVisible}
         onCancel={handleCancel}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <h3>Send this link to a friend to show them your timetable!</h3>
-          <Input.Group style={{ display: 'flex' }}>
-            <UrlContainer readOnly value={shareUrl} />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1.5rem',
+            alignItems: 'center',
+          }}
+        >
+          <div>
+            <h3>Send this link to a friend to show them your timetable!</h3>
+            <Input.Group style={{ display: 'flex', marginTop: '0.75rem' }}>
+              <UrlContainer readOnly value={shareUrl} />
 
-            <StyledButton
-              onClick={() => copyToClipboard(shareUrl)}
-              icon={<ClipboardCopy size="20" />}
-            />
-          </Input.Group>
+              <StyledButton
+                onClick={() => copyToClipboard(shareUrl)}
+                icon={<ClipboardCopy size="20" />}
+              />
+            </Input.Group>
+          </div>
+
+          <QRCode
+            value={shareUrl}
+            includeMargin
+            level="Q"
+            imageSettings={{
+              src: '/mstile-144x144.png',
+              excavate: true,
+              width: 20,
+              height: 20,
+            }}
+            bgColor="#1B1728"
+            fgColor="#807da0"
+            height={192}
+            width={192}
+            renderAs="svg"
+            style={{ borderRadius: '0.5rem' }}
+          />
 
           <div
             style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}
