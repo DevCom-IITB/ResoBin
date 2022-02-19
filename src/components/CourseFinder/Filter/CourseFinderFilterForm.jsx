@@ -7,8 +7,21 @@ import styled from 'styled-components/macro'
 import { Form, Slider } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
 import tags from 'data/tags.json'
+import { slots } from 'data/timetable'
 import { useQueryString } from 'hooks'
 import { selectDepartments } from 'store/courseSlice'
+
+export const filterKeys = [
+  'p', // ? page number
+  'semester',
+  'department',
+  'credits_min',
+  'credits_max',
+  'halfsem',
+  'running',
+  'tags',
+  'slots',
+]
 
 const CourseFinderFilterItem = ({ label, onClear, content }) => (
   <CourseFinderFilterItemContainer>
@@ -38,6 +51,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
       running: false,
       department: [],
       tags: [],
+      slots: [],
     }
 
     form.setFieldsValue({
@@ -62,6 +76,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     setQueryString('department', allFields.department)
     setQueryString('semester', allFields.semester)
     setQueryString('tags', allFields.tags)
+    setQueryString('slots', allFields.slots)
 
     if (allFields.halfsem) setQueryString('halfsem', 'true')
     else deleteQueryString('halfsem')
@@ -87,6 +102,11 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     value: kebabCase(tag),
   }))
 
+  const slotOptions = Object.keys(slots).map((slot) => ({
+    label: slot,
+    value: slot,
+  }))
+
   return (
     <Form
       form={form}
@@ -103,9 +123,20 @@ const CourseFinderFilterForm = ({ setLoading }) => {
         ],
         department: getQueryString('department')?.split(',') ?? [],
         tags: getQueryString('tags')?.split(',') ?? [],
+        slots: getQueryString('slots')?.split(',') ?? [],
       }}
-      style={{ gap: '1.5rem', padding: '0 0.5rem' }}
+      style={{ gap: '1rem', padding: '0 0.5rem' }}
     >
+      <CourseFinderFilterItem
+        label="Running courses only"
+        onClear={handleFilterClear('running', ['running'])}
+        content={
+          <Form.Item name="running" valuePropName="checked">
+            <Switch />
+          </Form.Item>
+        }
+      />
+
       <div>
         <CourseFinderFilterItem
           label="Departments"
@@ -115,6 +146,25 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           <Select
             mode="multiple"
             options={departmentOptions}
+            placeholder="Type something..."
+            showArrow
+          />
+        </Form.Item>
+      </div>
+
+      <div>
+        <CourseFinderFilterItem
+          label={
+            <>
+              Slots <b>(beta)</b>
+            </>
+          }
+          onClear={handleFilterClear('slots', ['slots'])}
+        />
+        <Form.Item name="slots">
+          <Select
+            mode="multiple"
+            options={slotOptions}
             placeholder="Type something..."
             showArrow
           />
@@ -139,16 +189,6 @@ const CourseFinderFilterForm = ({ setLoading }) => {
         onClear={handleFilterClear('halfsem', ['halfsem'])}
         content={
           <Form.Item name="halfsem" valuePropName="checked">
-            <Switch />
-          </Form.Item>
-        }
-      />
-
-      <CourseFinderFilterItem
-        label="Running courses only"
-        onClear={handleFilterClear('running', ['running'])}
-        content={
-          <Form.Item name="running" valuePropName="checked">
             <Switch />
           </Form.Item>
         }

@@ -55,7 +55,11 @@ const TimetableShareButton = ({ coursesInTimetable }) => {
       />
 
       <Modal
-        title={<h2>Share Your Timetable</h2>}
+        title={
+          <h2>
+            Share Your Timetable <b>(beta)</b>
+          </h2>
+        }
         footer={null}
         visible={isModalVisible}
         onCancel={handleCancel}
