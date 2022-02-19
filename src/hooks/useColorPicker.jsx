@@ -6,7 +6,7 @@ import { palette } from 'styles'
 
 const useColorPicker = () => {
   const theme = useSelector(selectTheme)
-  const paletteTheme = palette[theme]
+  const paletteTheme = palette[theme] ?? palette.dark
 
   const randomizeId = useMemo(
     () => Math.floor(Math.random() * paletteTheme.length),

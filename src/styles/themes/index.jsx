@@ -1,9 +1,2 @@
-import dark from './dark'
-import light from './light'
-
-const theme = {
-  dark,
-  light,
-}
-
-export default theme
+export { default as dark } from './dark'
+export { default as light } from './light'

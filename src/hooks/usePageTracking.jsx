@@ -3,16 +3,16 @@ import ReactGA from 'react-ga'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
-import { selectTracking } from 'store/settingsSlice'
+import { selectSettings } from 'store/settingsSlice'
 
 const usePageTracking = () => {
   const location = useLocation()
   const [allow, setAllow] = useState(false)
-  const permitTracking = useSelector(selectTracking)
+  const { tracking } = useSelector(selectSettings)
 
   useEffect(() => {
     if (
-      permitTracking &&
+      tracking &&
       process.env.NODE_ENV === 'production' &&
       process.env.REACT_APP_GA_TRACKING_ID
     ) {
@@ -21,7 +21,7 @@ const usePageTracking = () => {
     } else {
       setAllow(false)
     }
-  }, [permitTracking])
+  }, [tracking])
 
   useEffect(() => {
     if (allow) {

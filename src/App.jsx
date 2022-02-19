@@ -16,12 +16,12 @@ import { themes, GlobalStyles } from 'styles'
 // pdfjs.GlobalWorkerOptions.workerSrc = worker
 
 const App = () => {
-  const selectedTheme = useSelector(selectTheme)
+  const theme = useSelector(selectTheme)
   const authLoading = useSelector(selectAuthLoading)
   usePageTracking()
 
   return (
-    <ThemeProvider theme={themes[selectedTheme]}>
+    <ThemeProvider theme={themes[theme] ?? themes.dark}>
       <Helmet>
         <title>ResoBin</title>
         <meta

@@ -115,8 +115,8 @@ export const register = (config) => {
       // service worker/PWA documentation.
       await navigator.serviceWorker.ready
       console.log(
-        'This web app is being served cache-first by a service ' +
-          'worker. To learn more, visit https://cra.link/PWA'
+        'This web app is being served cache-first by a service worker.',
+        'To learn more, visit https://cra.link/PWA'
       )
     } else {
       // Is not localhost. Just register service worker

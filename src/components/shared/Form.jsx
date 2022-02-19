@@ -95,6 +95,10 @@ const StyledForm = styled(Form)`
     color: ${({ theme }) => theme.textColor};
     font-size: 0.875rem;
   }
+
+  .ant-switch-checked {
+    background: ${({ theme }) => theme.logo};
+  }
 `
 
 export default StyledForm
