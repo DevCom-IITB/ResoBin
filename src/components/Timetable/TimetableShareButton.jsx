@@ -1,4 +1,5 @@
-import { ClipboardCopy, Share } from '@styled-icons/heroicons-outline'
+import { Whatsapp } from '@styled-icons/fa-brands'
+import { ClipboardCopy, Mail, Share } from '@styled-icons/heroicons-outline'
 import { Button, Input } from 'antd'
 import { rgba } from 'polished'
 import { useMemo, useState } from 'react'
@@ -10,11 +11,30 @@ import { copyToClipboard } from 'helpers'
 const TimetableShareButton = ({ coursesInTimetable }) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
 
-  const shareURL = useMemo(() => {
+  const shareUrl = useMemo(() => {
     const ids = coursesInTimetable.map(({ id }) => id)
     const queryString = new URLSearchParams({ ids })
     return `${window.location.origin}/timetable/share?${queryString.toString()}`
   }, [coursesInTimetable])
+
+  const shareWhatsapp = () => {
+    const queryString = new URLSearchParams({
+      text: `Here's my timetable: ${shareUrl}`,
+    })
+    window.open(
+      `https://api.whatsapp.com/send?${queryString.toString()}`,
+      '_blank',
+      'noopener noreferrer'
+    )
+  }
+
+  const shareMail = () => {
+    const queryString = new URLSearchParams({
+      subject: 'ResoBin timetable',
+      body: `My timetable can be found at ${shareUrl}`,
+    })
+    window.open(`mailto:?${queryString.toString()}`)
+  }
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -39,20 +59,33 @@ const TimetableShareButton = ({ coursesInTimetable }) => {
         visible={isModalVisible}
         onCancel={handleCancel}
       >
-        <ModalContent>
-          <h4>
-            Try to send this link to a friend to show them your timetable.
-          </h4>
-
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <h3>Send this link to a friend to show them your timetable!</h3>
           <Input.Group style={{ display: 'flex' }}>
-            <UrlContainer readOnly value={shareURL} />
+            <UrlContainer readOnly value={shareUrl} />
 
             <StyledButton
-              onClick={() => copyToClipboard(shareURL)}
+              onClick={() => copyToClipboard(shareUrl)}
               icon={<ClipboardCopy size="20" />}
             />
           </Input.Group>
-        </ModalContent>
+
+          <div
+            style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}
+          >
+            <h3>Share via:</h3>
+            <ButtonIcon
+              icon={<Whatsapp size="24" />}
+              onClick={shareWhatsapp}
+              tooltip="Share via WhatsApp"
+            />
+            <ButtonIcon
+              icon={<Mail size="24" />}
+              onClick={shareMail}
+              tooltip="Share via Mail"
+            />
+          </div>
+        </div>
       </Modal>
     </>
   )
@@ -97,10 +130,4 @@ const StyledButton = styled(Button)`
     border-color: ${({ theme }) => theme.logo};
     box-shadow: 0 0 1rem ${({ theme }) => rgba(theme.logo, 0.2)};
   }
-`
-
-const ModalContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
 `
