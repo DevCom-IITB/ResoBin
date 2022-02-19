@@ -18,7 +18,16 @@ const ContributeItem = ({
   addUploadedFile,
 }) => {
   // ? If no file is valid, reset the file list item
-  const onDrop = (acceptedFiles) => {
+  const onDrop = (acceptedFiles, fileRejections) => {
+    fileRejections.forEach((file) => {
+      file.errors.forEach((err) => {
+        toast({
+          status: 'error',
+          content: err.message,
+        })
+      })
+    })
+
     if (acceptedFiles.length !== 0)
       updateFileItem({
         file: acceptedFiles[0],

@@ -6,6 +6,7 @@
     "type": "git",
     "url": "https://github.com/wncc/resobin.git"
   },
+  "author": "Laxman Desai <desai.laxman2001@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "react-scripts start",

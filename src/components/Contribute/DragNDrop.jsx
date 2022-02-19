@@ -7,18 +7,19 @@ import { device, fontSize } from 'styles/responsive'
 
 import { fileTypes } from './fileDetails'
 
+const dropzoneProps = {
+  accept: fileTypes.map((file) => file.type),
+  maxSize: 30 * 1024 * 1024, // ? 30MB
+  minSize: 3 * 1024, // ? 3KB
+}
+
 export const DragNDropSub = ({ onDrop, children }) => {
   const { getRootProps, getInputProps, isDragActive, isDragReject } =
-    useDropzone({
-      accept: fileTypes.map((file) => file.type),
-      maxFiles: 1,
-      onDrop,
-      maxSize: 30 * 1024 * 1024, // 30MB
-    })
+    useDropzone({ maxFiles: 1, onDrop, ...dropzoneProps })
 
   let message = children
   if (isDragActive) {
-    if (isDragReject) message = <h2>Invalid upload format</h2>
+    if (isDragReject) message = <h2>File too large or invalid upload format</h2>
     else message = <h2>Drop files here</h2>
   }
 
@@ -33,10 +34,7 @@ export const DragNDropSub = ({ onDrop, children }) => {
 
 const DragNDrop = ({ onDrop, children }) => {
   const { getRootProps, getInputProps, isDragActive, isDragReject } =
-    useDropzone({
-      accept: fileTypes.map((file) => file.type),
-      onDrop,
-    })
+    useDropzone({ onDrop, ...dropzoneProps })
 
   let message = null
   if (!isDragActive)
@@ -53,11 +51,8 @@ const DragNDrop = ({ onDrop, children }) => {
   return (
     <UploadBox {...getRootProps()} error={isDragReject}>
       <input {...getInputProps()} />
-
       <CloudUpload size="60" />
-
       {message}
-
       <span>
         Accepted formats: .pdf, .doc, .ppt
         <br />

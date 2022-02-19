@@ -51,7 +51,16 @@ const ContributeContainer = ({ visible, setVisible }) => {
   const addUploadedFile = (file) =>
     setUploadedFiles((prevItems) => [file, ...prevItems])
 
-  const onDrop = useCallback((acceptedFiles) => {
+  const onDrop = useCallback((acceptedFiles, fileRejections) => {
+    fileRejections.forEach((file) => {
+      file.errors.forEach((err) => {
+        toast({
+          status: 'error',
+          content: err.message,
+        })
+      })
+    })
+
     acceptedFiles.forEach((file) => {
       const fileItem = {
         id: nanoid(),

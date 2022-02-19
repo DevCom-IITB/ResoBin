@@ -108,6 +108,21 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     >
       <div>
         <CourseFinderFilterItem
+          label="Departments"
+          onClear={handleFilterClear('department', ['department'])}
+        />
+        <Form.Item name="department">
+          <Select
+            mode="multiple"
+            options={departmentOptions}
+            placeholder="Type something..."
+            showArrow
+          />
+        </Form.Item>
+      </div>
+
+      <div>
+        <CourseFinderFilterItem
           label="Semesters"
           onClear={handleFilterClear('semester', ['semester'])}
         />
@@ -162,21 +177,6 @@ const CourseFinderFilterForm = ({ setLoading }) => {
             }}
             tipFormatter={null}
             style={{ marginRight: '1rem', marginLeft: '0.5rem' }}
-          />
-        </Form.Item>
-      </div>
-
-      <div>
-        <CourseFinderFilterItem
-          label="Departments"
-          onClear={handleFilterClear('department', ['department'])}
-        />
-        <Form.Item name="department">
-          <Select
-            mode="multiple"
-            options={departmentOptions}
-            placeholder="Type something..."
-            showArrow
           />
         </Form.Item>
       </div>
