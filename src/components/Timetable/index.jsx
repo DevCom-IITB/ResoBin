@@ -1,5 +1,7 @@
 export { default as TimetableContainer } from './TimetableContainer'
 export { default as TimetableCourseItem } from './TimetableCourseItem'
 export { default as TimetableDownloadLink } from './TimetableDownloadLink'
+export { default as TimetableShareButton } from './TimetableShareButton'
+export { default as TimetableContainerCustom } from './TimetableContainerCustom'
 export { default as TimetableLayout } from './TimetableLayout'
 export { default as TimetableSelector } from './TimetableSelector'

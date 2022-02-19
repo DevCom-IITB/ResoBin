@@ -44,17 +44,25 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
         <Input placeholder="Title" />
       </Form.Item>
 
-      <Form.Item name="author" rules={[{ required: false }]}>
+      <Form.Item
+        name="author"
+        rules={[
+          { required: false },
+          { max: 255, message: 'Author must be atmost 255 characters.' },
+        ]}
+      >
         <Input placeholder="Author" />
       </Form.Item>
 
-      <Form.Item name="description">
+      <Form.Item
+        name="description"
+        rules={[
+          { max: 500, message: 'Description must be atmost 500 characters.' },
+        ]}
+      >
         <Input.TextArea
           autoSize={{ minRows: 1, maxRows: 10 }}
           placeholder="Description"
-          rules={[
-            { max: 500, message: 'Title must be atmost 500 characters.' },
-          ]}
         />
       </Form.Item>
 

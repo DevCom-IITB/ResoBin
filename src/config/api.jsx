@@ -171,6 +171,12 @@ export const API = {
     list: async () => APIInstance.get('/stats'),
   },
 
+  // * Timetable endpoint
+  timetable: {
+    list: async ({ params }) => APIInstance.get('/timetable', { params }),
+    read: async ({ id }) => APIInstance.get(`/timetable/${id}`),
+  },
+
   // * Developer stats endpoints
   GitHub: {
     getContributors: async () => {

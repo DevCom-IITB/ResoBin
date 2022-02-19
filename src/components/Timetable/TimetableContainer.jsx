@@ -29,6 +29,7 @@ import CurrentTime from './CurrentTime'
 import TimetableCourseItem from './TimetableCourseItem'
 import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableLayout from './TimetableLayout'
+import TimetableShareButton from './TimetableShareButton'
 
 const TimetableAsideItem = ({ code, handleRemove, loading }) => {
   const title = useSelector(selectCourseTitle(code))
@@ -172,23 +173,26 @@ const TimetableContainer = () => {
       </PageHeading>
 
       {semesterList[semIdx] && (
-        <TimetableSemesterTitle>
-          <ButtonIcon
-            icon={<ChevronLeft size="20" />}
-            onClick={handleClickPrev}
-            disabled={loading || !(semIdx - 1 in semesterList)}
-            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-          />
-          {semesterList[semIdx].season}&nbsp;
-          {displayYear(semesterList[semIdx])}
-          <ButtonIcon
-            icon={<ChevronRight size="20" />}
-            disabled={loading || !(semIdx + 1 in semesterList)}
-            onClick={handleClickNext}
-            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-          />
+        <TimetableSemesterHeader>
+          <TimetableShareButton coursesInTimetable={courseTimetableList} />
+          <TimetableSemesterTitle>
+            <ButtonIcon
+              icon={<ChevronLeft size="20" />}
+              onClick={handleClickPrev}
+              disabled={loading || !(semIdx - 1 in semesterList)}
+              hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+            />
+            {semesterList[semIdx].season}&nbsp;
+            {displayYear(semesterList[semIdx])}
+            <ButtonIcon
+              icon={<ChevronRight size="20" />}
+              disabled={loading || !(semIdx + 1 in semesterList)}
+              onClick={handleClickNext}
+              hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+            />
+          </TimetableSemesterTitle>
           <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
-        </TimetableSemesterTitle>
+        </TimetableSemesterHeader>
       )}
 
       {loading && <LoaderAnimation />}
@@ -238,13 +242,17 @@ const TimetableContainer = () => {
 
 export default TimetableContainer
 
+const TimetableSemesterHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+`
+
 const TimetableSemesterTitle = styled.div`
   display: flex;
-  position: relative;
   gap: 0.5rem;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
   color: ${({ theme }) => theme.textColor};
   font-size: 1.25rem;
   text-transform: capitalize;
@@ -263,6 +271,7 @@ const TimetableCardTitle = styled.div`
   justify-content: space-between;
   width: 100%;
 `
+
 const ClashAlerts = styled.div`
   margin-top: 1rem;
 `
