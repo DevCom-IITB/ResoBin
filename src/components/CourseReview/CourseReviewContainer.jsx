@@ -59,7 +59,7 @@ const CourseReviewContainer = () => {
   const handleUpdateContent = ({ id, payload }) => {
     if (id === null) {
       // ? create review
-      setReviewsData([payload, ...reviewsData])
+      // setReviewsData([payload, ...reviewsData])
     } else if (payload === null) {
       // ? delete review / reply
       setReviewsData((_reviewsData) =>
@@ -69,11 +69,11 @@ const CourseReviewContainer = () => {
       )
     } else {
       // ? update review / reply
-      setReviewsData((_reviewsData) =>
-        recursiveApply(_reviewsData, (array) =>
-          array.map((review) => (id !== review.id ? review : payload))
-        )
-      )
+      // setReviewsData((_reviewsData) =>
+      //   recursiveApply(_reviewsData, (array) =>
+      //     array.map((review) => (id !== review.id ? review : payload))
+      //   )
+      // )
     }
   }
 
@@ -84,7 +84,7 @@ const CourseReviewContainer = () => {
       })
 
       handleUpdateContent({ id: null, payload: { ...response, children: [] } })
-      toast({ status: 'success', content: 'Successfully posted review' })
+      toast({ status: 'success', content: 'Review awaiting approval.' })
     } catch (error) {
       toast({ status: 'error', content: error })
     }

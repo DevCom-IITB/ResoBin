@@ -1,3 +1,4 @@
+export { default as copyToClipboard } from './copyToClipboard'
 export { default as CSRFToken } from './csrfToken'
 export { displayYear, coursePageUrl } from './format'
 export { default as hash } from './hash'

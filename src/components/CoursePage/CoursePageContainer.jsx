@@ -1,6 +1,7 @@
 import { Empty } from 'antd'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { CourseResourceContainer } from 'components/CourseResource'
@@ -32,7 +33,7 @@ const CourseProfessors = ({ semester }) => {
 
         <ProfessorList>
           {professors.map(({ division, professor }) => (
-            <span>
+            <span key={`${division}-${professor}`}>
               {division}: <b>{professor}</b>
             </span>
           ))}
@@ -42,26 +43,7 @@ const CourseProfessors = ({ semester }) => {
   )
 }
 
-const CourseProfessorsContainer = styled.div`
-  color: ${({ theme }) => theme.textColor};
-
-  h3 {
-    font-weight: 400;
-    margin-bottom: 0.25rem;
-  }
-`
-
-const ProfessorList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  background: ${({ theme }) => theme.darksecondary};
-  padding: 0.5rem;
-  border-radius: ${({ theme }) => theme.borderRadius};
-`
-
 const CoursePageContainer = ({ courseData }) => {
-  const { hash } = useLocation()
   const {
     code,
     title,
@@ -74,6 +56,19 @@ const CoursePageContainer = ({ courseData }) => {
     reviews,
     resources,
   } = courseData
+
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [activeKey, setActiveKey] = useState(null)
+
+  const handleTabChange = (key) => {
+    location.hash = key
+    navigate(location, { replace: true })
+  }
+
+  useEffect(() => {
+    setActiveKey(location.hash.split('#')[1] ?? 'reviews')
+  }, [location.hash])
 
   return (
     <>
@@ -110,7 +105,8 @@ const CoursePageContainer = ({ courseData }) => {
           tabheight="2.25rem"
           tabwidth="7.5rem"
           animated
-          defaultActiveKey={hash.split('#')[1]}
+          activeKey={activeKey}
+          onChange={handleTabChange}
         >
           <Tabs.TabPane
             key="reviews"
@@ -216,4 +212,22 @@ const FlexGap = styled.div`
     flex-direction: column;
     align-items: center;
   }
+`
+
+const CourseProfessorsContainer = styled.div`
+  color: ${({ theme }) => theme.textColor};
+
+  h3 {
+    font-weight: 400;
+    margin-bottom: 0.25rem;
+  }
+`
+
+const ProfessorList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background: ${({ theme }) => theme.darksecondary};
+  padding: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 `

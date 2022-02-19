@@ -7,20 +7,22 @@ import { useQueryString } from 'hooks'
 import { selectIsDropdownActive } from 'store/settingsSlice'
 import { device } from 'styles/responsive'
 
-import CourseFinderFilterForm from './CourseFinderFilterForm'
+import CourseFinderFilterForm, { filterKeys } from './CourseFinderFilterForm'
 
-export const filterKeys = [
-  'semester',
-  'department',
-  'p',
-  'credits_min',
-  'credits_max',
-  'halfsem',
-  'running',
-  'tags',
-]
+export const ClearAll = styled.button`
+  color: ${({ theme }) => theme.textColor};
+  font-weight: 400;
+  font-size: 0.75rem;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
 
-export const CourseFinderFilterDropdown = ({ setLoading }) => {
+  &:hover {
+    text-decoration: underline;
+  }
+`
+
+const CourseFinderFilterDropdown = ({ setLoading }) => {
   const { deleteQueryString } = useQueryString()
   const showFilter = useSelector(selectIsDropdownActive)
 
@@ -48,6 +50,8 @@ export const CourseFinderFilterDropdown = ({ setLoading }) => {
     </ContainerDropdown>
   )
 }
+
+export default CourseFinderFilterDropdown
 
 const ContainerDropdown = styled.div`
   position: absolute;
@@ -78,19 +82,6 @@ const Title = styled.h4`
   color: ${({ theme }) => theme.textColor};
   font-weight: 700;
   font-size: 1.25rem;
-`
-
-export const ClearAll = styled.button`
-  color: ${({ theme }) => theme.textColor};
-  font-weight: 400;
-  font-size: 0.75rem;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
-  }
 `
 
 const ListDropdown = styled.div`

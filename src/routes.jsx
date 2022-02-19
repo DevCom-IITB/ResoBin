@@ -15,7 +15,8 @@ const Contact = lazy(() => import('pages/Contact'))
 const Favourites = lazy(() => import('pages/Favourites'))
 const Logout = lazy(() => import('pages/Logout'))
 const Settings = lazy(() => import('pages/Settings'))
-const TimeTable = lazy(() => import('pages/Timetable'))
+const Timetable = lazy(() => import('pages/Timetable'))
+const TimetableShare = lazy(() => import('pages/TimetableShare'))
 const Privacy = lazy(() => import('pages/Privacy'))
 const Terms = lazy(() => import('pages/Terms'))
 
@@ -34,11 +35,12 @@ export const DashboardRoutes = () => (
     <Route path="/favourites" element={<Favourites />} />
     <Route path="/settings" element={<Settings />} />
     <Route path="/contact" element={<Contact />} />
-    <Route path="/timetable" element={<TimeTable />} />
+    <Route path="/timetable">
+      <Route path="" element={<Timetable />} />
+      <Route path="share" element={<TimetableShare />} />
+    </Route>
     <Route path="/logout" element={<Logout />} />
     <Route path="/404" element={<NotFound />} />
-    <Route path="/privacy-policy" element={<Privacy />} />
-    <Route path="/terms-and-conditions" element={<Terms />} />
     <Route path="*" element={<Navigate to="/404" replace />} />
   </AnimatedRoutes>
 )
@@ -47,6 +49,8 @@ export const DashboardRoutes = () => (
 export const AppRoutes = () => (
   <Routes>
     <Route path="/login" element={<Login />} />
+    <Route path="/privacy-policy" element={<Privacy />} />
+    <Route path="/terms-and-conditions" element={<Terms />} />
     <Route
       path="*"
       element={<PrivateRoute component={Dashboard} redirectTo="/login" />}

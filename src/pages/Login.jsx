@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 
+import { ReactComponent as ResoBinLogo } from 'assets/svgs/logo.svg'
 import {
   AuthBoxContainer,
   AuthButton,
@@ -66,7 +67,7 @@ const Login = () => {
   if (loading) return <LoaderAnimation fixed />
 
   return (
-    <PageContainer disable={['menu', 'aside', 'footer']}>
+    <PageContainer disable={['menu', 'aside']}>
       <Helmet>
         <title>Log In - ResoBin</title>
         <meta name="description" content="Login to continue" />
@@ -74,11 +75,25 @@ const Login = () => {
       <CSRFToken />
 
       <AuthBoxContainer>
-        <h4>Welcome to ResoBin!</h4>
+        <ResoBinLogo width="3rem" alt="logo" />
 
-        <AuthButton color="#303f9f" type="primary" onClick={redirectLogin}>
+        <h1>Welcome to ResoBin!</h1>
+
+        <AuthButton
+          type="primary"
+          size="large"
+          color="#303f9f"
+          onClick={redirectLogin}
+        >
           Login via SSO
         </AuthButton>
+
+        <span>
+          By logging in you accept our&nbsp;
+          <Link to="/terms-and-conditions">Terms and Conditions</Link>
+          &nbsp;and our &nbsp;
+          <Link to="/privacy-policy">Privacy Policy</Link>.
+        </span>
       </AuthBoxContainer>
     </PageContainer>
   )

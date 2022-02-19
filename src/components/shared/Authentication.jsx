@@ -7,20 +7,25 @@ import { fontSize } from 'styles/responsive'
 export const AuthBoxContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.25rem;
   align-items: center;
   justify-content: flex-start;
   max-width: 20rem;
   margin: auto;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem;
   background: ${({ theme }) => theme.secondary};
   border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0 0 0.75rem rgb(0 0 0 / 20%);
+  color: ${({ theme }) => theme.textColor};
 
-  h4 {
-    color: ${({ theme }) => theme.textColor};
+  h1 {
     font-weight: 400;
-    font-size: ${fontSize.responsive.md};
+    font-size: ${fontSize.responsive.xl};
+    text-align: center;
+  }
+
+  span {
+    text-align: center;
   }
 `
 
@@ -28,8 +33,7 @@ export const AuthButton = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${fontSize.responsive.sm};
-  padding: 0.875rem 1rem;
+  font-weight: 500;
   border-radius: ${({ theme }) => theme.borderRadius};
 
   ${({ color }) =>

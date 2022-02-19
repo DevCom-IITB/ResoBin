@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 
-import { ContributeContainer } from 'components/contribute'
+import { ContributeContainer } from 'components/Contribute'
 import { PageContainer } from 'components/shared'
 
 const Contribute = () => {

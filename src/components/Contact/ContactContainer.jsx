@@ -1,9 +1,11 @@
-import { Input } from 'antd'
+import { Input, Empty } from 'antd'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
 
-import { DeveloperList } from 'components/Contact'
+// import { DeveloperList } from 'components/Contact'
 import {
+  Aside,
+  PageSubtitle,
   ButtonSquare,
   Form,
   PageHeading,
@@ -71,7 +73,10 @@ const ContactContainer = () => {
         </div>
       </StyledForm>
 
-      <DeveloperList />
+      {/* <DeveloperList /> */}
+      <Aside title="Contributors">
+        <Empty description={<PageSubtitle>Coming soon!</PageSubtitle>} />
+      </Aside>
     </>
   )
 }

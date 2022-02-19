@@ -1,29 +1,28 @@
-import { Sun, Moon } from '@styled-icons/heroicons-outline/'
-import { Button } from 'antd'
+import { Button, Select, Switch } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { Aside, CardSplit, Switch, toast, Typography } from 'components/shared'
+import { Aside, CardSplit, Form, toast, Typography } from 'components/shared'
 import { PageHeading, PageTitle } from 'components/shared/Layout'
 import { logoutAction } from 'store/authSlice'
-import {
-  selectTheme,
-  selectTracking,
-  setTheme,
-  setTracking,
-} from 'store/settingsSlice'
+import { selectSettings, setTheme, setTracking } from 'store/settingsSlice'
 
 import Profile from './Profile'
 
-const SettingsContainer = () => {
-  const tracking = useSelector(selectTracking)
-  const theme = useSelector(selectTheme)
+const themeOptions = [
+  { label: 'Dark', value: 'dark' },
+  { label: 'Light', value: 'light' },
+  { label: 'Device default', value: 'device' },
+]
 
+const SettingsContainer = () => {
   const dispatch = useDispatch()
-  const switchTracking = () => dispatch(setTracking(!tracking))
-  const switchTheme = () => {
-    if (theme === 'dark') dispatch(setTheme('light'))
-    else if (theme === 'light') dispatch(setTheme('dark'))
+  const settings = useSelector(selectSettings)
+  const [form] = Form.useForm()
+
+  const handleSettingsChange = (values) => {
+    if (values.theme !== undefined) dispatch(setTheme(values.theme))
+    if (values.tracking !== undefined) dispatch(setTracking(values.tracking))
   }
 
   const handleLogout = async () => {
@@ -41,18 +40,21 @@ const SettingsContainer = () => {
         <PageTitle>Settings</PageTitle>
       </PageHeading>
 
-      <SettingCards>
+      <Form
+        form={form}
+        name="settings"
+        layout="vertical"
+        onValuesChange={handleSettingsChange}
+        initialValues={settings}
+      >
         <CardSplit
-          main={<Heading>Dark mode</Heading>}
+          main={<Heading>Theme</Heading>}
           sub={
-            <Switch
-              checkedChildren={<Moon size="16" />}
-              unCheckedChildren={<Sun size="16" />}
-              defaultChecked={theme === 'dark'}
-              onChange={switchTheme}
-            />
+            <Form.Item name="theme">
+              <Select options={themeOptions} showArrow />
+            </Form.Item>
           }
-          subWidth="5rem"
+          subWidth="10rem"
         />
 
         <CardSplit
@@ -70,7 +72,11 @@ const SettingsContainer = () => {
               </SubHeading>
             </>
           }
-          sub={<Switch defaultChecked={tracking} onChange={switchTracking} />}
+          sub={
+            <Form.Item name="tracking" valuePropName="checked">
+              <Switch />
+            </Form.Item>
+          }
           subWidth="5rem"
         />
 
@@ -83,7 +89,7 @@ const SettingsContainer = () => {
           }
           subWidth="5rem"
         />
-      </SettingCards>
+      </Form>
 
       <Aside
         title="Profile"
@@ -122,10 +128,4 @@ const StyledButton = styled(Button)`
   font-weight: 500;
   font-size: 0.75rem;
   border-radius: ${({ theme }) => theme.borderRadius};
-`
-
-const SettingCards = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
 `

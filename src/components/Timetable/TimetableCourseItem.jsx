@@ -20,7 +20,7 @@ const TimetableCourseItem = ({ data }) => {
   const colorPicker = useColorPicker()
 
   const handleClickInfo = useCallback(() => {
-    window.open(coursePageUrl(code, title))
+    window.location.href = coursePageUrl(code, title)
   }, [code, title])
 
   const TimetableCourseLectureItem = useCallback(
@@ -42,6 +42,7 @@ const TimetableCourseItem = ({ data }) => {
                 }}
               />
             </h3>
+
             <span>
               {gridRow.start.title} - {gridRow.end.title} | {slotName}
             </span>

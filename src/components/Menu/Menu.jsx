@@ -1,20 +1,22 @@
 import {
+  ShieldCheck,
+  Bookmark,
   BookOpen,
   CloudUpload,
   Cog,
   Calendar,
   Home,
-  Bookmark,
 } from '@styled-icons/heroicons-outline'
 import { ContactSupport } from '@styled-icons/material-outlined'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { MenuItem, ProfileImgItem } from 'components/menu'
 import { Divider } from 'components/shared'
 import { useResponsive } from 'hooks'
 import { selectUserProfile } from 'store/userSlice'
 import { device } from 'styles/responsive'
+
+import { MenuItem, ProfileImgItem } from './MenuItem'
 
 const Menu = () => {
   // ? mobile devices horizontal menu & desktops vertical menu
@@ -38,15 +40,8 @@ const Menu = () => {
         to="/courses"
       />
 
-      <MenuItem
-        title="Contribute"
-        icon={CloudUpload}
-        iconSize={iconSize}
-        to="/contribute"
-      />
-
-      {isMobile || <Divider margin="1rem 0" />}
-      {isMobile || (
+      {!isMobile && <Divider margin="1rem 0" />}
+      {!isMobile && (
         <ProfileImgItem
           title={profile?.name?.split(' ')?.[0]}
           src={profile?.profilePicture}
@@ -54,11 +49,27 @@ const Menu = () => {
       )}
 
       <MenuItem
+        title="Contribute"
+        icon={CloudUpload}
+        iconSize={iconSize}
+        to="/contribute"
+      />
+
+      <MenuItem
         title="Favourites"
         icon={Bookmark}
         iconSize={iconSize}
         to="/favourites"
       />
+      {!isMobile && profile.user.isStaff && (
+        <MenuItem
+          title="Admin"
+          icon={ShieldCheck}
+          iconSize={iconSize}
+          to="/admin"
+          target="_blank"
+        />
+      )}
       <MenuItem
         title="Settings"
         icon={Cog}
@@ -66,10 +77,10 @@ const Menu = () => {
         to="/settings"
       />
 
-      {isMobile || <Divider margin="1rem 0" />}
-      {isMobile || (
+      {!isMobile && <Divider margin="1rem 0" />}
+      {!isMobile && (
         <MenuItem
-          title="Get help"
+          title="Contact"
           icon={ContactSupport}
           iconSize={iconSize}
           to="/contact"

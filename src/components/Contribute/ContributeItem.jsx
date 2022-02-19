@@ -18,7 +18,16 @@ const ContributeItem = ({
   addUploadedFile,
 }) => {
   // ? If no file is valid, reset the file list item
-  const onDrop = (acceptedFiles) => {
+  const onDrop = (acceptedFiles, fileRejections) => {
+    fileRejections.forEach((file) => {
+      file.errors.forEach((err) => {
+        toast({
+          status: 'error',
+          content: err.message,
+        })
+      })
+    })
+
     if (acceptedFiles.length !== 0)
       updateFileItem({
         file: acceptedFiles[0],
@@ -53,16 +62,18 @@ const ContributeItem = ({
     fd.append('tags', JSON.stringify(tags))
 
     try {
-      const response = await API.resources.create({
-        payload: fd,
-        onUploadProgress,
-      })
+      // const response = await API.resources.create({
+      //   payload: fd,
+      //   onUploadProgress,
+      // })
+      // addUploadedFile(response)
+      await API.resources.create({ payload: fd, onUploadProgress })
 
-      addUploadedFile(response)
       deleteFileItem()
       toast({
         status: 'success',
-        content: 'Resource uploaded successfully!',
+        content:
+          'Resource uploaded successfully! Pending moderator approval (1-2 days).',
       })
     } catch (error) {
       toast({ status: 'error', content: error })

@@ -4,7 +4,7 @@ const settingsSlice = createSlice({
   name: 'settings',
 
   initialState: {
-    theme: 'dark',
+    theme: 'device',
     tracking: true,
     isDropdownActive: false,
   },
@@ -31,9 +31,15 @@ export const { setTheme, setDropdown, setTracking } = settingsSlice.actions
 // ? selectors
 // * naming convention: https://twitter.com/_jayphelps/status/739905438116806656
 // * avoid using inline selectors
-export const selectTheme = (state) => state.settings.theme
-export const selectTracking = (state) => state.settings.tracking
+export const selectSettings = (state) => state.settings
 export const selectIsDropdownActive = (state) => state.settings.isDropdownActive
+export const selectTheme = (state) => {
+  const { theme } = state.settings
+  if (theme !== 'device') return theme
+  if (window.matchMedia?.('(prefers-color-scheme: light)')?.matches)
+    return 'light'
+  return 'dark'
+}
 
 // ? reducer
 // * always export reducer as default

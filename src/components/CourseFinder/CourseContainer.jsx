@@ -7,8 +7,10 @@ import { useQueryString } from 'hooks'
 
 import CourseList from './CourseList'
 import CourseSearch from './CourseSearch'
-import { ClearAll, filterKeys } from './Filter/CourseFinderFilterContainer'
-import CourseFinderFilterForm from './Filter/CourseFinderFilterForm'
+import { ClearAll } from './Filter/CourseFinderFilterContainer'
+import CourseFinderFilterForm, {
+  filterKeys,
+} from './Filter/CourseFinderFilterForm'
 
 let ajaxRequest = null
 const CourseFinderContainer = () => {
@@ -40,16 +42,12 @@ const CourseFinderContainer = () => {
   useEffect(() => {
     const filter = getQueryString()
     const params = {
-      q: filter.q,
       search_fields: 'code,title,description',
-      page: filter.p,
-      department: filter.department,
-      is_half_semester: filter.halfsem,
-      is_running: filter.running,
-      credits_min: filter.credits_min,
-      credits_max: filter.credits_max,
-      semester: filter.semester,
-      tags: filter.tags,
+      q: filter.q,
+      ...filterKeys.reduce(
+        (accumulator, value) => ({ ...accumulator, [value]: filter[value] }),
+        {}
+      ),
     }
 
     fetchCourses(params)
