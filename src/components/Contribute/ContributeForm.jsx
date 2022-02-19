@@ -46,10 +46,7 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
 
       <Form.Item
         name="author"
-        rules={[
-          { required: false },
-          { max: 255, message: 'Author must be atmost 255 characters.' },
-        ]}
+        rules={[{ max: 255, message: 'Author must be atmost 255 characters.' }]}
       >
         <Input placeholder="Author" />
       </Form.Item>

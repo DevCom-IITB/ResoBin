@@ -17,7 +17,7 @@ const TimetableShareButton = ({ coursesInTimetable }) => {
   const getURL = () => {
     const urlString = window.location.href
     const splitPair = urlString.split('timetable')
-    return `${splitPair[0]}timetable/custom${splitPair[1]}`
+    return `${splitPair[0]}timetable/share${splitPair[1]}`
   }
 
   const menu = (

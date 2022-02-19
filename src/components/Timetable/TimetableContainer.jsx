@@ -174,7 +174,8 @@ const TimetableContainer = () => {
 
       {semesterList[semIdx] && (
         <TimetableSemesterHeader>
-          <TimetableShareButton coursesInTimetable={courseTimetableList} />
+          <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
+
           <TimetableSemesterTitle>
             <ButtonIcon
               icon={<ChevronLeft size="20" />}
@@ -191,7 +192,8 @@ const TimetableContainer = () => {
               hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
             />
           </TimetableSemesterTitle>
-          <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
+
+          <TimetableShareButton coursesInTimetable={courseTimetableList} />
         </TimetableSemesterHeader>
       )}
 

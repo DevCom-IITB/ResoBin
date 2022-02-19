@@ -13,7 +13,7 @@ export const useScrollToTop = () => {
 
   useEffect(() => {
     if (location.hash) scrollToHash(location.hash)
-    else window.scrollTo(0, 0)
+    else window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }, [location.pathname, location.hash, location.search])
 }
 
