@@ -1,8 +1,8 @@
-import { Form, Input, Modal, Select } from 'antd'
+import { Form, Input, Select } from 'antd'
 import { kebabCase } from 'lodash'
 import { useSelector } from 'react-redux'
 
-import { toast } from 'components/shared'
+import { Modal, toast } from 'components/shared'
 import tags from 'data/tags.json'
 import { selectCourseListMinified } from 'store/courseSlice'
 

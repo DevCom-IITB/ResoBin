@@ -22,6 +22,7 @@ const StyledForm = styled(Form)`
     background: ${({ theme }) => theme.secondary};
   }
 
+  .ant-select-selection-item-remove,
   .ant-select .ant-select-selection-item {
     display: flex;
     align-items: center;
@@ -46,6 +47,10 @@ const StyledForm = styled(Form)`
     background: transparent;
   }
 
+  .ant-select-selection-search {
+    margin: 0;
+  }
+
   .ant-select .ant-select-selector,
   .ant-input {
     display: flex;
@@ -61,8 +66,8 @@ const StyledForm = styled(Form)`
 
     &:hover,
     &:focus {
-      border-color: ${({ theme }) => rgba(theme.textColorInactive, 0.6)};
-      box-shadow: none !important;
+      border-color: ${({ theme }) => theme.logo};
+      box-shadow: 0 10px 1rem ${({ theme }) => rgba(theme.logo, 0.1)};
     }
   }
 

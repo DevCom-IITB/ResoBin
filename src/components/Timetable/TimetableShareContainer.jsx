@@ -22,15 +22,11 @@ const TimetableContainerCustom = () => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const fetchTimetableData = async (idList) => {
+    const fetchTimetableData = async () => {
       try {
         setLoading(true)
-        const params = {
-          ids: encodeURIComponent(idList),
-        }
-
+        const params = { ids: encodeURIComponent(getQueryString('ids')) }
         const response = await API.timetable.list({ params })
-
         setCourseTimetableList(response.results)
       } catch (error) {
         toast({ status: 'error', content: error })
@@ -38,8 +34,8 @@ const TimetableContainerCustom = () => {
         setLoading(false)
       }
     }
-    const idList = getQueryString('id')
-    fetchTimetableData(idList)
+
+    fetchTimetableData()
   }, [getQueryString])
 
   return (
