@@ -33,9 +33,7 @@ const CourseResourceContainer = () => {
         setFilteredResources(response)
 
         const filterSet = []
-        console.log(resources)
-        resources.forEach((resource) => {
-          // console.log(resource.tags)
+        response.forEach((resource) => {
           resource.tags.forEach((tag) => {
             if (!filterSet.includes(tag)) {
               filterSet.push(tag)
@@ -50,7 +48,6 @@ const CourseResourceContainer = () => {
         setLoading(false)
       }
     }
-
     fetchResources()
   }, [code])
 
@@ -111,7 +108,7 @@ const CourseResourceContainer = () => {
           </ButtonSquare>
         </ButtonContainer>
       </Header>
-      <Header>
+      <FilterHeader>
         <h1 style={{ fontSize: '1rem' }}>Filter</h1>
         <CourseResourceFilter>
           {resourceFilters.map((content) => (
@@ -130,7 +127,7 @@ const CourseResourceContainer = () => {
             </FormCheck>
           ))}
         </CourseResourceFilter>
-      </Header>
+      </FilterHeader>
 
       {filteredResources.length ? (
         <CourseResourceGrid items={filteredResources} />
@@ -151,6 +148,12 @@ const ButtonContainer = styled.div`
 const Header = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  margin: 1rem 0;
+`
+const FilterHeader = styled.div`
+  display: flex;
+  align-items: center;
   justify-content: start;
   margin: 1rem 0;
 `
@@ -164,7 +167,7 @@ const CourseResourceFilter = styled.div`
 `
 const FormCheck = styled.div`
   display: flex;
-  flex: row;
   align-items: center;
-  padding: '0 0.5rem';
+  justify-content: space-between;
+  margin: 0.25rem 0.25rem 0.25rem;
 `
