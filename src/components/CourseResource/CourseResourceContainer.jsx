@@ -76,6 +76,10 @@ const CourseResourceContainer = () => {
       applyCourseResourceFilter(filterSet)
     }
   }
+  const selectAll = () => {
+    setAppliedResourceFilters(resourceFilters)
+    setFilteredResources(resources)
+  }
 
   if (loading) return <LoaderAnimation />
 
@@ -119,13 +123,20 @@ const CourseResourceContainer = () => {
                 id={content}
                 name={content}
                 value={content}
-                defaultChecked={appliedResourceFilters.includes(content)}
+                checked={appliedResourceFilters.includes(content)}
               />
               <label style={{ marginLeft: '0.1rem' }} htmlFor={content}>
                 {content}
               </label>
             </FormCheck>
           ))}
+          <ButtonSquare
+            style={{ marginLeft: '0.4rem' }}
+            type="primary"
+            onClick={selectAll}
+          >
+            Select All
+          </ButtonSquare>
         </CourseResourceFilter>
       </FilterHeader>
 
