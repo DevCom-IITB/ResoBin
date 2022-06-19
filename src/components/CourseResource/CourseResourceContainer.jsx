@@ -23,6 +23,7 @@ const CourseResourceContainer = () => {
   const [resourceFilters, setResourceFilters] = useState(['Endsems'])
   const [appliedResourceFilters, setAppliedResourceFilters] = useState([])
   const [filteredResources, setFilteredResources] = useState([])
+  const [allChecked, setAllChecked] = useState(true)
 
   useEffect(() => {
     const fetchResources = async () => {
@@ -34,12 +35,14 @@ const CourseResourceContainer = () => {
 
         const filterSet = []
         response.forEach((resource) => {
+          // console.log(resource.tags)
           resource.tags.forEach((tag) => {
             if (!filterSet.includes(tag)) {
               filterSet.push(tag)
             }
           })
         })
+        // console.log(allResourcesFilter)
         setResourceFilters(filterSet)
         setAppliedResourceFilters(filterSet)
       } catch (error) {
@@ -73,12 +76,20 @@ const CourseResourceContainer = () => {
       const filterSet = appliedResourceFilters.filter(
         (filterTag) => event.target.value !== filterTag
       )
+      setAllChecked(false)
       applyCourseResourceFilter(filterSet)
     }
   }
-  const selectAll = () => {
-    setAppliedResourceFilters(resourceFilters)
-    setFilteredResources(resources)
+
+  const handleToggleAll = (event) => {
+    if (event.target.checked) {
+      const filterSet = resourceFilters
+      applyCourseResourceFilter(filterSet)
+      setAllChecked(true)
+    } else {
+      applyCourseResourceFilter([])
+      setAllChecked(false)
+    }
   }
 
   if (loading) return <LoaderAnimation />
@@ -112,9 +123,23 @@ const CourseResourceContainer = () => {
           </ButtonSquare>
         </ButtonContainer>
       </Header>
-      <FilterHeader>
+      <Header>
         <h1 style={{ fontSize: '1rem' }}>Filter</h1>
         <CourseResourceFilter>
+          <FormCheck>
+            <FormCheckAllLabel htmlFor="SelectAll">
+              <input
+                style={{ marginRight: '0.1rem' }}
+                type="checkbox"
+                onChange={handleToggleAll}
+                id="SelectAll"
+                value="SelectAll"
+                name="SelectAll"
+                checked={allChecked}
+              />
+              Select All
+            </FormCheckAllLabel>
+          </FormCheck>
           {resourceFilters.map((content) => (
             <FormCheck key={content}>
               <input
@@ -130,15 +155,8 @@ const CourseResourceContainer = () => {
               </label>
             </FormCheck>
           ))}
-          <ButtonSquare
-            style={{ marginLeft: '0.4rem' }}
-            type="primary"
-            onClick={selectAll}
-          >
-            Select All
-          </ButtonSquare>
         </CourseResourceFilter>
-      </FilterHeader>
+      </Header>
 
       {filteredResources.length ? (
         <CourseResourceGrid items={filteredResources} />
@@ -159,12 +177,6 @@ const ButtonContainer = styled.div`
 const Header = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin: 1rem 0;
-`
-const FilterHeader = styled.div`
-  display: flex;
-  align-items: center;
   justify-content: start;
   margin: 1rem 0;
 `
@@ -180,5 +192,12 @@ const FormCheck = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0.25rem 0.25rem 0.25rem;
+  padding: 0 0.25rem;
+`
+
+const FormCheckAllLabel = styled.label`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
 `
