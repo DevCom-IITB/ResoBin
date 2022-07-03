@@ -39,6 +39,18 @@ const Menu = () => {
         iconSize={iconSize}
         to="/courses"
       />
+      <MenuItem
+        title="Minors"
+        icon={BookOpen}
+        iconSize={iconSize}
+        to="/minors"
+      />
+      <MenuItem
+        title="Honors"
+        icon={BookOpen}
+        iconSize={iconSize}
+        to="/honors"
+      />
 
       {!isMobile && <Divider margin="1rem 0" />}
       {!isMobile && (

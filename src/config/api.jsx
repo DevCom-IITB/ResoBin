@@ -166,6 +166,17 @@ export const API = {
     list: async () => APIInstance.get('/semesters'),
   },
 
+  minors: {
+    list: async () => APIInstance.get('/minors'),
+  },
+
+  programReviews: {
+    read: async ({ id }) => APIInstance.get(`/program-reviews/${id}`),
+  },
+  
+  honors: {
+    list: async () => APIInstance.get('/honors'),
+  },
   // * Stats endpoint
   stats: {
     list: async () => APIInstance.get('/stats'),
