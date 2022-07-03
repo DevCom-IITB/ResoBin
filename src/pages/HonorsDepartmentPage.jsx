@@ -20,7 +20,6 @@ const HonorsDepartmentPage = () => {
         const response = await API.programReviews.read({id})
         setDeptReviews(response)
         const honorsDepartments = await API.honors.list()
-        console.log(honorsDepartments)
         setDept(honorsDepartments.filter((element) => element.id === id)[0])
       } catch (error) {
         toast({ status: 'error', content: error })
