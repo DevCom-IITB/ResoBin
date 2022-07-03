@@ -56,7 +56,7 @@ const DepartmentList = ({
 
       {!loading && (
         <Pagination
-          defaultPageSize="10"
+          defaultPageSize="20"
           defaultCurrent={pageNo}
           responsive
           showSizeChanger={false}
