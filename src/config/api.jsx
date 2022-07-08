@@ -101,7 +101,10 @@ export const API = {
       APIInstance.get(`/courses/${code}/resources`),
     listReviews: async ({ code }) =>
       APIInstance.get(`/courses/${code}/reviews`),
-
+    
+    getCutoffs: async ({ code }) =>
+    APIInstance.get(`/courses/${code}/cutoffs`),
+    
     favorite: {
       add: async ({ code }) =>
         APIInstance.put(`/accounts/profile/courses/${code}/favorite`),
