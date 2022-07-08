@@ -6,6 +6,8 @@ import {
   Cog,
   Calendar,
   Home,
+  AcademicCap,
+  Archive,
 } from '@styled-icons/heroicons-outline'
 import { ContactSupport } from '@styled-icons/material-outlined'
 import { useSelector } from 'react-redux'
@@ -41,13 +43,13 @@ const Menu = () => {
       />
       <MenuItem
         title="Minors"
-        icon={BookOpen}
+        icon={Archive}
         iconSize={iconSize}
         to="/minors"
       />
       <MenuItem
         title="Honors"
-        icon={BookOpen}
+        icon={AcademicCap}
         iconSize={iconSize}
         to="/honors"
       />

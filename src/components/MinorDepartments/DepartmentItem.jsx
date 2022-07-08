@@ -2,9 +2,8 @@ import { Fragment } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-
 import { CardSplit, Typography } from 'components/shared'
-import { MinorDepartmentPageUrl} from 'helpers'
+import { MinorDepartmentPageUrl } from 'helpers'
 import { fontSize } from 'styles/responsive'
 
 // TODO: Add highlight for description
@@ -26,11 +25,14 @@ const HighlightMatches = ({ content }) => {
 }
 
 const DepartmentItemMain = ({ departmentData }) => {
-
   return (
     <>
-      <TitleContainer to={MinorDepartmentPageUrl(departmentData.department.slug, departmentData.id)}>
-        
+      <TitleContainer
+        to={MinorDepartmentPageUrl(
+          departmentData.department.slug,
+          departmentData.id
+        )}
+      >
         <h2>
           <HighlightMatches content={departmentData.department.name} />
         </h2>
@@ -40,7 +42,9 @@ const DepartmentItemMain = ({ departmentData }) => {
         ellipsis={{ rows: 3, expandable: true, symbol: 'show more' }}
         style={{ marginTop: '0.75rem', marginBottom: 0 }}
       >
-        {departmentData.description?.length ? departmentData.description : 'No description available'}
+        {departmentData.description?.length
+          ? departmentData.description
+          : 'No description available'}
       </Typography.Paragraph>
     </>
   )
@@ -50,7 +54,7 @@ const DepartmentItem = ({ departmentData }) => {
   return (
     <CardSplit
       main={<DepartmentItemMain departmentData={departmentData} />}
-      subWidth="13rem"
+      subWidth="0"
     />
   )
 }
@@ -84,4 +88,3 @@ const Mark = styled.mark`
   color: ${({ theme }) => theme.secondary};
   background: ${({ theme }) => theme.primary};
 `
-
