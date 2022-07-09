@@ -44,15 +44,14 @@ const CourseProfessors = ({ semester }) => {
 }
 
 const CPICutoff = ({ cutoff }) => {
-  console.log(cutoff);
-  if(typeof cutoff !== "undefined" && cutoff !== null && cutoff.length > 0){
+  if (typeof cutoff !== 'undefined' && cutoff !== null && cutoff.length > 0) {
     return (
       <h3>
-        &ensp;&#9679;&ensp; CPI CutOff: {cutoff[cutoff.length -1].cutoff}
+        &ensp;&#9679;&ensp; CPI CutOff: {cutoff[cutoff.length - 1].cutoff}
       </h3>
     )
-  } 
-  return null;
+  }
+  return null
 }
 
 const CoursePageContainer = ({ courseData, cutoffs }) => {
@@ -95,7 +94,8 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
 
           <h2>{title}</h2>
           <h3>
-            {department.name} &ensp;&#9679;&ensp; {credits} credits <CPICutoff cutoff={cutoffs} />
+            {department.name} &ensp;&#9679;&ensp; {credits} credits{' '}
+            <CPICutoff cutoff={cutoffs} />
           </h3>
 
           <Divider margin="0.25rem 0" />
