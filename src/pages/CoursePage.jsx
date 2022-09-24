@@ -12,6 +12,7 @@ const CoursePage = () => {
   const location = useLocation()
   const { code, titleSlug } = useParams()
   const [courseData, setCourseData] = useState({})
+  const [cutoffs, setCutoffs] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -19,7 +20,9 @@ const CoursePage = () => {
       try {
         setLoading(true)
         const response = await API.courses.read({ code })
+        const reponseCutoff = await API.courses.getCutoffs({ code })
         setCourseData(response)
+        setCutoffs(reponseCutoff)
       } catch (error) {
         toast({ status: 'error', content: error })
       } finally {
@@ -46,7 +49,7 @@ const CoursePage = () => {
         <meta property="description" content={courseData.description} />
       </Helmet>
 
-      <CoursePageContainer courseData={courseData} />
+      <CoursePageContainer courseData={courseData} cutoffs={cutoffs} />
     </PageContainer>
   )
 }

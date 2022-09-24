@@ -19,6 +19,10 @@ const Timetable = lazy(() => import('pages/Timetable'))
 const TimetableShare = lazy(() => import('pages/TimetableShare'))
 const Privacy = lazy(() => import('pages/Privacy'))
 const Terms = lazy(() => import('pages/Terms'))
+const MinorDepartments = lazy(() => import('pages/MinorDepartments'))
+const MinorDepartmentPage = lazy(() => import('pages/MinorDepartmentPage'))
+const HonorsDepartments = lazy(() => import('pages/HonorsDepartments'))
+const HonorsDepartmentPage = lazy(() => import('pages/HonorsDepartmentPage'))
 
 // ? authentication necessary for all dashboard routes
 export const DashboardRoutes = () => (
@@ -29,6 +33,20 @@ export const DashboardRoutes = () => (
       <Route path=":code">
         <Route path="" element={<CoursePage />} />
         <Route path=":titleSlug" element={<CoursePage />} />
+      </Route>
+    </Route>
+    <Route path="/minors" >
+      <Route path="" element={<MinorDepartments/>} />
+      <Route path=":departmentSlug">
+        <Route path="" element={<Navigate to="/404" replace />} />
+        <Route path=":id" element={<MinorDepartmentPage/>}/>
+      </Route>
+    </Route>
+    <Route path="/honors" >
+      <Route path="" element={<HonorsDepartments/>} />
+      <Route path=":departmentSlug">
+        <Route path="" element={<Navigate to="/404" replace />} />
+        <Route path=":id" element={<HonorsDepartmentPage/>}/>
       </Route>
     </Route>
     <Route path="/contribute" element={<Contribute />} />

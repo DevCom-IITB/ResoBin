@@ -1,6 +1,6 @@
 export { default as copyToClipboard } from './copyToClipboard'
 export { default as CSRFToken } from './csrfToken'
-export { displayYear, coursePageUrl } from './format'
+export { displayYear, coursePageUrl, MinorDepartmentPageUrl, HonorsDepartmentPageUrl } from './format'
 export { default as hash } from './hash'
 export { default as nest } from './nest'
 export { search, searchAsync } from './search'

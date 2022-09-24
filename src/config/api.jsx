@@ -101,7 +101,10 @@ export const API = {
       APIInstance.get(`/courses/${code}/resources`),
     listReviews: async ({ code }) =>
       APIInstance.get(`/courses/${code}/reviews`),
-
+    
+    getCutoffs: async ({ code }) =>
+    APIInstance.get(`/courses/${code}/cutoffs`),
+    
     favorite: {
       add: async ({ code }) =>
         APIInstance.put(`/accounts/profile/courses/${code}/favorite`),
@@ -166,6 +169,17 @@ export const API = {
     list: async () => APIInstance.get('/semesters'),
   },
 
+  minors: {
+    list: async () => APIInstance.get('/minors'),
+  },
+
+  programReviews: {
+    read: async ({ id }) => APIInstance.get(`/program-reviews/${id}`),
+  },
+  
+  honors: {
+    list: async () => APIInstance.get('/honors'),
+  },
   // * Stats endpoint
   stats: {
     list: async () => APIInstance.get('/stats'),

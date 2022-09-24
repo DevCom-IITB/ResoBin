@@ -21,10 +21,13 @@ const CourseWorkload = ({ workload }) => {
   const colorPicker = useColorPicker()
 
   const workloadItems = [
-    { title: 'Lecture', value: workload.lecture },
-    { title: 'Tutorial', value: workload.tutorial },
-    { title: 'Lab', value: workload.selfstudy },
-    { title: 'Practical', value: workload.practical },
+    {
+      title: 'Lecture',
+      value: workload == null ? 0 : workload.lecture,
+    },
+    { title: 'Tutorial', value: workload == null ? 0 : workload.tutorial },
+    { title: 'Lab', value: workload == null ? 0 : workload.selfstudy },
+    { title: 'Practical', value: workload == null ? 0 : workload.practical },
   ].map((item) => {
     const num = parseInt(item.value, 10)
     return { ...item, value: Number.isNaN(num) ? 0 : num }
