@@ -11,17 +11,17 @@ const FavoriteToggle = ({ code, initialCount }) => {
   const favourite = useSelector(selectFavouriteStatus(code))
 
   const [loading, setLoading] = useState(false)
-  const [count, setCount] = useState(initialCount)
+  // const [count, setCount] = useState(initialCount)
 
   const handleToggle = async () => {
     try {
       setLoading(true)
       if (favourite) {
         await API.courses.favorite.remove({ code })
-        setCount(count - 1)
+        // setCount(count - 1)
       } else {
         await API.courses.favorite.add({ code })
-        setCount(count + 1)
+        // setCount(count + 1)
       }
 
       dispatch(updateFavourite(code))
@@ -37,7 +37,7 @@ const FavoriteToggle = ({ code, initialCount }) => {
       tooltip="Add to favorites"
       onClick={handleToggle}
       icon={
-        <Badge scale={0.8} count={count} overflowCount={9}>
+        <Badge scale={0.8}>
           {favourite ? <Bookmark size="30" /> : <BookmarkOutline size="30" />}
         </Badge>
       }

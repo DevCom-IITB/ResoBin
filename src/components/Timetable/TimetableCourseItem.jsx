@@ -45,6 +45,7 @@ const TimetableCourseItem = ({ data }) => {
 
             <span>
               {gridRow.start.title} - {gridRow.end.title} | {slotName}
+              helo
             </span>
           </Item>
         </Tooltip>

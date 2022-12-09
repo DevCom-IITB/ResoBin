@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
+// import { CourseSearch } from 'components/CourseFinder'
 import { Aside, Card, toast } from 'components/shared'
 import { AsideHeader } from 'components/shared/Aside'
 import { PageHeading, PageSubtitle, PageTitle } from 'components/shared/Layout'
@@ -10,9 +11,9 @@ import { API } from 'config/api'
 import { coursePageUrl } from 'helpers'
 
 const HomeItem = ({ course, hash }) => {
-  const { code, title } = course
+  const { code, title,  } = course
 
-  return (
+  return (    
     <Link to={coursePageUrl(code, title, hash)}>
       <Card hoverable style={{ display: 'inline-block' }}>
         <Card.Meta title={code} description={title} />
@@ -24,8 +25,22 @@ const HomeItem = ({ course, hash }) => {
 const HomeContainer = () => {
   const [stats, setStats] = useState([])
   const [loading, setLoading] = useState(true)
+  const [favCourseData, setFavCourseData] = useState([])
+
+  
 
   useEffect(() => {
+    const fetchFavCourses = async () => {    // copy this into homepage
+      try {
+        setLoading(true)
+        const response = await API.profile.favorites()
+        setFavCourseData(response.results)
+      } catch (error) {
+        toast({ status: 'error', content: error })
+      } finally {
+        setLoading(false)
+      }
+    }
     const fetchStats = async () => {
       try {
         setLoading(true)
@@ -39,41 +54,45 @@ const HomeContainer = () => {
     }
 
     fetchStats()
+    fetchFavCourses()
   }, [])
 
   return (
     <>
       <PageHeading>
-        <PageTitle>Popular Courses</PageTitle>
+        <PageTitle>Home</PageTitle>
       </PageHeading>
+
+      {/* <CourseSearch
+        loading={loading}
+        setLoading={setLoading}
+      /> */}
 
       <Container>
         <StatsContainer>
-          <AsideHeader title="Most favourites" loading={loading} />
-          <Flex>
-            {stats?.courses?.popular?.map((course) => (
+          
+          <AsideHeader title="My Favourites" loading={loading} />
+          
+          <Flex>           
+            
+            
+            {favCourseData?.map((course) => (              
+               <HomeItem key={course.code} course={course} />
+              // console.log(course)
+            ))}
+            
+          </Flex>
+          <AsideHeader title="Most Favourites" loading={loading} />
+          
+          <Flex>           
+
+          {stats?.courses?.popular?.map((course) => (              
               <HomeItem key={course.code} course={course} />
-            ))}
+              // console.log(course)
+          ))}
           </Flex>
         </StatsContainer>
 
-        <StatsContainer>
-          <AsideHeader title="Most resource requests" loading={loading} />
-          <Flex>
-            {stats?.courses?.requested?.reviews?.map((course) => (
-              <HomeItem key={course.code} course={course} hash="reviews" />
-            ))}
-          </Flex>
-        </StatsContainer>
-
-        <StatsContainer>
-          <AsideHeader title="Most review requests" loading={loading} />
-          <Flex>
-            {stats?.courses?.requested?.resources?.map((course) => (
-              <HomeItem key={course.code} course={course} hash="resources" />
-            ))}
-          </Flex>
-        </StatsContainer>
       </Container>
 
       <Aside title="Feed">

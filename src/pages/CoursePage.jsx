@@ -48,10 +48,12 @@ const CoursePage = () => {
         <title>{`${courseData.code}: ${courseData.title} - ResoBin`}</title>
         <meta property="description" content={courseData.description} />
       </Helmet>
-
+      
       <CoursePageContainer courseData={courseData} cutoffs={cutoffs} />
+      
     </PageContainer>
   )
 }
 
 export default CoursePage
+

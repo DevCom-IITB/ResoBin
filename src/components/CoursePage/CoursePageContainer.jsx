@@ -1,4 +1,4 @@
-import { Empty } from 'antd'
+// import { Empty } from 'antd'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -7,7 +7,8 @@ import styled from 'styled-components/macro'
 import { CourseResourceContainer } from 'components/CourseResource'
 import { CourseReviewContainer } from 'components/CourseReview'
 import { FavoriteToggle } from 'components/Favourites'
-import { Aside, PageSubtitle, Tabs, Divider } from 'components/shared'
+// import { Aside, PageSubtitle, Tabs, Divider } from 'components/shared'
+import { Tabs, Divider } from 'components/shared'
 import { TimetableSelector } from 'components/Timetable'
 import { selectCurrentSemester } from 'store/courseSlice'
 import { device, fontSize } from 'styles/responsive'
@@ -82,11 +83,13 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
   }, [location.hash])
 
   return (
-    <>
+    <div>
       <CoursePageBreadcrumbs courseTitle={`${code}: ${title}`} />
 
       <CoursePageBody>
+        
         <CourseInfo>
+          
           <h1>{code}</h1>
           <FavoriteContainer>
             <FavoriteToggle code={code} initialCount={favoritedByCount} />
@@ -113,6 +116,7 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
       </CoursePageBody>
 
       <Container>
+        
         <Tabs
           tabheight="2.25rem"
           tabwidth="7.5rem"
@@ -139,17 +143,16 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
           </Tabs.TabPane>
         </Tabs>
       </Container>
-
-      <Aside title="Course stats">
-        <Empty description={<PageSubtitle>Coming soon!</PageSubtitle>} />
-      </Aside>
-    </>
+    </div>
   )
 }
 
 export default CoursePageContainer
 
+
+
 const Container = styled.div`
+  
   margin-bottom: 1rem;
   padding: 1.5rem 1rem;
   color: ${({ theme }) => theme.textColor};
