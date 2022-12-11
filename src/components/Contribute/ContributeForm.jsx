@@ -1,5 +1,4 @@
 import { Button, Input, Select } from 'antd'
-import { kebabCase } from 'lodash'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
@@ -24,7 +23,7 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
 
   const tagOptions = tags.resourceTags.map((tag) => ({
     label: tag,
-    value: kebabCase(tag),
+    value: tag,
   }))
 
   const courseListMinified = useSelector(selectCourseListMinified)
@@ -39,11 +38,11 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
           // assert that a course definitely has profs associated with it
       const profSetFormat = [{value: "null", label: "don't know"}]
       const moduleSetFormat = [{value: "null", label: "don't know"}]
-      profSet.professors.forEach((entry) => {
+      profSet.professors?.forEach((entry) => {
         profSetFormat.push({value: entry, label: entry})
       })
       if(profSet.modules.length !== 0){
-        profSet.modules.forEach((entry) => {
+        profSet.modules?.forEach((entry) => {
           moduleSetFormat.push({value: entry, label: entry})
         })
       }
@@ -85,7 +84,7 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
 
       <Form.Item
         name="module"        
-        rules={[{required: true, message: 'This is a required field. Either choose a name or null.' }]}
+        rules={[{required: true, message: 'This is a required field.' }]}
       >
         
         {/* <Select showSearch placeholder="Module" options={moduleList} value={selectedModule} onChange={setSelectedModule}/> */}
@@ -94,7 +93,7 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
 
       <Form.Item
         name="author"
-        rules={[{required: true, message: 'This is a required field. Either choose a name or null.' }]}
+        rules={[{required: true, message: 'This is a required field.' }]}
       >        
         {/* <Select showSearch placeholder="Professor" options={profList} value={selectedProf} onChange={setSelectedProf}/> */}
         <Select showSearch placeholder="Professor" options={profList} />
@@ -102,7 +101,7 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
 
       <Form.Item
         name="year"
-        rules={[{required: true, message: 'This is a required field. Either choose a year or 0.' }]}
+        rules={[{required: true, message: 'This is a required field.' }]}
       >
         <Select showSearch placeholder="Year" options={yearsAllowed} />
       </Form.Item>   
@@ -112,10 +111,11 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
         rules={[{required: true, message: 'This is a required field. Select the applicable tags.' }]}  
       >
         <Select
-          mode="tags"
+          // mode="tags"
+          mode="multiple"
           placeholder="Add tags"
-          showArrow
-          tokenSeparators={[',']}
+          showArrow          
+          // tokenSeparators={[',']}          
           options={tagOptions}
         />
       </Form.Item>
