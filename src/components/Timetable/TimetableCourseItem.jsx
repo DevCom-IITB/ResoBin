@@ -14,7 +14,7 @@ import { makeGradient } from 'styles'
 import { fontSize } from 'styles/responsive'
 
 const TimetableCourseItem = ({ data }) => {
-  const { id, course: code, lectureSlots, tutorialSlots } = data
+  const { id, course: code, lectureSlots, tutorialSlots, lectureVenue } = data
 
   const title = useSelector(selectCourseTitle(code))
   const colorPicker = useColorPicker()
@@ -24,7 +24,7 @@ const TimetableCourseItem = ({ data }) => {
   }, [code, title])
 
   const TimetableCourseLectureItem = useCallback(
-    ({ gridCol, gridRow, slotName, isTutorial }) => (
+    ({ gridCol, gridRow, slotName, isTutorial, venue }) => (
       <GridItem row={gridRow} col={gridCol}>
         <Tooltip title={title}>
           <Item color={colorPicker(hash(id))}>
@@ -44,8 +44,7 @@ const TimetableCourseItem = ({ data }) => {
             </h3>
 
             <span>
-              {gridRow.start.title} - {gridRow.end.title} | {slotName}
-              helo
+              {gridRow.start.title} | {lectureVenue}
             </span>
           </Item>
         </Tooltip>
@@ -68,11 +67,12 @@ const TimetableCourseItem = ({ data }) => {
 
   return courseSlots?.map(({ slot, grid, isTutorial }, idx) => (
     <TimetableCourseLectureItem
-      key={String(idx)}
+      key={String(idx) + String(slot)}
       gridCol={cols[grid.col - 1]}
       gridRow={{ start: rows[grid.row.start], end: rows[grid.row.end] }}
       slotName={slot}
       isTutorial={isTutorial}
+      lectureVenue={lectureVenue}
     />
   ))
 }

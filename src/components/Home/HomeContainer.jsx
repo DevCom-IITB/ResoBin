@@ -11,9 +11,9 @@ import { API } from 'config/api'
 import { coursePageUrl } from 'helpers'
 
 const HomeItem = ({ course, hash }) => {
-  const { code, title,  } = course
+  const { code, title } = course
 
-  return (    
+  return (
     <Link to={coursePageUrl(code, title, hash)}>
       <Card hoverable style={{ display: 'inline-block' }}>
         <Card.Meta title={code} description={title} />
@@ -27,10 +27,9 @@ const HomeContainer = () => {
   const [loading, setLoading] = useState(true)
   const [favCourseData, setFavCourseData] = useState([])
 
-  
-
   useEffect(() => {
-    const fetchFavCourses = async () => {    // copy this into homepage
+    const fetchFavCourses = async () => {
+      // copy this into homepage
       try {
         setLoading(true)
         const response = await API.profile.favorites()
@@ -70,29 +69,26 @@ const HomeContainer = () => {
 
       <Container>
         <StatsContainer>
-          
           <AsideHeader title="My Favourites" loading={loading} />
-          
-          <Flex>           
-            
-            
-            {favCourseData?.map((course) => (              
-               <HomeItem key={course.code} course={course} />
-              // console.log(course)
-            ))}
-            
+
+          <Flex>
+            {favCourseData.length !== 0 ? (
+              favCourseData?.map((course) => (
+                <HomeItem key={course.code} course={course} />
+              ))
+            ) : (
+              <NoFavDiv>{!loading && 'No favourite Courses'}</NoFavDiv>
+            )}
           </Flex>
           <AsideHeader title="Most Favourites" loading={loading} />
-          
-          <Flex>           
 
-          {stats?.courses?.popular?.map((course) => (              
+          <Flex>
+            {stats?.courses?.popular?.map((course) => (
               <HomeItem key={course.code} course={course} />
               // console.log(course)
-          ))}
+            ))}
           </Flex>
         </StatsContainer>
-
       </Container>
 
       {/* <Aside title="Feed">
@@ -125,4 +121,9 @@ const Flex = styled.div`
   flex-basis: 100%;
   gap: 0.5rem;
   overflow-x: scroll;
+`
+const NoFavDiv = styled.div`
+  color: #302718;
+  font-size: 1rem;
+  font-weight: 500;
 `
