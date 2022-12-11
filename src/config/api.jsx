@@ -136,6 +136,10 @@ export const API = {
     },
   },
 
+  professors: {
+    read: async ({ code }) => APIInstance.get(`/professor/${code}`),
+  },
+
   // * Reviews endpoints
   reviews: {
     create: async ({ payload }) => APIInstance.post(`/reviews`, payload),

@@ -5,15 +5,19 @@ import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { CourseContentRequest, CourseContentRequestIcon } from 'components/CoursePage'
-import { ButtonSquare, LoaderAnimation, toast, Tabs } from 'components/shared'
+import { ButtonSquare, LoaderAnimation, toast, Tabs, NotFoundSearch } from 'components/shared'
 import { API } from 'config/api'
 import { useResponsive } from 'hooks'
 
 import { CourseResourceGrid } from './CourseResourceItem'
 
 const CourseResourceContainer = () => {
-  const allowedTags = ["Slides", "Books", "PYQs", "Endsem", "Midsem", "Quizzes", "Tutorials", "Assignments"]
+  const allowedTags = ["Slides", "Textbooks", "PYQs", "Tutorials", "Assignments", "Labs"]
   
+  const defaultYear = "0"
+  const [profDropValue, setProfDropValue] = useState("Select Prof")
+  const [moduleDropValue, setModuleDropValue] = useState("Select Module")
+  const [yearDropValue, setYearDropValue] = useState("Select Year")
   const { code } = useParams()
   const navigate = useNavigate()
   const { isMobileS } = useResponsive()
@@ -23,9 +27,9 @@ const CourseResourceContainer = () => {
   const [currentTab, setCurrentTab] = useState("All")   // current chosen Tab(filter)
   const [filteredResources, setFilteredResources] = useState([])   // all the filtered resources - store as list
   const [, setProfs] = useState([])
-  const [selectedProf, setSelectedProf] = useState("All")
+  const [selectedProf, setSelectedProf] = useState("null")
   const [modules, setModules] = useState([])
-  const [currentModule, setCurrentModule] = useState("null")    // take care of spurious "null"s that might come mistakenly
+  const [currentModule, setCurrentModule] = useState("null")    
   const [allResCount, setAllResCount] = useState(0)
   const [profPerModule, setProfPerModule] = useState({})
   const [years, setYears] = useState([])
@@ -56,23 +60,27 @@ const CourseResourceContainer = () => {
         let resCount = 0;
         response.forEach((resource) => {
           resCount += 1;
-          
-          if(!profSet.includes(resource.author)){
+          if(!profSet.includes(resource.author) && resource.author !== "null"){            
             profSet.push(resource.author)
           }
           if(!moduleSet.includes(resource.modules)){
             moduleSet.push(resource.modules)
           }
-          if(!yearSet.includes(resource.year.toString()) && resource.year !== 0){
+          if(resource.year !== 0 && (typeof resource.year === "number") && !yearSet.includes(resource.year.toString())){  // year has to be a number field
             yearSet.push(resource.year.toString())
           }
-          if(!Object.keys(moduleProfs).includes(resource.modules)){
-            moduleProfs[resource.modules] = [resource.author]
+          // if(!Object.keys(moduleProfs).includes(resource.modules) && resource.author !== "null"){
+          if(resource.author !== "null"){
+            if(!Object.keys(moduleProfs).includes(resource.modules)){  
+              moduleProfs[resource.modules] = [resource.author]
+            }
+            // else if(!moduleProfs[resource.modules].includes(resource.author) && resource.author !== "null"){            
+            else if(!moduleProfs[resource.modules].includes(resource.author)){            
+              moduleProfs[resource.modules].push(resource.author)            
+            }
           }
-          else if(!moduleProfs[resource.modules].includes(resource.author)){            
-            moduleProfs[resource.modules].push(resource.author)            
-          }
-          if(resource.year !== 0){
+          // if(resource.year !== 0 && (typeof resource.year === "number") && resource.author !== "null"){
+          if(resource.year !== 0 && (typeof resource.year === "number")){
             const yearString = resource.year.toString()
             if(!Object.keys(profYears).includes(resource.author)){
               profYears[resource.author] = [yearString]
@@ -96,7 +104,13 @@ const CourseResourceContainer = () => {
           })
         })
         if(!(moduleSet.length === 1 && moduleSet[0] === "null")){
-          setModules(["All"].concat(moduleSet))
+          const reducedModuleSet = moduleSet?.filter((module) => {
+            if(module === "null"){
+              return false
+            }
+            return true
+          })
+          setModules(["All"].concat(reducedModuleSet))
           setCurrentModule("All")         
           const dumString = "All"
           moduleProfs[dumString] = profSet
@@ -105,17 +119,35 @@ const CourseResourceContainer = () => {
         else{
           setProfPerModule({"null" : profSet})
         }      
-        if(yearSet.length !== 0){
-          setYears(["All"].concat(yearSet))
-          setCurrentYear("All")
+        if(!(profSet.length === 2 && profSet[1] === "null")){
+          const reducedProfSet = profSet?.filter((prof) => {
+            if(prof === "null"){
+              return false
+            }
+            return true
+          })
+          setProfs(reducedProfSet)
+          setSelectedProf("All")
           const dumString = "All"
           profYears[dumString] = ["All"].concat(yearSet)
           setYearPerProf(profYears)
         }
-        setSelectedProf("All")
+        else{
+          setYearPerProf({"null" : ["All"].concat(yearSet)})
+        }
+        if(yearSet.length !== 0){
+          setYears(["All"].concat(yearSet))
+          setCurrentYear("All")
+          // const dumString = "All"
+          // profYears[dumString] = ["All"].concat(yearSet)
+          // setYearPerProf(profYears)
+        }
+        // setSelectedProf("All")
+        // setProfs(profSet)     
         setAllResCount(resCount)
         setResPerFilter(numRes)
-        setProfs(profSet)
+        
+        
       }
       catch (error) {
         toast({ status: 'error', content: error })
@@ -133,12 +165,15 @@ const CourseResourceContainer = () => {
 
   const updateFilteredResources = (prof, tab, module_, year) => {
     
+    const numRes = {}  
+    Object.keys(resPerFilter).forEach((key) => {numRes[key] = 0})
     try{
-      const numRes = {}
-      let resCount = 0;
-      Object.keys(resPerFilter).forEach((key) => {numRes[key] = 0})
+      
+      let resCount = 0;      
+      
       const filtered = resources.filter((resource) => {
-        if((prof === "All" || resource.author === prof) && (module_ === "All" || module_ === "null" || module_ === resource.modules) && (year === "0" || year === "All" || year === resource.year.toString())){
+        if((prof === "All" || prof === "null" || resource.author === prof) && (module_ === "All" || module_ === "null" || module_ === resource.modules) && (year === "0" || year === "All" || year === resource.year.toString())){
+          
           resCount += 1;
           let hasValidTag = false;
           for (let i = 0; i < resource.tags.length; i += 1) {              
@@ -165,28 +200,38 @@ const CourseResourceContainer = () => {
     }
     catch{
       setFilteredResources([])
+      setResPerFilter(numRes)
+      setAllResCount(0)
     }
 
   }
 
   const handleTabChange = (tab) => {
-    setCurrentTab(tab)
-    updateFilteredResources(selectedProf, tab, currentModule, currentYear)
-    
+    setCurrentTab(tab)    
+    updateFilteredResources(selectedProf, tab, currentModule, currentYear)    
   }
 
   const handleProfChange = (prof) => {
     setSelectedProf(prof)
-    updateFilteredResources(prof, currentTab, currentModule, currentYear)
+    setProfDropValue(prof)
+    setCurrentYear(defaultYear)
+    setYearDropValue("Select Year")
+    updateFilteredResources(prof, currentTab, currentModule, defaultYear)
   }
 
   const handleModuleChange = (module) => {
     setCurrentModule(module)
-    updateFilteredResources(selectedProf, currentTab, module, currentYear)
+    setModuleDropValue(module)
+    setCurrentYear(defaultYear)
+    setYearDropValue("Select Year")
+    setSelectedProf("All")
+    setProfDropValue("Select Prof")
+    updateFilteredResources("All", currentTab, module, defaultYear)
   }
 
   const handleYearChange = (year) => {
     setCurrentYear(year)
+    setYearDropValue(year)
     updateFilteredResources(selectedProf, currentTab, currentModule, year)    
   }
 
@@ -196,7 +241,7 @@ const CourseResourceContainer = () => {
       {resList.length ? (
       <CourseResourceGrid items={resList} />
       ) : (
-        <span style={{ fontSize: '0.875rem' }}>No resources found</span>
+        <NotFoundSearch active/>
       )}
       </div>
     )
@@ -206,11 +251,16 @@ const CourseResourceContainer = () => {
     if(modulesList.length !== 0){
       return(
         <Select            
-            placeholder="Select Module"
-            showArrow
+            // style={{
+            //   marginLeft: 'auto',
+            //   alignSelf: 'end',
+            // }}
+            placeholder="Select Module"            
+            showArrow            
             onChange={handleModuleChange}
+            value={moduleDropValue}
             >
-            {modulesList.map((module_) =>{
+            {modulesList?.map((module_) => {
               return <Select.Option key={module_}>{module_}</Select.Option>
             })}
         </Select> 
@@ -221,20 +271,38 @@ const CourseResourceContainer = () => {
     )
   }
 
+  const renderProfDropDown = () => {
+    return(
+      <Select    
+            // style={{
+            //   marginLeft: 'auto',
+            //   alignSelf: 'end'
+            // }}
+            placeholder="Select Prof"
+            showArrow
+            onChange={handleProfChange}
+            value={profDropValue}
+            >
+            {profPerModule[currentModule]?.map((prof) =>{            
+              return <Select.Option key={prof}>{prof}</Select.Option>
+            })}
+        </Select> 
+    )
+  }
+
   const renderYearDropDown = (yearsList) => {
     if(yearsList.length !== 0){
       return(
         <Select  
-            style={{
-              marginLeft: 'auto',
-              alignSelf: 'center',
-              paddingLeft: '12%'
-            }}          
+            // style={{
+            //   alignSelf: 'end',
+            // }}          
             placeholder="Select Year"
             showArrow
             onChange={handleYearChange}
+            value={yearDropValue}
             >
-            {yearPerProf[selectedProf].map((year_) =>{
+            {yearPerProf[selectedProf]?.map((year_) =>{
               return <Select.Option key={year_}>{year_}</Select.Option>
             })}
         </Select> 
@@ -242,7 +310,6 @@ const CourseResourceContainer = () => {
     }
     return null
   }
-
   
 
   if (loading) return <LoaderAnimation />
@@ -280,23 +347,13 @@ const CourseResourceContainer = () => {
         style={{
           display: 'flex',
           flexDirection: 'row',
+          flexWrap: 'wrap',
+          // alignContent: 'end'
         }}
       >
-        {renderModuleDropdown(modules)}  
+        {renderModuleDropdown(modules)} 
+        {renderProfDropDown()}
         {renderYearDropDown(years)}
-        <Select    
-            style={{
-              marginLeft: 'auto',
-              alignSelf: 'flex-end'
-            }}
-            placeholder="Select Prof"
-            showArrow
-            onChange={handleProfChange}
-            >
-            {profPerModule[currentModule]?.map((prof) =>{            
-              return <Select.Option key={prof}>{prof}</Select.Option>
-            })}
-        </Select>       
       </Header>
       <Container>        
         <Tabs
@@ -315,7 +372,7 @@ const CourseResourceContainer = () => {
           >
            {renderResources(filteredResources)} 
           </Tabs.TabPane>
-          {Object.keys(resPerFilter).map((filter) => {            
+          {Object.keys(resPerFilter)?.map((filter) => {            
               return (
               <Tabs.TabPane
                 key={filter}

@@ -48,39 +48,36 @@ const CourseResourceItem = ({ content: initialContent }) => {
   }
 
   const printDescription = (content_) => {
-    if(content_?.author === "" && content_?.year === 0){
+    if((content_?.author === "" || content_?.author === "null") && content_?.year === 0){
       return (
         <div>
           Description Not Available
         </div>
       )
     }
-    if(content?.author === ""){
+    if(content?.author === "" || content_?.author === "null"){
       return (
         <div>
-          {"Year: ".concat(content_.year)}
+          {content_.year}
         </div>  
       )
     }
     if(content?.year === 0){
       return (
         <div>
-          {"Professor: ".concat(content_.author)}
+          Prof. {content_.author}
         </div>
       )
     }
-    if(content_?.author !== "" && content_?.year !== 0){
-      const profDesc = "Professor: ".concat(content_.author)
-      const yearDesc = "Year: ".concat(content_.year)
+    if(content_?.author !== "" && content_?.author !== "null" && content_?.year !== 0){
+      const profDesc = content_.author
+      const yearDesc = content_.year
       return (
-        <>
-          <div>
-            {yearDesc}
-          </div>
-          <div>
-            {profDesc}
-          </div>
-        </>
+        
+        <div>
+          {yearDesc}- Prof. {profDesc}
+        </div>
+        
       )
     }
     return null

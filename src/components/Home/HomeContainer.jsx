@@ -1,12 +1,12 @@
-import { Empty } from 'antd'
+// import { Empty } from 'antd'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 // import { CourseSearch } from 'components/CourseFinder'
-import { Aside, Card, toast } from 'components/shared'
+import { Card, toast } from 'components/shared'
 import { AsideHeader } from 'components/shared/Aside'
-import { PageHeading, PageSubtitle, PageTitle } from 'components/shared/Layout'
+import { PageHeading, PageTitle } from 'components/shared/Layout'
 import { API } from 'config/api'
 import { coursePageUrl } from 'helpers'
 
@@ -95,9 +95,9 @@ const HomeContainer = () => {
 
       </Container>
 
-      <Aside title="Feed">
+      {/* <Aside title="Feed">
         <Empty description={<PageSubtitle>Coming soon!</PageSubtitle>} />
-      </Aside>
+      </Aside> */}
     </>
   )
 }

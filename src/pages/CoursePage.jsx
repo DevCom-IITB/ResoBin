@@ -43,7 +43,7 @@ const CoursePage = () => {
   }
 
   return (
-    <PageContainer>
+    <PageContainer disable={["aside"]}>
       <Helmet>
         <title>{`${courseData.code}: ${courseData.title} - ResoBin`}</title>
         <meta property="description" content={courseData.description} />

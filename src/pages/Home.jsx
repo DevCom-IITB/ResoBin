@@ -5,7 +5,7 @@ import { PageContainer } from 'components/shared'
 
 const Home = () => {
   return (
-    <PageContainer>
+    <PageContainer disable={["aside"]}>
       <Helmet>
         <title>ResoBin</title>
         <meta name="description" content="Courses availabe at IIT Bombay" />
