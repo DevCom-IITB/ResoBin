@@ -14,7 +14,7 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
   const [profList, setProfList] = useState([])
   const [moduleList, setModuleList] = useState([])
   const currentYear = new Date().getFullYear()
-  const yearsAllowed = [{value: 0, label: 0}, {value: currentYear-2, label: currentYear-2}, {value: currentYear-1, label: currentYear-1}, {value: currentYear, label: currentYear}]
+  const yearsAllowed = [{value: 0, label: "don't know"}, {value: currentYear-2, label: currentYear-2}, {value: currentYear-1, label: currentYear-1}, {value: currentYear, label: currentYear}]
   const { getQueryString } = useQueryString()
   const course = getQueryString('course')
   // const [selectedProf, setSelectedProf] = useState("")
@@ -37,8 +37,8 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
     const fetchProfs = async () => {
       const profSet = await API.professors.read({code: course_})      
           // assert that a course definitely has profs associated with it
-      const profSetFormat = [{value: "null", label: "null"}]
-      const moduleSetFormat = [{value: "null", label: "null"}]
+      const profSetFormat = [{value: "null", label: "don't know"}]
+      const moduleSetFormat = [{value: "null", label: "don't know"}]
       profSet.professors.forEach((entry) => {
         profSetFormat.push({value: entry, label: entry})
       })

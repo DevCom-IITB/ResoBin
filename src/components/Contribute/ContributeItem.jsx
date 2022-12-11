@@ -53,7 +53,6 @@ const ContributeItem = ({
     // const { title, course, description, tags, author } = fileDetails
     
     const { author, course, module, tags, title, year } = fileDetails
-    
     const fd = new FormData()
     fd.append('file', fileItem.file, fileItem.file.name)
     fd.append('title', title)

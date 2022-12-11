@@ -251,10 +251,11 @@ const CourseResourceContainer = () => {
     if(modulesList.length !== 0){
       return(
         <Select            
-            // style={{
+            style={{
             //   marginLeft: 'auto',
             //   alignSelf: 'end',
-            // }}
+              marginRight: '2rem'
+            }}
             placeholder="Select Module"            
             showArrow            
             onChange={handleModuleChange}
@@ -274,10 +275,11 @@ const CourseResourceContainer = () => {
   const renderProfDropDown = () => {
     return(
       <Select    
-            // style={{
-            //   marginLeft: 'auto',
-            //   alignSelf: 'end'
-            // }}
+            style={{
+              // marginLeft: 'auto',
+              // alignSelf: 'end'
+              marginRight: '2rem'
+            }}
             placeholder="Select Prof"
             showArrow
             onChange={handleProfChange}
@@ -300,6 +302,7 @@ const CourseResourceContainer = () => {
             placeholder="Select Year"
             showArrow
             onChange={handleYearChange}
+            
             value={yearDropValue}
             >
             {yearPerProf[selectedProf]?.map((year_) =>{
