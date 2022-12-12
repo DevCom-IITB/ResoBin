@@ -68,7 +68,6 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
     reviews,
     resources,
   } = courseData
-
   const location = useLocation()
   const navigate = useNavigate()
   const [activeKey, setActiveKey] = useState(null)

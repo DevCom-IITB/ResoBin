@@ -1,9 +1,9 @@
 import { Button, Input, Select } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { ButtonSquare, Form } from 'components/shared'
+import { ButtonSquare, Form, toast } from 'components/shared'
 import { API } from 'config/api'
 import tags from 'data/tags.json'
 import { useQueryString } from 'hooks'
@@ -17,7 +17,7 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
   const { getQueryString } = useQueryString()
   const course = getQueryString('course')
 
-  
+   
 
   const tagOptions = tags.resourceTags.map((tag) => ({
     label: tag,
@@ -31,18 +31,25 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
   }))
 
   const handleCourseChange = (course_) => {
+    
     const fetchProfs = async () => {
-      const profSet = await API.professors.read({code: course_})      
-          // assert that a course definitely has profs associated with it
       const profSetFormat = [{value: "null", label: "don't know"}]
       const moduleSetFormat = [{value: "null", label: "don't know"}]
-      profSet.professors?.forEach((entry) => {
-        profSetFormat.push({value: entry, label: entry})
-      })
-      if(profSet.modules.length !== 0){
-        profSet.modules?.forEach((entry) => {
-          moduleSetFormat.push({value: entry, label: entry})
+      try{
+        const profSet = await API.professors.read({code: course_})      
+            // assert that a course definitely has profs associated with it
+        
+        profSet.professors?.forEach((entry) => {
+          profSetFormat.push({value: entry, label: entry})
         })
+        if(profSet.modules.length !== 0){
+          profSet.modules?.forEach((entry) => {
+            moduleSetFormat.push({value: entry, label: entry})
+          })
+        }
+      }
+      catch(error){
+        toast({ status: 'error', content: error })
       }
       // setSelectedProf("")
       // setSelectedModule("")
@@ -51,6 +58,12 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
     }
     fetchProfs()
   }  
+
+  useEffect(() => {
+    if(course){
+      handleCourseChange(course)
+    }
+  })
 
   const [form] = Form.useForm()
 

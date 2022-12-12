@@ -103,6 +103,16 @@ const CourseResourceContainer = () => {
             }
           })
         })
+        if(yearSet.length !== 0){
+          yearSet.sort()
+          yearSet.reverse()
+        }
+        if(profYears.length !== 0){
+          Object.keys(profYears).forEach((prof) => {
+            profYears[prof].sort()
+            profYears[prof].reverse() 
+          })
+        }
         if(!(moduleSet.length === 1 && moduleSet[0] === "null")){
           const reducedModuleSet = moduleSet?.filter((module) => {
             if(module === "null"){

@@ -40,9 +40,7 @@ const CourseResourceItemEditModal = ({
       label: `${code}: ${title}`,
       value: code,
     })
-  )
-
-  
+  )  
 
   const handleCourseChange = (course_) => {
     const fetchProfs = async () => {
