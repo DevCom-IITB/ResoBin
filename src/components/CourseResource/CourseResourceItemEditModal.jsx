@@ -114,7 +114,7 @@ const CourseResourceItemEditModal = ({
         </Form.Item>        
 
         <Form.Item
-          name="module"        
+          name="modules"        
           rules={[{required: true, message: 'This is a required field.' }]}
         >       
         

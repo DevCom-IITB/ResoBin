@@ -101,11 +101,15 @@ const ContributeContainer = ({ visible, setVisible }) => {
       <Aside title="Instructions" loading={loading}>
         {/* <CourseResourceGrid items={uploadedFiles} /> */}
         <InstructionContainer>
-        <ul>
-          <li>Please ensure that the resources you upload are not duplicates of existing resources.</li>
-          <li>Please name the files sensibly. Avoid using the course name, professor name, year, your name, roll number, etc in the file<span>&#39;</span>s name. Convert the files to pdf if possible.</li>
-          <li>Select the year, professor name and module name as applicable. If there is no module available, please reach out to us. Providing this data helps us serve these resources in an organized way.</li>
-          <li>Files larger than 30MB cannot be uploaded through the portal. If you have larger files, please send them to us via email.</li>          
+        <ul
+          style={{
+            paddingLeft: '1rem'
+          }}
+        >
+          <Lis>Please ensure that the resources you upload are not dupscates of existing resources.</Lis>
+          <Lis>Please name the files sensibly. Avoid using the course nsame, professor name, year, your name, roll number, etc in the file<span>&#39;</span>s name. Convert the files to pdf if possible.</Lis>
+          <Lis>Select the year, professor name and module name as applicsable. If there is no module available, please reach out to us. Providing this data helps us serve these resources in an organized way.</Lis>
+          <Lis>Files larger than 30MB cannot be uploaded through the portsal. If you have larger files, please send them to us via email.</Lis>          
         </ul>
         For any queries, reach out to us at devcom@iitb.ac.in<br/>
         Thank you
@@ -127,4 +131,7 @@ const InstructionContainer = styled.div`
   color: ${({ theme }) => theme.primary};
   font-weight: 500;
   font-size: 0.875rem;
+`
+const Lis = styled.li`
+  list-style-type: disc;
 `
