@@ -12,7 +12,7 @@ const CourseWorkloadItem = ({ value, color, title }) =>
       title={`${title}: ${value} hour${value > 1 ? 's' : ''} / week`}
     >
       {[...Array(value)].map((e, i) => (
-        <Box key={String(i)} color={color} />
+        <Box key={`c${String(i)}`} color={color} />
       ))}
     </BoxContainer>
   )

@@ -17,9 +17,9 @@ const HighlightMatches = ({ content }) => {
     .split(re)
     .map((part, index) =>
       part.toLowerCase() === search ? (
-        <Mark key={String(index)}>{part}</Mark>
+        <Mark key={`c${String(index)}`}>{part}</Mark>
       ) : (
-        <Fragment key={String(index)}>{part}</Fragment>
+        <Fragment key={`c${String(index)}`}>{part}</Fragment>
       )
     )
 }
