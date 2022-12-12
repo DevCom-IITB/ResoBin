@@ -10,14 +10,12 @@ import { useQueryString } from 'hooks'
 import { selectCourseListMinified } from 'store/courseSlice'
 
 const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
-  const [profList, setProfList] = useState([])
-  const [moduleList, setModuleList] = useState([])
+  const [profList, setProfList] = useState([{value: "null", label: "don't know"}])
+  const [moduleList, setModuleList] = useState([{value: "null", label: "don't know"}])
   const currentYear = new Date().getFullYear()
   const yearsAllowed = [{value: 0, label: "don't know"}, {value: currentYear-2, label: currentYear-2}, {value: currentYear-1, label: currentYear-1}, {value: currentYear, label: currentYear}]
   const { getQueryString } = useQueryString()
   const course = getQueryString('course')
-  // const [selectedProf, setSelectedProf] = useState("")
-  // const [selectedModule, setSelectedModule] = useState("")
 
   
 
@@ -85,9 +83,7 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
       <Form.Item
         name="module"        
         rules={[{required: true, message: 'This is a required field.' }]}
-      >
-        
-        {/* <Select showSearch placeholder="Module" options={moduleList} value={selectedModule} onChange={setSelectedModule}/> */}
+      >              
         <Select showSearch placeholder="Module" options={moduleList} />         
       </Form.Item>
 
