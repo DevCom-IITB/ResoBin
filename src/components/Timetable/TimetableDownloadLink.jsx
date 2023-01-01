@@ -9,8 +9,9 @@ import { selectCourseListMinified } from 'store/courseSlice'
 const TimetableDownloadLink = ({ coursesInTimetable }) => {
   const courseListMinified = useSelector(selectCourseListMinified)
 
-  const ISOStringToICSDate = (dateString) =>
-    `${dateString.replace(/[.:]/g, '').slice(0, -5)}Z`
+  const ISOStringToICSDate = (dateString) => {
+      return `${dateString.replace(/[.:-]/g, '').slice(0, -4)}Z`
+  }
 
   const getRecurringEvent = (
     startTime,
@@ -29,16 +30,16 @@ const TimetableDownloadLink = ({ coursesInTimetable }) => {
     endDate.setHours(endTime.hours)
     endDate.setMinutes(endTime.minutes)
 
-    const result = `
-BEGIN:VEVENT
+    const result = `BEGIN:VEVENT
 UID:${summary + startTime.hours + weekdayFirstTwoChars}
 DTSTART:${ISOStringToICSDate(startDate.toISOString())}
 DTEND:${ISOStringToICSDate(endDate.toISOString())}
 RRULE:FREQ=WEEKLY;BYDAY=${weekdayFirstTwoChars}
 SUMMARY:${summary}
 DESCRIPTION:${description}
-END:VEVENT`
-
+END:VEVENT
+`
+    
     return result
   }
 
@@ -81,14 +82,14 @@ END:VEVENT`
   }
 
   const generateICSFile = (eventList) => {
-    const data = `
-BEGIN:VCALENDAR
+    const data = `BEGIN:VCALENDAR
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 PRODID:-//Test Cal//EN
 VERSION:2.0
 ${eventList.join('')}
-END:VCALENDAR`
+END:VCALENDAR
+`
 
     const file = new File([data], 'semestertimetable.ics', {
       type: 'text/calendar;charset=utf8',
