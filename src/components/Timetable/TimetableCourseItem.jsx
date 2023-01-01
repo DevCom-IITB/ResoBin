@@ -15,13 +15,21 @@ import { fontSize } from 'styles/responsive'
 
 const TimetableCourseItem = ({ data }) => {
   const { id, course: code, lectureSlots, tutorialSlots, lectureVenue } = data
-
+  
   const title = useSelector(selectCourseTitle(code))
   const colorPicker = useColorPicker()
 
   const handleClickInfo = useCallback(() => {
     window.location.href = coursePageUrl(code, title)
   }, [code, title])
+
+  const formatItem = (name, isTut, venue) => {
+    if(venue === '' || isTut === true){
+      return `${name}`
+    }    
+    return `${name} | ${venue}`
+    
+  }
 
   const TimetableCourseLectureItem = useCallback(
     ({ gridCol, gridRow, slotName, isTutorial, venue }) => (
@@ -41,10 +49,10 @@ const TimetableCourseItem = ({ data }) => {
                   right: '0.25rem',
                 }}
               />
-            </h3>
-
-            <span>
-              {gridRow.start.title} | {lectureVenue}
+            </h3>            
+            <span>              
+              {/* {gridRow.start.title} | {lectureVenue} */}
+              {formatItem(gridRow.start.title, isTutorial, lectureVenue)}
             </span>
           </Item>
         </Tooltip>
