@@ -38,10 +38,19 @@ const TimetableContainerCustom = () => {
     fetchTimetableData()
   }, [getQueryString])
 
+  const addSharedTimetable = async () => {
+    try {
+      const ids = encodeURIComponent(getQueryString('ids'))
+      await API.profile.timetable.addShared({ ids })
+    } catch (error) {
+      toast({status: 'error', content: error})
+    }
+  }
   return (
     <>
       <PageHeading>
         <PageTitle>Timetable (Shared)</PageTitle>
+        <button type='submit' onClick={addSharedTimetable}>Add to timetable</button>
       </PageHeading>
 
       {loading && <LoaderAnimation />}
