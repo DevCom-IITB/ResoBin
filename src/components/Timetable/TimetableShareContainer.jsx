@@ -1,6 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import { Spin } from 'antd'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import {
   Aside,
@@ -8,6 +9,7 @@ import {
   PageTitle,
   toast,
   LoaderAnimation,
+  ButtonSquare
 } from 'components/shared'
 import { API } from 'config/api'
 import { useQueryString } from 'hooks'
@@ -20,6 +22,7 @@ const TimetableContainerCustom = () => {
   const { getQueryString } = useQueryString()
   const [courseTimetableList, setCourseTimetableList] = useState([])
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchTimetableData = async () => {
@@ -42,6 +45,8 @@ const TimetableContainerCustom = () => {
     try {
       const ids = encodeURIComponent(getQueryString('ids'))
       await API.profile.timetable.addShared({ ids })
+      toast({status:"success", content: "Successfully added to timetable"})
+      navigate('/timetable',{replace:true})
     } catch (error) {
       toast({status: 'error', content: error})
     }
@@ -50,7 +55,7 @@ const TimetableContainerCustom = () => {
     <>
       <PageHeading>
         <PageTitle>Timetable (Shared)</PageTitle>
-        <button type='submit' onClick={addSharedTimetable}>Add to timetable</button>
+        <ButtonSquare type='primary' htmlType='submit' onClick={addSharedTimetable}>Add to my timetable</ButtonSquare>
       </PageHeading>
 
       {loading && <LoaderAnimation />}
