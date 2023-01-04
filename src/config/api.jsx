@@ -89,6 +89,8 @@ export const API = {
         APIInstance.put(`/accounts/profile/timetable/${id}`),
       remove: async ({ id }) =>
         APIInstance.delete(`/accounts/profile/timetable/${id}`),
+      addShared: async({ids}) =>
+        APIInstance.put(`/accounts/profile/timetable/shared/${ids}`),
     },
   },
 
