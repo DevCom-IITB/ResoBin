@@ -23,9 +23,9 @@ const ParseDescription = ({ children: text }) => {
       {search
         ? parts.map((part, index) =>
             part.toLowerCase() === search ? (
-              <Highlight key={String(index)}>{part}</Highlight>
+              <Highlight key={"a" + String(index)}>{part}</Highlight>
             ) : (
-              <Span key={String(index)}>{part}</Span>
+              <Span key={"a" + String(index)}>{part}</Span>
             )
           )
         : displayText}
