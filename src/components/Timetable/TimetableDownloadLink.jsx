@@ -92,7 +92,7 @@ END:VEVENT
         ''
       )
     })
-    console.log(courseEvents.concat(tutEvents))
+    // console.log(courseEvents.concat(tutEvents))
     return courseEvents.concat(tutEvents)
   }
 

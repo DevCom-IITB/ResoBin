@@ -10,14 +10,21 @@ import { useQueryString } from 'hooks'
 import { selectCourseListMinified } from 'store/courseSlice'
 
 const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
-  const [profList, setProfList] = useState([{value: "null", label: "don't know"}])
-  const [moduleList, setModuleList] = useState([{value: "null", label: "don't know"}])
+  const [profList, setProfList] = useState([
+    { value: 'null', label: "don't know" },
+  ])
+  const [moduleList, setModuleList] = useState([
+    { value: 'null', label: "don't know" },
+  ])
   const currentYear = new Date().getFullYear()
-  const yearsAllowed = [{value: 0, label: "don't know"}, {value: currentYear-2, label: currentYear-2}, {value: currentYear-1, label: currentYear-1}, {value: currentYear, label: currentYear}]
+  const yearsAllowed = [
+    { value: 0, label: "don't know" },
+    { value: currentYear - 2, label: currentYear - 2 },
+    { value: currentYear - 1, label: currentYear - 1 },
+    { value: currentYear, label: currentYear },
+  ]
   const { getQueryString } = useQueryString()
   const course = getQueryString('course')
-
-   
 
   const tagOptions = tags.resourceTags.map((tag) => ({
     label: tag,
@@ -31,24 +38,22 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
   }))
 
   const handleCourseChange = (course_) => {
-    
     const fetchProfs = async () => {
-      const profSetFormat = [{value: "null", label: "don't know"}]
-      const moduleSetFormat = [{value: "null", label: "don't know"}]
-      try{
-        const profSet = await API.professors.read({code: course_})      
-            // assert that a course definitely has profs associated with it
-        
+      const profSetFormat = [{ value: 'null', label: "don't know" }]
+      const moduleSetFormat = [{ value: 'null', label: "don't know" }]
+      try {
+        const profSet = await API.professors.read({ code: course_ })
+        // assert that a course definitely has profs associated with it
+
         profSet.professors?.forEach((entry) => {
-          profSetFormat.push({value: entry, label: entry})
+          profSetFormat.push({ value: entry, label: entry })
         })
-        if(profSet.modules.length !== 0){
+        if (profSet.modules.length !== 0) {
           profSet.modules?.forEach((entry) => {
-            moduleSetFormat.push({value: entry, label: entry})
+            moduleSetFormat.push({ value: entry, label: entry })
           })
         }
-      }
-      catch(error){
+      } catch (error) {
         toast({ status: 'error', content: error })
       }
       // setSelectedProf("")
@@ -57,13 +62,13 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
       setProfList(profSetFormat)
     }
     fetchProfs()
-  }  
+  }
 
   useEffect(() => {
-    if(course){
+    if (course) {
       handleCourseChange(course)
     }
-  })
+  }, [])
 
   const [form] = Form.useForm()
 
@@ -88,43 +93,58 @@ const ContributeForm = ({ fileItem, handleUpload, handleDelete }) => {
 
       <Form.Item
         name="course"
-        rules={[{ required: true, message: 'This is a required field. Choose a course.' }]}
+        rules={[
+          {
+            required: true,
+            message: 'This is a required field. Choose a course.',
+          },
+        ]}
       >
-        <Select showSearch placeholder="Course" options={courseOptions} onChange={handleCourseChange} />
+        <Select
+          showSearch
+          placeholder="Course"
+          options={courseOptions}
+          onChange={handleCourseChange}
+        />
       </Form.Item>
 
       <Form.Item
-        name="module"        
-        rules={[{required: true, message: 'This is a required field.' }]}
-      >              
-        <Select showSearch placeholder="Module" options={moduleList} />         
+        name="module"
+        rules={[{ required: true, message: 'This is a required field.' }]}
+      >
+        <Select showSearch placeholder="Module" options={moduleList} />
       </Form.Item>
 
       <Form.Item
         name="author"
-        rules={[{required: true, message: 'This is a required field.' }]}
-      >        
+        rules={[{ required: true, message: 'This is a required field.' }]}
+      >
         {/* <Select showSearch placeholder="Professor" options={profList} value={selectedProf} onChange={setSelectedProf}/> */}
         <Select showSearch placeholder="Professor" options={profList} />
       </Form.Item>
 
       <Form.Item
         name="year"
-        rules={[{required: true, message: 'This is a required field.' }]}
+        rules={[{ required: true, message: 'This is a required field.' }]}
       >
         <Select showSearch placeholder="Year" options={yearsAllowed} />
-      </Form.Item>   
+      </Form.Item>
 
-      <Form.Item 
+      <Form.Item
         name="tags"
-        rules={[{required: true, message: 'This is a required field. Select the applicable tags.' }]}  
+        rules={[
+          {
+            required: true,
+            message: 'This is a required field. Select the applicable tags.',
+          },
+        ]}
       >
         <Select
           // mode="tags"
           mode="multiple"
           placeholder="Add tags"
-          showArrow          
-          // tokenSeparators={[',']}          
+          showArrow
+          // tokenSeparators={[',']}
           options={tagOptions}
         />
       </Form.Item>
