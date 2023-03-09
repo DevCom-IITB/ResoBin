@@ -56,3 +56,5 @@
   ```powershell
   docker run --rm -d -p 80:80 resobin:latest
   ```
+
+(Make sure @material-ui/core and react-cookie are installed)

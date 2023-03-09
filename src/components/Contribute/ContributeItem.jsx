@@ -50,17 +50,18 @@ const ContributeItem = ({
       updateFileItem({ status: 'error' })
       return
     }
-
-    const { title, course, description, tags, author } = fileDetails
-
+    // const { title, course, description, tags, author } = fileDetails
+    
+    const { author, course, module, tags, title, year } = fileDetails
     const fd = new FormData()
     fd.append('file', fileItem.file, fileItem.file.name)
     fd.append('title', title)
     fd.append('author', author)
     fd.append('course', course)
-    fd.append('description', description || 'No description available.')
+    fd.append('description', 'No description available.')
+    fd.append('year', parseInt(year, 10))
+    fd.append('modules', module)
     fd.append('tags', JSON.stringify(tags))
-
     try {
       // const response = await API.resources.create({
       //   payload: fd,

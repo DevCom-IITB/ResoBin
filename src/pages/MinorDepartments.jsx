@@ -1,19 +1,18 @@
 import { Helmet } from 'react-helmet-async'
 
-import { HomeContainer } from 'components/Home'
+import { DepartmentsContainer } from 'components/MinorDepartments'
 import { PageContainer } from 'components/shared'
 
-const Home = () => {
+const MinorDepartments = () => {
   return (
-    <PageContainer disable={['aside']}>
+    <PageContainer>
       <Helmet>
-        <title>ResoBin</title>
+        <title>Minors - ResoBin</title>
         <meta name="description" content="Courses availabe at IIT Bombay" />
       </Helmet>
-
-      <HomeContainer />
+      <DepartmentsContainer/>
     </PageContainer>
   )
 }
 
-export default Home
+export default MinorDepartments

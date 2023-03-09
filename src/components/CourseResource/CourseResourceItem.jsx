@@ -47,6 +47,42 @@ const CourseResourceItem = ({ content: initialContent }) => {
     }
   }
 
+  const printDescription = (content_) => {
+    if((content_?.author === "" || content_?.author === "null") && content_?.year === 0){
+      return (
+        <div>
+          Description Not Available
+        </div>
+      )
+    }
+    if(content?.author === "" || content_?.author === "null"){
+      return (
+        <div>
+          {content_.year}
+        </div>  
+      )
+    }
+    if(content?.year === 0){
+      return (
+        <div>
+          Prof. {content_.author}
+        </div>
+      )
+    }
+    if(content_?.author !== "" && content_?.author !== "null" && content_?.year !== 0){
+      const profDesc = content_.author
+      const yearDesc = content_.year
+      return (
+        
+        <div>
+          {yearDesc}- Prof. {profDesc}
+        </div>
+        
+      )
+    }
+    return null
+  }
+
   return (
     <>
       <GridItem>
@@ -56,12 +92,11 @@ const CourseResourceItem = ({ content: initialContent }) => {
           style={{ width: '100%', height: '100%' }}
         />
 
-        <ItemInfo>
+        <ItemInfo>          
           <ResourceTitle>{content.title}</ResourceTitle>
-          <ResourceDescription>
-            {content.description || 'Description not available'}
+          <ResourceDescription>   
+            {printDescription(content)}
           </ResourceDescription>
-
           <Row>
             <ButtonIcon
               size="default"
@@ -168,6 +203,7 @@ const Row = styled.div`
   gap: 0.5rem;
   align-items: center;
   margin-bottom: 0.5rem;
+  margin-top: auto;
 `
 
 const ResourceTitle = styled.h5`
@@ -179,8 +215,9 @@ const ResourceTitle = styled.h5`
 
 const ResourceDescription = styled.p`
   ${limitLines({ count: 2, height: '1.75rem' })}
-
-  margin-bottom: 0;
+  height: 100%;
+  margin-bottom: auto;
+  padding-bottom: auto;
 `
 
 const ItemInfo = styled.figcaption`
@@ -188,6 +225,7 @@ const ItemInfo = styled.figcaption`
   bottom: 0;
   z-index: 1;
   width: 100%;
+
   padding: 0.5rem;
   color: ${({ theme }) => theme.textColorInactive};
   background: ${({ theme }) => rgba(theme.darksecondary, 0.95)};

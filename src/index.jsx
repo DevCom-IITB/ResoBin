@@ -1,4 +1,5 @@
 import { StrictMode, useEffect } from 'react'
+import { CookiesProvider } from 'react-cookie'
 import ReactDOM from 'react-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { Provider } from 'react-redux'
@@ -25,7 +26,9 @@ const StrictApp = () => {
         <PersistGate loading={<LoaderAnimation />} persistor={persistor}>
           <Router>
             <HelmetProvider>
-              <App />
+              <CookiesProvider>
+                <App />
+              </CookiesProvider>
             </HelmetProvider>
           </Router>
         </PersistGate>
