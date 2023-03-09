@@ -12,7 +12,7 @@ const FavouritesContainer = () => {
   const [loading, setLoading] = useState(true)
   const [courseData, setCourseData] = useState([])
 
-  const fetchCourses = async (params) => {
+  const fetchCourses = async (params) => {    // copy this into homepage
     try {
       setLoading(true)
       const response = await API.profile.favorites({ params })

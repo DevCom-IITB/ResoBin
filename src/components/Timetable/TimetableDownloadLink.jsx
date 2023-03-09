@@ -9,15 +9,17 @@ import { selectCourseListMinified } from 'store/courseSlice'
 const TimetableDownloadLink = ({ coursesInTimetable }) => {
   const courseListMinified = useSelector(selectCourseListMinified)
 
-  const ISOStringToICSDate = (dateString) =>
-    `${dateString.replace(/[.:]/g, '').slice(0, -5)}Z`
+  const ISOStringToICSDate = (dateString) => {
+    return `${dateString.replace(/[.:-]/g, '').slice(0, -4)}Z`
+  }
 
   const getRecurringEvent = (
     startTime,
     endTime,
     weekdayFirstTwoChars,
     summary,
-    description
+    description,
+    location
   ) => {
     const startDate = new Date()
     const endDate = new Date()
@@ -29,26 +31,31 @@ const TimetableDownloadLink = ({ coursesInTimetable }) => {
     endDate.setHours(endTime.hours)
     endDate.setMinutes(endTime.minutes)
 
-    const result = `
-BEGIN:VEVENT
+    const result = `BEGIN:VEVENT
 UID:${summary + startTime.hours + weekdayFirstTwoChars}
 DTSTART:${ISOStringToICSDate(startDate.toISOString())}
 DTEND:${ISOStringToICSDate(endDate.toISOString())}
 RRULE:FREQ=WEEKLY;BYDAY=${weekdayFirstTwoChars}
 SUMMARY:${summary}
+LOCATION:${location}
 DESCRIPTION:${description}
-END:VEVENT`
+END:VEVENT
+`
 
     return result
   }
 
   const generateCourseEvents = (data) => {
-    const { course, lectureSlots } = data
+    const { course, lectureSlots, tutorialSlots, lectureVenue } = data
     const courseTitle = courseListMinified.find(
       (_course) => _course?.code === data.course
     )
 
     const courseSlots = lectureSlots.map((slot) => ({
+      slot,
+      grid: slots[slot],
+    }))
+    const tutSlots = tutorialSlots.map((slot) => ({
       slot,
       grid: slots[slot],
     }))
@@ -65,11 +72,28 @@ END:VEVENT`
         { hours: endTimeHM[0], minutes: endTimeHM[1] },
         weekdayFirstTwoChars,
         course,
-        courseTitle.title
+        courseTitle.title,
+        lectureVenue
       )
     })
+    const tutEvents = tutSlots.map(({ slot, grid }, idx) => {
+      const startTimeHM = rows[grid.row.start].title.split(':')
+      const endTimeHM = rows[grid.row.end].title.split(':')
+      const weekdayFirstTwoChars = cols[grid.col - 1].title
+        .slice(0, 2)
+        .toUpperCase()
 
-    return courseEvents
+      return getRecurringEvent(
+        { hours: startTimeHM[0], minutes: startTimeHM[1] },
+        { hours: endTimeHM[0], minutes: endTimeHM[1] },
+        weekdayFirstTwoChars,
+        course,
+        courseTitle.title,
+        ''
+      )
+    })
+    // console.log(courseEvents.concat(tutEvents))
+    return courseEvents.concat(tutEvents)
   }
 
   const getAllEvents = () => {
@@ -81,14 +105,14 @@ END:VEVENT`
   }
 
   const generateICSFile = (eventList) => {
-    const data = `
-BEGIN:VCALENDAR
+    const data = `BEGIN:VCALENDAR
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 PRODID:-//Test Cal//EN
 VERSION:2.0
 ${eventList.join('')}
-END:VCALENDAR`
+END:VCALENDAR
+`
 
     const file = new File([data], 'semestertimetable.ics', {
       type: 'text/calendar;charset=utf8',

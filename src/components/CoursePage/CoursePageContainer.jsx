@@ -1,4 +1,4 @@
-import { Empty } from 'antd'
+// import { Empty } from 'antd'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -7,7 +7,8 @@ import styled from 'styled-components/macro'
 import { CourseResourceContainer } from 'components/CourseResource'
 import { CourseReviewContainer } from 'components/CourseReview'
 import { FavoriteToggle } from 'components/Favourites'
-import { Aside, PageSubtitle, Tabs, Divider } from 'components/shared'
+// import { Aside, PageSubtitle, Tabs, Divider } from 'components/shared'
+import { Tabs, Divider } from 'components/shared'
 import { TimetableSelector } from 'components/Timetable'
 import { selectCurrentSemester } from 'store/courseSlice'
 import { device, fontSize } from 'styles/responsive'
@@ -43,7 +44,18 @@ const CourseProfessors = ({ semester }) => {
   )
 }
 
-const CoursePageContainer = ({ courseData }) => {
+const CPICutoff = ({ cutoff }) => {
+  if (typeof cutoff !== 'undefined' && cutoff !== null && cutoff.length > 0) {
+    return (
+      <h3>
+        &ensp;&#9679;&ensp; CPI CutOff: {cutoff[cutoff.length - 1].cutoff}
+      </h3>
+    )
+  }
+  return null
+}
+
+const CoursePageContainer = ({ courseData, cutoffs }) => {
   const {
     code,
     title,
@@ -56,7 +68,6 @@ const CoursePageContainer = ({ courseData }) => {
     reviews,
     resources,
   } = courseData
-
   const location = useLocation()
   const navigate = useNavigate()
   const [activeKey, setActiveKey] = useState(null)
@@ -71,11 +82,13 @@ const CoursePageContainer = ({ courseData }) => {
   }, [location.hash])
 
   return (
-    <>
+    <div>
       <CoursePageBreadcrumbs courseTitle={`${code}: ${title}`} />
 
       <CoursePageBody>
+        
         <CourseInfo>
+          
           <h1>{code}</h1>
           <FavoriteContainer>
             <FavoriteToggle code={code} initialCount={favoritedByCount} />
@@ -83,7 +96,8 @@ const CoursePageContainer = ({ courseData }) => {
 
           <h2>{title}</h2>
           <h3>
-            {department.name} &ensp;&#9679;&ensp; {credits} credits
+            {department.name} &ensp;&#9679;&ensp; {credits} credits{' '}
+            <CPICutoff cutoff={cutoffs} />
           </h3>
 
           <Divider margin="0.25rem 0" />
@@ -101,6 +115,7 @@ const CoursePageContainer = ({ courseData }) => {
       </CoursePageBody>
 
       <Container>
+        
         <Tabs
           tabheight="2.25rem"
           tabwidth="7.5rem"
@@ -127,17 +142,16 @@ const CoursePageContainer = ({ courseData }) => {
           </Tabs.TabPane>
         </Tabs>
       </Container>
-
-      <Aside title="Course stats">
-        <Empty description={<PageSubtitle>Coming soon!</PageSubtitle>} />
-      </Aside>
-    </>
+    </div>
   )
 }
 
 export default CoursePageContainer
 
+
+
 const Container = styled.div`
+  
   margin-bottom: 1rem;
   padding: 1.5rem 1rem;
   color: ${({ theme }) => theme.textColor};

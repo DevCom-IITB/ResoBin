@@ -41,7 +41,7 @@ const PageContainerLayout = styled.div`
     }
     `}
 
-  ${({ disable, theme }) =>
+   ${({ disable, theme }) =>
     !disable.includes('aside') &&
     `
     @media ${device.min.lg} {

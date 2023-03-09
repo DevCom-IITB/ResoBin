@@ -11,16 +11,13 @@
     "Seminar",
     "Theory"
   ],
-  "resourceTags": [
-    "Assignment",
-    "Endsem",
-    "Extra notes",
-    "Lecture slides",
-    "Material",
-    "Midsem",
-    "Notes",
-    "Quiz",
-    "Study material",
-    "Tutorial"
+  "resourceTags": [    
+    "Slides",
+    "Textbooks",
+    "PYQs",
+    "Tutorials",
+    "Assignments", 
+    "Labs",
+    "Misc"
   ]
 }

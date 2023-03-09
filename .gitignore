@@ -17,6 +17,9 @@
 # testing
 /coverage
 
+# test data
+
+
 # production
 /build
 

@@ -89,6 +89,8 @@ export const API = {
         APIInstance.put(`/accounts/profile/timetable/${id}`),
       remove: async ({ id }) =>
         APIInstance.delete(`/accounts/profile/timetable/${id}`),
+      addShared: async({ids}) =>
+        APIInstance.put(`/accounts/profile/timetable/shared/${ids}`),
     },
   },
 
@@ -101,7 +103,10 @@ export const API = {
       APIInstance.get(`/courses/${code}/resources`),
     listReviews: async ({ code }) =>
       APIInstance.get(`/courses/${code}/reviews`),
-
+    
+    getCutoffs: async ({ code }) =>
+    APIInstance.get(`/courses/${code}/cutoffs`),
+    
     favorite: {
       add: async ({ code }) =>
         APIInstance.put(`/accounts/profile/courses/${code}/favorite`),
@@ -131,6 +136,10 @@ export const API = {
           `/accounts/profile/courses/${code}/request/resources`
         ),
     },
+  },
+
+  professors: {
+    read: async ({ code }) => APIInstance.get(`/professor/${code}`),
   },
 
   // * Reviews endpoints
@@ -166,6 +175,17 @@ export const API = {
     list: async () => APIInstance.get('/semesters'),
   },
 
+  minors: {
+    list: async () => APIInstance.get('/minors'),
+  },
+
+  programReviews: {
+    read: async ({ id }) => APIInstance.get(`/program-reviews/${id}`),
+  },
+  
+  honors: {
+    list: async () => APIInstance.get('/honors'),
+  },
   // * Stats endpoint
   stats: {
     list: async () => APIInstance.get('/stats'),

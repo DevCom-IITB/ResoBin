@@ -1,11 +1,12 @@
-import { Empty } from 'antd'
+// import { Empty } from 'antd'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { Aside, Card, toast } from 'components/shared'
+// import { CourseSearch } from 'components/CourseFinder'
+import { Card, toast } from 'components/shared'
 import { AsideHeader } from 'components/shared/Aside'
-import { PageHeading, PageSubtitle, PageTitle } from 'components/shared/Layout'
+import { PageHeading, PageTitle } from 'components/shared/Layout'
 import { API } from 'config/api'
 import { coursePageUrl } from 'helpers'
 
@@ -24,8 +25,21 @@ const HomeItem = ({ course, hash }) => {
 const HomeContainer = () => {
   const [stats, setStats] = useState([])
   const [loading, setLoading] = useState(true)
+  const [favCourseData, setFavCourseData] = useState([])
 
   useEffect(() => {
+    const fetchFavCourses = async () => {
+      // copy this into homepage
+      try {
+        setLoading(true)
+        const response = await API.profile.favorites()
+        setFavCourseData(response.results)
+      } catch (error) {
+        toast({ status: 'error', content: error })
+      } finally {
+        setLoading(false)
+      }
+    }
     const fetchStats = async () => {
       try {
         setLoading(true)
@@ -39,46 +53,47 @@ const HomeContainer = () => {
     }
 
     fetchStats()
+    fetchFavCourses()
   }, [])
 
   return (
     <>
       <PageHeading>
-        <PageTitle>Popular Courses</PageTitle>
+        <PageTitle>Home</PageTitle>
       </PageHeading>
+
+      {/* <CourseSearch
+        loading={loading}
+        setLoading={setLoading}
+      /> */}
 
       <Container>
         <StatsContainer>
-          <AsideHeader title="Most favourites" loading={loading} />
+          <AsideHeader title="My Favourites" loading={loading} />
+
+          <Flex>
+            {favCourseData.length !== 0 ? (
+              favCourseData?.map((course) => (
+                <HomeItem key={course.code} course={course} />
+              ))
+            ) : (
+              <NoFavDiv>{!loading && 'No favourite Courses'}</NoFavDiv>
+            )}
+          </Flex>
+          <AsideHeader title="Most Favourites" loading={loading} />
+
           <Flex>
             {stats?.courses?.popular?.map((course) => (
               <HomeItem key={course.code} course={course} />
-            ))}
-          </Flex>
-        </StatsContainer>
-
-        <StatsContainer>
-          <AsideHeader title="Most resource requests" loading={loading} />
-          <Flex>
-            {stats?.courses?.requested?.reviews?.map((course) => (
-              <HomeItem key={course.code} course={course} hash="reviews" />
-            ))}
-          </Flex>
-        </StatsContainer>
-
-        <StatsContainer>
-          <AsideHeader title="Most review requests" loading={loading} />
-          <Flex>
-            {stats?.courses?.requested?.resources?.map((course) => (
-              <HomeItem key={course.code} course={course} hash="resources" />
+              // console.log(course)
             ))}
           </Flex>
         </StatsContainer>
       </Container>
 
-      <Aside title="Feed">
+      {/* <Aside title="Feed">
         <Empty description={<PageSubtitle>Coming soon!</PageSubtitle>} />
-      </Aside>
+      </Aside> */}
     </>
   )
 }
@@ -106,4 +121,9 @@ const Flex = styled.div`
   flex-basis: 100%;
   gap: 0.5rem;
   overflow-x: scroll;
+`
+const NoFavDiv = styled.div`
+  color: #302718;
+  font-size: 1rem;
+  font-weight: 500;
 `
