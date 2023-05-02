@@ -1,13 +1,14 @@
 import { ChatAlt, DocumentText } from '@styled-icons/heroicons-outline'
-import { Fragment } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { CourseContentRequestIcon } from 'components/CoursePage/CourseContentRequest'
 import FavoriteToggle from 'components/Favourites/FavoriteToggle'
-import { CardSplit, Divider, Tag, Typography } from 'components/shared'
+import { CardSplit, Divider, toast, Tag, Typography } from 'components/shared'
 import { ButtonSquareLink } from 'components/shared/Buttons'
 import { TimetableSelector } from 'components/Timetable'
+import { API } from 'config/api'
 import { hash, coursePageUrl } from 'helpers'
 import { useColorPicker, useResponsive } from 'hooks'
 import { device, fontSize } from 'styles/responsive'
@@ -102,17 +103,54 @@ const CourseItemMain = ({ courseData }) => {
 // TODO: Improve responsiveness
 const CourseItemSub = ({ courseData }) => {
   const { isMobile, isMobileS } = useResponsive()
+  const [, setLoading] = useState(true)
+  const [allResCount, setAllResCount] = useState(0)
+  const [allRevCount, setAllRevCount] = useState(0)
 
   const {
     code,
     title,
     semester,
-    reviewsCount,
-    resourcesCount,
+    reviewsCountIgnore,
+    resourcesCountIgnore,
     reviewRequestersCount,
     resourceRequestersCount,
   } = courseData
 
+  useEffect(() => {
+    const fetchResources = async () => {
+      try {
+        setLoading(true)
+        const response = await API.courses.listResources({ code })
+        let resCount = 0
+        response.forEach((resource) => {
+          resCount += 1
+          setAllResCount(resCount)
+        })
+      } catch (error) {
+        toast({ status: 'error', content: error })
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchResources()
+    const fetchReviews = async () => {
+      try {
+        setLoading(true)
+        const response = await API.courses.listReviews({ code })
+        let revCount = 0
+        response.forEach((review) => {
+          revCount += 1
+          setAllRevCount(revCount)
+        })
+      } catch (error) {
+        toast({ status: 'error', content: error })
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchReviews()
+  }, [code])
   return (
     <>
       <TimetableSelector semester={semester} />
@@ -129,7 +167,7 @@ const CourseItemSub = ({ courseData }) => {
             style={{ width: '100%', borderRadius: '0.5rem 0 0 0.5rem' }}
           >
             <ChatAlt size="16" />
-            Reviews {reviewsCount > 0 && `(${reviewsCount})`}
+            Reviews {allRevCount > 0 && `(${allRevCount})`}
           </ButtonSquareLink>
 
           <CourseContentRequestIcon
@@ -146,7 +184,7 @@ const CourseItemSub = ({ courseData }) => {
             to={`${coursePageUrl(code, title)}#resources`}
           >
             <DocumentText size="16" />
-            Resources {resourcesCount > 0 && `(${resourcesCount})`}
+            Resources {allResCount > 0 && `(${allResCount})`}
           </ButtonSquareLink>
 
           <CourseContentRequestIcon
