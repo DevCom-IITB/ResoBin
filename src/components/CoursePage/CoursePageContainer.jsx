@@ -86,11 +86,7 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
       try {
         setLoading(true)
         const response = await API.courses.listResources({ code })
-        let resCount = 0
-        response.forEach((resource) => {
-          resCount += 1
-          setAllResCount(resCount)
-        })
+        setAllResCount(Object.keys(response).length)
       } catch (error) {
         toast({ status: 'error', content: error })
       } finally {
@@ -102,11 +98,7 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
       try {
         setLoading(true)
         const response = await API.courses.listReviews({ code })
-        let revCount = 0
-        response.forEach((review) => {
-          revCount += 1
-          setAllRevCount(revCount)
-        })
+        setAllRevCount(Object.keys(response).length)
       } catch (error) {
         toast({ status: 'error', content: error })
       } finally {
