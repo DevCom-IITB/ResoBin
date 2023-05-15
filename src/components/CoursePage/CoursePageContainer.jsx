@@ -15,7 +15,7 @@ import { selectCurrentSemester } from 'store/courseSlice'
 import { device, fontSize } from 'styles/responsive'
 
 import CoursePageBreadcrumbs from './CoursePageBreadcrumbs'
-import CourseWorkload from './CourseWorkload'
+import CourseSlot from './CourseSlot'
 
 const CourseProfessors = ({ semester }) => {
   const latestSemester = useSelector(selectCurrentSemester)
@@ -63,7 +63,7 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
     department,
     credits,
     description,
-    workload,
+    workloadIgnore,
     semester,
     favoritedByCount,
     reviewsIgnore,
@@ -142,7 +142,7 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
         <Divider margin="0.75rem 0" />
 
         <FlexGap>
-          <CourseWorkload workload={workload} />
+          <CourseSlot semester={semester} />
           <CourseProfessors semester={semester} />
           <TimetableSelector semester={semester} />
         </FlexGap>
