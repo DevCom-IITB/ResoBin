@@ -1,5 +1,6 @@
 import { Download } from '@styled-icons/heroicons-outline'
 import { Dropdown, Menu } from 'antd'
+import html2canvas from 'html2canvas'
 import { useSelector } from 'react-redux'
 
 import { ButtonIcon } from 'components/shared'
@@ -120,6 +121,18 @@ END:VCALENDAR
 
     return window.URL.createObjectURL(file)
   }
+
+  const generatePNGFile = (element) => {
+    return html2canvas(element).then((canvas) => {
+      const data = canvas.toDataURL('timetable_image/png')
+      const file = new File([data], 'timetable.png', {
+        type: 'timetable_image/png',
+      })
+      const url = URL.createObjectURL(file)
+      return url
+    })
+  }
+
   const menu = (
     <Menu theme="dark">
       <Menu.Item key="ics">
@@ -129,7 +142,17 @@ END:VCALENDAR
           rel="noreferrer"
           download
         >
-          Google Calendar (.ics file) <b>(beta)</b>
+          Google Calendar (.ics file)
+        </a>
+      </Menu.Item>
+      <Menu.Item key="png">
+        <a
+          href={generatePNGFile(getAllEvents())}
+          target="_blank"
+          rel="noreferrer"
+          download
+        >
+          Image (.png file)
         </a>
       </Menu.Item>
     </Menu>
