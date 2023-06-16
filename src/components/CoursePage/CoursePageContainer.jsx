@@ -8,8 +8,9 @@ import { CourseResourceContainer } from 'components/CourseResource'
 import { CourseReviewContainer } from 'components/CourseReview'
 import { FavoriteToggle } from 'components/Favourites'
 // import { Aside, PageSubtitle, Tabs, Divider } from 'components/shared'
-import { Tabs, Divider } from 'components/shared'
+import { Tabs, Divider, toast } from 'components/shared'
 import { TimetableSelector } from 'components/Timetable'
+import { API } from 'config/api'
 import { selectCurrentSemester } from 'store/courseSlice'
 import { device, fontSize } from 'styles/responsive'
 
@@ -65,12 +66,15 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
     workload,
     semester,
     favoritedByCount,
-    reviews,
-    resources,
+    reviewsIgnore,
+    resourcesIgnore,
   } = courseData
   const location = useLocation()
   const navigate = useNavigate()
   const [activeKey, setActiveKey] = useState(null)
+  const [, setLoading] = useState(true)
+  const [allResCount, setAllResCount] = useState(0)
+  const [allRevCount, setAllRevCount] = useState(0)
 
   const handleTabChange = (key) => {
     location.hash = key
@@ -78,6 +82,30 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
   }
 
   useEffect(() => {
+    const fetchResources = async () => {
+      try {
+        setLoading(true)
+        const response = await API.courses.listResources({ code })
+        setAllResCount(Object.keys(response).length)
+      } catch (error) {
+        toast({ status: 'error', content: error })
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchResources()
+    const fetchReviews = async () => {
+      try {
+        setLoading(true)
+        const response = await API.courses.listReviews({ code })
+        setAllRevCount(Object.keys(response).length)
+      } catch (error) {
+        toast({ status: 'error', content: error })
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchReviews()
     setActiveKey(location.hash.split('#')[1] ?? 'reviews')
   }, [location.hash])
 
@@ -86,9 +114,7 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
       <CoursePageBreadcrumbs courseTitle={`${code}: ${title}`} />
 
       <CoursePageBody>
-        
         <CourseInfo>
-          
           <h1>{code}</h1>
           <FavoriteContainer>
             <FavoriteToggle code={code} initialCount={favoritedByCount} />
@@ -115,7 +141,6 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
       </CoursePageBody>
 
       <Container>
-        
         <Tabs
           tabheight="2.25rem"
           tabwidth="7.5rem"
@@ -125,18 +150,14 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
         >
           <Tabs.TabPane
             key="reviews"
-            tab={reviews?.length ? `Reviews (${reviews.length})` : `Reviews`}
+            tab={allRevCount ? `Reviews (${allRevCount})` : `Reviews`}
           >
             <CourseReviewContainer />
           </Tabs.TabPane>
 
           <Tabs.TabPane
             key="resources"
-            tab={
-              resources?.length
-                ? `Resources (${resources.length})`
-                : `Resources`
-            }
+            tab={allResCount ? `Resources (${allResCount})` : `Resources`}
           >
             <CourseResourceContainer />
           </Tabs.TabPane>
@@ -148,10 +169,7 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
 
 export default CoursePageContainer
 
-
-
 const Container = styled.div`
-  
   margin-bottom: 1rem;
   padding: 1.5rem 1rem;
   color: ${({ theme }) => theme.textColor};

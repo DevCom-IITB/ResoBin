@@ -11,6 +11,7 @@ module.exports = {
     'react-app',
     'react-app/jest',
     'plugin:promise/recommended',
+    'plugin:react/recommended',
     'airbnb',
     'prettier',
   ],
@@ -25,7 +26,7 @@ module.exports = {
     sourceType: 'module',
   },
 
-  plugins: ['prettier', 'promise'],
+  plugins: ['prettier', 'promise', 'react'],
 
   rules: {
     'arrow-body-style': ['off'],
@@ -61,6 +62,7 @@ module.exports = {
       {
         args: 'none',
         vars: 'all',
+        varsIgnorePattern: '[iI]gnore',
       },
     ],
     semi: 'off',

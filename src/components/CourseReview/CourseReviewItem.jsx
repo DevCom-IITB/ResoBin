@@ -54,8 +54,8 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
     }
   }
 
-  const showReplyForm = () =>
-    action === 'reply' ? setAction(null) : setAction('reply')
+  // const showReplyForm = () =>
+  //   action === 'reply' ? setAction(null) : setAction('reply')
   // const showEditForm = () =>
   //   isOwner && (action === 'edit' ? setAction(null) : setAction('edit'))
 
@@ -118,11 +118,11 @@ const CourseReviewItem = ({ content, updateContent, depth }) => {
       <LikeCount>{voteCount}</LikeCount>
     </ButtonIcon>,
 
-    depth < 1 && (
-      <Button key="content-reply" type="link" onClick={showReplyForm}>
-        Reply
-      </Button>
-    ),
+    // depth < 1 && (
+    //   <Button key="content-reply" type="link" onClick={showReplyForm}>
+    //     Reply
+    //   </Button>
+    // ),
 
     // isOwner && (
     //   <Button key="content-edit" type="link" onClick={showEditForm}>

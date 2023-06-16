@@ -34,7 +34,12 @@ const CourseResourceItem = ({ content: initialContent }) => {
   const [content, setContent] = useState(initialContent)
 
   const handleDownload = () => {
-    window.open(content.file, '_blank', 'noopener,noreferrer')
+    // window.open(content.file, '_blank', 'noopener,noreferrer')
+    const iframe = document.createElement('iframe')
+    iframe.src = content.file
+    iframe.style.display = 'none'
+    document.body.appendChild(iframe)
+    window.open(iframe.src, '_blank', 'noopener,noreferrer')
   }
 
   const handleEdit = async (payload) => {
@@ -48,36 +53,29 @@ const CourseResourceItem = ({ content: initialContent }) => {
   }
 
   const printDescription = (content_) => {
-    if((content_?.author === "" || content_?.author === "null") && content_?.year === 0){
-      return (
-        <div>
-          Description Not Available
-        </div>
-      )
+    if (
+      (content_?.author === '' || content_?.author === 'null') &&
+      content_?.year === 0
+    ) {
+      return <div>Description Not Available</div>
     }
-    if(content?.author === "" || content_?.author === "null"){
-      return (
-        <div>
-          {content_.year}
-        </div>  
-      )
+    if (content?.author === '' || content_?.author === 'null') {
+      return <div>{content_.year}</div>
     }
-    if(content?.year === 0){
-      return (
-        <div>
-          Prof. {content_.author}
-        </div>
-      )
+    if (content?.year === 0) {
+      return <div>Prof. {content_.author}</div>
     }
-    if(content_?.author !== "" && content_?.author !== "null" && content_?.year !== 0){
+    if (
+      content_?.author !== '' &&
+      content_?.author !== 'null' &&
+      content_?.year !== 0
+    ) {
       const profDesc = content_.author
       const yearDesc = content_.year
       return (
-        
         <div>
           {yearDesc}- Prof. {profDesc}
         </div>
-        
       )
     }
     return null
@@ -92,11 +90,9 @@ const CourseResourceItem = ({ content: initialContent }) => {
           style={{ width: '100%', height: '100%' }}
         />
 
-        <ItemInfo>          
+        <ItemInfo>
           <ResourceTitle>{content.title}</ResourceTitle>
-          <ResourceDescription>   
-            {printDescription(content)}
-          </ResourceDescription>
+          <ResourceDescription>{printDescription(content)}</ResourceDescription>
           <Row>
             <ButtonIcon
               size="default"
