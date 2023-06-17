@@ -8,6 +8,7 @@ import {
   Home,
   AcademicCap,
   Archive,
+  InformationCircle,
 } from '@styled-icons/heroicons-outline'
 import { ContactSupport } from '@styled-icons/material-outlined'
 import { useSelector } from 'react-redux'
@@ -52,6 +53,12 @@ const Menu = () => {
         icon={AcademicCap}
         iconSize={iconSize}
         to="/honors"
+      />
+      <MenuItem
+        title="Course Info"
+        icon={InformationCircle}
+        iconSize={iconSize}
+        to="/course-info"
       />
 
       {!isMobile && <Divider margin="1rem 0" />}
