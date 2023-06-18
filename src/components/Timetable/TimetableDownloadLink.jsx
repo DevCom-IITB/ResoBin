@@ -1,6 +1,6 @@
 import { Download } from '@styled-icons/heroicons-outline'
 import { Dropdown, Menu } from 'antd'
-import html2canvas from 'html2canvas'
+import domtoimage from 'dom-to-image'
 import { useSelector } from 'react-redux'
 
 import { ButtonIcon } from 'components/shared'
@@ -123,14 +123,20 @@ END:VCALENDAR
   }
 
   const generatePNGFile = (element) => {
-    return html2canvas(element).then((canvas) => {
-      const data = canvas.toDataURL('timetable_image/png')
-      const file = new File([data], 'timetable.png', {
-        type: 'timetable_image/png',
+    return domtoimage
+      .toBlob(element[0])
+      .then((blob) => {
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = 'TimeTable.png'
+        link.click()
+        return 'Download started'
       })
-      const url = URL.createObjectURL(file)
-      return url
-    })
+      .catch((error) => {
+        console.error('oops, something went wrong!', error)
+        throw new Error('Download failed: '.concat(error))
+      })
   }
 
   const menu = (
@@ -145,15 +151,17 @@ END:VCALENDAR
           Google Calendar (.ics file)
         </a>
       </Menu.Item>
-      <Menu.Item key="png">
-        <a
-          href={generatePNGFile(getAllEvents())}
-          target="_blank"
-          rel="noreferrer"
-          download
-        >
-          Image (.png file)
-        </a>
+      <Menu.Item
+        key="png"
+        onClick={() =>
+          generatePNGFile(
+            document.getElementsByClassName(
+              'TimetableLayout__Container-sc-4uq15v-0 iAafRu'
+            )
+          )
+        }
+      >
+        Image (.png file)
       </Menu.Item>
     </Menu>
   )
