@@ -23,8 +23,10 @@ const ParseDescription = ({ children: text }) => {
       {search
         ? parts.map((part, index) =>
             part.toLowerCase() === search ? (
+              // eslint-disable-next-line react/no-array-index-key
               <Highlight key={String(index)}>{part}</Highlight>
             ) : (
+              // eslint-disable-next-line react/no-array-index-key
               <Span key={String(index)}>{part}</Span>
             )
           )

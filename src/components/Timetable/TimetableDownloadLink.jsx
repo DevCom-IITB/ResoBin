@@ -134,7 +134,6 @@ END:VCALENDAR
         return 'Download started'
       })
       .catch((error) => {
-        console.error('oops, something went wrong!', error)
         throw new Error('Download failed: '.concat(error))
       })
   }
