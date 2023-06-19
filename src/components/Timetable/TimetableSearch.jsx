@@ -28,12 +28,19 @@ const TimetableSearch = ({ loading, setLoading, data }) => {
       return []
     }
 
+    let lowercasevalue = value
+
+    if (value != null) {
+      lowercasevalue = value.toLowerCase()
+    }
+
     return data.results
-      .filter(({ code, title, description }) => {
+      .filter(({ code, title }) => {
+        const lowercasecode = code.toLowerCase()
+        const lowercasetitle = title.toLowerCase()
         return (
-          code.includes(value) ||
-          title.includes(value) ||
-          description.includes(value)
+          lowercasecode.includes(lowercasevalue) ||
+          lowercasetitle.includes(lowercasevalue)
         )
       })
       .map(({ code, title }) => ({
@@ -68,6 +75,7 @@ const TimetableSearch = ({ loading, setLoading, data }) => {
                 }}
               >
                 {option.value}
+                <AddButton>⚡ Add</AddButton>
               </Option>
             ))}
           </Suggestions>
@@ -154,11 +162,31 @@ const Suggestions = styled.div`
 `
 
 const Option = styled.div`
+  position: relative;
   padding: 0.5rem;
   cursor: pointer;
   color: lightgray;
 
   &:hover {
-    background-color: ${({ theme }) => theme.primary};
+    background-color: ${({ theme }) => theme.secondaryHover};
+  }
+`
+
+const AddButton = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  background-color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.primary};
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: bold; /* Added font-weight */
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.secondaryHover};
   }
 `
