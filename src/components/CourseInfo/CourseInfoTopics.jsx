@@ -1,17 +1,16 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 
+
 import { fontSize } from 'styles/responsive'
 
+import  topics  from './data'
+import CustomTable from './table'
+
+
+
+ 
 const CourseInfoTopics = () => {
-  const headings = ['Topic1', 'Topic2', 'Topic3', 'Topic4', 'Topic5']
-  const content = [
-    'Content for Topic1',
-    'Content for Topic2',
-    'Content for Topic3',
-    'Content for Topic4',
-    'Content for Topic5',
-  ]
 
   const [activeDropdown, setActiveDropdown] = useState(null)
 
@@ -21,17 +20,38 @@ const CourseInfoTopics = () => {
 
   return (
     <div>
-      {headings.map((heading, index) => (
-        <Dropdown key={heading}>
+      {topics.map((topic, index) => (
+        <Dropdown key = {topic.id}>
           <DropdownButton
             type="button"
             onClick={() => handleDropdownClick(index)}
           >
-            {heading}
+            {topic.headings}
           </DropdownButton>
-          {activeDropdown === index && (
-            <DropdownContent>{content[index]}</DropdownContent>
-          )}
+          {activeDropdown === index ? (
+            <DropdownContent>
+             {topic.contents.map((content) =>(
+              <div>
+              <h2>{content.subheading}</h2>
+              <p>{content.description}
+              {content.link ? (
+                      <a href={content.link} target="_blank" rel="noreferrer" >
+                        {content.linktext}
+                        </a>
+                      
+                    ):null}
+              </p>
+              {content.tbody ? (
+        <TableWrapper>
+          <CustomTableStyled data={content.tbody} columns={content.tcols} />
+        </TableWrapper>
+      ) : null}
+              
+              </div>
+           
+             ))}
+              </DropdownContent>
+          ): null}
         </Dropdown>
       ))}
     </div>
@@ -73,4 +93,25 @@ const DropdownContent = styled.p`
   padding: 1rem;
   color: ${({ theme }) => theme.textColor};
   border-top: 1px solid ${({ theme }) => theme.borderColor};
+  font-family: 'Source Sans Pro'
 `
+const TableWrapper = styled.div`
+  margin-top: 1rem;
+`;
+
+const CustomTableStyled = styled(CustomTable)`
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    font-weight: bold;
+    background-color: #f2f2f2;
+  }
+`;
