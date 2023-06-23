@@ -29,57 +29,78 @@ const topics = [
     },
     {
         id : '2',
+        headings : 'A FOREWORD FROM THE ISAA',
+        contents : [
+            {
+                subheading : '',
+                description : `Dear Students,`
+            },
+            {
+                subheading : '',
+                description : `As a vertical of UGAC, and living up to our name, it is our duty to support you with the most 
+                relevant resources and an intricately researched array of both old and new curricula that 
+                prevail in the institute. This Course Information Page, a result of that ideal, houses an 
+                elaboration on the various components and nuances of the academic system at IIT Bombay. 
+                More pertinently, it also includes some aspects of the newly implemented Academic 
+                Curriculum`
+            },
+            {
+                subheading : '',
+                description : `On this page and ResoBin as a whole, you will find information, reviews and resources about 
+                various programs and courses, like minors, honours and electives, that you will get to explore
+                after the first year. As students, a fundamental motivation that defines our academic progress 
+                is curiosity; the willingness to learn; 'to strive, to seek, to find and not to yield', as Ulysses 
+                proudly declares. Keeping true to this, we have done our best to curate the content on this 
+                platform to provide you with whatever details you may want to know to decide upon an 
+                academic commitment. We believe this to be a comprehensive guide to finding your interests 
+                as you navigate your way through your undergraduate curriculum.`            
+            },
+            {
+                subheading : '',
+                description : `  We hope you benefit significantly from this page and ResoBin. We are open to constructive 
+                feedback and any ideas to improve the content on this platform.`
+            },
+            {
+                subheading : '',
+                description : ` Best wishes,`
+            },
+            {
+                subheading : '',
+                description : `Shravya Suresh`
+            },
+            {
+                subheading : '',
+                description : ` Institute Secretary, Academic Affairs`
+            },
+            {
+                subheading : '',
+                description : ` Head, Student Support Services (2023-2024)`
+            }
+        ]
+    },
+    {
+        id : '3',
         headings : 'ACKNOWLEDGEMENTS',
         contents : [
             {
                 subheading : '',
-                description : `We would like to thank Adit Akarsh, Ali Asgar Saifee, Aneesh Milind Bapat,
-                Aryan Gupta, Bhavya Jain, Immanuel Williams, Jai Joabanputra, Khushi Gosalia,
-                Prakriti Shetty, Puja Maitra, Rahul Shanbhag, Rwitaban Goswami, Sanjay
-                Kareer, Shashank Inamdar, Siddhant Kolke, Tanul Gupta, Tanyut Sharma,
-                Unnatee Pawar and Vatsal for writing the minor reviews.`
+                description : `We express our sincere gratitude to all the students who contributed to ResoBin, through the 
+                plethora of reviews and resources now available.`
             },
             {
                 subheading : '',
-                description : `We are grateful to Abu Zubair, Aditya Iyengar, Ananya Burli, Aryaman
-                Maithani, Aryan Gupta, Himansh Rathore, M Vishnu Sarkar, Mihir Vahanwala,
-                Priyanka Beta and Suraj Sarvesha Samaga for writing the honors reviews.`
+                description : `We are forever indebted to DevCom for their immense support in building ResoBin and 
+                bringing our visions of this platform to life.`
             },
             {
                 subheading : '',
-                description : `We express our gratitude to Aarushi Chaudhary, Aastha Kapoor, Bhuvan
-                Agarwal and Tanirika Roy for giving their reviews on the HSS Electives. We
-                would also like to mention Advaith Suresh, Divyashree Tambade, Namra Shah,
-                Shivangi Sharma and Shreedhar Malpani for their contribution to
-                Unconventional Course Reviews.`
-            },
-            {
-                subheading : '',
-                description : `We are pleased to have Sakshi Priya and Darade Vaibhav Vinayakrao sharing
-                their valuable reviews on IR Languages.`
-            },
-            {
-                subheading : '',
-                description : `We would like to thank DevCom IITB for their immense support in shaping up
-                ResoBin in its current form,`
-            },
-            {
-                subheading : '',
-                description : `In addition to this, we thank the UGAC Design team for bringing up this booklet
-                in this amazing form. We would like to express our gratitude to all the
-                department officials for their suggestions, efforts, and assistance. We also
-                apologize to those in case we forgot to mention their name.`
-            },
-            {
-                subheading : '',
-                description : `Lastly, we are indebted to all the readers of this booklet for their constant
-                support and motivation. Any suggestions for the further improvement of this
-                booklet are always welcome!`
+                description : `And of course, this initiative would not have been possible without the constant support of 
+                our audience and users of this platform.`
             },
         ]
     },
     {
-      id: '3',
+      id: '4',
       headings: 'REGISTRATION',
        contents : [
         {
@@ -141,7 +162,7 @@ const topics = [
        ]
     },
     {
-      id: '4',
+      id: '5',
       headings: 'CATEGORY OF COURSES',
       contents: [
         {
@@ -235,69 +256,83 @@ const topics = [
         },
         {
             subheading : '2.4. ELECTIVES',
-            description :`Every program (B.Tech/Dual degree/BS) in IIT Bombay will have its own
-            curriculum defined, which will define your core courses and the total credit
-            requirement for the award degree. According to your curriculum, your course
-            completion may require doing courses of your own choice, wish and interest
-            from:`
+            description :`Every program (B.Tech/Dual degree/BS) in IIT Bombay will have its own curriculum 
+            defined, which will define your core courses and the total credit requirement for the award 
+            degree. According to your curriculum, your course completion may require doing courses of 
+            your own choice, wish and interest from:`
         },
         {
-            subheading : 'Dept. of Humanities and Social Sciences',
-            description : `All undergraduates are required to do a Humanities elective from the HSS
-            department in a particular semester, depending on the department, and
-            have to choose this elective from the following set:`,
-            tbody : [
-                {
-                  id: 1,
-                  'Course Code': 'HS 301',
-                  'Course Name': 'Philosophy',
-                },
-                {
-                  id: 2,
-                  'Course Code': 'HS 303',
-                  'Course Name': 'Psychology',
-                },
-                {
-                  id: 3,
-                  'Course Code': 'HS 305',
-                  'Course Name': 'Reading Literature',
-                },
-                {
-                  id: 4,
-                  'Course Code': 'HS 307',
-                  'Course Name': 'Sociology',
-                },
-              ]
-              ,
-                tcols: ['Course Code', 'Course Name'],
-        },
-        {
-            subheading : 'Your own department- Department Elective',
-            description : `As per your curriculum, you may be required to choose a few courses
-            (number varying across programs) of higher-level (Say 4xx or 5xx) from
-            your department across a pool of courses put forward by your department.
-            In some cases (varying across departments), you might be allowed to take
-            up courses from other departments and tag them as a department elective.
-            It is best to check up with your departments regarding the same.`
-        },
-        {
-            subheading : 'A department other than yours - Institute Elective',
-            description : `As per your curriculum, you may be required to choose a few courses
-            (number varying across programs) from a foreign department. Generally,
-            you are free to choose any course out of your department as Institute
-            electives. Departmental-based restrictions may be there for a few courses. `
+            subheading : '2.4.1. ADVANCED ELECTIVE',
+            description : `These are departmental electives that you can take up from within your core/Major discipline 
+            only. For example, a student from the Mechanical Department can take up a Mechanical 
+            advanced elective, but cannot take an advanced elective offered by the Electrical Department.`,
+            // tbody : [
+            //     {
+            //       id: 1,
+            //       'Course Code': 'HS 301',
+            //       'Course Name': 'Philosophy',
+            //     },
+            //     {
+            //       id: 2,
+            //       'Course Code': 'HS 303',
+            //       'Course Name': 'Psychology',
+            //     },
+            //     {
+            //       id: 3,
+            //       'Course Code': 'HS 305',
+            //       'Course Name': 'Reading Literature',
+            //     },
+            //     {
+            //       id: 4,
+            //       'Course Code': 'HS 307',
+            //       'Course Name': 'Sociology',
+            //     },
+            //   ]
+            //   ,
+            //     tcols: ['Course Code', 'Course Name'],
         },
         {
             subheading : '',
-            description : `Note: 1xx courses are generally not allowed to be taken as institute electives (exceptfor some departments).`
+            description : `Advanced electives usually require certain core courses or subjects as a prerequisite. These 
+            details would be available on ASC during the registration period.`
+        },
+        {
+            subheading : '2.4.2. INTERDISCIPLINARY STEM ELECTIVE',
+            description : `These are electives that can be taken up by most students pursuing a degree in a STEM 
+            discipline. An eligible student takes such an elective offered by a department other than their 
+            parent discipline.`
         },
         {
             subheading : '',
-            description : `For IDC and SJMSOM courses, you can ask the Department General
-            Secretary/ Department Undergraduate Committee of your department
-            if they will allow a particular IDC / SJMSOM course to be tagged as
-            an institute elective. Allthese electives are a part of the core curriculum
-            and will countin your CPI.`
+            description : `Interdisciplinary STEM electives do not have any core prerequisites. Some examples of these
+            electives are courses on Nano-technology, Robotics. etc.`
+        },
+        {
+            subheading : '2.4.3. INTERDISCIPLINARY HASMED ELECTIVE',
+            description : `These are electives that cover topics lying at the intersection of the parent discipline and 
+            domains under the HASMED umbrella. Students take such electives offered under their 
+            parent department working in interdisciplinarity with an area of HASMED. `
+        },
+        {
+            subheading : '',
+            description : `Interdisciplinary HASMED electives generally do not have any core prerequisites. Some 
+            examples of these electives can be Product Design and Development in Chemical 
+            Engineering, Entrepreneurship in Manufacturing. etc.`
+        },
+        {
+            subheading : 'Regarding electives, an eligible student would have two options at their disposal:',
+            description : ``
+        },
+        {
+            subheading : '',
+            description : `1. To tread a path which gives them the opportunity to acquire more depth in their parent 
+            discipline by choosing more courses from the basket of department Advanced electives`
+        },
+        {
+            subheading : '',
+            description : `2. To choose a path which gives them the opportunity to delve into other disciplines by 
+            appropriately taking up courses offered by other departments through the basket of STEM + 
+            HASMED electives.`
         },
         {
             subheading : '2.5. ADDITIONAL LEARNING COURSES',
@@ -375,31 +410,43 @@ const topics = [
               id: 1,
               'Type of Course': 'Minors',
               Description: '30 credits worth of additional learning in a discipline other than your own major.',
-              'Effect on CPI': "Don't count towards CPI",
+              'Effect on CPI': `Don't count towards main
+              CPI; a separate Minor CPI is
+              maintained`,
             },
             {
               id: 2,
               'Type of Course': 'Honors Electives',
-              Description: '30 credits worth of additional learning in a discipline other than your own major.',
+              Description: `Total 24 credits (for B.Tech)
+              worth of additional learning 
+              in your own discipline`,
               'Effect on CPI': "Don't count towards CPI",
             },
             {
               id: 3,
-              'Type of Course': 'Institute Electives',
-              Description:
-                'Extra courses taken in any department other than your own given you fulfil the prerequisites.',
+              'Type of Course': 'Advanced Electives',
+              Description: `Additional courses in your 
+              own department for deeper 
+              learning.`,
               'Effect on CPI': 'Count towards CPI',
             },
             {
               id: 4,
-              'Type of Course': 'HSS Electives',
-              Description: 'HS3xx courses, Humanities and Social Sciences department.',
+              'Type of Course': 'Interdisciplinary STEM Electives',
+              Description: `Additional courses taken in 
+              any STEM department other
+              than your own given you are
+              eligible.`,
               'Effect on CPI': 'Count towards CPI',
             },
             {
               id: 5,
-              'Type of Course': 'Department Electives',
-              Description: 'Additional courses in your own department.',
+              'Type of Course': 'Interdisciplinary HASMED Electives',
+              Description: `Additional courses taken in 
+              an interdisciplinary manner 
+              involving the parent 
+              department and an area of 
+              HASMED.`,
               'Effect on CPI': 'Count towards CPI',
             },
             {
@@ -413,7 +460,11 @@ const topics = [
               id: 7,
               'Type of Course': 'Audit Courses',
               Description:
-                'Wanting just an exposure to a course - without obtaining a good grade - maximum of 2 audit courses in the entire period of study.',
+                `Wanting just an exposure to 
+                a course, without obtaining a
+                creditable grade (maximum
+                of 2 audit courses in the 
+                entire period of study).`,
               'Effect on CPI': "Don't count towards CPI",
             },
             {
@@ -436,7 +487,7 @@ const topics = [
       ]
     },
     {
-        id : '5',
+        id : '6',
         headings : ' WHY SHOULD ONE TAKE UP A MINOR',
         contents : [
             {
@@ -595,7 +646,7 @@ const topics = [
         ]
     },
     {
-        id : '6',
+        id : '7',
         headings : 'WHY SHOULD ONE TAKE UP HONORS',
         contents : [
             {
@@ -635,7 +686,7 @@ const topics = [
         ]
     },
     {
-        id : '7',
+        id : '8',
         headings : 'TAGGING RULES',
         contents : [
             {
@@ -714,55 +765,56 @@ const topics = [
             },
             {
                 subheading : '',
-                tcols : ['TAG CODE' , 'TAG DESCRIPTION' , 'CHANGEABLE INTO'],
+                tcols : ['ORIGINAL TAG' ,  'CHANGEABLE INTO'],
                 tbody : [
                     {
                         id: 1,
-                        'TAG CODE': 'T',
-                        'TAG DESCRIPTION': 'Additional Learning',
-                        'CHANGEABLE INTO': 'D, I, O, E',
+                        'ORIGINAL TAG': 'Additional Learning Course ',
+                        'CHANGEABLE INTO': `Advanced Elective, Interdisciplinary STEM 
+                        Elective, Interdisciplinary HASMED Elective, 
+                        Honours Course, Honours Elective`,
                     },
                     {
                         id: 2,
-                        'TAG CODE': 'C',
-                        'TAG DESCRIPTION': 'Core Course',
-                        'CHANGEABLE INTO': 'Not changeable',
+                        'ORIGINAL TAG': 'Core Course ',
+                        'CHANGEABLE INTO': 'Not changeable (requires special permissions)',
                     },
                     {
                         id: 3,
-                        'TAG CODE': 'D',
-                        'TAG DESCRIPTION': 'Department Elective',
-                        'CHANGEABLE INTO': 'O, T, E',
+                        'ORIGINAL TAG': 'Advanced Electives  ',
+                        'CHANGEABLE INTO':`Additional Learning Course (only by students of 
+                            the parent discipline; students from other 
+                            disciplines cannot credit these courses)`,
                     },
                     {
                         id: 4,
-                        'TAG CODE': 'O',
-                        'TAG DESCRIPTION': 'Honours Course',
-                        'CHANGEABLE INTO': 'D, E, T',
+                        'ORIGINAL TAG': 'Interdisciplinary STEM Electives',
+                        'CHANGEABLE INTO': `Additional Learning Course, Advanced Elective 
+                        (by students of the parent department)`,
                     },
                     {
                         id: 5,
-                        'TAG CODE': 'E',
-                        'TAG DESCRIPTION': 'Honors Elective',
-                        'CHANGEABLE INTO': 'D, O, T',
+                        'ORIGINAL TAG': 'Interdisciplinary HASMED Electives',
+                        'CHANGEABLE INTO': `Additional Learning Course`,
                     },
                     {
                         id: 6,
-                        'TAG CODE': 'H',
-                        'TAG DESCRIPTION': 'Humanities Elective',
-                        'CHANGEABLE INTO': 'T',
+                        'ORIGINAL TAG': 'Honours Course',
+                        'CHANGEABLE INTO': `Additional Learning Course, Advanced Elective, 
+                        Honours Elective`,
                     },
                     {
                         id: 7,
-                        'TAG CODE': 'I',
-                        'TAG DESCRIPTION': 'Institute Elective',
-                        'CHANGEABLE INTO': 'T',
+                        'ORIGINAL TAG': 'Honours Elective',
+                        'CHANGEABLE INTO': 'Additional Learning Course, Advanced Elective, Honours Course',
                     },
                     {
                         id: 8,
-                        'TAG CODE': 'M',
-                        'TAG DESCRIPTION': 'Minor Course',
-                        'CHANGEABLE INTO': 'I, T',
+                        'ORIGINAL TAG': 'Minor Course',
+                        'CHANGEABLE INTO': `Additional Learning Course, Interdisciplinary 
+                        STEM Elective, Interdisciplinary HASMED 
+                        Elective (subject to the departments offering the 
+                        course)`,
                     },
                 ]
             },
@@ -780,26 +832,1009 @@ const topics = [
         ]
     },
     {
-        id : '8',
+        id : '9',
         headings : 'PREVIOUS YEAR MINOR CUTOFFS',
         contents : [
             {
+                id : '1',
                 subheading : 'NOTE:',
                 description : `These cutoffs have been calculated with the resources available to us.
-                We duly apologize in case of any discrepancy.`
+                We duly apologize in case of any discrepancy.`,
+                dropdownheading : '6.1. 2021-22 AUTUMN SEMESTER CUTOFFS',
+                dropdowntbody : [
+                    {
+                        id: 1,
+                        'Course code': 'AE 153 ',
+                        'Min. CPI': `6.23`,
+                    },
+                    {
+                        id: 2,
+                        'Course code': 'AE 223',
+                        'Min. CPI': `2.22`,
+                    },
+                    {
+                        id: 3,
+                        'Course code': 'AE 225',
+                        'Min. CPI': `6.73`,
+                    },
+                    {
+                        id: 4,
+                        'Course code': 'AE 227',
+                        'Min. CPI': `3.05`,
+                    },
+                    {
+                        id: 5,
+                        'Course code': 'AE 308',
+                        'Min. CPI': `7.71`,
+                    },
+                    {
+                        id: 6,
+                        'Course code': 'AE 333',
+                        'Min. CPI': `4.63`,
+                    },
+                    {
+                        id: 7,
+                        'Course code': 'AE 407',
+                        'Min. CPI': `4.93`,
+                    },
+                    {
+                        id: 8,
+                        'Course code': 'AE 410',
+                        'Min. CPI': `6.95`,
+                    },
+                    {
+                        id: 9,
+                        'Course code': 'BB 413',
+                        'Min. CPI': `5.75`,
+                    },
+                    {
+                        id: 10,
+                        'Course code': 'BB 415',
+                        'Min. CPI': `5.25`,
+                    },
+                    {
+                        id: 11,
+                        'Course code': 'BB 600',
+                        'Min. CPI': `5.81`,
+                    },
+                    {
+                        id: 12,
+                        'Course code': 'BB 603',
+                        'Min. CPI': `6.53`,
+                    },
+                    {
+                        id: 13,
+                        'Course code': 'BB 607',
+                        'Min. CPI': `7.53`,
+                    },
+                    {
+                        id: 14,
+                        'Course code': 'BB 627',
+                        'Min. CPI': `8.51`,
+                    },
+                    {
+                        id: 15,
+                        'Course code': 'CL 203',
+                        'Min. CPI': `4.41`,
+                    },
+                    {
+                        id: 16,
+                        'Course code': 'CS 218',
+                        'Min. CPI': `7.21`,
+                    },
+                    {
+                        id: 17,
+                        'Course code': 'CS 224',
+                        'Min. CPI': `7.47`,
+                    },
+                    {
+                        id: 18,
+                        'Course code': 'CS 228',
+                        'Min. CPI': `7.09`,
+                    },
+                    {
+                        id: 19,
+                        'Course code': 'CS 310',
+                        'Min. CPI': `6.09`,
+                    },
+                    {
+                        id: 20,
+                        'Course code': 'DE 403',
+                        'Min. CPI': `6.95`,
+                    },
+                    {
+                        id: 21,
+                        'Course code': 'DE 405',
+                        'Min. CPI': `6.20`,
+                    },
+                    {
+                        id: 22,
+                        'Course code': 'DH 301 ',
+                        'Min. CPI': `4.90`,
+                    },
+                    {
+                        id: 23,
+                        'Course code': 'DH 302 ',
+                        'Min. CPI': `7.62`,
+                    },
+                    {
+                        id: 24,
+                        'Course code': 'DS 203',
+                        'Min. CPI': `8.26`,
+                    },
+                    {
+                        id: 25,
+                        'Course code': 'EE 207',
+                        'Min. CPI': `5.18`,
+                    },
+                    {
+                        id: 26,
+                        'Course code': 'EE 321 ',
+                        'Min. CPI': `5.49`,
+                    },
+                    {
+                        id: 27,
+                        'Course code': 'EN 301',
+                        'Min. CPI': ` 4.61`,
+                    },
+                    {
+                        id: 28,
+                        'Course code': 'ENT603 ',
+                        'Min. CPI': `7.15`,
+                    },
+                    {
+                        id: 29,
+                        'Course code': 'ENT606',
+                        'Min. CPI': ` 7.62`,
+                    },
+                    {
+                        id: 30,
+                        'Course code': 'ENT609 ',
+                        'Min. CPI': `8.17`,
+                    },
+                    {
+                        id: 31,
+                        'Course code': 'ES 203',
+                        'Min. CPI': `4.22`,
+                    },
+                    {
+                        id: 32,
+                        'Course code': 'ES 303',
+                        'Min. CPI': `5.00`,
+                    },
+                    {
+                        id: 33,
+                        'Course code': 'ES 401',
+                        'Min. CPI': ` 7.22`,
+                    },
+                    {
+                        id: 34,
+                        'Course code': 'GNR401 ',
+                        'Min. CPI': `6.75`,
+                    },
+                    {
+                        id: 35,
+                        'Course code': 'GNR405 ',
+                        'Min. CPI': `7.56`,
+                    },
+                    {
+                        id: 36,
+                        'Course code': 'GNR409 ',
+                        'Min. CPI': `7.31`,
+                    },
+                    {
+                        id: 37,
+                        'Course code': 'HS 490 ',
+                        'Min. CPI': `5.79`,
+                    },
+                    {
+                        id: 38,
+                        'Course code': 'IE 501 ',
+                        'Min. CPI': `8.37`,
+                    },
+                    {
+                        id: 39,
+                        'Course code': 'IE 503 ',
+                        'Min. CPI': `7.83`,
+                    },
+                    {
+                        id: 40,
+                        'Course code': 'IE 609 ',
+                        'Min. CPI': `7.27`,
+                    },
+                    {
+                        id: 41,
+                        'Course code': 'IE 621 ',
+                        'Min. CPI': `7.37`,
+                    },
+                    {
+                        id: 42,
+                        'Course code': 'MA 403 ',
+                        'Min. CPI': `8.28`,
+                    },
+                    {
+                        id: 43,
+                        'Course code': 'MA 419',
+                        'Min. CPI': ` 7.6`,
+                    },
+                    {
+                        id: 44,
+                        'Course code': ' ME 201' ,
+                        'Min. CPI': `3.57`,
+                    },
+                    {
+                        id: 45,
+                        'Course code': 'ME 219 ',
+                        'Min. CPI': `4.21`,
+                    },
+                    {
+                        id: 46,
+                        'Course code': ' MG 401 ',
+                        'Min. CPI': `8.01`,
+                    },
+                    {
+                        id: 47,
+                        'Course code': 'MG 403 ',
+                        'Min. CPI': `8.23`,
+                    },
+                    {
+                        id: 48,
+                        'Course code': 'MM 201 ',
+                        'Min. CPI': `7.61`,
+                    },
+                    {
+                        id: 49,
+                        'Course code': 'MM 209 ',
+                        'Min. CPI': `5.70`,
+                    },
+                    {
+                        id: 50,
+                        'Course code': 'PH 251 ',
+                        'Min. CPI': `5.32`,
+                    },
+                    {
+                        id: 51,
+                        'Course code': 'PH 253 ',
+                        'Min. CPI': `7.72`,
+                    },
+                    {
+                        id: 52,
+                        'Course code': 'PS 619 ',
+                        'Min. CPI': `5.56`,
+                    },
+                    {
+                        id: 53,
+                        'Course code': 'SC 301',
+                        'Min. CPI': ` 6.87`,
+                    },
+                    {
+                        id: 54,
+                        'Course code': 'SC 601 ',
+                        'Min. CPI': `6.05`,
+                    },
+                    {
+                        id: 55,
+                        'Course code': 'SC 617 ',
+                        'Min. CPI': `5.20`,
+                    },
+                    {
+                        id: 56,
+                        'Course code': 'SC 625 ',
+                        'Min. CPI': `4.38`,
+                    },
+                    {
+                        id: 57,
+                        'Course code': 'SC 629 ',
+                        'Min. CPI': `5.59`,
+                    },
+                    {
+                        id: 58,
+                        'Course code': ' SC 639 ',
+                        'Min. CPI': `7.11`,
+                    },
+                    {
+                        id: 59,
+                        'Course code': ' SC 643 ',
+                        'Min. CPI': `7.55`,
+                    },
+                    {
+                        id: 60,
+                        'Course code': 'SC 645',
+                        'Min. CPI': ` 5.53`,
+                    },
+                    {
+                        id: 61,
+                        'Course code': ' SC 648 ',
+                        'Min. CPI': `7.12`,
+                    },
+                    {
+                        id: 62,
+                        'Course code': ' SC 701 ',
+                        'Min. CPI': `6.70`,
+                    },
+                    {
+                        id: 63,
+                        'Course code': 'SI 424 ',
+                        'Min. CPI': `8.32`,
+                    },
+                    {
+                        id: 64,
+                        'Course code': 'SI 427 ',
+                        'Min. CPI': `8.18`,
+                    },
+                ],
+                dropdowntcols : ['Course code' ,  'Min. CPI'],
             },
             {
-                subheading : '6.1. 2021-22 AUTUMN SEMESTER CUTOFFS',
-                description : ``
+                id : '2',
+                dropdownheading : '6.2. 2021-22 SPRING SEMESTER CUTOFFS',
+                dropdowntbody : [
+                    {
+                        "id": 1,
+                        "Course code": "AE 234",
+                        "Min. CPI": "6.11"
+                    },
+                    {
+                        "id": 1,
+                        "Course code": "AE 238",
+                        "Min. CPI": "5.20"
+                    },
+                    {
+                        "id": 1,
+                        "Course code": "AE 240",
+                        "Min. CPI": "6.67"
+                    },
+                     {
+                        "id": 1,
+                        "Course code": "AE 305",
+                        "Min. CPI": "7.13"
+                    },
+                    {
+                        "id": 1,
+                        "Course code": "AE 332",
+                        "Min. CPI": "5.95"
+                    },
+                    {
+                        "id": 1,
+                        "Course code": "BB 400",
+                        "Min. CPI": "6.12"
+                    },
+                    {
+                        "id": 1,
+                        "Course code": "BB 404",
+                        "Min. CPI": "6.72"
+                    },
+                    {
+                        "id": 1,
+                        "Course code": "BB 610",
+                        "Min. CPI": "7.93"
+                    },
+                    {
+                        "id": 1,
+                        "Course code": "CH 224",
+                        "Min. CPI": "6.96"
+                    },
+                    {
+                        "id": 1,
+                        "Course code": "CH 408",
+                        "Min. CPI": "6.04"
+                    },
+                    {
+                    "id": 1,
+                    "Course code": "CH 438",
+                    "Min. CPI": "6.76"
+                    },
+                    {
+                    "id": 1,
+                    "Course code": "CH 481",
+                    "Min. CPI": "8.87"
+                    },
+                        {
+                    "id": 1,
+                    "Course code": "CH 504",
+                    "Min. CPI": "8.18"
+                    },
+                    {
+                    "id": 1,
+                    "Course code": "CH 588",
+                    "Min. CPI": "9.33"
+                    },
+                    {
+                    "id": 1,
+                    "Course code": "CS 213",
+                    "Min. CPI": "8.27"
+                    },
+                        {
+                    "id": 1,
+                    "Course code": "CS 347",
+                    "Min. CPI": "7.40"
+                    },
+                        {
+                    "id": 1,
+                    "Course code": "CS 419",
+                    "Min. CPI": "7.82"
+                    },
+                    {
+                    "id": 1,
+                    "Course code": "DE 402",
+                    "Min. CPI": "4.01"
+                    },
+                        {
+                    "id": 1,
+                    "Course code": "DE 403",
+                    "Min. CPI": "6.36"
+                    },
+                        {
+                    "id": 1,
+                    "Course code": "DE 405",
+                    "Min. CPI": "6.39"
+                    },
+                    {
+                    "id": 1,
+                    "Course code": "DE 408",
+                    "Min. CPI": "5.42"
+                    },
+                    {
+                    "id": 1,
+                    "Course code": "DE 410",
+                    "Min. CPI": "6.26"
+                    },
+                    {
+                    "id": 1,
+                    "Course code": "DH 304",
+                    "Min. CPI": "6.08"
+                    },
+                    {
+                    "id": 1,
+                    "Course code": "DS 303",
+                    "Min. CPI": "7.78"
+                    },
+                        {
+                    "id": 1,
+                    "Course code": "EE 204",
+                    "Min. CPI": "4.83"
+                    },
+                        {
+                    "id": 1,
+                    "Course code": "EE 229",
+                    "Min. CPI": "5.74"
+                    },
+                        {
+                    "id": 1,
+                    "Course code": "EE 325",
+                    "Min. CPI": "5.87"
+                    },
+                    {
+                    "id": 1,
+                    "Course code": "EN 301",
+                    "Min. CPI": "6.07"
+                    },
+                        {
+                    "id": 1,
+                    "Course code": "EN 302",
+                    "Min. CPI": "7.37"
+                    },
+                        {
+                    "id": 1,
+                    "Course code": "ENT602",
+                    "Min. CPI": "8.50"
+                    },
+                        {
+                    "id": 1,
+                    "Course code": "ENT608",
+                    "Min. CPI": "7.12"
+                    },
+                        {
+                    "id": 1,
+                    "Course code": "ENT610",
+                    "Min. CPI": "7.50"
+                    },
+                        {
+                    "id": 1,
+                    "Course code": "ES 204",
+                    "Min. CPI": "5.25"
+                    },
+                        {
+                    "id": 1,
+                    "Course code": "ES 306",
+                    "Min. CPI": "6.33"
+                    },
+                     {
+                        "id": 1,
+                        "Course code": "ES 458",
+                        "Min. CPI": "7.29"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "GNR402",
+                        "Min. CPI": "5.70"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "GNR408",
+                        "Min. CPI": "5.90"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "GNR410",
+                        "Min. CPI": "5.32"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "HS 457",
+                        "Min. CPI": "6.52"
+                        },
+                       {
+                        "id": 1,
+                        "Course code": "IE 504",
+                        "Min. CPI": "5.92"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "IE 616",
+                        "Min. CPI": "8.03"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "IE 617",
+                        "Min. CPI": "7.32"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "IE 622",
+                        "Min. CPI": "7.90"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "IE 630",
+                        "Min. CPI": "4.53"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "IE 683",
+                        "Min. CPI": "5.25"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "IE 709",
+                        "Min. CPI": "5.74"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "MA 412",
+                        "Min. CPI": "6.23"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "MA5106",
+                        "Min. CPI": "5.40"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "ME 206",
+                        "Min. CPI": "7.11"
+                        },
+                       {
+                        "id": 1,
+                        "Course code": "ME 209",
+                        "Min. CPI": "7.76"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "ME 316",
+                        "Min. CPI": "7.61"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "ME6114",
+                        "Min. CPI": "8.82"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "MG 402",
+                        "Min. CPI": "8.15"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "MG 405",
+                        "Min. CPI": "7.75"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "MG 406",
+                        "Min. CPI": "7.86"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "MM 318",
+                        "Min. CPI": "7.53"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "PH 252",
+                        "Min. CPI": "7.08"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "PH 352",
+                        "Min. CPI": "7.43"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "PH 353",
+                        "Min. CPI": "8.24"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "SC 202",
+                        "Min. CPI": "7.79"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "SC 602",
+                        "Min. CPI": "6.08"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "SC 607",
+                        "Min. CPI": "5.17"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "SC 618",
+                        "Min. CPI": "5.73"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "SC 624",
+                        "Min. CPI": "5.83"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "SC 627",
+                        "Min. CPI": "5.05"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "SC 646",
+                        "Min. CPI": "5.29"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "SI 422",
+                        "Min. CPI": "7.01"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "SI 527",
+                        "Min. CPI": "8.21"
+                        }
+
+                ],
+                dropdowntcols : ['Course code' ,  'Min. CPI'],
             },
             {
-                subheading : '6.2. 2021-22 SPRING SEMESTER CUTOFFS',
-                description : ``
+                id : '3',
+                dropdownheading : '6.3. 2022-23 SPRING SEMESTER CUTOFFS',
+                dropdowntbody : [
+                    
+                         {
+                        "id": 1,
+                        "Course code": "AE 234",
+                        "Min. CPI": "7.18"
+                        },
+                       {
+                        "id": 1,
+                        "Course code": "AE 236",
+                        "Min. CPI": "8.19"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "AE 238",
+                        "Min. CPI": "4.76"
+                        },
+                       {
+                        "id": 1,
+                        "Course code": "AE 240",
+                        "Min. CPI": "6.38"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "AE 305",
+                        "Min. CPI": "7.6"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "AE 332",
+                        "Min. CPI": "7.47"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "BB 400",
+                        "Min. CPI": "7.68"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "BB 411",
+                        "Min. CPI": "6.13"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "BB 610",
+                        "Min. CPI": "9.13"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "BB 618",
+                        "Min. CPI": "5.64"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "BB 625",
+                        "Min. CPI": "5.32"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "CH 224",
+                        "Min. CPI": "5.54"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "CH 404",
+                        "Min. CPI": "9.03"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "CH 438",
+                        "Min. CPI": "7"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "CS 207",
+                        "Min. CPI": "7.71"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "CS 213",
+                        "Min. CPI": "7.83"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "CS 419",
+                        "Min. CPI": "7.31"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "DE 403",
+                        "Min. CPI": "5.72"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "DE 405",
+                        "Min. CPI": "5"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "DE 410",
+                        "Min. CPI": "4.42"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "DH 304",
+                        "Min. CPI": "6.74"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "DH 307",
+                        "Min. CPI": "6.34"
+                        },
+                       {
+                        "id": 1,
+                        "Course code": "DH 308",
+                        "Min. CPI": "5.9"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "DS 303",
+                        "Min. CPI": "7.11"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "EE 204",
+                        "Min. CPI": "5.49"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "EE 229",
+                        "Min. CPI": "5.72"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "EE 325",
+                        "Min. CPI": "5.77"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "EN 301",
+                        "Min. CPI": "7.22"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "EN 302",
+                        "Min. CPI": "7.76"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "EN 410",
+                        "Min. CPI": "6.18"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "ENT602",
+                        "Min. CPI": "6.94"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "ENT608",
+                        "Min. CPI": "8.14"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "ENT610",
+                        "Min. CPI": "7.54"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "ES 204",
+                        "Min. CPI": "6.49"
+                        },
+                       {
+                        "id": 1,
+                        "Course code": "ES 306",
+                        "Min. CPI": "7.98"
+                        },
+                    {
+                        "id": 1,
+                        "Course code": "GNR402",
+                        "Min. CPI": "4.23"
+                        },
+                      {
+                        "id": 1,
+                        "Course code": "GNR408",
+                        "Min. CPI": "5.94"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "GNR410",
+                        "Min. CPI": "6.78"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "HS 417",
+                        "Min. CPI": "4.92"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "HS 490",
+                        "Min. CPI": "5.8"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "IE 506",
+                        "Min. CPI": "7.06"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "IE 616",
+                        "Min. CPI": "7.65"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "IE 630",
+                        "Min. CPI": "4.91"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "IE 716",
+                        "Min. CPI": "4.99"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "MA 406",
+                        "Min. CPI": "6.02"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "MA5106",
+                        "Min. CPI": "7.75"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "ME 206",
+                        "Min. CPI": "5.09"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "ME 209",
+                        "Min. CPI": "8.21"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "ME 316",
+                        "Min. CPI": "6.92"
+                        },
+                       {
+                        "id": 1,
+                        "Course code": "ME 333",
+                        "Min. CPI": "8.51"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "MG 402",
+                        "Min. CPI": "7.44"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "MG 405",
+                        "Min. CPI": "7.53"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "MG 406",
+                        "Min. CPI": "7.21"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "PH 252",
+                        "Min. CPI": "6.03"
+                        },
+                       {
+                        "id": 1,
+                        "Course code": "PH 352",
+                        "Min. CPI": "4.42"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "SC 202",
+                        "Min. CPI": "7.2"
+                        },
+                      {
+                        "id": 1,
+                        "Course code": "SC 602",
+                        "Min. CPI": "5.31"
+                        },
+                       {
+                        "id": 1,
+                        "Course code": "SC 607",
+                        "Min. CPI": "7.57"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "SC 627",
+                        "Min. CPI": "8.27"
+                        },
+                       {
+                        "id": 1,
+                        "Course code": "SC 641",
+                        "Min. CPI": "7.88"
+                        },
+                        {
+                        "id": 1,
+                        "Course code": "SC 644",
+                        "Min. CPI": "8.84"
+                        },
+                         {
+                        "id": 1,
+                        "Course code": "SC 645",
+                        "Min. CPI": "5.65"
+                        },
+                ],
+                dropdowntcols : ['Course code' ,  'Min. CPI'],
             }
         ]
     },
     {
-        id :'9',
+        id :'10',
         headings : 'FAQs',
         contents : [
             {
@@ -841,7 +1876,7 @@ const topics = [
         ]
     },
     {
-        id : '9',
+        id : '11',
         headings :'SOME USEFUL NOTES',
         contents :[
             {
@@ -880,7 +1915,7 @@ const topics = [
         ]
     },
     {
-        id : '10',
+        id : '12',
         headings : 'SOME USEFUL LINKS',
         contents : [
             {

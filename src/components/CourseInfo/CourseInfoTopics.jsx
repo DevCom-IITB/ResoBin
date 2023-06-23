@@ -13,9 +13,14 @@ import CustomTable from './table'
 const CourseInfoTopics = () => {
 
   const [activeDropdown, setActiveDropdown] = useState(null)
+  const [activeTableDropdown, setActiveTableDropdown] = useState(null)
 
   const handleDropdownClick = (index) => {
     setActiveDropdown(activeDropdown === index ? null : index)
+  }
+
+  const handleTableDropdownClick = (index) => {
+    setActiveTableDropdown(activeTableDropdown === index ? null : index)
   }
 
   return (
@@ -42,15 +47,34 @@ const CourseInfoTopics = () => {
                     ):null}
               </p>
               {content.tbody ? (
-        <TableWrapper>
-          <CustomTableStyled data={content.tbody} columns={content.tcols} />
-        </TableWrapper>
-      ) : null}
+                  <TableWrapper>
+                    <CustomTableStyled data={content.tbody} columns={content.tcols} />
+                  </TableWrapper>
+              ) : null}
+              <Dropdown key={content.id}>
+                  <DropdownButton
+                    type="button"
+                    onClick={() =>handleTableDropdownClick(index)}
+                  >
+                    {content.dropdownheading}
+                  </DropdownButton>
+                  {activeTableDropdown === index ? (
+                    <DropdownContent>
+                      {content.dropdowntcols ? (
+                  <TableWrapper>
+                    <CustomTableStyled data={content.dropdowntbody} columns={content.dropdowntcols} />
+                  </TableWrapper>
+              ) : null}
+                    </DropdownContent>
+
+                  ): null}
+                  </Dropdown>
+
               
               </div>
            
              ))}
-              </DropdownContent>
+            </DropdownContent>
           ): null}
         </Dropdown>
       ))}
