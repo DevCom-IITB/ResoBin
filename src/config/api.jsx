@@ -70,6 +70,11 @@ export const API = {
 
     favorites: async () => APIInstance.get('/accounts/profile/favorites'),
 
+    group: {
+      list: async (groupName) =>
+        APIInstance.get(`/accounts/group/${groupName}/users`),
+    },
+
     resources: {
       list: async () => APIInstance.get('/accounts/profile/resources'),
     },
@@ -89,7 +94,7 @@ export const API = {
         APIInstance.put(`/accounts/profile/timetable/${id}`),
       remove: async ({ id }) =>
         APIInstance.delete(`/accounts/profile/timetable/${id}`),
-      addShared: async({ids}) =>
+      addShared: async ({ ids }) =>
         APIInstance.put(`/accounts/profile/timetable/shared/${ids}`),
     },
   },
@@ -103,10 +108,9 @@ export const API = {
       APIInstance.get(`/courses/${code}/resources`),
     listReviews: async ({ code }) =>
       APIInstance.get(`/courses/${code}/reviews`),
-    
-    getCutoffs: async ({ code }) =>
-    APIInstance.get(`/courses/${code}/cutoffs`),
-    
+
+    getCutoffs: async ({ code }) => APIInstance.get(`/courses/${code}/cutoffs`),
+
     favorite: {
       add: async ({ code }) =>
         APIInstance.put(`/accounts/profile/courses/${code}/favorite`),
@@ -182,7 +186,7 @@ export const API = {
   programReviews: {
     read: async ({ id }) => APIInstance.get(`/program-reviews/${id}`),
   },
-  
+
   honors: {
     list: async () => APIInstance.get('/honors'),
   },
