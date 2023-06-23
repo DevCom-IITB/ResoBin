@@ -1,6 +1,5 @@
-
-import React from 'react';
-import styled from 'styled-components/macro';
+import React from 'react'
+import styled from 'styled-components/macro'
 
 const Table = styled.table`
   width: 100%;
@@ -14,10 +13,9 @@ const Table = styled.table`
   }
 
   th {
-  
     font-weight: bold;
   }
-`;
+`
 
 const CustomTable = ({ data, columns }) => {
   return (
@@ -39,13 +37,7 @@ const CustomTable = ({ data, columns }) => {
         ))}
       </tbody>
     </Table>
-  );
-};
+  )
+}
 
-export default CustomTable;
-
-
-
-
-
-
+export default CustomTable

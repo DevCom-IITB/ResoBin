@@ -1,81 +1,92 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 
-
 import { fontSize } from 'styles/responsive'
 
-import  topics  from './data'
+import topics from './data'
 import CustomTable from './table'
 
+const headingStyle = {
+  fontSize: '1rem',
+}
 
-
- 
 const CourseInfoTopics = () => {
-
-  const [activeDropdown, setActiveDropdown] = useState(null)
-  const [activeTableDropdown, setActiveTableDropdown] = useState(null)
+  const [activeDropdown, setActiveDropdown] = useState(0)
+  const [activeTableDropdown, setActiveTableDropdown] = useState(
+    Array(topics.length).fill(null)
+  )
 
   const handleDropdownClick = (index) => {
     setActiveDropdown(activeDropdown === index ? null : index)
   }
 
   const handleTableDropdownClick = (index) => {
-    setActiveTableDropdown(activeTableDropdown === index ? null : index)
+    const updatedDropdown = activeTableDropdown.map((value, i) => {
+      if (i === index) {
+        return value === null ? index : null
+      }
+      return null
+    })
+    setActiveTableDropdown(updatedDropdown)
   }
 
   return (
     <div>
       {topics.map((topic, index) => (
-        <Dropdown key = {topic.id}>
+        <Dropdown key={topic.id}>
           <DropdownButton
             type="button"
             onClick={() => handleDropdownClick(index)}
           >
             {topic.headings}
           </DropdownButton>
-          {activeDropdown === index ? (
+          {index === 0 || activeDropdown === index ? (
             <DropdownContent>
-             {topic.contents.map((content) =>(
-              <div>
-              <h2>{content.subheading}</h2>
-              <p>{content.description}
-              {content.link ? (
-                      <a href={content.link} target="_blank" rel="noreferrer" >
+              {topic.contents.map((content, contentIndex) => (
+                <div key={content.id}>
+                  <h2 style={headingStyle}>{content.subheading}</h2>
+                  <p>
+                    {content.description}
+                    {content.link ? (
+                      <a href={content.link} target="_blank" rel="noreferrer">
                         {content.linktext}
-                        </a>
-                      
-                    ):null}
-              </p>
-              {content.tbody ? (
-                  <TableWrapper>
-                    <CustomTableStyled data={content.tbody} columns={content.tcols} />
-                  </TableWrapper>
-              ) : null}
-              <Dropdown key={content.id}>
-                  <DropdownButton
-                    type="button"
-                    onClick={() =>handleTableDropdownClick(index)}
-                  >
-                    {content.dropdownheading}
-                  </DropdownButton>
-                  {activeTableDropdown === index ? (
-                    <DropdownContent>
-                      {content.dropdowntcols ? (
-                  <TableWrapper>
-                    <CustomTableStyled data={content.dropdowntbody} columns={content.dropdowntcols} />
-                  </TableWrapper>
-              ) : null}
-                    </DropdownContent>
-
-                  ): null}
-                  </Dropdown>
-
-              
-              </div>
-           
-             ))}
+                      </a>
+                    ) : null}
+                  </p>
+                  {content.tbody ? (
+                    <TableWrapper>
+                      <CustomTableStyled
+                        data={content.tbody}
+                        columns={content.tcols}
+                      />
+                    </TableWrapper>
+                  ) : null}
+                  {content.dropdownheading ? (
+                    <Dropdown key={content.id}>
+                      <DropdownButton
+                        type="button"
+                        onClick={() => handleTableDropdownClick(contentIndex)}
+                      >
+                        {content.dropdownheading}
+                      </DropdownButton>
+                      {activeTableDropdown[contentIndex] !== null ? (
+                        <DropdownContent>
+                          {content.dropdowntcols ? (
+                            <TableWrapper>
+                              <CustomTableStyled
+                                data={content.dropdowntbody}
+                                columns={content.dropdowntcols}
+                              />
+                            </TableWrapper>
+                          ) : null}
+                        </DropdownContent>
+                      ) : null}
+                    </Dropdown>
+                  ) : null}
+                </div>
+              ))}
             </DropdownContent>
-          ): null}
+          ) : null}
         </Dropdown>
       ))}
     </div>
@@ -85,21 +96,19 @@ const CourseInfoTopics = () => {
 export default CourseInfoTopics
 
 const Dropdown = styled.div`
-  margin-bottom: 1.5rem; // Increase the space between the cards
+  margin-bottom: 1.5rem;
   box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15),
-    // Increase the spread and blur radius
-    0px 3px 6px 0px rgba(0, 0, 0, 0.1),
-    0px 4px 12px -2px rgba(0, 0, 0, 0.1);
+    0px 3px 6px 0px rgba(0, 0, 0, 0.1), 0px 4px 12px -2px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   background-color: ${({ theme }) => theme.secondary};
-  padding: 1rem; // Add some padding to the card
+  padding: 0rem;
 `
 
 const DropdownButton = styled.button`
   background: none;
   border: none;
   color: ${({ theme }) => theme.textColor};
-  font-size: ${fontSize.responsive.xl};
+  font-size: ${fontSize.responsive.md};
   font-weight: 600;
   padding: 1rem;
   display: flex;
@@ -117,11 +126,15 @@ const DropdownContent = styled.p`
   padding: 1rem;
   color: ${({ theme }) => theme.textColor};
   border-top: 1px solid ${({ theme }) => theme.borderColor};
-  font-family: 'Source Sans Pro'
+  font-size: ${fontSize.responsive.sm};
+  font-family: Montserrat, sans-serif;
 `
+
 const TableWrapper = styled.div`
   margin-top: 1rem;
-`;
+  max-height: 300px; /* Set the maximum height for the table */
+  overflow: auto; /* Enable scrolling when the content exceeds the height */
+`
 
 const CustomTableStyled = styled(CustomTable)`
   width: 100%;
@@ -138,4 +151,4 @@ const CustomTableStyled = styled(CustomTable)`
     font-weight: bold;
     background-color: #f2f2f2;
   }
-`;
+`
