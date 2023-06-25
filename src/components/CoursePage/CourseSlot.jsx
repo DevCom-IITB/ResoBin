@@ -1,73 +1,64 @@
 import styled from 'styled-components/macro'
 
-import { device } from 'styles/responsive'
-
-// ? repeat n times a Box component with color = color
-const CourseSlotItem = ({ value, title }) =>
-  value == null ? null : <BoxContainer>{`${title}:${value}`}</BoxContainer>
-
 const CourseSlot = ({ semester }) => {
-  let flag = false
-  let Slots = null
-  for (let i = 0; i < semester.length; i += 1) {
-    if (semester[i].timetable.length !== 0) {
-      ;[Slots] = semester[i].timetable
-      flag = true
-      break
-    }
-  }
-  if (flag === false)
-    return <Title style={{ opacity: 0.8 }}>Slots not found</Title>
+  const slot = semester.find((s) => s.timetable.length !== 0)
 
-  const SlotItems = [
-    {
+  if (!slot) {
+    return <Title style={{ opacity: 0.8 }}>Slots not found</Title>
+  }
+
+  const [Slots] = slot.timetable
+
+  const SlotItems = []
+
+  if (Slots.lectureSlots.length !== 0) {
+    SlotItems.push({
       title: 'Lecture Slots',
-      value: Slots.lectureSlots.length === 0 ? null : Slots.lectureSlots,
-    },
-    {
+      value: Slots.lectureSlots.join(', '),
+    })
+  }
+
+  if (Slots.tutorialSlots.length !== 0) {
+    SlotItems.push({
       title: 'Tutorial Slots',
-      value: Slots.tutorialSlots.length === 0 ? null : Slots.tutorialSlots,
-    },
-  ]
+      value: Slots.tutorialSlots.join(', '),
+    })
+  }
 
   return (
-    <Container>
-      <Title>Slots</Title>
+    <CourseSlotContainer>
+      <Title>Slots:</Title>
       <SlotContainer>
         {SlotItems.map(({ title, value }) => (
-          <CourseSlotItem key={title} title={title} value={value} />
+          <span key={title}>
+            {title}: <b>{value}</b>
+          </span>
         ))}
       </SlotContainer>
-    </Container>
+    </CourseSlotContainer>
   )
 }
 
 export default CourseSlot
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
+const CourseSlotContainer = styled.div`
+  color: ${({ theme }) => theme.textColor};
 
-  @media ${device.max.xs} {
-    align-items: center;
+  h3 {
+    font-weight: 400;
+    margin-bottom: 0.25rem;
   }
 `
 
 const SlotContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  width: 10rem;
-  padding: 4px;
-  overflow: auto;
+  flex-direction: column;
+  gap: 0.25rem;
   background: ${({ theme }) => theme.darksecondary};
-  border-radius: 10px;
+  padding: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
 `
 
-const BoxContainer = styled.h5`
-  margin: 0 0.25rem 0.25rem;
-  color: ${({ theme }) => theme.textColor};
-  font-weight: 400;
-`
 const Title = styled.h3`
   margin: 0 0.25rem 0.25rem;
   color: ${({ theme }) => theme.textColor};
