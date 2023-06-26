@@ -6,6 +6,8 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled, { createGlobalStyle } from 'styled-components/macro'
 
+import { toast } from 'components/shared'
+import { API } from 'config/api'
 import { useQueryString, useResponsive } from 'hooks'
 import { selectIsDropdownActive } from 'store/settingsSlice'
 
@@ -28,28 +30,68 @@ const TimetableSearch = ({ loading, setLoading, data }) => {
       return []
     }
 
-    let lowercasevalue = value
+    const lowercaseValue = value ? value.toLowerCase() : ''
 
-    if (value != null) {
-      lowercasevalue = value.toLowerCase()
-    }
+    const suggestions = []
 
-    return data.results
-      .filter(({ code, title }) => {
-        const lowercasecode = code.toLowerCase()
-        const lowercasetitle = title.toLowerCase()
-        return (
-          lowercasecode.includes(lowercasevalue) ||
-          lowercasetitle.includes(lowercasevalue)
-        )
-      })
-      .map(({ code, title }) => ({
-        value: code.concat(' - ').concat(title),
-        link: `/courses/${code}`,
-      }))
+    data.results.forEach(({ code, semester }) => {
+      const lowercaseCode = code.toLowerCase()
+
+      if (lowercaseCode.includes(lowercaseValue)) {
+        if (semester.length > 0) {
+          const { timetable } = semester[0]
+
+          if (timetable.length > 0) {
+            timetable.forEach(
+              ({ id, division, lectureSlots, tutorialSlots }) => {
+                const suggestion = {
+                  id,
+                  value: `${code} - ${division}`,
+                  link: `/courses/${code}`,
+                }
+
+                if (lectureSlots.length > 0 && tutorialSlots.length > 0) {
+                  suggestion.value += ` - ${lectureSlots.join(
+                    ', '
+                  )} - ${tutorialSlots.join(', ')}`
+                } else if (lectureSlots.length > 0) {
+                  suggestion.value += ` - ${lectureSlots.join(', ')}`
+                } else if (tutorialSlots.length > 0) {
+                  suggestion.value += ` - ${tutorialSlots.join(', ')}`
+                }
+
+                suggestions.push(suggestion)
+              }
+            )
+          } else {
+            suggestions.push({
+              id: -1,
+              value: code,
+              link: `/courses/${code}`,
+            })
+          }
+        }
+      }
+    })
+    return suggestions
   }
 
   const suggestions = filterSuggestions(search)
+
+  const addToTimetable = async (code, id) => {
+    if (id === -1) {
+      toast({ status: 'error', content: `No TimeTable Found For ${code}` })
+    } else {
+      try {
+        await API.profile.timetable.add({ id })
+      } catch (error) {
+        toast({ status: 'error', content: error })
+      } finally {
+        deleteQueryString('q')
+        window.location.reload()
+      }
+    }
+  }
 
   return (
     <>
@@ -75,7 +117,14 @@ const TimetableSearch = ({ loading, setLoading, data }) => {
                 }}
               >
                 {option.value}
-                <AddButton>⚡ Add</AddButton>
+                <AddButton
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    addToTimetable(option.value, option.id)
+                  }}
+                >
+                  ⚡ Add
+                </AddButton>
               </Option>
             ))}
           </Suggestions>
