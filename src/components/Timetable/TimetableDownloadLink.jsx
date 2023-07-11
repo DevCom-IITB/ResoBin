@@ -1,5 +1,6 @@
 import { Download } from '@styled-icons/heroicons-outline'
 import { Dropdown, Menu } from 'antd'
+import domtoimage from 'dom-to-image'
 import { useSelector } from 'react-redux'
 
 import { ButtonIcon } from 'components/shared'
@@ -120,6 +121,23 @@ END:VCALENDAR
 
     return window.URL.createObjectURL(file)
   }
+
+  const generatePNGFile = (element) => {
+    return domtoimage
+      .toBlob(element[0])
+      .then((blob) => {
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = 'TimeTable.png'
+        link.click()
+        return 'Download started'
+      })
+      .catch((error) => {
+        throw new Error('Download failed: '.concat(error))
+      })
+  }
+
   const menu = (
     <Menu theme="dark">
       <Menu.Item key="ics">
@@ -129,8 +147,20 @@ END:VCALENDAR
           rel="noreferrer"
           download
         >
-          Google Calendar (.ics file) <b>(beta)</b>
+          Google Calendar (.ics file)
         </a>
+      </Menu.Item>
+      <Menu.Item
+        key="png"
+        onClick={() =>
+          generatePNGFile(
+            document.getElementsByClassName(
+              'TimetableLayout__Container-sc-4uq15v-0 iAafRu'
+            )
+          )
+        }
+      >
+        Image (.png file)
       </Menu.Item>
     </Menu>
   )
