@@ -1,6 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import { ChevronLeft, ChevronRight, X } from '@styled-icons/heroicons-outline'
 import { Spin, Alert } from 'antd'
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -18,6 +19,7 @@ import { ButtonIcon, ButtonIconDanger } from 'components/shared/Buttons'
 import { API } from 'config/api'
 import { slots } from 'data/timetable'
 import { displayYear, coursePageUrl } from 'helpers'
+import { useQueryString } from 'hooks'
 import {
   selectCourseAPILoading,
   selectCourseTitle,
@@ -29,6 +31,7 @@ import CurrentTime from './CurrentTime'
 import TimetableCourseItem from './TimetableCourseItem'
 import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableLayout from './TimetableLayout'
+import TimetableSearch from './TimetableSearch'
 import TimetableShareButton from './TimetableShareButton'
 
 const TimetableAsideItem = ({ code, handleRemove, loading }) => {
@@ -64,6 +67,7 @@ const StyledLink = styled(Link)`
   }
 `
 
+let ajaxRequest = null
 const TimetableContainer = () => {
   const dispatch = useDispatch()
   const semesterList = useSelector(selectSemesters)
@@ -72,6 +76,41 @@ const TimetableContainer = () => {
   const [courseTimetableList, setCourseTimetableList] = useState([])
   const [loading, setLoading] = useState(courseAPILoading)
   const [semIdx, setSemIdx] = useState(null)
+
+  const { getQueryString } = useQueryString()
+
+  const [courseData, setCourseData] = useState([])
+  const [loadingg, setLoadingg] = useState(true)
+
+  const fetchCourses = async (params) => {
+    setLoadingg(true)
+
+    try {
+      if (ajaxRequest) ajaxRequest.cancel()
+      ajaxRequest = axios.CancelToken.source()
+
+      const response = await API.courses.list({
+        params,
+        cancelToken: ajaxRequest.token,
+      })
+      setCourseData(response)
+    } catch (error) {
+      if (axios.isCancel(error)) return
+      toast({ status: 'error', content: error })
+    }
+
+    setLoadingg(false)
+  }
+
+  useEffect(() => {
+    const filter = getQueryString()
+    const params = {
+      search_fields: 'code,title,description',
+      q: filter.q,
+    }
+
+    fetchCourses(params)
+  }, [getQueryString])
 
   useEffect(() => {
     if (semesterList.length) setSemIdx(semesterList.length - 1)
@@ -171,7 +210,6 @@ const TimetableContainer = () => {
       <PageHeading>
         <PageTitle>Timetable</PageTitle>
       </PageHeading>
-
       {semesterList[semIdx] && (
         <TimetableSemesterHeader>
           <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
@@ -196,9 +234,12 @@ const TimetableContainer = () => {
           <TimetableShareButton coursesInTimetable={courseTimetableList} />
         </TimetableSemesterHeader>
       )}
-
+      <TimetableSearch
+        loading={loadingg}
+        setLoading={setLoadingg}
+        data={courseData}
+      />
       {loading && <LoaderAnimation />}
-
       <Spin
         spinning={loading}
         indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
@@ -211,7 +252,6 @@ const TimetableContainer = () => {
           <CurrentTime mode="vertical" />
         </TimetableLayout>
       </Spin>
-
       <Aside title="My courses" loading={loading}>
         <ClashAlerts>
           {!loading &&
