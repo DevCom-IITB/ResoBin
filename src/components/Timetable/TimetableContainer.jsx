@@ -1,7 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import { ChevronLeft, ChevronRight, X } from '@styled-icons/heroicons-outline'
 import { Spin, Alert } from 'antd'
-import { useEffect, useState } from 'react'
+import React , { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
@@ -70,6 +70,7 @@ const TimetableContainer = () => {
   const courseAPILoading = useSelector(selectCourseAPILoading)
 
   const [courseTimetableList, setCourseTimetableList] = useState([])
+  const [courseData, setCourseData] = useState([]);
   const [loading, setLoading] = useState(courseAPILoading)
   const [semIdx, setSemIdx] = useState(null)
 
@@ -114,6 +115,45 @@ const TimetableContainer = () => {
       setLoading(false)
     }
   }
+  const getCourseList = () => {
+    const courseList = courseTimetableList.map(item => item.course);
+    return courseList;
+  }
+
+  useEffect(() => {
+    const fetchCourseData = async () => {
+      try {
+        setLoading(true);
+        const courseList = getCourseList();
+        const promises = courseList.map(async (course) => {
+          const response = await API.courses.read({ code: course });
+          return response;
+        });
+        const courseDataArray = await Promise.all(promises);
+        setCourseData(courseDataArray); // Update the state with courseDataArray
+      } catch (error) {
+        toast({ status: 'error', content: error });
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchCourseData();
+  }, [courseTimetableList]);
+  console.log(courseData)
+
+  const filteredCourseData = courseData.filter((course) => {
+    return course.isHalfSemester === true;
+  });
+
+  const halfSemCourses = filteredCourseData.map((course) => {
+    const { code, semester } = course;
+    const lectureSlots = semester.map((sem) => sem.timetable.map((slot) => slot.lectureSlots)).flat();
+    return { code, lectureSlots };
+  });
+  
+  console.log(halfSemCourses)
+  
 
   const getSlotClashes = () => {
     const courseAndSlotList = []
@@ -143,7 +183,7 @@ const TimetableContainer = () => {
       const next = courseTimetableSlots[i]
       if (
         prev.grid.col === next.grid.col &&
-        prev.grid.row.end > next.grid.row.start
+        prev.grid.row.end > next.grid.row.start    
       )
         clashes.push({
           first: courseTimetableSlots[i - 1],
@@ -153,16 +193,40 @@ const TimetableContainer = () => {
     return clashes
   }
 
+  // const slotClashWarnings = (clashes) => {
+  //   const warnings = []
+  //   clashes.forEach((clash) => {
+  //     const { first } = clash
+  //     const { second } = clash
+  //     warnings.push(`${first.course} (Slot ${first.slotName})
+  //     is clashing with ${second.course} (Slot ${second.slotName})`)
+  //   })
+  //   return warnings
+  // }
+ 
   const slotClashWarnings = (clashes) => {
-    const warnings = []
-    clashes.forEach((clash) => {
-      const { first } = clash
-      const { second } = clash
-      warnings.push(`${first.course} (Slot ${first.slotName})
-      is clashing with ${second.course} (Slot ${second.slotName})`)
-    })
-    return warnings
-  }
+    const warnings = [];
+    if (Array.isArray(halfSemCourses)) {
+      clashes.forEach((clash) => {
+        const { first } = clash;
+        const { second } = clash;
+        const FirstCourseHalfSem = halfSemCourses.some(
+          (course) => course.code === first.course
+        );
+        const SecondCourseHalfSem = halfSemCourses.some(
+          (course) => course.code === second.course
+        );        
+        console.log(FirstCourseHalfSem)
+        if (!FirstCourseHalfSem || !SecondCourseHalfSem) {
+          warnings.push(
+            `${first.course} (Slot ${first.slotName}) is clashing with ${second.course} (Slot ${second.slotName})`
+          );
+        }
+      });
+    }
+    return warnings;
+  };
+  
 
   const warnings = slotClashWarnings(getSlotClashes())
 
@@ -207,7 +271,6 @@ const TimetableContainer = () => {
           {courseTimetableList.map((item) => (
             <TimetableCourseItem key={item.id} data={item} />
           ))}
-
           <CurrentTime mode="vertical" />
         </TimetableLayout>
       </Spin>
