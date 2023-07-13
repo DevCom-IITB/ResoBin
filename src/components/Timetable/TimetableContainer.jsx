@@ -140,7 +140,7 @@ const TimetableContainer = () => {
   
     fetchCourseData();
   }, [courseTimetableList]);
-  console.log(courseData)
+
 
   const filteredCourseData = courseData.filter((course) => {
     return course.isHalfSemester === true;
@@ -152,7 +152,7 @@ const TimetableContainer = () => {
     return { code, lectureSlots };
   });
   
-  console.log(halfSemCourses)
+
   
 
   const getSlotClashes = () => {
@@ -216,7 +216,7 @@ const TimetableContainer = () => {
         const SecondCourseHalfSem = halfSemCourses.some(
           (course) => course.code === second.course
         );        
-        console.log(FirstCourseHalfSem)
+
         if (!FirstCourseHalfSem || !SecondCourseHalfSem) {
           warnings.push(
             `${first.course} (Slot ${first.slotName}) is clashing with ${second.course} (Slot ${second.slotName})`
