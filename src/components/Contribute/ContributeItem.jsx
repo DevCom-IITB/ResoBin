@@ -51,7 +51,7 @@ const ContributeItem = ({
       return
     }
     // const { title, course, description, tags, author } = fileDetails
-    
+
     const { author, course, module, tags, title, year } = fileDetails
     const fd = new FormData()
     fd.append('file', fileItem.file, fileItem.file.name)
@@ -77,7 +77,11 @@ const ContributeItem = ({
           'Resource uploaded successfully! Pending moderator approval (1-2 days).',
       })
     } catch (error) {
-      toast({ status: 'error', content: error })
+      if (error.includes('409')) {
+        toast({ status: 'error', content: 'Similar File Already Exists!' })
+      } else {
+        toast({ status: 'error', content: error })
+      }
       updateFileItem({ status: 'error', progress: 0 })
     }
   }
