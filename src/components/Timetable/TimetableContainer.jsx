@@ -26,6 +26,7 @@ import {
 import { updateTimetable } from 'store/userSlice'
 
 import CurrentTime from './CurrentTime'
+import HalfSemCourseItem from './halfSemCourseItem'
 import TimetableCourseItem from './TimetableCourseItem'
 import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableLayout from './TimetableLayout'
@@ -145,15 +146,38 @@ const TimetableContainer = () => {
   const filteredCourseData = courseData.filter((course) => {
     return course.isHalfSemester === true;
   });
-
-  const halfSemCourses = filteredCourseData.map((course) => {
-    const { code, semester } = course;
-    const lectureSlots = semester.map((sem) => sem.timetable.map((slot) => slot.lectureSlots)).flat();
-    return { code, lectureSlots };
+ 
+const groupCoursesByLectureSlot = (courses) => {
+  const groupedCourses = courses.reduce((acc, course) => {
+    course.lectureSlots.forEach((lectureSlot) => {
+      if (!acc.has(lectureSlot)) {
+        acc.set(lectureSlot, new Set([course.code]));
+      } else {
+        acc.get(lectureSlot).add(course.code);
+      }
+    });
+    return acc;
+  }, new Map());
+  groupedCourses.forEach((value, key, map) => {
+    map.set(key, Array.from(value));
   });
-  
 
-  
+  return Object.fromEntries(groupedCourses);
+};
+
+
+const halfSemCourses = filteredCourseData.map((course) => {
+  const { code, semester } = course;
+  const lectureSlots = semester.flatMap((sem) =>
+    sem.timetable.flatMap((slot) => slot.lectureSlots)
+  );
+  const tutorialSlots = semester.flatMap((sem) =>
+    sem.timetable.flatMap((slot) => slot.tutorialSlots)
+  );
+  return { code, lectureSlots, tutorialSlots };
+});
+const groupedCoursesData = Object.entries(groupCoursesByLectureSlot([...halfSemCourses]))
+
 
   const getSlotClashes = () => {
     const courseAndSlotList = []
@@ -192,18 +216,7 @@ const TimetableContainer = () => {
     }
     return clashes
   }
-
-  // const slotClashWarnings = (clashes) => {
-  //   const warnings = []
-  //   clashes.forEach((clash) => {
-  //     const { first } = clash
-  //     const { second } = clash
-  //     warnings.push(`${first.course} (Slot ${first.slotName})
-  //     is clashing with ${second.course} (Slot ${second.slotName})`)
-  //   })
-  //   return warnings
-  // }
- 
+  
   const slotClashWarnings = (clashes) => {
     const warnings = [];
     if (Array.isArray(halfSemCourses)) {
@@ -269,8 +282,17 @@ const TimetableContainer = () => {
       >
         <TimetableLayout>
           {courseTimetableList.map((item) => (
-            <TimetableCourseItem key={item.id} data={item} />
-          ))}
+            halfSemCourses.some((course) => course.code === item.course)
+              ? null
+              : <TimetableCourseItem key={item.id} data={item} />
+        ))}
+         {groupedCoursesData.map(([key, courses]) => (
+          <HalfSemCourseItem keyProp={key} data={courses} />
+
+        
+        ))}
+            
+
           <CurrentTime mode="vertical" />
         </TimetableLayout>
       </Spin>
