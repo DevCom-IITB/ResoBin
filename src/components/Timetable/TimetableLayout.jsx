@@ -13,24 +13,26 @@ const RowHeader = ({ id, title }) => (
 
 const TimetableLayout = ({ children }) => {
   return (
-    <Container>
-      {cols.map(({ id, title }, index) => (
-        <ColHeader key={id} id={id} title={title} />
-      ))}
+    <div id="timetable-layout-wrapper">
+      <Container>
+        {cols.map(({ id, title }, index) => (
+          <ColHeader key={id} id={id} title={title} />
+        ))}
 
-      {rows.map(
-        ({ id, title }, index) =>
-          index % 2 === 0 && <RowHeader key={id} id={id} title={title} />
-      )}
+        {rows.map(
+          ({ id, title }, index) =>
+            index % 2 === 0 && <RowHeader key={id} id={id} title={title} />
+        )}
 
-      {cols.map((col, i) =>
-        rows.map((row, j) => (
-          <TimetableFillerItem key={row.id} row={row} col={col} j={j} />
-        ))
-      )}
+        {cols.map((col, i) =>
+          rows.map((row, j) => (
+            <TimetableFillerItem key={row.id} row={row} col={col} j={j} />
+          ))
+        )}
 
-      {children}
-    </Container>
+        {children}
+      </Container>
+    </div>
   )
 }
 
