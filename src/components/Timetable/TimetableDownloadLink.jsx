@@ -124,7 +124,7 @@ END:VCALENDAR
 
   const generatePNGFile = (element) => {
     return domtoimage
-      .toBlob(element[0])
+      .toBlob(element.children[0])
       .then((blob) => {
         const url = URL.createObjectURL(blob)
         const link = document.createElement('a')
@@ -154,8 +154,8 @@ END:VCALENDAR
         key="png"
         onClick={() =>
           generatePNGFile(
-            document.getElementsByClassName(
-              'TimetableLayout__Container-sc-4uq15v-0 iAafRu'
+            document.getElementById(
+              'timetable-layout-wrapper'
             )
           )
         }
