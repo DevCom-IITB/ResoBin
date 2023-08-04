@@ -76,6 +76,7 @@ const TimetableContainer = () => {
 
   const [courseTimetableList, setCourseTimetableList] = useState([])
   const [courseData, setCourseData] = useState([]);
+  const [coursedata, setCoursedata] = useState([]);
   const [loading, setLoading] = useState(courseAPILoading)
   const [semIdx, setSemIdx] = useState(null)
 
@@ -169,7 +170,7 @@ const TimetableContainer = () => {
           return response;
         });
         const courseDataArray = await Promise.all(promises);
-        setCourseData(courseDataArray); // Update the state with courseDataArray
+        setCoursedata(courseDataArray); // Update the state with courseDataArray
       } catch (error) {
         toast({ status: 'error', content: error });
       } finally {
@@ -181,7 +182,7 @@ const TimetableContainer = () => {
   }, [courseTimetableList]);
 
 
-  const filteredCourseData = courseData.filter((course) => {
+  const filteredCourseData = coursedata.filter((course) => {
     return course.isHalfSemester === true;
   });
  
