@@ -832,7 +832,7 @@ const topics = [
         dropdowntbody: [
           {
             id: 1,
-            'Course code': 'AE 153 ',
+            'Course code': 'AE152 ',
             'Min. CPI': `6.23`,
           },
           {
