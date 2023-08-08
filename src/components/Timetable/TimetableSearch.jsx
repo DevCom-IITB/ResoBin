@@ -11,7 +11,7 @@ import { API } from 'config/api'
 import { useQueryString, useResponsive } from 'hooks'
 import { selectIsDropdownActive } from 'store/settingsSlice'
 
-const  TimetableSearch = ({ loading, setLoading, data }) => {
+const  TimetableSearch = ({ loading, setLoading, data ,currSem}) => {
   const { isDesktop } = useResponsive()
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
   const showFilter = useSelector(selectIsDropdownActive)
@@ -29,18 +29,23 @@ const  TimetableSearch = ({ loading, setLoading, data }) => {
     if (!data ) {
       return []
     } 
-   
     const lowercaseValue = value ? value.toLowerCase() : ''
 
     const suggestions = []
 
     data.forEach(({ code, semester }) => {
       const lowercaseCode = code.toLowerCase()
-
       if (lowercaseCode.includes(lowercaseValue)) {
         if (semester.length > 0) {
-          const { timetable } = semester[0]
-
+        
+          let sem;
+           if (currSem.season === semester[0].season && currSem.year === semester[0].year) {
+             sem = 0;
+           } else if (currSem.season === semester[1].season && currSem.year === semester[1].year) {
+             sem = 1;
+           } 
+           const { timetable } = semester[sem];
+       
           if (timetable.length > 0) {
             timetable.forEach(
               ({ id, division, lectureSlots, tutorialSlots }) => {
