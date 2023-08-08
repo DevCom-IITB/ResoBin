@@ -35,7 +35,6 @@ import TimetableLayout from './TimetableLayout'
 import TimetableSearch from './TimetableSearch'
 import TimetableShareButton from './TimetableShareButton'
 
-
 const TimetableAsideItem = ({ code, handleRemove, loading }) => {
   const title = useSelector(selectCourseTitle(code))
 
@@ -80,12 +79,11 @@ const TimetableContainer = () => {
   const [coursedata, setCoursedata] = useState([]);
   const [loading, setLoading] = useState(courseAPILoading)
   const [semIdx, setSemIdx] = useState(null)
-  const [currTimeTableSem , setcurrTimeTableSem  ] = useState(semesterList[5])
 
   const { getQueryString } = useQueryString()
 
   const [loadingg, setLoadingg] = useState(true)
-  
+
   const fetchCourses = async (params) => {
     setLoadingg(true)
 
@@ -105,7 +103,6 @@ const TimetableContainer = () => {
 
     setLoadingg(false)
   }
-
 
   useEffect(() => {
     const filter = getQueryString()
@@ -137,21 +134,12 @@ const TimetableContainer = () => {
     if (semIdx !== null) fetchUserTimetable(semesterList[semIdx])
     else setLoading(true)
   }, [semesterList, semIdx])
- 
-  const handleClickPrev = () => {
-    if (semIdx - 1 in semesterList) {
-      setSemIdx(semIdx - 1);
-      setcurrTimeTableSem(semesterList[semIdx - 1]);
-    }
-  };
-  
-  const handleClickNext = () => {
-    if (semIdx + 1 in semesterList) {
-      setSemIdx(semIdx + 1);
-      setcurrTimeTableSem(semesterList[semIdx + 1]);
-    }
-  };
-  
+
+  const handleClickPrev = () =>
+    semIdx - 1 in semesterList && setSemIdx(semIdx - 1)
+  const handleClickNext = () =>
+    semIdx + 1 in semesterList && setSemIdx(semIdx + 1)
+
   const removeFromTimetable = (id) => async () => {
     try {
       setLoading(true)
@@ -171,6 +159,7 @@ const TimetableContainer = () => {
     const courseList = courseTimetableList.map(item => item.course);
     return courseList;
   }
+
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
@@ -206,13 +195,6 @@ const groupCoursesByLectureSlot = (courses) => {
         acc.get(lectureSlot).add(course.code);
       }
     });
-    course.tutorialSlots.forEach((tutorialSlot) => {
-      if (!acc.has(tutorialSlot)) {
-        acc.set(tutorialSlot, new Set([course.code]));
-      } else {
-        acc.get(tutorialSlot).add(course.code);
-      }
-    });
     return acc;
   }, new Map());
   groupedCourses.forEach((value, key, map) => {
@@ -222,15 +204,19 @@ const groupCoursesByLectureSlot = (courses) => {
   return Object.fromEntries(groupedCourses);
 };
 
+
 const halfSemCourses = filteredCourseData.map((course) => {
-  const { code } = course;
- const newcourseList = courseTimetableList.filter(item => item.course === code )
-   const lectureSlots = newcourseList.flatMap((item) => item.lectureSlots)
-   const tutorialSlots = newcourseList.flatMap((item) => item.tutorialSlots)
+  const { code, semester } = course;
+  const lectureSlots = semester.flatMap((sem) =>
+    sem.timetable.flatMap((slot) => slot.lectureSlots)
+  );
+  const tutorialSlots = semester.flatMap((sem) =>
+    sem.timetable.flatMap((slot) => slot.tutorialSlots)
+  );
   return { code, lectureSlots, tutorialSlots };
 });
- 
 const groupedCoursesData = Object.entries(groupCoursesByLectureSlot([...halfSemCourses]))
+
 
   const getSlotClashes = () => {
     const courseAndSlotList = []
@@ -329,7 +315,6 @@ const groupedCoursesData = Object.entries(groupCoursesByLectureSlot([...halfSemC
         loading={loadingg}
         setLoading={setLoadingg}
         data={courseData}
-        currSem = {currTimeTableSem}
       />
       {loading && <LoaderAnimation />}
       <Spin

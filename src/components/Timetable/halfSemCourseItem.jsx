@@ -13,7 +13,8 @@ import { fontSize } from 'styles/responsive'
 
 
 const HalfSemCourseItem = ({data , keyProp}) => {
-  // console.log(data)
+
+      
     const colorPicker = useColorPicker()
     const TimetableCourseLectureItem = useCallback(
         ({ gridCol, gridRow, slotName, isTutorial, venue }) => (
@@ -35,7 +36,8 @@ const HalfSemCourseItem = ({data , keyProp}) => {
           grid: slots[keyProp],
           isTutorial: true,
         },
-      ]; 
+      ];
+
       return courseSlots?.map(({ slot, grid, isTutorial }, idx) => (
         <TimetableCourseLectureItem
           key={String(idx) + String(slot)}
