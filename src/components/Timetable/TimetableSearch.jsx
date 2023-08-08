@@ -80,7 +80,7 @@ const  TimetableSearch = ({ loading, setLoading, data }) => {
 
   const addToTimetable = async (code, id) => {
     if (id === -1) {
-      toast({ status: 'error', content: `No TimeTable Found For ${code}` })
+      toast({ status: 'error', content: `No TimeTable Found For ${code} for current semester` })
     } else {
       try {
         await API.profile.timetable.add({ id })
