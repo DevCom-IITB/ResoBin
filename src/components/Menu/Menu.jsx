@@ -1,9 +1,9 @@
 import {
   ShieldCheck,
-  Bookmark,
+  // Bookmark,
   BookOpen,
   CloudUpload,
-  Cog,
+  // Cog,
   Calendar,
   Home,
   AcademicCap,
@@ -66,8 +66,16 @@ const Menu = () => {
         <ProfileImgItem
           title={profile?.name?.split(' ')?.[0]}
           src={profile?.profilePicture}
+          to = "/settings"
         />
       )}
+
+      <MenuItem
+        title="CPI Predictor"
+        icon={CloudUpload}
+        iconSize={iconSize}
+        to="/contribute"
+      />
 
       <MenuItem
         title="Contribute"
@@ -76,12 +84,12 @@ const Menu = () => {
         to="/contribute"
       />
 
-      <MenuItem
+      {/* <MenuItem
         title="Favourites"
         icon={Bookmark}
         iconSize={iconSize}
         to="/favourites"
-      />
+      /> */}
       {!isMobile && profile.user.isStaff && (
         <MenuItem
           title="Admin"
@@ -91,12 +99,12 @@ const Menu = () => {
           target="_blank"
         />
       )}
-      <MenuItem
+      {/* <MenuItem
         title="Settings"
         icon={Cog}
         iconSize={iconSize}
         to="/settings"
-      />
+      /> */}
 
       {!isMobile && <Divider margin="1rem 0" />}
       {!isMobile && (

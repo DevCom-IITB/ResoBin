@@ -14,14 +14,16 @@ export const MenuItem = ({ title, icon: Icon, iconSize, ...navLinkProps }) => (
   </StyledNavLink>
 )
 
-export const ProfileImgItem = ({ title, src }) => (
-  <ContainerDiv>
-    <IconContainer>
-      <UserAvatar size="1.75rem" src={src} />
-    </IconContainer>
+export const ProfileImgItem = ({ title, src , ...navLinkProps }) => (
+  <StyledNavLink {...navLinkProps}>
+    <ContainerDiv>
+      <IconContainer>
+        <UserAvatar size="1.75rem" src={src} />
+      </IconContainer>
 
-    <Title style={{ marginLeft: '0.25rem' }}>{title}</Title>
-  </ContainerDiv>
+      <Title style={{ marginLeft: '0.25rem' }}>{title}</Title>
+    </ContainerDiv>
+  </StyledNavLink>
 )
 
 const ContainerBase = css`
