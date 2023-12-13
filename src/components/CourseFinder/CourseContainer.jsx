@@ -41,9 +41,15 @@ const CourseFinderContainer = () => {
 
   useEffect(() => {
     const filter = getQueryString()
+    let q
+    if (/^[A-Za-z]{2,3} [0-9]+$/.test(filter.q)) {
+      q = filter.q.replace(' ', '')
+    } else {
+      q = filter.q
+    }
     const params = {
       search_fields: 'code,title,description',
-      q: filter.q,
+      q,
       ...filterKeys.reduce(
         (accumulator, value) => ({ ...accumulator, [value]: filter[value] }),
         {}
