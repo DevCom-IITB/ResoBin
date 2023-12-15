@@ -15,7 +15,7 @@ import { fontSize } from 'styles/responsive'
 
 const TimetableCourseItem = ({ data }) => {
   const { id, course: code, lectureSlots, tutorialSlots, lectureVenue } = data
-  
+
   const title = useSelector(selectCourseTitle(code))
   const colorPicker = useColorPicker()
 
@@ -24,11 +24,10 @@ const TimetableCourseItem = ({ data }) => {
   }, [code, title])
 
   const formatItem = (name, isTut, venue) => {
-    if(venue === '' || isTut === true){
+    if (venue === '' || isTut === true) {
       return `${name}`
-    }    
+    }
     return `${name} | ${venue}`
-    
   }
 
   const TimetableCourseLectureItem = useCallback(
@@ -49,8 +48,8 @@ const TimetableCourseItem = ({ data }) => {
                   right: '0.25rem',
                 }}
               />
-            </h3>            
-            <span>              
+            </h3>
+            <span>
               {/* {gridRow.start.title} | {lectureVenue} */}
               {formatItem(gridRow.start.title, isTutorial, lectureVenue)}
             </span>
@@ -58,7 +57,7 @@ const TimetableCourseItem = ({ data }) => {
         </Tooltip>
       </GridItem>
     ),
-    [code, id, title, colorPicker, handleClickInfo]
+    [code, id, title, colorPicker, handleClickInfo, lectureVenue]
   )
 
   if (lectureSlots?.length === 0) return null
