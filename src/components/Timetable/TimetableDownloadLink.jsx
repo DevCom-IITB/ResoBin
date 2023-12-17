@@ -1,6 +1,6 @@
 import { Download } from '@styled-icons/heroicons-outline'
 import { Dropdown, Menu } from 'antd'
-import domtoimage from 'dom-to-image'
+import html2canvas from 'html2canvas'
 import { useSelector } from 'react-redux'
 
 import { ButtonIcon } from 'components/shared'
@@ -123,10 +123,16 @@ END:VCALENDAR
   }
 
   const generatePNGFile = (element) => {
-    return domtoimage
-      .toBlob(element.children[0])
-      .then((blob) => {
-        const url = URL.createObjectURL(blob)
+    const container = element.cloneNode(true)
+    container.setAttribute(
+      'style',
+      'width: 1250px; height: 700px; overflow: hidden;'
+    )
+    document.body.appendChild(container)
+
+    return html2canvas(container.children[0])
+      .then((canvas) => {
+        const url = canvas.toDataURL('image/png')
         const link = document.createElement('a')
         link.href = url
         link.download = 'TimeTable.png'
@@ -136,6 +142,7 @@ END:VCALENDAR
       .catch((error) => {
         throw new Error('Download failed: '.concat(error))
       })
+      .finally(() => document.body.removeChild(container))
   }
 
   const menu = (
@@ -153,11 +160,7 @@ END:VCALENDAR
       <Menu.Item
         key="png"
         onClick={() =>
-          generatePNGFile(
-            document.getElementById(
-              'timetable-layout-wrapper'
-            )
-          )
+          generatePNGFile(document.getElementById('timetable-layout-wrapper'))
         }
       >
         Image (.png file)
