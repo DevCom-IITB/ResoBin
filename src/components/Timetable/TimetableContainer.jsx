@@ -33,7 +33,7 @@ import TimetableShareButton from './TimetableShareButton'
 
 const TimetableAsideItem = ({ course, handleRemove, loading }) => {
   const { code, title, credits } = course ?? {}
-  console.log(course)
+  // console.log(course)
 
   return (
     <StyledLink to={coursePageUrl(code, title)}>
@@ -161,7 +161,10 @@ const TimetableContainer = () => {
 
   const addToTimetable = async (code, id) => {
     if (id === -1) {
-      toast({ status: 'error', content: `No TimeTable Found For ${code} for current semester` })
+      toast({
+        status: 'error',
+        content: `No TimeTable Found For ${code} for current semester`,
+      })
     } else {
       try {
         await API.profile.timetable.add({ id })
@@ -196,29 +199,28 @@ const TimetableContainer = () => {
       } catch (error) {
         toast({ status: 'error', content: error })
       } finally {
-// <<<<<<< fix/no-refresh-on-course-add
-//         setLoading(false);
-//       }
-//     };
+        // <<<<<<< fix/no-refresh-on-course-add
+        //         setLoading(false);
+        //       }
+        //     };
 
-//     fetchCourseData();
-//   }, [courseTimetableList]);
+        //     fetchCourseData();
+        //   }, [courseTimetableList]);
 
+        //   const filteredCourseData = coursedata.filter((course) => {
+        //     return course.isHalfSemester === true;
+        //   });
 
-//   const filteredCourseData = coursedata.filter((course) => {
-//     return course.isHalfSemester === true;
-//   });
-
-// const groupCoursesByLectureSlot = (courses) => {
-//   const groupedCourses = courses.reduce((acc, course) => {
-//     course.lectureSlots.forEach((lectureSlot) => {
-//       if (!acc.has(lectureSlot)) {
-//         acc.set(lectureSlot, new Set([course.code]));
-//       } else {
-//         acc.get(lectureSlot).add(course.code);
-// =======
+        // const groupCoursesByLectureSlot = (courses) => {
+        //   const groupedCourses = courses.reduce((acc, course) => {
+        //     course.lectureSlots.forEach((lectureSlot) => {
+        //       if (!acc.has(lectureSlot)) {
+        //         acc.set(lectureSlot, new Set([course.code]));
+        //       } else {
+        //         acc.get(lectureSlot).add(course.code);
+        // =======
         setLoading(false)
-// >>>>>>> DOPE
+        // >>>>>>> DOPE
       }
     }
 
@@ -365,16 +367,16 @@ const TimetableContainer = () => {
         indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
       >
         <TimetableLayout>
-          {courseTimetableList.map((item) => (
-            halfSemCourses.some((course) => course.code === item.course)
-              ? null
-              : <TimetableCourseItem key={item.id} data={item} />
-        ))}
-         {groupedCoursesData.map(([key, courses]) => (
-          <HalfSemCourseItem keyProp={key} data={courses} />
-
-
-        ))}
+          {courseTimetableList.map((item) =>
+            halfSemCourses.some(
+              (course) => course.code === item.course
+            ) ? null : (
+              <TimetableCourseItem key={item.id} data={item} />
+            )
+          )}
+          {groupedCoursesData.map(([key, courses]) => (
+            <HalfSemCourseItem keyProp={key} data={courses} />
+          ))}
 
           <CurrentTime mode="vertical" />
         </TimetableLayout>
