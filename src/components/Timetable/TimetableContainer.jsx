@@ -33,7 +33,6 @@ import TimetableShareButton from './TimetableShareButton'
 
 const TimetableAsideItem = ({ course, handleRemove, loading }) => {
   const { code, title, credits } = course ?? {}
-  // console.log(course)
 
   return (
     <StyledLink to={coursePageUrl(code, title)}>
