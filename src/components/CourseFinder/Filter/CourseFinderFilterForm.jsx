@@ -144,6 +144,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
         />
         <Form.Item name="department">
           <Select
+            getPopupContainer={trigger => trigger.parentElement}
             mode="multiple"
             options={departmentOptions}
             placeholder="Type something..."
@@ -163,6 +164,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
         />
         <Form.Item name="slots">
           <Select
+            getPopupContainer={trigger => trigger.parentElement}
             mode="multiple"
             options={slotOptions}
             placeholder="Type something..."
@@ -228,6 +230,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
         />
         <Form.Item name="tags">
           <Select
+            getPopupContainer={trigger => trigger.parentElement}
             mode="multiple"
             options={tagOptions}
             placeholder="Select something..."
