@@ -58,7 +58,7 @@ const SimilarCourses = ({ courses }) => {
       <SimilarList>
         {courses.map((course) => (
           <CourseLink key={course.code} to={`/courses/${course.code}`}>
-            {course.code}
+            <b>{course.code}</b>
           </CourseLink>
         ))}
       </SimilarList>
@@ -102,9 +102,8 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
     try {
       const response = await API.similarCourses.read({ code: courseData.code })
       setSimilarCourses(response)
-      console.log(response)
     } catch (error) {
-      console.error('Error fetching similar courses:', error)
+      toast({ status: 'error', content: error })
     }
   }
 
@@ -115,9 +114,6 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
 
   useEffect(() => {
     fetchSimilarCourses()
-  }, [courseData.code])
-
-  useEffect(() => {
     const fetchResources = async () => {
       try {
         setLoading(true)
