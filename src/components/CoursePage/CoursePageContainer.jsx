@@ -1,7 +1,7 @@
 // import { Empty } from 'antd'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { CourseResourceContainer } from 'components/CourseResource'
@@ -45,6 +45,27 @@ const CourseProfessors = ({ semester }) => {
   )
 }
 
+const SimilarCourses = ({ courses }) => {
+  if (courses.length === 0) {
+    return null
+  }
+
+  return (
+    <SimilarContainer>
+      <HeadingWithTooltip data-tooltip="Ensure you review each course's description before making a selection">
+        Similar Courses:
+      </HeadingWithTooltip>
+      <SimilarList>
+        {courses.map((course) => (
+          <CourseLink key={course.code} to={`/courses/${course.code}`}>
+            {course.code}
+          </CourseLink>
+        ))}
+      </SimilarList>
+    </SimilarContainer>
+  )
+}
+
 const CPICutoff = ({ cutoff }) => {
   if (typeof cutoff !== 'undefined' && cutoff !== null && cutoff.length > 0) {
     return (
@@ -75,11 +96,26 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
   const [, setLoading] = useState(true)
   const [allResCount, setAllResCount] = useState(0)
   const [allRevCount, setAllRevCount] = useState(0)
+  const [similarCourses, setSimilarCourses] = useState([])
+
+  const fetchSimilarCourses = async () => {
+    try {
+      const response = await API.similarCourses.read({ code: courseData.code })
+      setSimilarCourses(response)
+      console.log(response)
+    } catch (error) {
+      console.error('Error fetching similar courses:', error)
+    }
+  }
 
   const handleTabChange = (key) => {
     location.hash = key
     navigate(location, { replace: true })
   }
+
+  useEffect(() => {
+    fetchSimilarCourses()
+  }, [courseData.code])
 
   useEffect(() => {
     const fetchResources = async () => {
@@ -138,6 +174,9 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
           <CourseProfessors semester={semester} />
           <TimetableSelector semester={semester} />
         </FlexGap>
+
+        <Divider margin="0.75rem 0" />
+        <SimilarCourses courses={similarCourses} />
       </CoursePageBody>
 
       <Container>
@@ -262,4 +301,78 @@ const ProfessorList = styled.div`
   background: ${({ theme }) => theme.darksecondary};
   padding: 0.5rem;
   border-radius: ${({ theme }) => theme.borderRadius};
+`
+
+const HeadingWithTooltip = styled.h3`
+  font-weight: 400;
+  margin-bottom: 0.25rem;
+  position: relative; // Needed to position the tooltip
+  cursor: pointer; // Changes the cursor to indicate it's hoverable
+
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: 10;
+    left: 50%; // Center above the heading
+    top: 0; // Position at the top of the heading
+    transform: translate(-50%, -100%); // Adjust horizontally and move up
+    padding: 0.25rem 0.5rem; // Smaller padding
+    border-radius: ${({ theme }) =>
+      theme.borderRadius}; // Use your theme's border-radius
+    background-color: black; // Tooltip background color
+    color: white; // Tooltip text color
+    font-size: 0.75rem; // Smaller font size
+    white-space: nowrap; // Keeps the tooltip text on one line
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); // Optional: adds a shadow effect
+    visibility: hidden; // By default, the tooltip is not visible
+    opacity: 0; // Start invisible
+    transition: opacity 0.3s, visibility 0.3s, transform 0.3s; // Transition for appearance and position
+    pointer-events: none; // Prevents the tooltip from being clickable and blocking other elements
+  }
+
+  &:hover::after {
+    content: attr(data-tooltip); // Now the content is only added on hover
+    visibility: visible; // Make it visible
+    opacity: 1; // Fully opaque
+    transform: translate(
+      -50%,
+      -110%
+    ); // Adjust position to move slightly above the heading
+  }
+`
+
+const SimilarContainer = styled.div`
+  color: ${({ theme }) => theme.textColor};
+
+  h3 {
+    font-weight: 400;
+    margin-bottom: 0.25rem;
+  }
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`
+
+const CourseLink = styled(Link)`
+  color: ${({ theme }) => theme.textColor};
+  background: ${({ theme }) => theme.darksecondary};
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
+  text-decoration: none;
+  display: block;
+  text-align: center;
+
+  &:hover {
+    background: #7465a6;
+    text-decoration: none;
+  }
+`
+
+const SimilarList = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  overflow-x: auto;
 `
