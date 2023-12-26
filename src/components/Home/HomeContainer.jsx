@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 // import { CourseSearch } from 'components/CourseFinder'
-import { QuickReviewContainer } from 'components/QuickReview'
+// import { QuickReviewContainer } from 'components/QuickReview'
 import { Card, toast } from 'components/shared'
 import { AsideHeader } from 'components/shared/Aside'
 import { PageHeading, PageTitle } from 'components/shared/Layout'
@@ -91,10 +91,10 @@ const HomeContainer = () => {
           </Flex>
         </StatsContainer>
 
-        <ReviewContainer>
+        {/* <ReviewContainer>
           <AsideHeader title="Quick Review" loading={loading} />
           <QuickReviewContainer />
-        </ReviewContainer>
+        </ReviewContainer> */}
       </Container>
 
       {/* <Aside title="Feed">
@@ -122,16 +122,16 @@ const StatsContainer = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
 `
 
-const ReviewContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem;
-  background: ${({ theme }) => theme.secondary};
-  border-radius: ${({ theme }) => theme.borderRadius};
-  width: 80%;
-  margin: auto;
-`
+// const ReviewContainer = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 0.5rem;
+//   padding: 1rem;
+//   background: ${({ theme }) => theme.secondary};
+//   border-radius: ${({ theme }) => theme.borderRadius};
+//   width: 80%;
+//   margin: auto;
+// `
 
 const Flex = styled.div`
   display: flex;

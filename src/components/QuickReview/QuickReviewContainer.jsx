@@ -76,7 +76,7 @@ const QuickReviewContainer = () => {
         'How much was the course content and material relevant while preparing for exams?',
         'How much of conceptual clarity and understanding did you gain through this course?',
         'How was the evaluation and grading scheme?',
-        'How well was the instructor able to communicate? Were the lectures interactive and intellectually stimulating? ',
+        'Did the instructor communicate well? Were the lectures both interactive and engaging?',
         'How well did the course meet your expectations?',
         'How likely are you to recommend this course to others?',
       ])
