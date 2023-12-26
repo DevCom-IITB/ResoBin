@@ -8,7 +8,6 @@ const QuickReviewContainer = () => {
   const [courses, setCourses] = useState([])
   const [selectedCourse, setSelectedCourse] = useState('')
   const [courseTimetableList, setCourseTimetableList] = useState([])
-  const [loading, setLoading] = useState(true)
   const [questions, setQuestions] = useState([])
   const [review, setReview] = useState({})
   const [semesters, setSemesters] = useState({})
@@ -24,7 +23,6 @@ const QuickReviewContainer = () => {
 
   const fetchUserTimetable = useCallback(async (season, year) => {
     try {
-      setLoading(true)
       const response = await API.profile.timetable.read({
         season,
         year,
@@ -32,17 +30,14 @@ const QuickReviewContainer = () => {
       setCourseTimetableList(response)
     } catch (error) {
       toast({ status: 'error', content: error })
-    } finally {
-      setLoading(false)
     }
   }, [])
 
   const createContent = async ({ code, body }) => {
     try {
-      const response = await API.reviews.create({
+      await API.reviews.create({
         payload: { course: code, parent: null, body },
       })
-      console.log(response)
       toast({ status: 'success', content: 'Review awaiting approval.' })
     } catch (error) {
       toast({ status: 'error', content: error })
