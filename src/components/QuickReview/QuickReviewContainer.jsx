@@ -1,3 +1,4 @@
+import { Rate } from 'antd'
 import React, { useCallback, useState, useEffect } from 'react'
 import styled from 'styled-components/macro'
 
@@ -9,8 +10,16 @@ const QuickReviewContainer = () => {
   const [selectedCourse, setSelectedCourse] = useState('')
   const [courseTimetableList, setCourseTimetableList] = useState([])
   const [questions, setQuestions] = useState([])
-  const [review, setReview] = useState({})
   const [semesters, setSemesters] = useState({})
+  const [ratings, setRatings] = useState({})
+
+  const desc = [
+    'Very Unsatisfactory',
+    'Unsatisfactory',
+    'Neutral',
+    'Satisfactory',
+    'Excellent',
+  ]
 
   const getSemesters = async () => {
     try {
@@ -76,26 +85,23 @@ const QuickReviewContainer = () => {
     }
   }, [selectedCourse])
 
+  const handleRatingChange = (index, value) => {
+    setRatings((prevRatings) => ({
+      ...prevRatings,
+      [index]: value,
+    }))
+  }
+
   const handleCourseChange = (e) => {
     setSelectedCourse(e.target.value)
-    setReview({}) // Reset review when course changes
   }
 
-  const handleAnswerChange = (question, value) => {
-    setReview((prev) => ({ ...prev, [question]: value }))
-  }
-
-  function convertJsonToHtmlString(jsonString) {
-    const jsonData = JSON.parse(jsonString)
+  function convertJsonToHtmlString(jsonRatings) {
+    const jsonData = JSON.parse(jsonRatings)
     let htmlString = ''
-
-    Object.entries(jsonData).forEach(([question, rating]) => {
-      htmlString += `<h3>${question} - ${rating}</h3><br>`
+    Object.entries(jsonData).forEach(([question, value]) => {
+      htmlString += `<h3>${question} - ${desc[value - 1]}</h3><br>`
     })
-
-    htmlString +=
-      '1 - Very Unsatisfactory, 2 - Unsatisfactory, 3 - Neutral, 4 - Satisfactory, 5 - Excellent'
-
     return htmlString
   }
 
@@ -103,7 +109,7 @@ const QuickReviewContainer = () => {
     e.preventDefault()
     createContent({
       code: selectedCourse,
-      body: convertJsonToHtmlString(JSON.stringify(review)),
+      body: convertJsonToHtmlString(JSON.stringify(ratings)),
     })
     // Post review to backend
   }
@@ -124,21 +130,19 @@ const QuickReviewContainer = () => {
           </Label>
         </DropdownContainer>
         {selectedCourse &&
-          questions.map((question, index) => (
+          questions.map((question) => (
             <QuestionContainer key={question}>
-              <Label htmlFor={`question-select-${index}`}>
+              {' '}
+              {/* Use the question text itself as the key */}
+              <Label>
                 {question}
-                <Dropdown
-                  id={`question-select-${index}`}
-                  onChange={(e) => handleAnswerChange(question, e.target.value)}
-                >
-                  <option value="">Select Rating</option>
-                  <option value="1">1 - Very Unsatisfactory</option>
-                  <option value="2">2 - Unsatisfactory</option>
-                  <option value="3">3 - Neutral</option>
-                  <option value="4">4 - Satisfactory</option>
-                  <option value="5">5 - Excellent</option>
-                </Dropdown>
+                <Stars>
+                  <Rate
+                    tooltips={desc}
+                    onChange={(value) => handleRatingChange(question, value)}
+                    value={ratings[question] || 3}
+                  />
+                </Stars>
               </Label>
             </QuestionContainer>
           ))}
@@ -167,8 +171,14 @@ const QuestionContainer = styled.div`
   margin-bottom: 20px;
 `
 
-const Label = styled.label`
+const Stars = styled.label`
   display: block;
+`
+
+const Label = styled.label`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 5px;
 `
 
