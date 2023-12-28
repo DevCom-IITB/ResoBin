@@ -74,6 +74,10 @@ const QuickReviewContainer = () => {
   useEffect(() => {
     const courseList = courseTimetableList.map((item) => item.course)
     setCourses(courseList)
+
+    if (courseList.length > 0) {
+      setSelectedCourse(courseList[0])
+    }
   }, [courseTimetableList])
 
   useEffect(() => {
@@ -140,7 +144,11 @@ const QuickReviewContainer = () => {
         {courses.length > 0 ? (
           <DropdownContainer>
             <Label htmlFor="course-select">
-              <Dropdown id="course-select" onChange={handleCourseChange}>
+              <Dropdown
+                id="course-select"
+                onChange={handleCourseChange}
+                value={selectedCourse}
+              >
                 <option value="">Select a Course</option>
                 {courses.map((course) => (
                   <option key={course} value={course}>
@@ -158,12 +166,8 @@ const QuickReviewContainer = () => {
               still visit the respective course page on ResoBin to write a
               detailed review about your experience with the course.
             </h4>
-            <h4 style={{ textAlign: 'center', paddingBottom: '15px' }}>
+            <h4 style={{ textAlign: 'center', paddingBottom: '5px' }}>
               Thank you!
-            </h4>
-            <h4 style={{ textAlign: 'center' }}>
-              Click anywhere outside the popup to close and continue using
-              ResoBin 🔥
             </h4>
           </div>
         )}

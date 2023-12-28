@@ -5,7 +5,7 @@ import { ThemeProvider } from 'styled-components/macro'
 
 import PopupModal from 'components/Popup/PopupModal'
 import { LoaderAnimation } from 'components/shared'
-import { usePageTracking } from 'hooks'
+// import { usePageTracking } from 'hooks'
 import { AppRoutes } from 'routes'
 import { selectAuthLoading } from 'store/authSlice'
 import { selectTheme } from 'store/settingsSlice'
@@ -19,7 +19,7 @@ import { themes, GlobalStyles } from 'styles'
 const App = () => {
   const theme = useSelector(selectTheme)
   const authLoading = useSelector(selectAuthLoading)
-  usePageTracking()
+  // usePageTracking()
 
   return (
     <ThemeProvider theme={themes[theme] ?? themes.dark}>
