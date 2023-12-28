@@ -83,6 +83,10 @@ export const API = {
       list: async () => APIInstance.get('/accounts/profile/reviews'),
     },
 
+    rapidreviews: {
+      list: async () => APIInstance.get('/accounts/profile/rapidreviews'),
+    },
+
     feed: async () => APIInstance.get('/accounts/profile/feed'),
 
     timetable: {
@@ -171,6 +175,15 @@ export const API = {
       remove: async ({ id }) =>
         APIInstance.delete(`/accounts/profile/reviews/${id}/vote`),
     },
+  },
+
+  // * Rapid Reviews endpoints
+  rapidreviews: {
+    create: async ({ payload }) => APIInstance.post(`/rapidreviews`, payload),
+    read: async ({ id }) => APIInstance.get(`/rapidreviews/${id}`),
+    update: async ({ id, payload }) =>
+      APIInstance.put(`/rapidreviews/${id}`, payload),
+    delete: async ({ id }) => APIInstance.delete(`/rapidreviews/${id}`),
   },
 
   // * Departments endpoints

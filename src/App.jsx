@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { useSelector } from 'react-redux'
 import { ThemeProvider } from 'styled-components/macro'
 
+import PopupModal from 'components/Popup/PopupModal'
 import { LoaderAnimation } from 'components/shared'
 import { usePageTracking } from 'hooks'
 import { AppRoutes } from 'routes'
@@ -33,6 +34,7 @@ const App = () => {
       <LoaderAnimation fixed disable={!authLoading} />
 
       <Suspense fallback={<LoaderAnimation fixed />}>
+        <PopupModal />
         <AppRoutes />
       </Suspense>
     </ThemeProvider>
