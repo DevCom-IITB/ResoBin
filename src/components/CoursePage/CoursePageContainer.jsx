@@ -46,14 +46,22 @@ const CourseProfessors = ({ semester }) => {
 
 const SimilarCourses = ({ courses }) => {
   if (courses.length === 0) {
-    return null
+    return (
+      <SimilarContainer>
+        <h3>No similar courses found</h3>
+      </SimilarContainer>
+    )
   }
 
   return (
     <SimilarContainer>
       <SimilarList>
         {courses.map((course) => (
-          <CourseLink key={course.code} to={`/courses/${course.code}`}>
+          <CourseLink
+            key={course.code}
+            to={`/courses/${course.code}`}
+            data-umami-event="Similar Courses"
+          >
             <b>{course.code}</b>
             <p>{course.title}</p>
           </CourseLink>
