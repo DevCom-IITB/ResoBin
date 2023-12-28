@@ -22,7 +22,7 @@ const PopupModal = () => {
     // Show popup only if the user is authenticated
     if (isAuthenticated) {
       if (cookies?.lastVis) {
-        if (Vis - cookies.lastVis < 4 * 3600) {
+        if (Vis - cookies.lastVis < 6 * 3600) {
           setOpen(false)
         } else {
           setCookies('lastVis', Vis, { path: '/' })
@@ -49,7 +49,10 @@ const PopupModal = () => {
       fullWidth="md"
       maxWidth="md"
     >
-      <StyledTitle>Quick Review 🔥</StyledTitle>
+      <StyledTitle>
+        Your feedback will assist us in suggesting appropriate courses for you
+        in the future!!
+      </StyledTitle>
       <StyledContent>
         <QuickReviewContainer />
       </StyledContent>
@@ -74,8 +77,10 @@ const StyledDialog = styled(Dialog)`
 const StyledTitle = styled(DialogTitle)`
   background-color: ${({ theme }) => theme.secondary};
   color: ${({ theme }) => theme.textColor};
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: 500;
   font-size: 1.25rem;
+  text-align: center;
 `
 
 const StyledContent = styled(DialogContent)`

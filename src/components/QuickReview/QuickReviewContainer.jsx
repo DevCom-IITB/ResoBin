@@ -32,11 +32,19 @@ const QuickReviewContainer = () => {
 
   const fetchUserTimetable = useCallback(async (season, year) => {
     try {
+      const givenReviews = await API.profile.rapidreviews.list()
       const response = await API.profile.timetable.read({
         season,
         year,
       })
-      setCourseTimetableList(response)
+
+      const coursesToFilter = givenReviews.map((item) => item.course)
+
+      const filteredCourses = response.filter(
+        (item) => !coursesToFilter.includes(item.course)
+      )
+
+      setCourseTimetableList(filteredCourses)
     } catch (error) {
       toast({ status: 'error', content: error })
     }
@@ -44,10 +52,10 @@ const QuickReviewContainer = () => {
 
   const createContent = async ({ code, body }) => {
     try {
-      await API.reviews.create({
+      await API.rapidreviews.create({
         payload: { course: code, parent: null, body },
       })
-      toast({ status: 'success', content: 'Review awaiting approval.' })
+      toast({ status: 'success', content: 'Thanks for the review!' })
     } catch (error) {
       toast({ status: 'error', content: error })
     }
@@ -105,30 +113,60 @@ const QuickReviewContainer = () => {
     return htmlString
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    createContent({
-      code: selectedCourse,
-      body: convertJsonToHtmlString(JSON.stringify(ratings)),
-    })
-    // Post review to backend
+
+    try {
+      await createContent({
+        code: selectedCourse,
+        body: convertJsonToHtmlString(JSON.stringify(ratings)),
+      })
+
+      setSelectedCourse('')
+      setRatings({})
+
+      if (semesters.season && semesters.year) {
+        await fetchUserTimetable(semesters.season, semesters.year)
+      }
+    } catch (error) {
+      // Handle error if the review submission fails
+      toast({ status: 'error', content: error })
+    }
   }
 
   return (
     <Container>
       <form onSubmit={handleSubmit}>
-        <DropdownContainer>
-          <Label htmlFor="course-select">
-            <Dropdown id="course-select" onChange={handleCourseChange}>
-              <option value="">Select a Course</option>
-              {courses.map((course) => (
-                <option key={course} value={course}>
-                  {course}
-                </option>
-              ))}
-            </Dropdown>
-          </Label>
-        </DropdownContainer>
+        {courses.length > 0 ? (
+          <DropdownContainer>
+            <Label htmlFor="course-select">
+              <Dropdown id="course-select" onChange={handleCourseChange}>
+                <option value="">Select a Course</option>
+                {courses.map((course) => (
+                  <option key={course} value={course}>
+                    {course}
+                  </option>
+                ))}
+              </Dropdown>
+            </Label>
+          </DropdownContainer>
+        ) : (
+          <div>
+            <h4 style={{ textAlign: 'center', paddingBottom: '15px' }}>
+              There are no courses for you to review here (maybe because you
+              didnt add any course to your timetable last semester 😅), you can
+              still visit the respective course page on ResoBin to write a
+              detailed review about your experience with the course.
+            </h4>
+            <h4 style={{ textAlign: 'center', paddingBottom: '15px' }}>
+              Thank you!
+            </h4>
+            <h4 style={{ textAlign: 'center' }}>
+              Click anywhere outside the popup to close and continue using
+              ResoBin 🔥
+            </h4>
+          </div>
+        )}
         {selectedCourse &&
           questions.map((question) => (
             <QuestionContainer key={question}>
@@ -146,7 +184,11 @@ const QuickReviewContainer = () => {
               </Label>
             </QuestionContainer>
           ))}
-        {selectedCourse && <SubmitButton type="submit">Submit</SubmitButton>}
+        {selectedCourse && (
+          <SubmitButton type="submit" data-umami-event="Rapid Review Submit">
+            Submit
+          </SubmitButton>
+        )}
       </form>
     </Container>
   )
