@@ -143,7 +143,8 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           onClear={handleFilterClear('department', ['department'])}
         />
         <Form.Item name="department">
-          <Select
+          <CustomSelect
+            dropdownClassName="custom-dropdown"
             getPopupContainer={trigger => trigger.parentElement}
             mode="multiple"
             options={departmentOptions}
@@ -163,7 +164,8 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           onClear={handleFilterClear('slots', ['slots'])}
         />
         <Form.Item name="slots">
-          <Select
+          <CustomSelect
+            dropdownClassName="custom-dropdown"
             getPopupContainer={trigger => trigger.parentElement}
             mode="multiple"
             options={slotOptions}
@@ -225,11 +227,12 @@ const CourseFinderFilterForm = ({ setLoading }) => {
 
       <div>
         <CourseFinderFilterItem
-          label="Tags"
+          label="Tag"
           onClear={handleFilterClear('tags', ['tags'])}
         />
         <Form.Item name="tags">
-          <Select
+          <CustomSelect
+            dropdownClassName="custom-dropdown"
             getPopupContainer={trigger => trigger.parentElement}
             mode="multiple"
             options={tagOptions}
@@ -256,4 +259,25 @@ const CourseFinderFilterItemContainer = styled.h3`
   align-items: center;
   justify-content: space-between;
   margin: 0 0 0.25rem;
+`
+
+const CustomSelect = styled(Select)`
+  .ant-select-dropdown{
+    padding: 0px;
+    margin: 0px;
+    border-radius: 10px;
+  }
+  .custom-dropdown {
+    .ant-select-item-option {
+      background-color: ${({ theme }) => theme.secondary};
+    }
+
+    .ant-select-item{
+      color: ${({ theme }) => theme.textColor};
+    }
+    .ant-select-item:hover{
+      background-color: ${({ theme }) => theme.secondaryHover};
+    }
+    
+  }
 `
