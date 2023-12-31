@@ -227,7 +227,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
 
       <div>
         <CourseFinderFilterItem
-          label="Tag"
+          label="Tags"
           onClear={handleFilterClear('tags', ['tags'])}
         />
         <Form.Item name="tags">
