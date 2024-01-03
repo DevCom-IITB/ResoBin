@@ -24,6 +24,7 @@ const MinorDepartmentPage = lazy(() => import('pages/MinorDepartmentPage'))
 const HonorsDepartments = lazy(() => import('pages/HonorsDepartments'))
 const HonorsDepartmentPage = lazy(() => import('pages/HonorsDepartmentPage'))
 const CourseInfo = lazy(() => import('pages/CourseInfo'))
+const CPIPredictor = lazy(() => import('pages/CPIPredictor'))
 
 // ? authentication necessary for all dashboard routes
 export const DashboardRoutes = () => (
@@ -53,6 +54,8 @@ export const DashboardRoutes = () => (
     <Route path="/course-info">
       <Route path="" element={<CourseInfo />} />
     </Route>
+    <Route path = "/cpi-predictor" element = {< CPIPredictor/>}/>
+
     <Route path="/contribute" element={<Contribute />} />
     <Route path="/favourites" element={<Favourites />} />
     <Route path="/settings" element={<Settings />} />

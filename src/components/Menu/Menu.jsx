@@ -74,7 +74,7 @@ const Menu = () => {
         title="CPI Predictor"
         icon={CloudUpload}
         iconSize={iconSize}
-        to="/contribute"
+        to="/cpi-predictor"
       />
 
       <MenuItem
