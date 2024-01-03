@@ -10,7 +10,7 @@ import {
 } from 'components/shared'
 import { API } from 'config/api'
 import {
-  selectCourseAPILoading,
+  // selectCourseAPILoading,
   selectSemesters,
 } from 'store/courseSlice'
 
