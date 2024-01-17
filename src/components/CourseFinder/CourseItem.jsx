@@ -43,6 +43,8 @@ const CourseItemMain = ({ courseData }) => {
     favoritedByCount,
   } = courseData
 
+  const reversedTags = [...tags].reverse();
+
   const creditColorPicker = (_credits) => {
     if (_credits >= 10) return colorPicker(0)
     if (_credits >= 8) return colorPicker(1)
@@ -62,19 +64,6 @@ const CourseItemMain = ({ courseData }) => {
         </DepartmentContainer>
 
         <RightIcons>
-          <TagsContainer>
-            {credits > 0 && (
-              <Tag style={{ color: creditColorPicker(credits) }}>
-                {credits} credit{credits > 1 ? 's' : ''}
-              </Tag>
-            )}
-
-            {tags.map((tag) => (
-              <Tag key={tag} style={{ color: colorPicker(hash(tag)) }}>
-                {tag}
-              </Tag>
-            ))}
-          </TagsContainer>
 
           <FavoriteToggle code={code} initialCount={favoritedByCount} />
         </RightIcons>
@@ -90,9 +79,22 @@ const CourseItemMain = ({ courseData }) => {
         </h2>
       </TitleContainer>
 
+      <TagsContainer>
+        {reversedTags.map((tag) => (
+          <Tag key={tag} style={{ color: colorPicker(hash(tag)) }}>
+            {tag}
+          </Tag>
+        ))}
+        {credits > 0 && (
+          <Tag style={{ color: creditColorPicker(credits) }}>
+            {credits} credit{credits > 1 ? 's' : ''}
+          </Tag>
+        )}
+      </TagsContainer>
+
       <Typography.Paragraph
         ellipsis={{ rows: 3, expandable: true, symbol: 'show more' }}
-        style={{ marginTop: '0.75rem', marginBottom: 0 }}
+        style={{ marginTop: '0rem', marginBottom: '0rem' }}
       >
         {description?.length ? description : 'No description available'}
       </Typography.Paragraph>
@@ -262,11 +264,10 @@ const RightIcons = styled.div`
 
 const TagsContainer = styled.div`
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   gap: 0.25rem;
   align-items: center;
-  height: 3rem;
-  margin-left: 0.5rem;
+  height: 2.7rem;
   overflow-y: scroll;
 
   @media ${device.max.xs}, ${device.min.lg} and ${device.max.xl} {
