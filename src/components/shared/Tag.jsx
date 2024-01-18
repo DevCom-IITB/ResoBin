@@ -5,7 +5,7 @@ const StyledTag = styled(Tag)`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: content;
   height: 1.25rem;
   margin: 0;
   padding: 0 0.75rem;
