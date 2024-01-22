@@ -260,7 +260,7 @@ const CourseResourceContainer = () => {
   const renderModuleDropdown = (modulesList) => {
     if(modulesList.length !== 0){
       return(
-        <Select            
+        <ResourcesCustomSelect            
             style={{
             //   marginLeft: 'auto',
             //   alignSelf: 'end',
@@ -274,7 +274,7 @@ const CourseResourceContainer = () => {
             {modulesList?.map((module_) => {
               return <Select.Option key={module_}>{module_}</Select.Option>
             })}
-        </Select> 
+        </ResourcesCustomSelect> 
       )
     }
     return(
@@ -284,11 +284,12 @@ const CourseResourceContainer = () => {
 
   const renderProfDropDown = () => {
     return(
-      <Select    
+      <ResourcesCustomSelect    
             style={{
               // marginLeft: 'auto',
               // alignSelf: 'end'
-              marginRight: '2rem'
+              marginRight: '2rem',
+              width: '8rem'
             }}
             placeholder="Select Prof"
             showArrow
@@ -298,17 +299,19 @@ const CourseResourceContainer = () => {
             {profPerModule[currentModule]?.map((prof) =>{            
               return <Select.Option key={prof}>{prof}</Select.Option>
             })}
-        </Select> 
+        </ResourcesCustomSelect> 
     )
   }
 
   const renderYearDropDown = (yearsList) => {
     if(yearsList.length !== 0){
       return(
-        <Select  
-            // style={{
-            //   alignSelf: 'end',
-            // }}          
+        <ResourcesCustomSelect 
+            style={{
+              // alignSelf: 'end',
+              width: '8rem',
+            }}     
+            dropdownClassName='custom-dropdown'     
             placeholder="Select Year"
             showArrow
             onChange={handleYearChange}
@@ -318,7 +321,7 @@ const CourseResourceContainer = () => {
             {yearPerProf[selectedProf]?.map((year_) =>{
               return <Select.Option key={year_}>{year_}</Select.Option>
             })}
-        </Select> 
+        </ResourcesCustomSelect> 
       )
     }
     return null
@@ -329,24 +332,15 @@ const CourseResourceContainer = () => {
 
   return (
     <>
-      <Header>
+      <Header
+      style={{
+        justifyContent: 'space-between'
+        // alignContent: 'end'
+      }}
+      >
         <h1 style={{ fontSize: '1.25rem' }}>Resources</h1>
 
         <ButtonContainer>
-          {isMobileS ? (
-            <CourseContentRequestIcon
-              code={code}
-              type="resources"
-              style={{ marginRight: '0.75rem' , marginLeft: '0.75rem'}}
-            />
-          ) : (
-            <CourseContentRequest
-              code={code}
-              type="resources"
-              style={{ marginRight: '0.75rem' , marginLeft: '0.75rem'}}
-            />
-          )}
-
           <ButtonSquare
             type="primary"
             onClick={redirectContribute}
@@ -354,6 +348,21 @@ const CourseResourceContainer = () => {
           >
             Upload
           </ButtonSquare>
+
+          {isMobileS ? (
+            <CourseContentRequestIcon
+              code={code}
+              type="resources"
+              style={{ marginRight: '0rem' , marginLeft: '0.75rem'}}
+            />
+          ) : (
+            <CourseContentRequest
+              code={code}
+              type="resources"
+              style={{ marginRight: '0rem' , marginLeft: '0.75rem'}}
+            />
+          )}
+
         </ButtonContainer>
       </Header>
       <Header
@@ -430,3 +439,28 @@ const Header = styled.div`
   margin: 1rem 0;
 `
 
+const ResourcesCustomSelect = styled(Select)`
+  && {
+  
+
+    .ant-select-selector {
+      background-color: ${({ theme }) => theme.darksecondary};
+      color: ${({ theme }) => theme.textColor};
+      border-radius: 7px;
+      border: none;
+      align-items: center;
+      height: 35px; 
+    }
+    .ant-select-arrow{
+      color: ${({ theme }) => theme.textColor};
+    }
+    
+    .custom-dropdown .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
+      background-color: green !important;
+      padding: 0;
+      margin: 0;
+      border-radius: 30px;
+    }
+    
+  }
+`
