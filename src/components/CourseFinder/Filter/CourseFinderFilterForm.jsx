@@ -102,10 +102,14 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     value: kebabCase(tag),
   }))
 
-  const slotOptions = Object.keys(slots).map((slot) => ({
-    label: slot,
-    value: slot,
-  }))
+  const slotOptions = Object.keys(slots).reduce((acc, slot) => {
+    const label = slot[0].match(/^\d/) ? slot.match(/\d+/g)?.join('') : slot;
+    const value = slot;
+    if (!acc.some((option) => option.label === label)) {
+      acc.push({ label, value });
+    }
+    return acc;
+  }, []);
 
   return (
     <Form
