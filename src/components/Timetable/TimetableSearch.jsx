@@ -6,12 +6,10 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled, { createGlobalStyle } from 'styled-components/macro'
 
-import { toast } from 'components/shared'
-import { API } from 'config/api'
 import { useQueryString, useResponsive } from 'hooks'
 import { selectIsDropdownActive } from 'store/settingsSlice'
 
-const  TimetableSearch = ({ loading, setLoading, data }) => {
+const  TimetableSearch = ({ loading, setLoading, data, addToTimetable }) => {
   const { isDesktop } = useResponsive()
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
   const showFilter = useSelector(selectIsDropdownActive)
@@ -28,8 +26,8 @@ const  TimetableSearch = ({ loading, setLoading, data }) => {
   const filterSuggestions = (value) => {
     if (!data ) {
       return []
-    } 
-   
+    }
+
     const lowercaseValue = value ? value.toLowerCase() : ''
 
     const suggestions = []
@@ -78,21 +76,6 @@ const  TimetableSearch = ({ loading, setLoading, data }) => {
 
   const suggestions = filterSuggestions(search)
 
-  const addToTimetable = async (code, id) => {
-    if (id === -1) {
-      toast({ status: 'error', content: `No TimeTable Found For ${code} for current semester` })
-    } else {
-      try {
-        await API.profile.timetable.add({ id })
-      } catch (error) {
-        toast({ status: 'error', content: error })
-      } finally {
-        deleteQueryString('q')
-        window.location.reload()
-      }
-    }
-  }
-
   return (
     <>
       <GlobalStyles />
@@ -121,6 +104,8 @@ const  TimetableSearch = ({ loading, setLoading, data }) => {
                   onClick={(event) => {
                     event.stopPropagation()
                     addToTimetable(option.value, option.id)
+                    deleteQueryString('q')
+                    setSearch("")
                   }}
                 >
                   ⚡ Add

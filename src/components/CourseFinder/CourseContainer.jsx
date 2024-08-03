@@ -18,6 +18,7 @@ const CourseFinderContainer = () => {
 
   const [courseData, setCourseData] = useState([])
   const [loading, setLoading] = useState(true)
+  const [seed, setSeed] = useState(1)
 
   const fetchCourses = async (params) => {
     setLoading(true)
@@ -41,9 +42,15 @@ const CourseFinderContainer = () => {
 
   useEffect(() => {
     const filter = getQueryString()
+    let q
+    if (/^[A-Za-z]{2,3} [0-9]+$/.test(filter.q)) {
+      q = filter.q.replace(' ', '')
+    } else {
+      q = filter.q
+    }
     const params = {
       search_fields: 'code,title,description',
-      q: filter.q,
+      q,
       ...filterKeys.reduce(
         (accumulator, value) => ({ ...accumulator, [value]: filter[value] }),
         {}
@@ -68,13 +75,18 @@ const CourseFinderContainer = () => {
       <Aside
         title="Filter"
         subtitle={
-          <ClearAll onClick={() => deleteQueryString(...filterKeys)}>
+          <ClearAll
+            onClick={() => {
+              deleteQueryString(...filterKeys)
+              setSeed(seed + 1)
+            }}
+          >
             Reset all
           </ClearAll>
         }
         loading={loading}
       >
-        <CourseFinderFilterForm setLoading={setLoading} />
+        <CourseFinderFilterForm setLoading={setLoading} key={seed} />
       </Aside>
     </>
   )
