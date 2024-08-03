@@ -1,19 +1,13 @@
-import { Button, Select, Switch } from 'antd'
+import { Button, Switch } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { Aside, CardSplit, Form, toast, Typography } from 'components/shared'
 import { PageHeading, PageTitle } from 'components/shared/Layout'
 import { logoutAction } from 'store/authSlice'
-import { selectSettings, setTheme, setTracking } from 'store/settingsSlice'
+import { selectSettings, setTracking } from 'store/settingsSlice'
 
 import Profile from './Profile'
-
-const themeOptions = [
-  { label: 'Dark', value: 'dark' },
-  { label: 'Light', value: 'light' },
-  { label: 'Device default', value: 'device' },
-]
 
 const SettingsContainer = () => {
   const dispatch = useDispatch()
@@ -21,7 +15,6 @@ const SettingsContainer = () => {
   const [form] = Form.useForm()
 
   const handleSettingsChange = (values) => {
-    if (values.theme !== undefined) dispatch(setTheme(values.theme))
     if (values.tracking !== undefined) dispatch(setTracking(values.tracking))
   }
 
@@ -47,15 +40,6 @@ const SettingsContainer = () => {
         onValuesChange={handleSettingsChange}
         initialValues={settings}
       >
-        <CardSplit
-          main={<Heading>Theme</Heading>}
-          sub={
-            <Form.Item name="theme">
-              <Select options={themeOptions} showArrow />
-            </Form.Item>
-          }
-          subWidth="10rem"
-        />
 
         <CardSplit
           main={
