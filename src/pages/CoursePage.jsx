@@ -20,6 +20,7 @@ const CoursePage = () => {
       try {
         setLoading(true)
         const response = await API.courses.read({ code })
+        // console.log(response)
         const reponseCutoff = await API.courses.getCutoffs({ code })
         setCourseData(response)
         setCutoffs(reponseCutoff)
@@ -43,17 +44,15 @@ const CoursePage = () => {
   }
 
   return (
-    <PageContainer disable={["aside"]}>
+    <PageContainer disable={['aside']}>
       <Helmet>
         <title>{`${courseData.code}: ${courseData.title} - ResoBin`}</title>
         <meta property="description" content={courseData.description} />
       </Helmet>
-      
+
       <CoursePageContainer courseData={courseData} cutoffs={cutoffs} />
-      
     </PageContainer>
   )
 }
 
 export default CoursePage
-
