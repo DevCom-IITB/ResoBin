@@ -1,19 +1,11 @@
-FROM node:16-alpine AS builder
+FROM node:16
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+COPY . /app/
 
-COPY . .
-RUN yarn build
+RUN npm install
 
-FROM nginx:latest
+EXPOSE 3000
 
-COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
-
-COPY --from=builder /app/build /usr/share/nginx/html
-
-EXPOSE 80
-
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+CMD ["npm", "start"]

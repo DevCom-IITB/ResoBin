@@ -25,6 +25,10 @@ const CourseSlot = ({ semester }) => {
     })
   }
 
+  if (SlotItems.length === 0) {
+    return null
+  }
+
   return (
     <CourseSlotContainer>
       <Title>Slots:</Title>
