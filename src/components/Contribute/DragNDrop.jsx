@@ -54,7 +54,7 @@ const DragNDrop = ({ onDrop, children }) => {
       <CloudUpload size="60" />
       {message}
       <span>
-        Accepted formats: .pdf, .doc, .ppt
+        Accepted formats: .pdf, .doc, .ppt, .zip
         <br />
         Maximum upload file size: 30MB
       </span>

@@ -21,6 +21,16 @@ export const fileTypes = [
     extention: 'ppt',
     icon: 'https://image.flaticon.com/icons/svg/136/136543.svg',
   },
+  {
+    type: 'application/zip',
+    extention: 'zip',
+    icon: 'https://image.flaticon.com/icons/svg/136/136544.svg',
+  },
+  {
+    type: 'application/x-zip-compressed',
+    extention: 'zip',
+    icon: 'https://image.flaticon.com/icons/svg/136/136549.svg',
+  },
 ]
 
 export const defaultFile = {
@@ -65,7 +75,9 @@ const getTitle = (fileName) =>
 export const getFileDetails = (file, initialState = {}) => {
   if (!file) return defaultFile
   const { name, type } = file
-  const fileType = fileTypes.find((item) => item.type === type)
+  const fileType = fileTypes.find(
+    (item) => item.type === type || name.endsWith('.zip')
+  )
   if (!fileType) return { ...defaultFile, name }
 
   return {
