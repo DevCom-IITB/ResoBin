@@ -32,7 +32,6 @@ const CourseFinderContainer = () => {
         cancelToken: ajaxRequest.token,
       })
       setCourseData(response)
-      console.log(response)
     } catch (error) {
       if (axios.isCancel(error)) return
       toast({ status: 'error', content: error })

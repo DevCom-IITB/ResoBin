@@ -24,10 +24,10 @@ export const fileTypes = [
   {
     type: 'application/zip',
     extention: 'zip',
-    icon: 'https://image.flaticon.com/icons/svg/136/136544.svg', // You can replace this with an appropriate icon URL for .zip files
+    icon: 'https://image.flaticon.com/icons/svg/136/136544.svg',
   },
   {
-    type: 'application/x-zip-compressed', // Add this for extra coverage
+    type: 'application/x-zip-compressed',
     extention: 'zip',
     icon: 'https://image.flaticon.com/icons/svg/136/136549.svg',
   },
