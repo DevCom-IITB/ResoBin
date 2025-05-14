@@ -1,0 +1,40 @@
+div.Popup-Window .Close-button {
+  
+    margin: auto;
+    display: block;
+    color: rgb(243, 235, 243);
+    background-color: rgb(83, 6, 83);
+  }
+  
+  .Popup-Window{
+    position :fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.8 ;
+    border: 1px solid black;
+    padding: 20px;
+    box-shadow: 0 4px 6px black;
+    z-index: 1000;
+  }
+  .popup
+  {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    text-align: center;
+  }
+  
+  /* .Naruto-image{
+    display: block;
+    margin: 0 auto;
+  }
+   */
+  .popup-button{
+    display: block;
+    margin: 10px auto;
+    color: rgb(246, 249, 246);
+    background-color: rgb(83, 6, 83);
+  }
+  
+  
