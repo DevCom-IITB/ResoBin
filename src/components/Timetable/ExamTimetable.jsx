@@ -20,9 +20,9 @@ const Table = () => {
             <tbody>
                 {data.map((row) => (
                     <tr key={row.date}>
-                        <td> {row.Date}</td>
-                        <td> {row.Time}</td>
-                        <td> {row.Subject}</td>
+                        <td> {row.Date}  </td>
+                        <td> {row.Time}  </td>
+                        <td> {row.Subject}  </td>
                     </tr>
                 ))}
             </tbody>
@@ -43,16 +43,16 @@ const PopupExample = () => {
     }
 
     return (
-        <div className="popup">
-            <button className='popup-button' onClick={togglePopup}> Open popup</button>
+        <div className="popup" >
+            <button className='popup-button' type="button" onClick={togglePopup} color="#1a1624"> Mid Sem</button>
 
             {isOpen && (
                 <div className='Popup-Window'>
                     <h2>Midsem</h2>
-                    <button className='Close-button' onClick={togglePopup}>Close</button>
-                    <button className='show-table-button' onClick={toggletable}>
+                    <button className='show-table-button' type="button" onClick={toggletable}>
                         <Table />
                     </button>
+                    <button className='Close-button' type="button" onClick={togglePopup}>Close</button>
                 </div>
             )}
 
@@ -60,12 +60,17 @@ const PopupExample = () => {
     )
 };
 
-export default function Exam() {
+export const Exam = () => {
 
     return (
         <div className='Exam'>
             <PopupExample />
         </div>
-    )
-}
-<br />
+    );
+};
+
+const ExamTimetable = () => {
+    return <div>Exam Timetable Component</div>;
+};
+
+export default ExamTimetable;
