@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { X } from '@styled-icons/heroicons-outline'
 import { Checkbox, Select, Switch } from 'antd'
 import { kebabCase } from 'lodash'
@@ -9,10 +11,13 @@ import { ButtonIconDanger } from 'components/shared/Buttons'
 import tags from 'data/tags.json'
 import { slots } from 'data/timetable'
 import { useQueryString } from 'hooks'
-import { selectDepartments } from 'store/courseSlice'
+import {
+  selectDepartments,
+  selectCourseListMinified,
+} from 'store/courseSlice' // You must have a selector for course list
 
 export const filterKeys = [
-  'p', // ? page number
+  'p',
   'semester',
   'department',
   'credits_min',
@@ -21,12 +26,12 @@ export const filterKeys = [
   'running',
   'tags',
   'slots',
+  'slotclash', // new filter key
 ]
 
 const CourseFinderFilterItem = ({ label, onClear, content }) => (
   <CourseFinderFilterItemContainer>
     <FilterTitle>{label}</FilterTitle>
-
     {content || (
       <ButtonIconDanger
         onClick={onClear}
@@ -38,7 +43,6 @@ const CourseFinderFilterItem = ({ label, onClear, content }) => (
   </CourseFinderFilterItemContainer>
 )
 
-// TODO: (Known bug) Changing from mobile to desktop view resets filters but query string isnt affected
 const CourseFinderFilterForm = ({ setLoading }) => {
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
   const [form] = Form.useForm()
@@ -52,6 +56,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
       department: [],
       tags: [],
       slots: [],
+      slotclash: null,
     }
 
     form.setFieldsValue({
@@ -78,6 +83,10 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     setQueryString('tags', allFields.tags)
     setQueryString('slots', allFields.slots)
 
+    if (allFields.slotclash)
+      setQueryString('slotclash', allFields.slotclash)
+    else deleteQueryString('slotclash')
+
     if (allFields.halfsem) setQueryString('halfsem', 'true')
     else deleteQueryString('halfsem')
 
@@ -90,12 +99,15 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     { label: 'Spring', value: 'spring' },
   ]
 
-  const departmentOptions = useSelector(selectDepartments)?.map(
-    (department) => ({
-      label: department.name,
-      value: department.slug,
-    })
-  )
+  const departmentOptions = useSelector(selectDepartments)?.map((d) => ({
+    label: d.name,
+    value: d.slug,
+  }))
+
+  const courseOptions = useSelector(selectCourseListMinified)?.map((course) => ({
+    label: course.name,
+    value: course.code, // assuming course.code is unique
+  }))
 
   const tagOptions = tags.courseTags.map((tag) => ({
     label: tag,
@@ -103,13 +115,13 @@ const CourseFinderFilterForm = ({ setLoading }) => {
   }))
 
   const slotOptions = Object.keys(slots).reduce((acc, slot) => {
-    const label = slot[0].match(/^\d/) ? slot.match(/\d+/g)?.join('') : slot;
-    const value = slot;
+    const label = slot[0].match(/^\d/) ? slot.match(/\d+/g)?.join('') : slot
+    const value = slot
     if (!acc.some((option) => option.label === label)) {
-      acc.push({ label, value });
+      acc.push({ label, value })
     }
-    return acc;
-  }, []);
+    return acc
+  }, [])
 
   return (
     <Form
@@ -128,6 +140,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
         department: getQueryString('department')?.split(',') ?? [],
         tags: getQueryString('tags')?.split(',') ?? [],
         slots: getQueryString('slots')?.split(',') ?? [],
+        slotclash: getQueryString('slotclash') ?? null,
       }}
       style={{ gap: '1rem', padding: '0 0.5rem' }}
     >
@@ -207,8 +220,8 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           <Slider
             range
             min={2}
-            step={null}
             max={9}
+            step={null}
             marks={{
               2: '<3',
               3: '3',
@@ -235,6 +248,21 @@ const CourseFinderFilterForm = ({ setLoading }) => {
             mode="multiple"
             options={tagOptions}
             placeholder="Select something..."
+            showArrow
+          />
+        </Form.Item>
+      </div>
+
+      <div>
+        <CourseFinderFilterItem
+          label="Slot Clash Filter"
+          onClear={handleFilterClear('slotclash', ['slotclash'])}
+        />
+        <Form.Item name="slotclash">
+          <Select
+            options={courseOptions}
+            placeholder="Select a course..."
+            allowClear
             showArrow
           />
         </Form.Item>
