@@ -1,8 +1,7 @@
-import React from 'react'
-
 import { X } from '@styled-icons/heroicons-outline'
 import { Checkbox, Select, Switch } from 'antd'
 import { kebabCase } from 'lodash'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
