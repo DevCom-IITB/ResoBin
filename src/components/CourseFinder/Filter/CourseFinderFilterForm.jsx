@@ -13,7 +13,8 @@ import { useQueryString } from 'hooks'
 import {
   selectDepartments,
   selectCourseListMinified,
-} from 'store/courseSlice' // You must have a selector for course list
+} from 'store/courseSlice'
+import { selectAllTimetable } from 'store/userSlice'
 
 export const filterKeys = [
   'p',
@@ -25,7 +26,7 @@ export const filterKeys = [
   'running',
   'tags',
   'slots',
-  'slotclash', // new filter key
+  'slotclash', // new toggle key
 ]
 
 const CourseFinderFilterItem = ({ label, onClear, content }) => (
@@ -55,7 +56,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
       department: [],
       tags: [],
       slots: [],
-      slotclash: null,
+      slotclash: false,
     }
 
     form.setFieldsValue({
@@ -83,7 +84,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     setQueryString('slots', allFields.slots)
 
     if (allFields.slotclash)
-      setQueryString('slotclash', allFields.slotclash)
+      setQueryString('slotclash', 'true')
     else deleteQueryString('slotclash')
 
     if (allFields.halfsem) setQueryString('halfsem', 'true')
@@ -101,11 +102,6 @@ const CourseFinderFilterForm = ({ setLoading }) => {
   const departmentOptions = useSelector(selectDepartments)?.map((d) => ({
     label: d.name,
     value: d.slug,
-  }))
-
-  const courseOptions = useSelector(selectCourseListMinified)?.map((course) => ({
-    label: course.name,
-    value: course.code, // assuming course.code is unique
   }))
 
   const tagOptions = tags.courseTags.map((tag) => ({
@@ -139,7 +135,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
         department: getQueryString('department')?.split(',') ?? [],
         tags: getQueryString('tags')?.split(',') ?? [],
         slots: getQueryString('slots')?.split(',') ?? [],
-        slotclash: getQueryString('slotclash') ?? null,
+        slotclash: getQueryString('slotclash') === 'true',
       }}
       style={{ gap: '1rem', padding: '0 0.5rem' }}
     >
@@ -162,25 +158,6 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           <Select
             mode="multiple"
             options={departmentOptions}
-            placeholder="Type something..."
-            showArrow
-          />
-        </Form.Item>
-      </div>
-
-      <div>
-        <CourseFinderFilterItem
-          label={
-            <>
-              Slots <b>(beta)</b>
-            </>
-          }
-          onClear={handleFilterClear('slots', ['slots'])}
-        />
-        <Form.Item name="slots">
-          <Select
-            mode="multiple"
-            options={slotOptions}
             placeholder="Type something..."
             showArrow
           />
@@ -254,18 +231,28 @@ const CourseFinderFilterForm = ({ setLoading }) => {
 
       <div>
         <CourseFinderFilterItem
-          label="Slot Clash Filter"
-          onClear={handleFilterClear('slotclash', ['slotclash'])}
+          label="Slots"
+          onClear={handleFilterClear('slots', ['slots'])}
         />
-        <Form.Item name="slotclash">
+        <Form.Item name="slots">
           <Select
-            options={courseOptions}
-            placeholder="Select a course..."
-            allowClear
+            mode="multiple"
+            options={slotOptions}
+            placeholder="Select slots..."
             showArrow
           />
         </Form.Item>
       </div>
+
+      <CourseFinderFilterItem
+        label="No Slot Clash"
+        onClear={handleFilterClear('slotclash', ['slotclash'])}
+        content={
+          <Form.Item name="slotclash" valuePropName="checked">
+            <Switch />
+          </Form.Item>
+        }
+      />
     </Form>
   )
 }
