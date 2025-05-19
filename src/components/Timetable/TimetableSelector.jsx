@@ -106,11 +106,10 @@ const semesters = ['autumn', 'spring']
 
 const TimetableSelector = ({ semester }) => {
   const latestSemester = useSelector(selectCurrentSemester)
-
   const timetable = semesters.reduce(
     (accumulator, value) => ({
       ...accumulator,
-      [value]: semester.find(({ season }) => season === value).timetable,
+      [value]: semester.find(({ season }) => season === value)?.timetable ?? [],
     }),
     {}
   )
@@ -168,3 +167,5 @@ const SpaceBetween = styled.div`
   justify-content: space-between;
   width: 100%;
 `
+message.txt
+5 KB
