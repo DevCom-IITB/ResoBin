@@ -19,17 +19,17 @@ div.Popup-Window .Close-button {
   }
   .popup
   {
-    margin-top: 24px;
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    transform: translateX(-30%);
+    margin: 0;
     text-align: center;
+    z-index: 999;
   }
-  
-  /* .Naruto-image{
-    display: block;
-    margin: 0 auto;
-  }
-   */
+
   .popup-button{
-    display: block;
+    display: inline-block;
     margin: 10px auto;
     color: rgb(246, 249, 246);
     background-color: #1a1624;

@@ -167,5 +167,3 @@ const SpaceBetween = styled.div`
   justify-content: space-between;
   width: 100%;
 `
-message.txt
-5 KB
