@@ -19,20 +19,21 @@ div.Popup-Window .Close-button {
   }
   .popup
   {
-    position: fixed;
-    bottom: 32px;
-    right: 32px;
-    transform: translateX(-30%);
     margin: 0;
     text-align: center;
     z-index: 999;
   }
 
   .popup-button{
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    transform: translateX(-30%);
     display: inline-block;
     margin: 10px auto;
     color: rgb(246, 249, 246);
     background-color: #1a1624;
+    z-index: 999;
   }
   
   
