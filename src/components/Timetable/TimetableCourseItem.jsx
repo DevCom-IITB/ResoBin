@@ -35,24 +35,30 @@ const TimetableCourseItem = ({ data }) => {
       <GridItem row={gridRow} col={gridCol}>
         <Tooltip title={title}>
           <Item color={colorPicker(hash(id))}>
-            <h3 style={{ paddingRight: '1rem' }}>
-              {code} {isTutorial && ' | Tut'}
-              <ButtonIcon
-                size="small"
-                onClick={handleClickInfo}
-                icon={<ExternalLink size="16" />}
-                color="#000000"
-                style={{
-                  position: 'absolute',
-                  top: '0.25rem',
-                  right: '0.25rem',
-                }}
-              />
-            </h3>
-            <span>
-              {/* {gridRow.start.title} | {lectureVenue} */}
-              {formatItem(gridRow.start.title, isTutorial, lectureVenue)}
-            </span>
+            <div className="item-content">
+              <div>
+                <h3 style={{ paddingRight: '1rem' }}>
+                  {code} {isTutorial && ' | Tut'}
+                  <ButtonIcon
+                    size="small"
+                    onClick={handleClickInfo}
+                    icon={<ExternalLink size="16" />}
+                    color="#000000"
+                    style={{
+                      position: 'absolute',
+                      top: '0.25rem',
+                      right: '0.25rem',
+                    }}
+                  />
+                </h3>
+                <span>
+                  {formatItem(gridRow.start.title, isTutorial, lectureVenue)}
+                </span>
+              </div>
+              <span className="slot-name">
+                <h3>{slotName}</h3>
+              </span>
+            </div>
           </Item>
         </Tooltip>
       </GridItem>
@@ -110,11 +116,35 @@ const Item = styled.div`
   transition: all 200ms ease-out;
   ${({ color }) => getTile(color)}
 
-  & > h3 {
+  .item-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    width: 100%;
+  }
+
+  & > .item-content > div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  & > .item-content > .slot-name {
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.25rem;
+    font-size: ${fontSize.responsive.xs};
+    color: ${({ theme }) => theme.darksecondary};
+    white-space: nowrap;
+    margin-left: 0;
+  }
+
+  & > .item-content h3 {
     font-size: ${fontSize.responsive.sm};
   }
 
-  & > span {
+  & > .item-content span {
     display: block;
     font-size: ${fontSize.responsive.xs};
   }
