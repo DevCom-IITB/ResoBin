@@ -12,9 +12,8 @@ import { slots } from 'data/timetable'
 import { useQueryString } from 'hooks'
 import {
   selectDepartments,
-  selectCourseListMinified,
 } from 'store/courseSlice'
-import { selectAllTimetable } from 'store/userSlice'
+// import { selectAllTimetable } from 'store/userSlice'
 
 export const filterKeys = [
   'p',

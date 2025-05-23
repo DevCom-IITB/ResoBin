@@ -1,27 +1,24 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
 
 import { Aside, toast } from 'components/shared'
 import { API } from 'config/api'
 import { useQueryString } from 'hooks'
-import { selectAllTimetable } from 'store/userSlice'
 
 import CourseList from './CourseList'
 import CourseSearch from './CourseSearch'
 import { ClearAll } from './Filter/CourseFinderFilterContainer'
-import CourseFinderFilterForm, {filterKeys,} from './Filter/CourseFinderFilterForm'
-
-
+import CourseFinderFilterForm, {
+  filterKeys,
+} from './Filter/CourseFinderFilterForm'
 
 let ajaxRequest = null
 const CourseFinderContainer = () => {
   const { getQueryString, deleteQueryString } = useQueryString()
+
   const [courseData, setCourseData] = useState([])
   const [loading, setLoading] = useState(true)
   const [seed, setSeed] = useState(1)
-
-  const timetable = useSelector(selectAllTimetable)
 
   const fetchCourses = async (params) => {
     setLoading(true)
@@ -34,17 +31,6 @@ const CourseFinderContainer = () => {
         params,
         cancelToken: ajaxRequest.token,
       })
-
-      // Filter out slot clashes
-      if (params.slotclash === 'true') {
-        const timetableSlots = new Set(
-          timetable.flatMap((course) => course.slots ?? [])
-        )
-        response.results = response.results.filter((course) =>
-          (course.slots ?? []).every((slot) => !timetableSlots.has(slot))
-        )
-      }
-
       setCourseData(response)
     } catch (error) {
       if (axios.isCancel(error)) return
@@ -66,13 +52,13 @@ const CourseFinderContainer = () => {
       search_fields: 'code,title,description',
       q,
       ...filterKeys.reduce(
-        (acc, key) => ({ ...acc, [key]: filter[key] }),
+        (accumulator, value) => ({ ...accumulator, [value]: filter[value] }),
         {}
       ),
     }
 
     fetchCourses(params)
-  }, [getQueryString, timetable])
+  }, [getQueryString])
 
   return (
     <>
