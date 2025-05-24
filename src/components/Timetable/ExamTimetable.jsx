@@ -117,22 +117,11 @@ const Table = () => {
 
 const PopupExample = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [color, setColor] = useState('#2563EB');
-  const hex = ["#98FF98", "#B2AC88", "#A8DAD7", "#77DD77", "#B0E0E6", "#87CEFA", "#AED9E0", "#CCCCFF", "#F5F5DC", "#FFFFF0", "#D3D3D3", "#C4C3D0", "#E6E6FA", "#FFE4E1", "#D8BFD8", "#F9C5D1"
-];
-  function getRandomNumber() {
-    return Math.floor(Math.random() * hex.length);
-  }
-  function getRandomHexColor() {
-    const hexcolor = hex[getRandomNumber()];
-    return hexcolor;
-  }
 
-  const handleButtonClick = () => {
-    setColor(getRandomHexColor());
-    setIsOpen(!isOpen);
-  }
 
+  const togglePopup = () => {
+    setIsOpen(!isOpen)
+  }
 
   return (
     <div className="popup">
@@ -140,10 +129,10 @@ const PopupExample = () => {
         id = "popup-btn"
         className="popup-button"
         type="button"
-        onClick={handleButtonClick}
+        onClick={togglePopup}
         style={{
-          backgroundColor: color,
-          color: 'Black',
+          backgroundColor: '#2563EB',
+          color: 'white',
           padding: '10px 20px',
           border: 'none',
           borderRadius: '8px',
@@ -162,7 +151,7 @@ const PopupExample = () => {
         <div
           className="Popup-Window"
           style={{
-            backgroundColor: color,
+            backgroundColor: '#1B1728',
             padding: '20px',
             borderRadius: '10px',
             color: 'white',
@@ -174,7 +163,6 @@ const PopupExample = () => {
               fontFamily: 'monospace',
               fontSize: '1.5rem',
               textDecoration: 'underline',
-              color: "Black"
             }}
           >
             EXAM TIMETABLE
@@ -183,7 +171,7 @@ const PopupExample = () => {
           <button
             className="Close-button"
             type="button"
-            onClick={handleButtonClick}
+            onClick={togglePopup}
             style={styles.closeButton}
           >
             Close
@@ -193,6 +181,7 @@ const PopupExample = () => {
     </div>
   )
 }
+
 
 
 export const Exam = () => {
