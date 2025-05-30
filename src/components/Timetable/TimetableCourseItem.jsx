@@ -36,7 +36,7 @@ const TimetableCourseItem = ({ data }) => {
         <Tooltip title={title}>
           <Item color={colorPicker(hash(id))}>
             <div className="item-content">
-              <div>
+              <div className="details-row">
                 <h3 style={{ paddingRight: '1rem' }}>
                   {code} {isTutorial && ' | Tut'}
                   <ButtonIcon
@@ -51,13 +51,15 @@ const TimetableCourseItem = ({ data }) => {
                     }}
                   />
                 </h3>
-                <span>
-                  {formatItem(gridRow.start.title, isTutorial, lectureVenue)}
-                </span>
+                <div className="info-row">
+                  <span>
+                    {formatItem(gridRow.start.title, isTutorial, lectureVenue)}
+                  </span>
+                  <span className="slot-name">
+                    <h3>{slotName}</h3>
+                  </span>
+                </div>
               </div>
-              <span className="slot-name">
-                <h3>{slotName}</h3>
-              </span>
             </div>
           </Item>
         </Tooltip>
@@ -128,6 +130,24 @@ const Item = styled.div`
   & > .item-content > div {
     display: flex;
     flex-direction: column;
+  }
+
+  .item-content > .details-row > .info-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .item-content > .details-row > .info-row > .slot-name {
+    margin-left: auto;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+    font-size: ${fontSize.responsive.sm};
+    font-weight: bold;
+    color: ${({ theme }) => theme.darksecondary};
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
   }
 
   & > .item-content > .slot-name {
