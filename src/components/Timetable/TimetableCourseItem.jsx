@@ -38,7 +38,7 @@ const TimetableCourseItem = ({ data }) => {
             <div className="item-content">
               <div className="details-row">
                 <h3 style={{ paddingRight: '1rem' }}>
-                  {code} {isTutorial && ' | Tut'}
+                  {code} | {slotName}{isTutorial && ' | Tut'}
                   <ButtonIcon
                     size="small"
                     onClick={handleClickInfo}
@@ -54,9 +54,6 @@ const TimetableCourseItem = ({ data }) => {
                 <div className="info-row">
                   <span>
                     {formatItem(gridRow.start.title, isTutorial, lectureVenue)}
-                  </span>
-                  <span className="slot-name">
-                    <h3>{slotName}</h3>
                   </span>
                 </div>
               </div>
