@@ -1,6 +1,7 @@
 import { X } from '@styled-icons/heroicons-outline'
 import { Checkbox, Select, Switch } from 'antd'
 import { kebabCase } from 'lodash'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
@@ -9,10 +10,13 @@ import { ButtonIconDanger } from 'components/shared/Buttons'
 import tags from 'data/tags.json'
 import { slots } from 'data/timetable'
 import { useQueryString } from 'hooks'
-import { selectDepartments } from 'store/courseSlice'
+import {
+  selectDepartments,
+} from 'store/courseSlice'
+// import { selectAllTimetable } from 'store/userSlice'
 
 export const filterKeys = [
-  'p', // ? page number
+  'p',
   'semester',
   'department',
   'credits_min',
@@ -21,12 +25,12 @@ export const filterKeys = [
   'running',
   'tags',
   'slots',
+  'slotclash', // new toggle key
 ]
 
 const CourseFinderFilterItem = ({ label, onClear, content }) => (
   <CourseFinderFilterItemContainer>
     <FilterTitle>{label}</FilterTitle>
-
     {content || (
       <ButtonIconDanger
         onClick={onClear}
@@ -38,7 +42,6 @@ const CourseFinderFilterItem = ({ label, onClear, content }) => (
   </CourseFinderFilterItemContainer>
 )
 
-// TODO: (Known bug) Changing from mobile to desktop view resets filters but query string isnt affected
 const CourseFinderFilterForm = ({ setLoading }) => {
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
   const [form] = Form.useForm()
@@ -52,6 +55,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
       department: [],
       tags: [],
       slots: [],
+      slotclash: false,
     }
 
     form.setFieldsValue({
@@ -78,6 +82,10 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     setQueryString('tags', allFields.tags)
     setQueryString('slots', allFields.slots)
 
+    if (allFields.slotclash)
+      setQueryString('slotclash', 'true')
+    else deleteQueryString('slotclash')
+
     if (allFields.halfsem) setQueryString('halfsem', 'true')
     else deleteQueryString('halfsem')
 
@@ -90,12 +98,10 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     { label: 'Spring', value: 'spring' },
   ]
 
-  const departmentOptions = useSelector(selectDepartments)?.map(
-    (department) => ({
-      label: department.name,
-      value: department.slug,
-    })
-  )
+  const departmentOptions = useSelector(selectDepartments)?.map((d) => ({
+    label: d.name,
+    value: d.slug,
+  }))
 
   const tagOptions = tags.courseTags.map((tag) => ({
     label: tag,
@@ -103,13 +109,13 @@ const CourseFinderFilterForm = ({ setLoading }) => {
   }))
 
   const slotOptions = Object.keys(slots).reduce((acc, slot) => {
-    const label = slot[0].match(/^\d/) ? slot.match(/\d+/g)?.join('') : slot;
-    const value = slot;
+    const label = slot[0].match(/^\d/) ? slot.match(/\d+/g)?.join('') : slot
+    const value = slot
     if (!acc.some((option) => option.label === label)) {
-      acc.push({ label, value });
+      acc.push({ label, value })
     }
-    return acc;
-  }, []);
+    return acc
+  }, [])
 
   return (
     <Form
@@ -128,6 +134,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
         department: getQueryString('department')?.split(',') ?? [],
         tags: getQueryString('tags')?.split(',') ?? [],
         slots: getQueryString('slots')?.split(',') ?? [],
+        slotclash: getQueryString('slotclash') === 'true',
       }}
       style={{ gap: '1rem', padding: '0 0.5rem' }}
     >
@@ -150,25 +157,6 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           <Select
             mode="multiple"
             options={departmentOptions}
-            placeholder="Type something..."
-            showArrow
-          />
-        </Form.Item>
-      </div>
-
-      <div>
-        <CourseFinderFilterItem
-          label={
-            <>
-              Slots <b>(beta)</b>
-            </>
-          }
-          onClear={handleFilterClear('slots', ['slots'])}
-        />
-        <Form.Item name="slots">
-          <Select
-            mode="multiple"
-            options={slotOptions}
             placeholder="Type something..."
             showArrow
           />
@@ -207,8 +195,8 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           <Slider
             range
             min={2}
-            step={null}
             max={9}
+            step={null}
             marks={{
               2: '<3',
               3: '3',
@@ -239,6 +227,31 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           />
         </Form.Item>
       </div>
+
+      <div>
+        <CourseFinderFilterItem
+          label="Slots"
+          onClear={handleFilterClear('slots', ['slots'])}
+        />
+        <Form.Item name="slots">
+          <Select
+            mode="multiple"
+            options={slotOptions}
+            placeholder="Select slots..."
+            showArrow
+          />
+        </Form.Item>
+      </div>
+
+      <CourseFinderFilterItem
+        label="No Slot Clash"
+        onClear={handleFilterClear('slotclash', ['slotclash'])}
+        content={
+          <Form.Item name="slotclash" valuePropName="checked">
+            <Switch />
+          </Form.Item>
+        }
+      />
     </Form>
   )
 }
