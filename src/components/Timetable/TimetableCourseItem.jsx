@@ -38,7 +38,7 @@ const TimetableCourseItem = ({ data }) => {
             <div className="item-content">
               <div className="details-row">
                 <h3 style={{ paddingRight: '1rem' }}>
-                  {code} | {slotName}{isTutorial && ' | Tut'}
+                  {code} | {slotName}
                   <ButtonIcon
                     size="small"
                     onClick={handleClickInfo}
@@ -55,6 +55,9 @@ const TimetableCourseItem = ({ data }) => {
                   <span>
                     {formatItem(gridRow.start.title, isTutorial, lectureVenue)}
                   </span>
+                  {isTutorial && (
+                    <span className="tutorial-label">(Tutorial)</span>
+                  )}
                 </div>
               </div>
             </div>
@@ -133,6 +136,14 @@ const Item = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
+  }
+
+  .item-content > .details-row > .info-row > .tutorial-label {
+    margin-left: auto;
+    font-size: ${fontSize.responsive.xs};
+    font-weight: 500;
+    white-space: nowrap;
+    align-self: flex-end;
   }
 
   .item-content > .details-row > .info-row > .slot-name {
