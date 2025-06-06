@@ -1,12 +1,11 @@
-import axios from 'axios';
-import { useState, useEffect, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import axios from 'axios'
+import { useState, useEffect } from 'react'
+// import { useSelector } from 'react-redux'
 
-import { Aside, toast } from 'components/shared';
-import { API } from 'config/api';
-import { slots } from 'data/timetable';
-import { useQueryString } from 'hooks';
-import { selectAllTimetable } from 'store/userSlice';
+import { Aside, toast } from 'components/shared'
+import { API } from 'config/api'
+import { slots as slotGrid } from 'data/timetable'
+import { useQueryString } from 'hooks'
 
 import CourseList from './CourseList';
 import CourseSearch from './CourseSearch';
@@ -16,115 +15,137 @@ import CourseFinderFilterForm, { filterKeys } from './Filter/CourseFinderFilterF
 let ajaxRequest = null;
 
 const CourseFinderContainer = () => {
-  const { getQueryString, deleteQueryString } = useQueryString();
-  const timetableCourseCodes = useSelector(selectAllTimetable);
-  const [courseData, setCourseData] = useState({ results: [], count: 0 });
-  const [loading, setLoading] = useState(true);
-  const [seed, setSeed] = useState(1);
-  const [timetableCourses, setTimetableCourses] = useState({}); // Store full timetable course details
+  const { getQueryString, deleteQueryString } = useQueryString()
+  const [courseData, setCourseData] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [seed, setSeed] = useState(1)
+  const [userTimetableCourses, setUserTimetableCourses] = useState([]) // <-- NEW
 
-  // Fetch full details of courses in the timetable
+  // Fetch user's timetable courses (with slots) on mount
   useEffect(() => {
-    // console.log("Timetable Course Codes:", timetableCourseCodes);
-    const fetchTimetableDetails = async () => {
-      if (timetableCourseCodes && timetableCourseCodes.length > 0) {
-        const details = {};
-        const promises = timetableCourseCodes.map(async (code) => {
-          try {
-            const response = await API.courses.read({ code });
-            if (response) {
-              details[code] = response;
-            }
-          } catch (error) {
-            // console.error(`Error fetching details for timetable course ${code}:`, error);
-            toast({ status: 'error', content: `Failed to fetch details for ${code}` });
-          }
-        });
-        await Promise.all(promises);
-        setTimetableCourses(details);
-      } else {
-        setTimetableCourses({});
-      }
-    };
-
-    fetchTimetableDetails();
-  }, [timetableCourseCodes]);
-
-  // Extract all slots (lecture, tutorial, lab) from a course
-  const getCourseSlots = useCallback((course) => {
-    if (!course?.semester || !Array.isArray(course.semester)) return [];
-    const allSlots = [];
-    course.semester.forEach((sem) => {
-      if (!sem.timetable || !Array.isArray(sem.timetable)) return;
-      sem.timetable.forEach((entry) => {
-        allSlots.push(...(entry.lectureSlots || []), ...(entry.tutorialSlots || []), ...(entry.labSlots || []));
-      });
-    });
-    return allSlots;
-  }, []);
-
-  // Check if a given course clashes with the current timetable
-  const doesCourseClash = useCallback(
-    (potentialCourse) => {
-      if (!getQueryString().slotclash === 'true' || Object.keys(timetableCourses).length === 0 || !potentialCourse?.semester) {
-        return false;
-      }
-
-      const potentialCourseSlots = getCourseSlots(potentialCourse);
-
-      return Object.keys(timetableCourses).some((timetableCourseCode) => {
-        const timetableCourse = timetableCourses[timetableCourseCode];
-        const timetableCourseSlots = getCourseSlots(timetableCourse);
-
-        return potentialCourseSlots.some((potentialSlot) => {
-          const potentialGrid = slots[potentialSlot];
-          if (potentialGrid) {
-            return timetableCourseSlots.some((timetableSlot) => {
-              const timetableGrid = slots[timetableSlot];
-              return (
-                timetableGrid &&
-                potentialGrid.col === timetableGrid.col &&
-                potentialGrid.row.end > timetableGrid.row.start &&
-                timetableGrid.row.end > potentialGrid.row.start
-              );
-            });
-          }
-          return false;
-        });
-      });
-    },
-    [getQueryString, timetableCourses, getCourseSlots]
-  );
-
-  const fetchCourses = useCallback(
-    async (params) => {
-      setLoading(true);
-
+    const fetchUserTimetable = async () => {
       try {
-        if (ajaxRequest) ajaxRequest.cancel();
-        ajaxRequest = axios.CancelToken.source();
-
-        const response = await API.courses.list({
-          params,
-          cancelToken: ajaxRequest.token,
-        });
-
-        let filteredResults = response?.results || [];
-
-        if (getQueryString().slotclash === 'true') {
-          filteredResults = filteredResults.filter((course) => !doesCourseClash(course));
+        const response = await API.profile.timetable.read()
+        // console.log('Timetable API raw response:', response, typeof response)
+        setUserTimetableCourses(response)
+        // console.log('Fetched user timetable courses:', response)
+        if (!response || !Array.isArray(response) || response.length === 0) {
+          // console.warn(
+          //   'API.profile.timetable.read returned empty or invalid:',
+          //   response
+          // )
         }
-
-        setCourseData({ ...response, results: filteredResults });
       } catch (error) {
-        if (axios.isCancel(error)) return;
-        toast({ status: 'error', content: error.message || error.toString() });
-      } finally {
-        setLoading(false);
+        toast({ status: 'error', content: 'Failed to fetch user timetable' })
+        setUserTimetableCourses([])
+        // console.error('Error fetching user timetable:', error)
       }
-    },
-    [getQueryString, doesCourseClash]
-  );
+    }
+    fetchUserTimetable()
+  }, [])
+
+  // Helper: Get all slots from user's timetable courses
+  const getUserTimetableSlots = () => {
+    if (!userTimetableCourses?.length) {
+      // console.warn(
+      //   'userTimetableCourses is empty or undefined:',
+      //   userTimetableCourses
+      // )
+      return []
+    }
+    const slots = userTimetableCourses.flatMap((item, idx) => {
+      // console.log(`Timetable course #${idx}:`, item)
+      return [
+        ...(item.lectureSlots || []),
+        ...(item.tutorialSlots || []),
+      ]
+    })
+    // console.log('User Timetable Slots:', slots)
+    return slots
+  }
+
+  // Helper: Check if two slots clash using slotGrid info
+  const slotsClash = (slotA, slotB) => {
+    const a = slotGrid[slotA]
+    const b = slotGrid[slotB]
+    if (!a || !b) {
+      // console.log(`Slot missing in slotGrid: ${slotA} or ${slotB}`, a, b)
+      return false
+    }
+    // Same day (col), overlapping time (row)
+    const clash =
+      a.col === b.col &&
+      a.row.start < b.row.end &&
+      b.row.start < a.row.end
+    if (clash) {
+      // console.log(`Clash detected between slots: ${slotA} and ${slotB}`)
+    }
+    return clash
+  }
+
+  // Helper: Check if a course clashes with user's timetable
+  const courseClashesWithTimetable = (course, userSlots) => {
+    const courseSlots = [
+      ...(course.lectureSlots || []),
+      ...(course.tutorialSlots || []),
+    ]
+    // console.log(
+    //   `Checking course ${course.code} for slot clash. Course slots:`,
+    //   courseSlots
+    // )
+    const result = courseSlots.some((cs) =>
+      userSlots.some((us) => slotsClash(cs, us))
+    )
+    if (result) {
+      // console.log(
+      //   `Course ${course.code} clashes with user's timetable. Course slots:`,
+      //   courseSlots,
+      //   'User slots:',
+      //   userSlots
+      // )
+    }
+    return result
+  }
+
+  const fetchCourses = async (params) => {
+    setLoading(true)
+
+    try {
+      if (ajaxRequest) ajaxRequest.cancel()
+      ajaxRequest = axios.CancelToken.source()
+
+      const response = await API.courses.list({
+        params,
+        cancelToken: ajaxRequest.token,
+      })
+
+      // Apply slot clash filter if enabled
+      let filteredResults = response.results
+      const slotClashFilter = getQueryString('slotclash') === 'true'
+      // console.log('Slot Clash Filter Enabled:', slotClashFilter)
+      // console.log('userTimetableCourses:', userTimetableCourses)
+      if (slotClashFilter && userTimetableCourses?.length) {
+        const userSlots = getUserTimetableSlots()
+        filteredResults = filteredResults.filter(
+          (course) => !courseClashesWithTimetable(course, userSlots)
+        )
+        // console.log(
+        //   'Filtered Results after slot clash:',
+        //   filteredResults.map((c) => c.code)
+        // )
+      } else {
+        // console.log('Slot clash filter not applied or no user timetable.')
+      }
+
+      setCourseData({ ...response, results: filteredResults })
+    } catch (error) {
+      if (axios.isCancel(error)) return
+      toast({ status: 'error', content: error })
+      // console.error('Error fetching courses:', error)
+    }
+
+    setLoading(false)
+  }
 
   useEffect(() => {
     const filter = getQueryString();
@@ -132,11 +153,15 @@ const CourseFinderContainer = () => {
     const params = {
       search_fields: 'code,title,description',
       q,
-      ...filterKeys.reduce((acc, key) => ({ ...acc, [key]: filter[key] }), {}),
-    };
+      ...filterKeys.reduce(
+        (accumulator, value) => ({ ...accumulator, [value]: filter[value] }),
+        {}
+      ),
+    }
 
-    fetchCourses(params);
-  }, [getQueryString, fetchCourses]);
+    // console.log('Fetching courses with params:', params)
+    fetchCourses(params)
+  }, [getQueryString, userTimetableCourses])
 
   return (
     <>
