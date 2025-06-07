@@ -1,6 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import { ChevronLeft, ChevronRight, X } from '@styled-icons/heroicons-outline'
-import { Spin, Alert } from 'antd'
+import { Spin, Alert , Modal} from 'antd'
 import axios from 'axios'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -24,6 +24,7 @@ import { selectCourseAPILoading, selectSemesters } from 'store/courseSlice'
 import { updateTimetable } from 'store/userSlice'
 
 import CurrentTime from './CurrentTime'
+import './CustomModal.css';
 import HalfSemCourseItem from './halfSemCourseItem'
 import TimetableCourseItem from './TimetableCourseItem'
 import TimetableDownloadLink from './TimetableDownloadLink'
@@ -142,21 +143,47 @@ const TimetableContainer = () => {
   const handleClickNext = () =>
     semIdx + 1 in semesterList && setSemIdx(semIdx + 1)
 
-  const removeFromTimetable = (id) => async () => {
-    try {
-      setLoading(true)
-      await API.profile.timetable.remove({ id })
+const removeFromTimetable = (id) => () => {
+  const course = coursedata[
+    courseTimetableList.find((item) => item.id === id)?.course
+  ];
+  const courseName = course?.title ?? 'this course';
+  const courseCode = course?.code ?? '';
 
-      setCourseTimetableList(
-        courseTimetableList.filter((item) => item.id !== id)
-      )
-      dispatch(updateTimetable(id))
-    } catch (error) {
-      toast({ status: 'error', content: error })
-    } finally {
-      setLoading(false)
-    }
-  }
+  Modal.confirm({
+    title: `Remove ${courseCode}?`,
+    content: (
+      <>
+        <p>
+          Are you sure you want to remove <strong>{courseName}</strong> (
+          {courseCode}) from your timetable?
+        </p>
+        <p>This action cannot be undone.</p>
+      </>
+    ),
+    okText: 'Yes, remove it',
+    cancelText: 'Cancel',
+    centered: true,
+    className: 'custom-dark-modal',
+    onOk: async () => {
+      try {
+        setLoading(true);
+        await API.profile.timetable.remove({ id });
+
+        setCourseTimetableList(
+          courseTimetableList.filter((item) => item.id !== id)
+        );
+        dispatch(updateTimetable(id));
+      } catch (error) {
+        toast({ status: 'error', content: error });
+      } finally {
+        setLoading(false);
+      }
+    },
+  });
+};
+
+
 
   const addToTimetable = async (code, id) => {
     if (id === -1) {
