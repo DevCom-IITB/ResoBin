@@ -1,19 +1,17 @@
 import { X } from '@styled-icons/heroicons-outline'
 import { Checkbox, Select, Switch } from 'antd'
 import { kebabCase } from 'lodash'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { Form, Slider } from 'components/shared'
+import { Form, Slider, toast } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
+import { API } from 'config/api'
 import tags from 'data/tags.json'
 import { slots } from 'data/timetable'
 import { useQueryString } from 'hooks'
-import {
-  selectDepartments,
-} from 'store/courseSlice'
-// import { selectAllTimetable } from 'store/userSlice'
+import { selectDepartments } from 'store/courseSlice'
 
 export const filterKeys = [
   'p',
@@ -25,7 +23,7 @@ export const filterKeys = [
   'running',
   'tags',
   'slots',
-  'slotclash', // new toggle key
+  'slotclash',
 ]
 
 const CourseFinderFilterItem = ({ label, onClear, content }) => (
@@ -45,6 +43,54 @@ const CourseFinderFilterItem = ({ label, onClear, content }) => (
 const CourseFinderFilterForm = ({ setLoading }) => {
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
   const [form] = Form.useForm()
+  const [userTimetableCourses, setUserTimetableCourses] = useState([])
+  const [loadingTimetable, setLoadingTimetable] = useState(false)
+  const [avoidSlotClash, setAvoidSlotClash] = useState(
+    getQueryString('avoid_slot_clash') === 'true' || getQueryString('avoid_slots') !== null
+  )
+
+  const getUserTimetableSlots = () => {
+    if (!userTimetableCourses?.length) {
+      // console.log(
+      //   'userTimetableCourses is empty or undefined:',
+      //   userTimetableCourses
+      // )
+      return []
+    }
+    const userSlots = userTimetableCourses.flatMap((item, idx) => {
+      // console.log(`Timetable course #${idx}:`, item)
+      
+      return [
+        ...(item.lectureSlots || []),
+        ...(item.tutorialSlots || []),
+      ]
+    })
+    // console.log('User Timetable Slots:', slots)
+    return userSlots
+  }
+
+  useEffect(() => {
+    const fetchUserTimetable = async () => {
+      try {
+        setLoadingTimetable(true)
+        const season = 'spring'
+        const year = '2025'
+        const response = await API.profile.timetable.read({ season, year })
+        setUserTimetableCourses(response)
+        console.log('Fetched timetable slots: here', response)
+      } catch (error) {
+        toast({
+          status: 'error',
+          content: 'Failed to fetch user timetable',
+          key: 'timetable-error',
+        })
+        setUserTimetableCourses([])
+      } finally {
+        setLoadingTimetable(false)
+      }
+    }
+    fetchUserTimetable()
+  }, [])
 
   const handleFilterClear = (formField, qsFields) => () => {
     const defaultInitialValues = {
@@ -55,7 +101,8 @@ const CourseFinderFilterForm = ({ setLoading }) => {
       department: [],
       tags: [],
       slots: [],
-      slotclash: false,
+      avoid_slots: [],
+      avoid_slot_clash: false,
     }
 
     form.setFieldsValue({
@@ -63,18 +110,30 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     })
 
     deleteQueryString(...qsFields, 'p')
+
+    if (formField === 'avoid_slot_clash') {
+      setAvoidSlotClash(false)
+    }
   }
 
   const handleFilterUpdate = (_, allFields) => {
     setLoading(true)
     deleteQueryString('p')
 
-    if (allFields?.credits?.[0] !== 2)
-      setQueryString('credits_min', allFields.credits[0])
+    if (
+      Array.isArray(allFields?.credits) &&
+      typeof allFields.credits[0] === 'number' &&
+      allFields.credits[0] !== 2
+    )
+      setQueryString('credits_min', allFields.credits[0].toString())
     else deleteQueryString('credits_min')
 
-    if (allFields?.credits?.[1] !== 9)
-      setQueryString('credits_max', allFields.credits[1])
+    if (
+      Array.isArray(allFields?.credits) &&
+      typeof allFields.credits[1] === 'number' &&
+      allFields.credits[1] !== 9
+    )
+      setQueryString('credits_max', allFields.credits[1].toString())
     else deleteQueryString('credits_max')
 
     setQueryString('department', allFields.department)
@@ -82,9 +141,18 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     setQueryString('tags', allFields.tags)
     setQueryString('slots', allFields.slots)
 
-    if (allFields.slotclash)
-      setQueryString('slotclash', 'true')
-    else deleteQueryString('slotclash')
+    if (allFields.avoid_slot_clash) {
+      const userSlots = getUserTimetableSlots()
+      if (userSlots && userSlots.length > 0) {
+        setQueryString('avoid_slots', userSlots.join(','))
+        setQueryString('avoid_slot_clash', 'true')
+      } else {
+        deleteQueryString('avoid_slots')
+      }
+    } else {
+      deleteQueryString('avoid_slots')
+      deleteQueryString('avoid_slot_clash')
+    }
 
     if (allFields.halfsem) setQueryString('halfsem', 'true')
     else deleteQueryString('halfsem')
@@ -134,7 +202,9 @@ const CourseFinderFilterForm = ({ setLoading }) => {
         department: getQueryString('department')?.split(',') ?? [],
         tags: getQueryString('tags')?.split(',') ?? [],
         slots: getQueryString('slots')?.split(',') ?? [],
-        slotclash: getQueryString('slotclash') === 'true',
+        avoid_slots: getQueryString('avoid_slots') ? getQueryString('avoid_slots').split(',') : [],
+        avoid_slot_clash:
+          getQueryString('avoid_slot_clash') === 'true' || getQueryString('avoid_slots') !== null,
       }}
       style={{ gap: '1rem', padding: '0 0.5rem' }}
     >
@@ -244,11 +314,11 @@ const CourseFinderFilterForm = ({ setLoading }) => {
       </div>
 
       <CourseFinderFilterItem
-        label="No Slot Clash"
-        onClear={handleFilterClear('slotclash', ['slotclash'])}
+        label="Avoid Slot Clash"
+        onClear={handleFilterClear('avoid_slot_clash', ['avoid_slot_clash', 'avoid_slots'])}
         content={
-          <Form.Item name="slotclash" valuePropName="checked">
-            <Switch />
+          <Form.Item name="avoid_slot_clash" valuePropName="checked">
+            <Switch onChange={(checked) => setAvoidSlotClash(checked)} />
           </Form.Item>
         }
       />
