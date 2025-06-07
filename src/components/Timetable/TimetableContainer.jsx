@@ -153,13 +153,11 @@ const removeFromTimetable = (id) => () => {
   Modal.confirm({
     title: `Remove ${courseCode}?`,
     content: (
-      <>
         <p>
           Are you sure you want to remove <strong>{courseName}</strong> (
           {courseCode}) from your timetable?
         </p>
-        <p>This action cannot be undone.</p>
-      </>
+
     ),
     okText: 'Yes, remove it',
     cancelText: 'Cancel',
