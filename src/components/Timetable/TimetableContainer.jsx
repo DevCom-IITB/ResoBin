@@ -24,7 +24,7 @@ import { selectCourseAPILoading, selectSemesters } from 'store/courseSlice'
 import { updateTimetable } from 'store/userSlice'
 
 import CurrentTime from './CurrentTime'
-import './CustomModal.css';
+import './CustomModal.css'
 import HalfSemCourseItem from './halfSemCourseItem'
 import TimetableCourseItem from './TimetableCourseItem'
 import TimetableDownloadLink from './TimetableDownloadLink'
@@ -154,12 +154,11 @@ const removeFromTimetable = (id) => () => {
     title: `Remove ${courseCode}?`,
     content: (
         <p>
-          Are you sure you want to remove <strong>{courseName}</strong> (
-          {courseCode}) from your timetable?
+          Are you sure you want to remove <strong>{courseCode} : {courseName}</strong> from your timetable?
         </p>
 
     ),
-    okText: 'Yes, remove it',
+    okText: 'Remove',
     cancelText: 'Cancel',
     centered: true,
     className: 'custom-dark-modal',
