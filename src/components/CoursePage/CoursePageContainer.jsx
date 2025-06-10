@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
+import { CourseGradingContainer } from 'components/CourseGrading'
 import { CourseResourceContainer } from 'components/CourseResource'
 import { CourseReviewContainer } from 'components/CourseReview'
 import { FavoriteToggle } from 'components/Favourites'
@@ -215,6 +216,9 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
                 tab={allResCount ? `Resources (${allResCount})` : `Resources`}
               >
                 <CourseResourceContainer />
+              </Tabs.TabPane>
+              <Tabs.TabPane key="workload" tab={`Gradings`}>
+                <CourseGradingContainer />
               </Tabs.TabPane>
             </Tabs>
           </Container>
