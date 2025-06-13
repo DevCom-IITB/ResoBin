@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkresobin=self.webpackChunkresobin||[]).push([[878],{9878:function(e,s,n){n.r(s);var i=n(6907),r=n(801),t=n(718),a=n(184);s.default=function(){return(0,a.jsxs)(t._z,{children:[(0,a.jsxs)(i.ql,{children:[(0,a.jsx)("title",{children:"Courses - ResoBin"}),(0,a.jsx)("meta",{name:"description",content:"Courses availabe at IIT Bombay"})]}),(0,a.jsx)(r.LZ,{})]})}}}]);
-//# sourceMappingURL=878.f5b5680f.chunk.js.map

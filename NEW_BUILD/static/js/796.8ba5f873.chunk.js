@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkresobin=self.webpackChunkresobin||[]).push([[796],{6881:function(e,s,n){n.r(s);var r=n(6907),t=n(718),i=n(681),c=n(184);s.default=function(){return(0,c.jsxs)(t._z,{children:[(0,c.jsxs)(r.ql,{children:[(0,c.jsx)("title",{children:"TimeTable (shared) - ResoBin"}),(0,c.jsx)("meta",{property:"description",content:"IIT Bombay timetable for selected courses"})]}),(0,c.jsx)(i.W$,{})]})}}}]);
-//# sourceMappingURL=796.8ba5f873.chunk.js.map
