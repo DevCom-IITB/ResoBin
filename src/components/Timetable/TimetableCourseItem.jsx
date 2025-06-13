@@ -46,8 +46,8 @@ const TimetableCourseItem = ({ data }) => {
                     color="#000000"
                     style={{
                       position: 'absolute',
-                      bottom: '2.5rem',
-                      left: '7.3rem',
+                      top: '0.25rem',
+                      right: '0.25rem',
                     }}
                   />
                 </h3>
