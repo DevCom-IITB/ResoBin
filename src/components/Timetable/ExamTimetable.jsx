@@ -312,7 +312,7 @@ const PopupExample = () => {
           temp[dayDate][mappedSlot].push(courseCode);
         });
 
-      // console.log('🧮 Final Timetable:', temp);
+      // console.log('Final Timetable:', temp);
 
       setTimetable(temp);
     };
