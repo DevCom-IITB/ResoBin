@@ -3,7 +3,10 @@ import React, { useState, useEffect } from 'react';
 
 import { Form, toast } from 'components/shared';
 import { API } from 'config/api';
-import { useQueryString } from 'hooks';
+import { hash } from 'helpers'
+import { useQueryString, useColorPicker } from 'hooks'
+import { makeGradient } from 'styles/utils'
+
 
 
 
@@ -34,40 +37,41 @@ const styles = {
   container: {
     padding: '1rem',
     fontFamily: 'Montserrat,Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
-    backgroundColor: '#707AFF',
+    backgroundColor: '#26223A ',
     borderRadius: '12px',
   },
   card: {
-    backgroundColor: '#fff',
-    borderRadius: '12px',
+    backgroundColor: '#26223A ',
     boxShadow: '0 6px 20px rgba(0, 0, 0, 0.1)',
     overflow: 'hidden',
     width: '100%',
     maxWidth: '700px',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+    minHeight: '200px',
   },
   title: {
     fontSize: '1.5rem',
     fontWeight: '600',
     padding: '1rem 1.5rem',
-    borderBottom: '1px solid #eee',
-    backgroundColor: '#f9f9f9',
-    color: '#333',
+    backgroundColor: '#26223A ',
+    color: '#fff',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
   },
   table: {
     width: '100%',
     borderCollapse: 'collapse',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+    border: '1px solid #39324d',
   },
   th: {
     textAlign: 'left',
     padding: '0.9rem 1.2rem',
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#26223A ',
     textTransform: 'uppercase',
     fontSize: '0.85rem',
-    color: '#555',
+    color: 'white',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+    border: '1px solid white ',
   },
   td: {
     padding: '0.9rem 1.2rem',
@@ -75,9 +79,11 @@ const styles = {
     color: '#444',
     textAlign: 'center',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+    border: '1px solid white',
+    backgroundColor: 'transparent',
   },
   rowEven: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#23203A',
   },
   rowHover: {
     transition: 'background-color 0.2s ease-in-out',
@@ -98,34 +104,36 @@ const styles = {
   },
   date: {
     fontSize: '0.9rem',
-    color: '#888',
+    color: 'white',
     fontStyle: 'italic',
     fontWeight: '500',
     padding: '0.9rem 1.2rem',
     textAlign: 'left',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+    border: '1px solid white ',
   },
   courses: {
     background: "linear-gradient(90deg, #3a3456 0%, #1B1728 100%)",
-    color: 'white',
+    color: 'black',
     marginTop: '1rem',
     padding: '0.9rem 1.2rem',
-    border: 'none',
     borderRadius: '8px',
     cursor: 'pointer',
     fontSize: '16px',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+    border: '1px solid white ',
   }
 };
 
 const Table = ({ timetable }) => {
+  const colorPicker = useColorPicker()
+
   const sortedDates = Object.keys(timetable).sort((a, b) => {
     const extractDate = (str) => {
-      const datePart = str.split(' ')[1]; // Get "21/04/25"
+      const datePart = str.split(' ')[1];
       const [day, month, year] = datePart.split('/').map(num => parseInt(num, 10));
-      return new Date(2000 + year, month - 1, day); // JS needs full year
+      return new Date(2000 + year, month - 1, day);
     };
-
     return extractDate(a) - extractDate(b);
   });
 
@@ -137,53 +145,80 @@ const Table = ({ timetable }) => {
 
   return (
     <div style={styles.container}>
-      <div style={styles.card}>
+      <div style={{ ...styles.card, maxHeight: 'none', overflowY: 'visible' }}>
         <h2 style={styles.title}>📚 Mid-semester Examinations</h2>
-        <table style={styles.table}>
-          <thead>
-            <tr>
-              <th style={styles.th}>Day/Date</th>
-              <th style={styles.th}>09:00 - 12:00</th>
-              <th style={styles.th}>13:30 - 16:30</th>
-              <th style={styles.th}>18:00 - 21:00</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedDates.map((date, idx) => {
-              const slotData = timetable[date] || {};
+        <div
+          style={{
+            maxHeight: '320px',
+            overflowY: 'auto',
+          }}
+        >
+          <table style={styles.table}>
+            <thead>
+              <tr>
+                <th style={styles.th}>Day/Date</th>
+                <th style={styles.th}>09:00 - 12:00</th>
+                <th style={styles.th}>13:30 - 16:30</th>
+                <th style={styles.th}>18:00 - 21:00</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedDates.map((date, idx) => {
+                const slotData = timetable[date] || {};
+                const rowSlots = {
+                  "09:00 - 12:00": slotData[1] || [],
+                  "13:30 - 16:30": slotData[2] || [],
+                  "18:00 - 21:00": slotData[3] || [],
+                };
 
-              // Build a row aligned with slotMap
-              const rowSlots = {
-                "09:00 - 12:00": slotData[1]?.join(', ') || '',
-                "13:30 - 16:30": slotData[2]?.join(', ') || '',
-                "18:00 - 21:00": slotData[3]?.join(', ') || '',
-              };
-
-              return (
-                <tr
-                  key={date}
-                  style={{
-                    ...styles.rowHover,
-                    ...(idx % 2 === 1 ? styles.rowEven : {}),
-                  }}
-                >
-                  <td style={styles.date}>{date}</td>
-                  {Object.entries(rowSlots).map(([slotLabel, cell]) => (
-                    <td
-                      key={slotLabel}
-                      style={cell
-                        ? { ...styles.td, ...styles.courses }
-                        : styles.td
-                      }
-                    >
-                      {cell}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                return (
+                  <tr
+                    key={date}
+                    style={{
+                      ...styles.rowHover,
+                      ...(idx % 2 === 1 ? styles.rowEven : {}),
+                    }}
+                  >
+                    <td style={styles.date}>{date}</td>
+                    {Object.entries(rowSlots).map(([slotLabel, courses]) => (
+                      <td
+                        key={slotLabel}
+                        style={{
+                          ...styles.td,
+                          padding: courses.length ? 0 : styles.td.padding,
+                          background: courses.length ? 'none' : styles.td.backgroundColor,
+                        }}
+                      >
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                          {courses.map((courseCode) => (
+                            <span
+                              key={courseCode}
+                              style={{
+                                background: makeGradient(colorPicker(hash(courseCode))),
+                                color: 'black',
+                                borderRadius: '12px',
+                                padding: '0.5rem 1.5rem',
+                                fontWeight: 600,
+                                fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+                                margin: '0.3rem 0.3rem',
+                                display: 'inline-block',
+                                textShadow: '0 1px 2px rgba(0,0,0,0.15)',
+                                fontSize: '1.1rem',
+                                letterSpacing: '1px',
+                              }}
+                            >
+                              {courseCode}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -226,7 +261,7 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
           const firstSlot = Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
             ? item.lectureSlots[0]
             : '';
-          // Exclude if firstSlot starts with "L"
+
           return !(typeof firstSlot === 'string' && firstSlot.startsWith('L'));
         });
 
@@ -238,17 +273,17 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
 
           if (!firstSlot) return 0;
 
-          // If first character is a letter, return 0
+
           if (/^[A-Za-z]/.test(firstSlot)) {
             return 0;
           }
 
-          // If first character is a digit, return that digit as number
+
           if (/^\d/.test(firstSlot)) {
             return parseInt(firstSlot[0], 10);
           }
 
-          // If no match, return 0
+
           return 0;
         });
         // console.log('Courses:', courses);
@@ -292,62 +327,45 @@ const PopupExample = () => {
     if (!courses.length) return;
     const fetchSchedule = async () => {
       if (!courses.length) return;
-      // console.log(' Selected from URL:', courses);
 
       const userCourses = courses.map((code) => {
-        const slotMatch = code.match(/\d+/);  // extract numeric part like "110"
+        const slotMatch = code.match(/\d+/);
         const slotNumber = slotMatch ? parseInt(slotMatch[0][0], 10) : undefined;
-
         return {
           course_code: code,
           ...(slotNumber ? { course_slot_number: slotNumber } : {}),
         };
       });
 
-
-      // console.log('Sending to API:', userCourses);
-
-      const responses = await Promise.all(
-        userCourses.map((course) => {
-          // console.log("Sending request to /api/get-schedule/ with:", course);
-          return axios
-            .post('http://localhost:8000/api/get-schedule/', course)
-            .then((res) => {
-              // console.log("Got from backend:", res.data);
-              return res.data;
-            })
-            .catch((err) => {
-              // console.error(`Failed to fetch for ${course.course_code}`, err);
-              return null;
-            });
-        })
-      );
-
-
-      // console.log(' API Responses:', responses);
-
-      const temp = {};
-      responses
-        .filter(Boolean)
-        .forEach((schedule) => {
-          const {
-            day_date: dayDate,
-            mapped_slot: mappedSlot,
-            course_code: courseCode,
-          } = schedule;
-
-          if (!dayDate || !mappedSlot || !courseCode) return;
-
-          if (!temp[dayDate]) {
-            temp[dayDate] = { 1: [], 2: [], 3: [] };
-          }
-
-          temp[dayDate][mappedSlot].push(courseCode);
+      try {
+        const res = await axios.post('http://localhost:8000/api/get-schedule-batch/', {
+          courses: userCourses,
         });
+        const schedules = res.data;
 
-      // console.log('Final Timetable:', temp);
+        const temp = {};
+        schedules
+          .filter(Boolean)
+          .forEach((schedule) => {
+            const {
+              day_date: dayDate,
+              mapped_slot: mappedSlot,
+              course_code: courseCode,
+            } = schedule;
 
-      setTimetable(temp);
+            if (!dayDate || !mappedSlot || !courseCode) return;
+
+            if (!temp[dayDate]) {
+              temp[dayDate] = { 1: [], 2: [], 3: [] };
+            }
+
+            temp[dayDate][mappedSlot].push(courseCode);
+          });
+
+        setTimetable(temp);
+      } catch (err) {
+        setTimetable({});
+      }
     };
 
     fetchSchedule();
@@ -380,7 +398,7 @@ const PopupExample = () => {
         <div
           className="Popup-Window"
           style={{
-            backgroundColor: '#1B1728',
+            backgroundColor: '#26223A ',
             padding: '20px',
             borderRadius: '10px',
             color: 'white',
