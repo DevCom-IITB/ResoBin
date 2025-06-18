@@ -6,6 +6,7 @@ import { API } from 'config/api';
 import { useQueryString } from 'hooks';
 
 
+
 export const filterKeys = [
   'p',
   'semester',
@@ -20,10 +21,19 @@ export const filterKeys = [
   'avoid_slot_clash',
 ]
 
+const montserratFontId = 'montserrat-font-link';
+if (!document.getElementById(montserratFontId)) {
+  const link = document.createElement('link');
+  link.id = montserratFontId;
+  link.rel = 'stylesheet';
+  link.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap';
+  document.head.appendChild(link);
+}
+
 const styles = {
   container: {
     padding: '1rem',
-    fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+    fontFamily: 'Montserrat,Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
     backgroundColor: '#707AFF',
     borderRadius: '12px',
   },
@@ -34,6 +44,7 @@ const styles = {
     overflow: 'hidden',
     width: '100%',
     maxWidth: '700px',
+    fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
   },
   title: {
     fontSize: '1.5rem',
@@ -42,10 +53,12 @@ const styles = {
     borderBottom: '1px solid #eee',
     backgroundColor: '#f9f9f9',
     color: '#333',
+    fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
   },
   table: {
     width: '100%',
     borderCollapse: 'collapse',
+    fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
   },
   th: {
     textAlign: 'left',
@@ -54,12 +67,14 @@ const styles = {
     textTransform: 'uppercase',
     fontSize: '0.85rem',
     color: '#555',
+    fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
   },
   td: {
     padding: '0.9rem 1.2rem',
     fontSize: '0.95rem',
     color: '#444',
-    textAlign: 'left'
+    textAlign: 'center',
+    fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
   },
   rowEven: {
     backgroundColor: '#f9f9f9',
@@ -79,25 +94,40 @@ const styles = {
     fontWeight: 'bold',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
     transition: 'transform 0.2s, box-shadow 0.2s',
+    fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
   },
-  date :{
+  date: {
     fontSize: '0.9rem',
     color: '#888',
     fontStyle: 'italic',
+    fontWeight: '500',
+    padding: '0.9rem 1.2rem',
     textAlign: 'left',
+    fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+  },
+  courses: {
+    background: "linear-gradient(90deg, #3a3456 0%, #1B1728 100%)",
+    color: 'white',
+    marginTop: '1rem',
+    padding: '0.9rem 1.2rem',
+    border: 'none',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontSize: '16px',
+    fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
   }
 };
 
 const Table = ({ timetable }) => {
- const sortedDates = Object.keys(timetable).sort((a, b) => {
-  const extractDate = (str) => {
-    const datePart = str.split(' ')[1]; // Get "21/04/25"
-    const [day, month, year] = datePart.split('/').map(num => parseInt(num, 10));
-    return new Date(2000 + year, month - 1, day); // JS needs full year
-  };
+  const sortedDates = Object.keys(timetable).sort((a, b) => {
+    const extractDate = (str) => {
+      const datePart = str.split(' ')[1]; // Get "21/04/25"
+      const [day, month, year] = datePart.split('/').map(num => parseInt(num, 10));
+      return new Date(2000 + year, month - 1, day); // JS needs full year
+    };
 
-  return extractDate(a) - extractDate(b);
-});
+    return extractDate(a) - extractDate(b);
+  });
 
   const slotMap = {
     1: "09:00 - 12:00",
@@ -118,39 +148,42 @@ const Table = ({ timetable }) => {
               <th style={styles.th}>18:00 - 21:00</th>
             </tr>
           </thead>
+          <tbody>
+            {sortedDates.map((date, idx) => {
+              const slotData = timetable[date] || {};
+
+              // Build a row aligned with slotMap
+              const rowSlots = {
+                "09:00 - 12:00": slotData[1]?.join(', ') || '',
+                "13:30 - 16:30": slotData[2]?.join(', ') || '',
+                "18:00 - 21:00": slotData[3]?.join(', ') || '',
+              };
+
+              return (
+                <tr
+                  key={date}
+                  style={{
+                    ...styles.rowHover,
+                    ...(idx % 2 === 1 ? styles.rowEven : {}),
+                  }}
+                >
+                  <td style={styles.date}>{date}</td>
+                  {Object.entries(rowSlots).map(([slotLabel, cell]) => (
+                    <td
+                      key={slotLabel}
+                      style={cell
+                        ? { ...styles.td, ...styles.courses }
+                        : styles.td
+                      }
+                    >
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
         </table>
-
-        <div style={{ maxHeight: '180px', overflowY: 'auto' }}>
-          <table style={styles.table}>
-            <tbody>
-              {sortedDates.map((date, idx) => {
-                const slotData = timetable[date] || {};
-
-                // Build a row aligned with slotMap
-                const rowSlots = {
-                  "09:00 - 12:00": slotData[1]?.join(', ') || '',
-                  "13:30 - 16:30": slotData[2]?.join(', ') || '',
-                  "18:00 - 21:00": slotData[3]?.join(', ') || '',
-                };
-
-                return (
-                  <tr
-                    key={date}
-                    style={{
-                      ...styles.rowHover,
-                      ...(idx % 2 === 1 ? styles.rowEven : {}),
-                    }}
-                  >
-                    <td style={styles.date}>{date}</td>
-                    <td style={styles.td}>{rowSlots["09:00 - 12:00"]}</td>
-                    <td style={styles.td}>{rowSlots["13:30 - 16:30"]}</td>
-                    <td style={styles.td}>{rowSlots["18:00 - 21:00"]}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
       </div>
     </div>
   );
@@ -158,82 +191,82 @@ const Table = ({ timetable }) => {
 
 
 const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
-const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
-const [form] = Form.useForm()
-const [userTimetableCourses, setUserTimetableCourses] = useState([])
-const [semesters, setSemesters] = useState({})
-const getSemesters = async () => {
-  try {
-    const response = await API.semesters.list()
-    setSemesters(response[0])
-    // console.log('Fetched timetable slots: here', response)
-  } catch (error) {
-    toast({ status: 'error', content: error })
-  }
-}
-useEffect(() => {
-  getSemesters()
-}, [])
-useEffect(() => {
-  const fetchUserTimetable = async () => {
+  const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
+  const [form] = Form.useForm()
+  const [userTimetableCourses, setUserTimetableCourses] = useState([])
+  const [semesters, setSemesters] = useState({})
+  const getSemesters = async () => {
     try {
-      if (!semesters.season || !semesters.year) {
-        setUserTimetableCourses([])
-        setCoursesAndSlots([], []);
-        return
-      }
-      const response = await API.profile.timetable.read({
-        season: semesters.season,
-        year: semesters.year,
-      })
-      setUserTimetableCourses(response)
-      // console.log('User Timetable Courses:', response);
-      
-          const filtered = response.filter(item => {
+      const response = await API.semesters.list()
+      setSemesters(response[0])
+      // console.log('Fetched timetable slots: here', response)
+    } catch (error) {
+      toast({ status: 'error', content: error })
+    }
+  }
+  useEffect(() => {
+    getSemesters()
+  }, [])
+  useEffect(() => {
+    const fetchUserTimetable = async () => {
+      try {
+        if (!semesters.season || !semesters.year) {
+          setUserTimetableCourses([])
+          setCoursesAndSlots([], []);
+          return
+        }
+        const response = await API.profile.timetable.read({
+          season: semesters.season,
+          year: semesters.year,
+        })
+        setUserTimetableCourses(response)
+        // console.log('User Timetable Courses:', response);
+
+        const filtered = response.filter(item => {
           const firstSlot = Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
             ? item.lectureSlots[0]
             : '';
           // Exclude if firstSlot starts with "L"
           return !(typeof firstSlot === 'string' && firstSlot.startsWith('L'));
-                    });
+        });
 
-            const courses = filtered.map(item => item.course);
-            const slots = filtered.map(item => {
-              const firstSlot = Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
-                ? item.lectureSlots[0]
-                : '';
+        const courses = filtered.map(item => item.course);
+        const slots = filtered.map(item => {
+          const firstSlot = Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
+            ? item.lectureSlots[0]
+            : '';
 
-              if (!firstSlot) return 0;
+          if (!firstSlot) return 0;
 
-              // If first character is a letter, return 0
-              if (/^[A-Za-z]/.test(firstSlot)) {
-                return 0;
-              }
+          // If first character is a letter, return 0
+          if (/^[A-Za-z]/.test(firstSlot)) {
+            return 0;
+          }
 
-              // If first character is a digit, return that digit as number
-              if (/^\d/.test(firstSlot)) {
-                return parseInt(firstSlot[0], 10);
-              }
+          // If first character is a digit, return that digit as number
+          if (/^\d/.test(firstSlot)) {
+            return parseInt(firstSlot[0], 10);
+          }
 
-              // If no match, return 0
-              return 0;
-            });
-      // console.log('Courses:', courses);
-      console.log('All Lecture Slots:', slots);
-      setCoursesAndSlots(courses, slots);
-    } catch (error) {
-      toast({
-        status: 'error',
-        content: 'Failed to fetch user timetable',
-        key: 'timetable-error',
-      })
-      setUserTimetableCourses([])
-      setCoursesAndSlots([], []);
+          // If no match, return 0
+          return 0;
+        });
+        // console.log('Courses:', courses);
+        // console.log('All Lecture Slots:', slots);
+        setCoursesAndSlots(courses, slots);
+      } catch (error) {
+        toast({
+          status: 'error',
+          content: 'Failed to fetch user timetable',
+          key: 'timetable-error',
+        })
+        setUserTimetableCourses([])
+        setCoursesAndSlots([], []);
+      }
     }
-  }
-  fetchUserTimetable()
-}, [semesters, setCoursesAndSlots])
-return null;
+    fetchUserTimetable()
+  }, [semesters, setCoursesAndSlots])
+  return null;
 }
 
 const PopupExample = () => {
@@ -242,7 +275,7 @@ const PopupExample = () => {
   const [courses, setCourses] = useState([]);
   const [slots, setSlots] = useState([]);
 
-  
+
   const setCoursesAndSlots = React.useCallback((coursesArr, slotsArr) => {
     setCourses(coursesArr);
     setSlots(slotsArr);
@@ -251,31 +284,31 @@ const PopupExample = () => {
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
-  };  
+  };
 
 
   useEffect(() => {
     if (!isOpen) return;
     if (!courses.length) return;
     const fetchSchedule = async () => {
-        if( !courses.length) return;
-        console.log(' Selected from URL:', courses);
+      if (!courses.length) return;
+      // console.log(' Selected from URL:', courses);
 
-        const userCourses = courses.map((code) => {
-            const slotMatch = code.match(/\d+/);  // extract numeric part like "110"
-            const slotNumber = slotMatch ? parseInt(slotMatch[0][0], 10) : undefined;
+      const userCourses = courses.map((code) => {
+        const slotMatch = code.match(/\d+/);  // extract numeric part like "110"
+        const slotNumber = slotMatch ? parseInt(slotMatch[0][0], 10) : undefined;
 
         return {
           course_code: code,
           ...(slotNumber ? { course_slot_number: slotNumber } : {}),
         };
       });
-      
 
-      console.log('Sending to API:', userCourses);
 
-     const responses = await Promise.all(
-          userCourses.map((course) => {
+      // console.log('Sending to API:', userCourses);
+
+      const responses = await Promise.all(
+        userCourses.map((course) => {
           // console.log("Sending request to /api/get-schedule/ with:", course);
           return axios
             .post('http://localhost:8000/api/get-schedule/', course)
@@ -287,8 +320,8 @@ const PopupExample = () => {
               // console.error(`Failed to fetch for ${course.course_code}`, err);
               return null;
             });
-          })
-    );
+        })
+      );
 
 
       // console.log(' API Responses:', responses);
@@ -317,9 +350,6 @@ const PopupExample = () => {
       setTimetable(temp);
     };
 
-    if (isOpen) {
-      fetchSchedule();
-    }
     fetchSchedule();
   }, [isOpen, courses, slots]);
 
@@ -367,7 +397,7 @@ const PopupExample = () => {
             EXAM TIMETABLE
           </h2>
           <Table timetable={timetable} />
-          <CourseFinderFilterForm setCoursesAndSlots={setCoursesAndSlots}/>
+          <CourseFinderFilterForm setCoursesAndSlots={setCoursesAndSlots} />
           <button
             className="Close-button"
             type="button"
