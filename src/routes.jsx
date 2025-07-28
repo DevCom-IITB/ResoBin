@@ -15,7 +15,7 @@ const Contact = lazy(() => import('pages/Contact'))
 const Favourites = lazy(() => import('pages/Favourites'))
 const Logout = lazy(() => import('pages/Logout'))
 const Settings = lazy(() => import('pages/Settings'))
-const Timetable = lazy(() => import('pages/Timetable'))
+const Timetable = lazy(() => import('pages/Timetable')) // This points to your TimetableContainer
 const TimetableShare = lazy(() => import('pages/TimetableShare'))
 const Privacy = lazy(() => import('pages/Privacy'))
 const Terms = lazy(() => import('pages/Terms'))
@@ -57,10 +57,23 @@ export const DashboardRoutes = () => (
     <Route path="/favourites" element={<Favourites />} />
     <Route path="/settings" element={<Settings />} />
     <Route path="/contact" element={<Contact />} />
+
+    {/* --- Start of Changes for Timetable Routes --- */}
     <Route path="/timetable">
-      <Route path="" element={<Timetable />} />
+      {/* Redirect /timetable directly to /timetable/week if no sub-path is specified */}
+      <Route index element={<Navigate to="week" replace />} /> {/* Changed from element={<Timetable />} to Navigate */}
+
+      {/* Routes for Day, Week, and Month views */}
+      {/* These will all render the 'Timetable' component (which is your TimetableContainer) */}
+      <Route path="day" element={<Timetable />} />
+      <Route path="week" element={<Timetable />} />
+      <Route path="month" element={<Timetable />} />
+
+      {/* Keep the existing share route */}
       <Route path="share" element={<TimetableShare />} />
     </Route>
+    {/* --- End of Changes --- */}
+
     <Route path="/logout" element={<Logout />} />
     <Route path="/404" element={<NotFound />} />
     <Route path="*" element={<Navigate to="/404" replace />} />
