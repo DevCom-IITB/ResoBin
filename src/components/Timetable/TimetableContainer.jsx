@@ -185,16 +185,19 @@ const TimetableContainer = () => {
       try {
         setLoading(true)
         const courseList = getCourseList()
+        console.log('Fetching course list:', courseList)
         const promises = courseList.map(async (course) => {
           const response = await API.courses.read({ code: course })
           return response
         })
+        console.log('Promises:', promises)
         const courseDataArray = await Promise.all(promises)
         const courseDataObj = {}
         courseDataArray.forEach((course) => {
           courseDataObj[course.code] = course
         })
         setCoursedata(courseDataObj)
+        console.log('Fetched course data:', courseDataObj)
       } catch (error) {
         toast({ status: 'error', content: error })
       } finally {
