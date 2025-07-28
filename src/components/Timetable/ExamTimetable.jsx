@@ -324,9 +324,11 @@ const PopupExample = () => {
 
   useEffect(() => {
     if (!isOpen) return;
-    if (!courses.length) return;
+    if (!courses.length) {
+      setTimetable({});
+      return;
+    }
     const fetchSchedule = async () => {
-      if (!courses.length) return;
 
       const userCourses = courses.map((code) => {
         const slotMatch = code.match(/\d+/);
@@ -369,7 +371,7 @@ const PopupExample = () => {
     };
 
     fetchSchedule();
-  }, [isOpen, courses, slots]);
+  }, [courses, slots, isOpen]);
 
   return (
     <div className="popup">
