@@ -1,14 +1,16 @@
 // import { Empty } from 'antd';
 import { X } from '@styled-icons/heroicons-outline'
+import { Card } from 'antd'
 import { useEffect, useState, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 
+
 // import { CourseSearch } from 'components/CourseFinder'
 // import { QuickReviewContainer } from 'components/QuickReview'
-import {Aside, Card, toast } from 'components/shared'
+import {Aside, toast } from 'components/shared'
 import { AsideHeader } from 'components/shared/Aside'
 import { ButtonIconDanger } from 'components/shared/Buttons'
 import { PageHeading, PageTitle } from 'components/shared/Layout'
@@ -30,7 +32,7 @@ const HomeItem = ({ course, hash }) => {
   )
 }
 
-const SavedCoursesRow = () => {
+const CoursesThisSemester = () => {
   const [courseTimetableList, setCourseTimetableList] = useState([])
   const [coursedata, setCoursedata] = useState({})
   const [loading, setLoading] = useState(false)
@@ -84,54 +86,33 @@ const SavedCoursesRow = () => {
     }
   }, [courseTimetableList])
 
-  const removeFromTimetable = (id, code) => async () => {
-    try {
-      setLoading(true)
-      await API.profile.timetable.remove({ id })
-      setCourseTimetableList((prev) =>
-        prev.filter((item) => item.id !== id)
-      )
-      toast({ status: 'success', content: `Removed ${code} from timetable` })
-    } catch (error) {
-      toast({ status: 'error', content: error })
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
     <>
-      <SectionHeading>Courses this Semester</SectionHeading>
+      <TabRow>
+        <Tab active>Courses this Semester</Tab>
+        <Tab>Saved Courses</Tab>
+        <TotalCredits>
+          Total Credits:{' '}
+          {Object.values(coursedata).reduce((sum, course) => sum + (course?.credits || 0), 0)}
+        </TotalCredits>
+      </TabRow>
+
       <ScrollRow>
         {courseTimetableList.map(({ id, course }) => {
           const courseData = coursedata[course]
           if (!courseData) return null
 
-          const { code, title, credits, instructor } = courseData
+          const { code, credits, professor } = courseData
+
           return (
-            <StyledLink key={id} to={coursePageUrl(code, title)}>
+            <StyledLink key={id} to={coursePageUrl(code)}>
               <StyledCard hoverable>
                 <Card.Meta
-                  title={
-                    <CardTitleRow>
-                      {code}
-                      <ButtonIconDanger
-                        icon={<X size="20" />}
-                        tooltip="Remove"
-                        onClick={(e) => {
-                          e.preventDefault()
-                          removeFromTimetable(id, code)()
-                        }}
-                        disabled={loading}
-                        hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-                      />
-                    </CardTitleRow>
-                  }
+                  title={<CardTitleRow>{code}</CardTitleRow>}
                   description={
                     <>
-                      <TitleLine>{title}</TitleLine>
                       <DetailLine>
-                        {instructor ? `Prof. ${instructor}` : 'No Instructor'}
+                        <ProfTag>{professor ? `Prof. ${professor}` : 'No Instructor'}</ProfTag>
                       </DetailLine>
                       <DetailLine>Credits: {credits}</DetailLine>
                     </>
@@ -143,7 +124,7 @@ const SavedCoursesRow = () => {
         })}
 
         {courseTimetableList.length === 0 && !loading && (
-          <NoCoursesMsg>No saved courses</NoCoursesMsg>
+          <NoCoursesMsg>No Courses this semester yet!</NoCoursesMsg>
         )}
       </ScrollRow>
     </>
@@ -237,7 +218,7 @@ const HomeContainer = () => {
           <QuickReviewContainer />
         </ReviewContainer> */}
       </Container>
-        <SavedCoursesRow />
+      <CoursesThisSemester />
       {/* <Aside title="Feed">
         <Empty description={<PageSubtitle>Coming soon!</PageSubtitle>} />
       </Aside> */}
@@ -285,51 +266,88 @@ const NoFavDiv = styled.div`
   font-size: 1rem;
   font-weight: 500;
 `
-const SectionHeading = styled.div`
-  color: white;
-  font-weight: bold;
-  font-size: 1.25rem;
-  margin-top: 1rem;
-  margin-left: 1rem;
+const TabRow = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+`
+
+const Tab = styled.div`
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  border-bottom: ${({ active }) => (active ? '3px solid white' : 'none')};
+  color: ${({ active }) => (active ? 'white' : '#999')};
+  cursor: pointer;
+`
+
+const TotalCredits = styled.div`
+  margin-left: auto;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #ccc;
 `
 
 const ScrollRow = styled.div`
   display: flex;
-  gap: 0.75rem;
   overflow-x: auto;
-  padding: 1rem;
+  padding-bottom: 1rem;
 `
 
 const StyledLink = styled(Link)`
-  min-width: 14rem;
-  &:hover {
-    text-decoration: none;
-  }
+  margin-right: 1rem;
+  text-decoration: none;
 `
 
 const StyledCard = styled(Card)`
-  width: 14rem;
+  background: #252540;
+  border-radius: 10px;
+  padding: 1rem;
+  width: 200px;
+  color: white;
+  transition: transform 0.2s ease;
+  &:hover {
+    transform: scale(1.02);
+    background: #2e2e4d;
+  }
+
+  .ant-card-meta-title {
+    color: white;
+  }
+
+  .ant-card-meta-description {
+    color: #ccc;
+  }
 `
 
 const CardTitleRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  font-size: 1.1rem;
+  font-weight: bold;
 `
 
 const TitleLine = styled.div`
   font-size: 0.9rem;
   font-weight: 500;
-  margin-bottom: 0.25rem;
 `
 
 const DetailLine = styled.div`
-  font-size: 0.8rem;
-  color: ${({ theme }) => theme.textSecondary};
+  font-size: 0.75rem;
+  margin-top: 4px;
+`
+
+const ProfTag = styled.span`
+  background-color: #3e3e60;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
 `
 
 const NoCoursesMsg = styled.div`
-  color: #aaa;
-  font-size: 0.9rem;
   padding: 1rem;
+  font-size: 1rem;
+  color: #bbb;
 `
+
+
+
