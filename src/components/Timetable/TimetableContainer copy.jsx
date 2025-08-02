@@ -29,21 +29,6 @@ import 'styles/CustomModal.css'
 
 import TimetableSearch from './TimetableSearch'
 
-// const WeekGrid = styled.div`
-//   display: grid;
-//   grid-template-columns: 80px repeat(5, 1fr);
-//   min-height: 600px;
-//   position: relative;
-
-//   background-image: repeating-linear-gradient(
-//     to bottom,
-//     transparent,
-//     transparent 29px,
-//     ${({ theme }) => theme.border} 30px
-//   );
-// `
-
-
 // Day View Component
 const DayView = ({ currentDate, events, slots: slotData, rows: rowData, coursedata }) => {
   const selectedDayIndex = currentDate.weekday() === 0 ? 6 : currentDate.weekday() - 1
@@ -69,7 +54,7 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
             
             // Calculate position based on actual row indices - align with time slot top
             const topPosition = event.startRow * ROW_HEIGHT
-            const height = (event.endRow - event.startRow ) * ROW_HEIGHT
+            const height = (event.endRow - event.startRow + 1) * ROW_HEIGHT - 8
             
             return (
               <DayEventBlock 
@@ -78,13 +63,15 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
                 style={{ 
                   position: 'absolute',
                   top: `${topPosition}px`,
-                  left: '0rem',
-                  right: '0rem',
+                  left: '1rem',
+                  right: '1rem',
                   height: `${height}px`
                 }}
               >
-                <EventTitle>{event.courseCode} | {event.slotName}</EventTitle>
+                <EventTitle>{event.courseCode}</EventTitle>
                 <EventTime>{event.startTime} - {event.endTime}</EventTime>
+                <EventType>{event.type}</EventType>
+                {event.venue && <EventVenue>{event.venue}</EventVenue>}
               </DayEventBlock>
             )
           })}
@@ -129,7 +116,7 @@ const WeekView = ({ events, slots: slotData, rows: rowData, coursedata }) => {
                   
                   // Calculate position based on actual row indices - align with time slot top
                   const topPosition = event.startRow * ROW_HEIGHT
-                  const height = (event.endRow - event.startRow) * ROW_HEIGHT
+                  const height = (event.endRow - event.startRow + 1) * ROW_HEIGHT - 8
                   
                   return (
                     <WeekEventBlock 
@@ -138,14 +125,14 @@ const WeekView = ({ events, slots: slotData, rows: rowData, coursedata }) => {
                       style={{ 
                         position: 'absolute',
                         top: `${topPosition}px`,
-                        left: '0',
-                        right: '0',
+                        left: '4px',
+                        right: '4px',
                         height: `${height}px`
                       }}
                     >
-                      <EventTitle>{event.courseCode} | {event.slotName}</EventTitle>
+                      <EventTitle>{event.courseCode}</EventTitle>
                       <EventTime>{event.startTime}</EventTime>
-                      {/* <EventType>{event.type}</EventType> */}
+                      <EventType>{event.type}</EventType>
                     </WeekEventBlock>
                   )
                 })}
@@ -462,6 +449,7 @@ const TimetableContainer = () => {
             startTime: rows[startRow]?.title || '08:30',
             endTime: rows[endRow]?.title || '09:30',
             color: colorPicker(hash(item.id)),
+            venue: item.lectureVenue || '',
             slotName
           })
         }
@@ -485,6 +473,7 @@ const TimetableContainer = () => {
             startTime: rows[startRow]?.title || '08:30',
             endTime: rows[endRow]?.title || '09:30',
             color: colorPicker(hash(item.id)),
+            venue: item.lectureVenue || '',
             slotName
           })
         }
@@ -567,32 +556,32 @@ const TimetableContainer = () => {
       <PageHeading>
         <PageTitle>Timetable</PageTitle>
         <HeaderActions>
-        <ButtonIcon
+          <ButtonIcon
             icon={<Download size="20" />}
             tooltip="Download"
-          hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-        />
-            <ButtonIcon
+            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+          />
+          <ButtonIcon
             icon={<Share size="20" />}
             tooltip="Share"
-              hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-            />
-            <ButtonIcon
+            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+          />
+          <ButtonIcon
             icon={<Plus size="20" />}
             tooltip="Add"
-              hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-            />
+            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+          />
         </HeaderActions>
       </PageHeading>
 
       <TimetableHeader>
         <EventCountDisplay>{todayEvents.length} events today</EventCountDisplay>
         <ViewSelectorContainer>
-        <StyledRadioGroup onChange={handleViewChange} value={currentView}>
-          <Radio.Button value="Day">Day</Radio.Button>
-          <Radio.Button value="Week">Week</Radio.Button>
-          <Radio.Button value="Month">Month</Radio.Button>
-        </StyledRadioGroup>
+          <StyledRadioGroup onChange={handleViewChange} value={currentView}>
+            <Radio.Button value="Day">Day</Radio.Button>
+            <Radio.Button value="Week">Week</Radio.Button>
+            <Radio.Button value="Month">Month</Radio.Button>
+          </StyledRadioGroup>
           <NavigationContainer>
             <NavButton onClick={handleClickPrev}>
               <ChevronLeft size="20" />
@@ -691,48 +680,48 @@ const ViewSelectorContainer = styled.div`
 `
 
 const StyledRadioGroup = styled(Radio.Group)`
-  display: inline-flex;
-  border: 1px solid #a29ca6;
-  border-radius: 12px;
-  padding: 2px;
-  background: transparent;
-
+  border: 1px solid #4a4a4a;
+  border-radius: 8px;
+  overflow: hidden;
+  
   .ant-radio-button-wrapper {
     background: transparent;
-    color: #a29ca6;
-    border: none !important;               // remove separator borders
-    padding: 6px 16px;
+    color: #a0a0a0;
+    border: none;
+    border-radius: 0;
     font-weight: 500;
-    border-radius: 8px;
+    padding: 12px 24px;
     margin: 0;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    // remove left border on non-first items (causes "bar" effect)
-    &::before {
-      display: none !important;
-    }
-
-    &:not(:last-child) {
-      margin-right: 4px;
-    }
-
-    &:hover {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.05);
-    }
+    transition: all 0.2s;
+    border-right: 1px solid #4a4a4a;
+    line-height: 1.2;
   }
-
+  
+  .ant-radio-button-wrapper:last-child {
+    border-right: none;
+  }
+  
   .ant-radio-button-wrapper-checked {
     background: #6d669e;
-    color: #ffffff;
-    font-weight: 600;
+    color: #fff;
+    border-color: #6d669e;
   }
-`;
-
-
+  
+  .ant-radio-button-wrapper:hover:not(.ant-radio-button-wrapper-checked) {
+    background: #2d273f;
+    color: #fff;
+  }
+  
+  .ant-radio-button-wrapper:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  
+  .ant-radio-button-wrapper:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+`
 
 const NavigationContainer = styled.div`
   display: flex;
@@ -810,15 +799,6 @@ const DayEventColumn = styled.div`
   flex: 1;
   padding-left: 1rem;
   position: relative;
-  
-  /* Create horizontal grid lines */
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 29px,
-    ${({ theme }) => theme.border} 29px,
-    ${({ theme }) => theme.border} 30px
-  );
 `
 
 const DayEventBlock = styled.div`
@@ -839,19 +819,24 @@ const DayEventBlock = styled.div`
 const EventTitle = styled.h4`
   margin: 0 0 0.25rem 0;
   font-size: 1rem;
-  font-weight: 500;
-  color: black; /* This will force the text color to black */
+  font-weight: 600;
 `
 
 const EventTime = styled.div`
   font-size: 0.875rem;
   opacity: 0.9;
   margin-bottom: 0.25rem;
-  font-weight: 400;
-  color: black; /* This will force the text color to black */
 `
 
+const EventType = styled.div`
+  font-size: 0.75rem;
+  opacity: 0.8;
+`
 
+const EventVenue = styled.div`
+  font-size: 0.75rem;
+  opacity: 0.8;
+`
 
 // Week View Styles
 const WeekViewContainer = styled.div`
@@ -884,7 +869,6 @@ const WeekGrid = styled.div`
   display: grid;
   grid-template-columns: 80px repeat(5, 1fr);
   min-height: 600px;
-  color: #FFFFFF0F;
 `
 
 const WeekTimeColumn = styled.div`
@@ -902,21 +886,11 @@ const WeekTimeSlot = styled.div`
 `
 
 const WeekDayColumn = styled.div`
-  padding: 0;
+  padding: 0 0.5rem;
   border-right: 1px solid ${({ theme }) => theme.border};
-  position: relative;
   &:last-child {
     border-right: none;
   }
-  
-  /* Create horizontal grid lines */
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 29px,
-    ${({ theme }) => theme.border} 29px,
-    ${({ theme }) => theme.border} 30px
-  );
 `
 
 const WeekEventBlock = styled.div`
@@ -929,9 +903,6 @@ const WeekEventBlock = styled.div`
   cursor: pointer;
   font-size: 0.75rem;
   transition: all 0.2s;
-  width: 100%;
-  box-sizing: border-box;
-
   &:hover {
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
