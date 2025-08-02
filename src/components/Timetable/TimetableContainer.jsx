@@ -1,5 +1,5 @@
 import { LoadingOutlined } from '@ant-design/icons'
-import { ChevronLeft, ChevronRight, X, Plus, Download, Share } from '@styled-icons/heroicons-outline'
+import { ChevronLeft, ChevronRight, X, Plus, Download, Share, ExternalLink } from '@styled-icons/heroicons-outline'
 import { Spin, Alert, Modal, Radio } from 'antd'
 import axios from 'axios'
 import moment from 'moment'
@@ -83,8 +83,15 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
                   height: `${height}px`
                 }}
               >
-                <EventTitle>{event.courseCode} | {event.slotName}</EventTitle>
-                <EventTime>{event.startTime} - {event.endTime}</EventTime>
+                <Link to={coursePageUrl(event.courseCode, course.title)} style={{ textDecoration: 'none', color: 'inherit', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div>
+                    <EventTitle>{event.courseCode} | {event.slotName}</EventTitle>
+                    <EventTime>{event.startTime} - {event.endTime}</EventTime>
+                  </div>
+                  <RedirectIcon>
+                    <ExternalLink size="16" />
+                  </RedirectIcon>
+                </Link>
               </DayEventBlock>
             )
           })}
@@ -143,9 +150,15 @@ const WeekView = ({ events, slots: slotData, rows: rowData, coursedata }) => {
                         height: `${height}px`
                       }}
                     >
-                      <EventTitle>{event.courseCode} | {event.slotName}</EventTitle>
-                      <EventTime>{event.startTime}</EventTime>
-                      {/* <EventType>{event.type}</EventType> */}
+                      <Link to={coursePageUrl(event.courseCode, course.title)} style={{ textDecoration: 'none', color: 'inherit', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                        <div>
+                          <EventTitle>{event.courseCode} | {event.slotName}</EventTitle>
+                          <EventTime>{event.startTime}</EventTime>
+                        </div>
+                        <RedirectIcon>
+                          <ExternalLink size="14" />
+                        </RedirectIcon>
+                      </Link>
                     </WeekEventBlock>
                   )
                 })}
@@ -1037,4 +1050,20 @@ const CoursesListInfo = styled.span`
 
 const ClashAlerts = styled.div`
   margin-top: 1rem;
+`
+
+const RedirectIcon = styled.div`
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  
+  &:hover {
+    opacity: 1;
+  }
+  
+  svg {
+    color: rgba(0, 0, 0, 0.6);
+  }
 `
