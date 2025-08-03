@@ -1,5 +1,5 @@
-import { X } from '@styled-icons/heroicons-outline'
-import { Checkbox, Select, Switch } from 'antd'
+import { InformationCircle, X } from '@styled-icons/heroicons-outline'
+import { Checkbox, Select, Switch, Tooltip } from 'antd'
 import { kebabCase } from 'lodash'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -278,22 +278,6 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           />
         </Form.Item>
       </div>
-
-      <div>
-        <CourseFinderFilterItem
-          label="Tags"
-          onClear={handleFilterClear('tags', ['tags'])}
-        />
-        <Form.Item name="tags">
-          <Select
-            mode="multiple"
-            options={tagOptions}
-            placeholder="Select something..."
-            showArrow
-          />
-        </Form.Item>
-      </div>
-
       <div>
         <CourseFinderFilterItem
           label="Slots"
@@ -310,7 +294,14 @@ const CourseFinderFilterForm = ({ setLoading }) => {
       </div>
 
       <CourseFinderFilterItem
-        label="Avoid Slot Clash"
+        label={
+          <>
+            Avoid Slot Clash
+            <Tooltip title="When enabled, courses with slots that clash with your current timetable will be filtered out">
+              <InformationCircle size={16} style={{ marginLeft: '8px', cursor: 'help' }} />
+            </Tooltip>
+          </>
+        }
         onClear={handleFilterClear('avoid_slot_clash', [
           'avoid_slot_clash',
           'avoid_slots',
@@ -321,6 +312,20 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           </Form.Item>
         }
       />
+            <div>
+        <CourseFinderFilterItem
+          label="Tags"
+          onClear={handleFilterClear('tags', ['tags'])}
+        />
+        <Form.Item name="tags">
+          <Select
+            mode="multiple"
+            options={tagOptions}
+            placeholder="Select something..."
+            showArrow
+          />
+        </Form.Item>
+      </div>
     </Form>
   )
 }
