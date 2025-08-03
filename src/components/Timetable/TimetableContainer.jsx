@@ -102,8 +102,12 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
 }
 
 // Week View Component  
-const WeekView = ({ events, slots: slotData, rows: rowData, coursedata }) => {
-  const weekDays = ['MON', 'TUE', 'WED', 'THU', 'FRI']
+const WeekView = ({ currentDate, events, slots: slotData, rows: rowData, coursedata }) => {
+  // Change weekDays array to include all 7 days
+  const weekDays = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY']
+  const startOfWeek = currentDate.clone().startOf('week') // Remove add(1, 'day') to start from Sunday
+  
+  // Add these two lines
   const timeSlots = Object.values(rowData).map(row => row.title)
   const ROW_HEIGHT = 30 // Height per time slot in pixels
 
@@ -111,12 +115,17 @@ const WeekView = ({ events, slots: slotData, rows: rowData, coursedata }) => {
     <WeekViewContainer>
       <WeekHeader>
         <div /> {/* Empty cell for time column */}
-        {weekDays.map((day, index) => (
-          <WeekDayHeader key={day}>
-            <DayName>{day}</DayName>
-          </WeekDayHeader>
-        ))}
+        {weekDays.map((day, index) => {
+          const date = startOfWeek.clone().add(index, 'days')
+          return (
+            <WeekDayHeader key={day}>
+              <DayNumber>{date.format('D')}</DayNumber>
+              <DayName>{day}</DayName>
+            </WeekDayHeader>
+          )
+        })}
       </WeekHeader>
+      {/* Update grid template columns to accommodate 7 days */}
       <WeekGrid>
         <WeekTimeColumn>
           {timeSlots.map((time) => (
@@ -640,7 +649,7 @@ const TimetableContainer = () => {
         indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
       >
         {currentView === 'Day' && <DayView currentDate={currentDate} events={events} slots={slots} rows={rows} coursedata={coursedata} />}
-        {currentView === 'Week' && <WeekView events={events} slots={slots} rows={rows} coursedata={coursedata} />}
+        {currentView === 'Week' && <WeekView currentDate={currentDate} events={events} slots={slots} rows={rows} coursedata={coursedata} />}
         {currentView === 'Month' && <MonthView currentDate={currentDate} />}
       </Spin>
 
@@ -892,7 +901,7 @@ const WeekViewContainer = styled.div`
 
 const WeekHeader = styled.div`
   display: grid;
-  grid-template-columns: 80px repeat(5, 1fr);
+  grid-template-columns: 80px repeat(7, 1fr); // Change from 5 to 7
   border-bottom: 1px solid ${({ theme }) => theme.border};
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
@@ -900,18 +909,28 @@ const WeekHeader = styled.div`
 
 const WeekDayHeader = styled.div`
   text-align: center;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
 `
 
-const DayName = styled.div`
+const DayNumber = styled.span`
   font-size: 0.875rem;
-  font-weight: 600;
   color: ${({ theme }) => theme.textColor};
-  margin-top: 0.25rem;
+  font-weight: 400;
+`
+
+const DayName = styled.span`
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.textColor};
+  font-weight: 400;
 `
 
 const WeekGrid = styled.div`
   display: grid;
-  grid-template-columns: 80px repeat(5, 1fr);
+  grid-template-columns: 80px repeat(7, 1fr); // Change from 5 to 7
   min-height: 600px;
   color: #FFFFFF0F;
 `
