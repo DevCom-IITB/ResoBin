@@ -66,16 +66,16 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
           {dayEvents.map((event) => {
             const course = coursedata[event.courseCode]
             if (!course) return null
-            
+
             // Calculate position based on actual row indices - align with time slot top
             const topPosition = event.startRow * ROW_HEIGHT
-            const height = (event.endRow - event.startRow ) * ROW_HEIGHT
-            
+            const height = (event.endRow - event.startRow) * ROW_HEIGHT
+
             return (
-              <DayEventBlock 
-                key={event.id} 
+              <DayEventBlock
+                key={event.id}
                 color={event.color}
-                style={{ 
+                style={{
                   position: 'absolute',
                   top: `${topPosition}px`,
                   left: '0rem',
@@ -133,16 +133,16 @@ const WeekView = ({ events, slots: slotData, rows: rowData, coursedata }) => {
                 .map((event) => {
                   const course = coursedata[event.courseCode]
                   if (!course) return null
-                  
+
                   // Calculate position based on actual row indices - align with time slot top
                   const topPosition = event.startRow * ROW_HEIGHT
                   const height = (event.endRow - event.startRow) * ROW_HEIGHT
-                  
+
                   return (
-                    <WeekEventBlock 
+                    <WeekEventBlock
                       key={event.id}
                       color={event.color}
-                      style={{ 
+                      style={{
                         position: 'absolute',
                         top: `${topPosition}px`,
                         left: '0',
@@ -177,11 +177,11 @@ const MonthView = ({ currentDate }) => {
   const endOfMonth = currentDate.clone().endOf('month')
   const startOfCalendar = startOfMonth.clone().startOf('week')
   const endOfCalendar = endOfMonth.clone().endOf('week')
-  
+
   const monthGrid = []
   let week = []
   const day = startOfCalendar.clone()
-  
+
   while (day.isSameOrBefore(endOfCalendar)) {
     week.push(day.clone())
     if (week.length === 7) {
@@ -203,19 +203,19 @@ const MonthView = ({ currentDate }) => {
         <MonthDayHeader>SAT</MonthDayHeader>
       </MonthHeader>
       <MonthGrid>
-                  {monthGrid.map((weekRow, weekIndex) => (
-            <MonthWeekRow key={`week-${weekRow.filter(d => d).map(d => d.date()).join('-') || weekIndex}`}>
-              {weekRow.map((currentDay, dayIndex) => (
-                              <MonthDayCell 
-                  key={currentDay.format('YYYY-MM-DD')} 
+        {monthGrid.map((weekRow, weekIndex) => (
+          <MonthWeekRow key={`week-${weekRow.filter(d => d).map(d => d.date()).join('-') || weekIndex}`}>
+            {weekRow.map((currentDay, dayIndex) => (
+              <MonthDayCell
+                key={currentDay.format('YYYY-MM-DD')}
+                isCurrentMonth={currentDay.month() === currentDate.month()}
+              >
+                <MonthDayNumber
                   isCurrentMonth={currentDay.month() === currentDate.month()}
+                  isHighlighted={currentDay.isSame(moment(), 'day')}
                 >
-                  <MonthDayNumber 
-                    isCurrentMonth={currentDay.month() === currentDate.month()}
-                    isHighlighted={currentDay.isSame(moment(), 'day')}
-                  >
-                    {currentDay.date()}
-                  </MonthDayNumber>
+                  {currentDay.date()}
+                </MonthDayNumber>
               </MonthDayCell>
             ))}
           </MonthWeekRow>
@@ -260,8 +260,6 @@ const TimetableAsideItem = ({ course, handleRemove, loading }) => {
   )
 }
 
-let ajaxRequest = null
-
 const TimetableContainer = () => {
   const dispatch = useDispatch()
   const semesterList = useSelector(selectSemesters)
@@ -273,9 +271,10 @@ const TimetableContainer = () => {
   const [loading, setLoading] = useState(courseAPILoading)
   const [semIdx, setSemIdx] = useState(null)
   const [currentDate, setCurrentDate] = useState(moment())
+  const [loadingg, setLoadingg] = useState(true)
 
   const { getQueryString } = useQueryString()
-  const [loadingg, setLoadingg] = useState(true)
+  let ajaxRequest = null
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -294,6 +293,7 @@ const TimetableContainer = () => {
     navigate(`/timetable/${newView.toLowerCase()}`)
   }
 
+  // Add the fetchCourses function
   const fetchCourses = async (params) => {
     setLoadingg(true)
 
@@ -305,7 +305,7 @@ const TimetableContainer = () => {
         params,
         cancelToken: ajaxRequest.token,
       })
-      setCourseData(response.data?.results || [])
+      setCourseData(response.results)
     } catch (error) {
       if (axios.isCancel(error)) return
       toast({ status: 'error', content: error })
@@ -536,7 +536,7 @@ const TimetableContainer = () => {
   }
 
   const todayEvents = getTodayEvents()
-  
+
   // Clash detection function
   const detectClashes = () => {
     const clashes = []
@@ -558,12 +558,12 @@ const TimetableContainer = () => {
         const dayIndex = parseInt(key.split('-')[0], 10)
         const startRow = parseInt(key.split('-')[1], 10)
         const endRow = parseInt(key.split('-')[2], 10)
-        
+
         const dayName = dayNames[dayIndex] || 'Unknown'
         const startTime = rows[startRow]?.title || 'Unknown'
         const endTime = rows[endRow]?.title || 'Unknown'
         const courseNames = eventsInSlot.map(e => e.courseCode).join(', ')
-        
+
         clashes.push(
           `Time clash on ${dayName} (${startTime} - ${endTime}): ${courseNames}`
         )
@@ -580,32 +580,32 @@ const TimetableContainer = () => {
       <PageHeading>
         <PageTitle>Timetable</PageTitle>
         <HeaderActions>
-        <ButtonIcon
+          <ButtonIcon
             icon={<Download size="20" />}
             tooltip="Download"
-          hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-        />
-            <ButtonIcon
+            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+          />
+          <ButtonIcon
             icon={<Share size="20" />}
             tooltip="Share"
-              hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-            />
-            <ButtonIcon
+            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+          />
+          <ButtonIcon
             icon={<Plus size="20" />}
             tooltip="Add"
-              hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-            />
+            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
+          />
         </HeaderActions>
       </PageHeading>
 
       <TimetableHeader>
         <EventCountDisplay>{todayEvents.length} events today</EventCountDisplay>
         <ViewSelectorContainer>
-        <StyledRadioGroup onChange={handleViewChange} value={currentView}>
-          <Radio.Button value="Day">Day</Radio.Button>
-          <Radio.Button value="Week">Week</Radio.Button>
-          <Radio.Button value="Month">Month</Radio.Button>
-        </StyledRadioGroup>
+          <StyledRadioGroup onChange={handleViewChange} value={currentView}>
+            <Radio.Button value="Day">Day</Radio.Button>
+            <Radio.Button value="Week">Week</Radio.Button>
+            <Radio.Button value="Month">Month</Radio.Button>
+          </StyledRadioGroup>
           <NavigationContainer>
             <NavButton onClick={handleClickPrev}>
               <ChevronLeft size="20" />
@@ -770,6 +770,13 @@ const NavButton = styled.button`
   }
 `
 
+const TimeText = styled.span`
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.textColor};
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+`
+
 const CurrentDateDisplay = styled.span`
   color: ${({ theme }) => theme.textColor};
   font-size: 1.1rem;
@@ -812,13 +819,6 @@ const TimeSlot = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.border};
 `
 
-const TimeText = styled.span`
-  font-size: 0.9rem;
-  color: ${({ theme }) => theme.textColor};
-  font-weight: 600;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-`
-
 const DayEventColumn = styled.div`
   flex: 1;
   padding-left: 1rem;
@@ -853,7 +853,7 @@ const EventTitle = styled.h4`
   margin: 0 0 0.25rem 0;
   font-size: 1rem;
   font-weight: 500;
-  color: black; /* This will force the text color to black */
+  color: black;
 `
 
 const EventTime = styled.div`
@@ -861,7 +861,7 @@ const EventTime = styled.div`
   opacity: 0.9;
   margin-bottom: 0.25rem;
   font-weight: 400;
-  color: black; /* This will force the text color to black */
+  color: black;
 `
 
 
