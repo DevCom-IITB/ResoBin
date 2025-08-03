@@ -962,9 +962,9 @@ const MonthViewContainer = styled.div`
 const MonthHeader = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  border-bottom: 1px solid ${({ theme }) => theme.border};
-  padding-bottom: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0; // Remove margin-bottom
+  border-bottom: none; // Remove border-bottom
+  padding-bottom: 0; // Remove padding-bottom
 `
 
 const MonthDayHeader = styled.div`
@@ -972,12 +972,21 @@ const MonthDayHeader = styled.div`
   font-size: 0.875rem;
   font-weight: 600;
   color: ${({ theme }) => theme.textColor};
-  padding: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+  margin-bottom: -1px;  // This will overlap with the grid below
+  margin-right: -1px;
+
+  &:last-child {
+    margin-right: 0;
+  }
 `
 
 const MonthGrid = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 0; // Ensure no gap from the top
 `
 
 const MonthWeekRow = styled.div`
@@ -986,9 +995,9 @@ const MonthWeekRow = styled.div`
 `
 
 const MonthDayCell = styled.div`
-  min-height: 120px;
-  border: 1px solid ${({ theme }) => theme.border};
-  padding: 0.5rem;
+  min-height: 100px; // Increased from 100px to 120px to match image
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem; // Increased padding slightly
   opacity: ${({ isCurrentMonth }) => (isCurrentMonth ? 1 : 0.5)};
 `
 
@@ -1004,9 +1013,10 @@ const MonthDayNumber = styled.div`
   width: ${({ isHighlighted }) => isHighlighted ? '32px' : 'auto'};
   height: ${({ isHighlighted }) => isHighlighted ? '32px' : 'auto'};
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0.5rem;
+  align-items: ${({ isHighlighted }) => isHighlighted ? 'center' : 'flex-start'};
+  justify-content: ${({ isHighlighted }) => isHighlighted ? 'center' : 'flex-start'};
+  margin: 0;
+  padding-top: ${({ isHighlighted }) => isHighlighted ? '0' : '0.25rem'};
 `
 
 // const MonthEventItem = styled.div`
