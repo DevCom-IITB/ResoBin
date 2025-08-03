@@ -56,11 +56,12 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
     <DayViewContainer>
       <DayViewGrid>
         <DayTimeColumn>
-          {timeSlots.map((time) => (
-            <TimeSlot key={time}>
-              <TimeText>{time}</TimeText>
-            </TimeSlot>
-          ))}
+{timeSlots.map((time) => (
+  <TimeSlot key={time}>
+    {time.endsWith(':30') ? <TimeText>{time}</TimeText> : null}
+  </TimeSlot>
+))}
+
         </DayTimeColumn>
         <DayEventColumn>
           {dayEvents.map((event) => {
@@ -104,7 +105,7 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
 // Week View Component  
 const WeekView = ({ currentDate, events, slots: slotData, rows: rowData, coursedata }) => {
   // Change weekDays array to include all 7 days
-  const weekDays = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY']
+  const weekDays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
   const startOfWeek = currentDate.clone().startOf('week') // Remove add(1, 'day') to start from Sunday
   
   // Add these two lines
@@ -128,11 +129,12 @@ const WeekView = ({ currentDate, events, slots: slotData, rows: rowData, coursed
       {/* Update grid template columns to accommodate 7 days */}
       <WeekGrid>
         <WeekTimeColumn>
-          {timeSlots.map((time) => (
-            <WeekTimeSlot key={time}>
-              <TimeText>{time}</TimeText>
-            </WeekTimeSlot>
-          ))}
+{timeSlots.map((time) => (
+  <TimeSlot key={time}>
+    {time.endsWith(':30') ? <TimeText>{time}</TimeText> : null}
+  </TimeSlot>
+))}
+
         </WeekTimeColumn>
         {weekDays.map((day, dayIndex) => (
           <WeekDayColumn key={day}>
@@ -787,8 +789,13 @@ const NavButton = styled.button`
 `
 
 const TimeText = styled.span`
-  font-size: 0.9rem;
+  position:relative;
+  top: -18px;
+  left: 15px;
+  font-size: 1rem;
   color: ${({ theme }) => theme.textColor};
+
+
   font-weight: 600;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 `
