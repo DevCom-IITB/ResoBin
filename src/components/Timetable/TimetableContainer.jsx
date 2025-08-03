@@ -365,6 +365,11 @@ const TimetableContainer = () => {
     }
   }
 
+  // Add this function near handleClickPrev and handleClickNext
+  const handleTodayClick = () => {
+    setCurrentDate(moment()); // Reset to today's date
+  };
+
   const removeFromTimetable = (id) => () => {
     const course = coursedata[
       courseTimetableList.find((item) => item.id === id)?.course
@@ -610,7 +615,9 @@ const TimetableContainer = () => {
             <NavButton onClick={handleClickPrev}>
               <ChevronLeft size="20" />
             </NavButton>
-            <CurrentDateDisplay>Today</CurrentDateDisplay>
+            <CurrentDateDisplay onClick={handleTodayClick}>
+              Today
+            </CurrentDateDisplay>
             <NavButton onClick={handleClickNext}>
               <ChevronRight size="20" />
             </NavButton>
@@ -777,11 +784,20 @@ const TimeText = styled.span`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 `
 
-const CurrentDateDisplay = styled.span`
+const CurrentDateDisplay = styled.button`
   color: ${({ theme }) => theme.textColor};
   font-size: 1.1rem;
   font-weight: 500;
-  margin: 0 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
 `
 
 const DateDisplay = styled.h2`
@@ -1013,11 +1029,6 @@ const MonthDayNumber = styled.div`
   width: ${({ isHighlighted }) => isHighlighted ? '32px' : 'auto'};
   height: ${({ isHighlighted }) => isHighlighted ? '32px' : 'auto'};
   display: flex;
-  align-items: ${({ isHighlighted }) => isHighlighted ? 'center' : 'flex-start'};
-  justify-content: ${({ isHighlighted }) => isHighlighted ? 'center' : 'flex-start'};
-  margin: 0;
-  padding-top: ${({ isHighlighted }) => isHighlighted ? '0' : '0.25rem'};
-`
 
 // const MonthEventItem = styled.div`
 //   background: ${({ color }) => color};
