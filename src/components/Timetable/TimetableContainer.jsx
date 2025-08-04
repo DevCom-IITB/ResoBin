@@ -842,7 +842,7 @@ const DayTimeColumn = styled.div`
   width: 80px;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid ${({ theme }) => theme.border};
+  border-right: 1px solid ${({ theme }) => '#ececec40'};
 `
 
 const TimeSlot = styled.div`
