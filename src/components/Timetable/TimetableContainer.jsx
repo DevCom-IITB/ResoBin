@@ -789,16 +789,18 @@ const NavButton = styled.button`
 `
 
 const TimeText = styled.span`
-  position:relative;
-  top: -18px;
-  left: 15px;
+  display: inline-block; 
+  min-width: 48px;           // keep alignment consistent
+  text-align: right;
+  padding-right: 10px;
   font-size: 1rem;
   color: ${({ theme }) => theme.textColor};
-
-
-  font-weight: 600;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-weight: 300;
+  position: relative;
+  top: -12px;                 
 `
+
+
 
 const CurrentDateDisplay = styled.button`
   color: ${({ theme }) => theme.textColor};
@@ -844,12 +846,25 @@ const DayTimeColumn = styled.div`
 `
 
 const TimeSlot = styled.div`
+  position: relative;
   height: 30px;
   display: flex;
   align-items: flex-start;
-  padding-top: 4px;
-  border-bottom: 1px solid ${({ theme }) => theme.border};
+
+  /* Only show the line for slots you want (optional) */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0%;               // vertical align middle of the slot
+    left: 60px;             // adjust: start after time text width
+    width: 20px;            // adjust: desired line length
+    height: 1px;
+    background: ${({ theme }) => theme.border || '#ECECEC'};
+    opacity: 0.5;
+    transform: translateY(-50%);
+  }
 `
+
 
 const DayEventColumn = styled.div`
   flex: 1;
@@ -948,30 +963,30 @@ const WeekTimeColumn = styled.div`
   border-right: 1px solid ${({ theme }) => theme.border};
 `
 
-const WeekTimeSlot = styled.div`
-  height: 30px;
-  display: flex;
-  align-items: flex-start;
-  padding-top: 4px;
-  border-bottom: 1px solid ${({ theme }) => theme.border};
-`
+// const WeekTimeSlot = styled.div`
+//   height: 30px;
+//   display: flex;
+//   align-items: flex-start;
+//   padding-top: 4px;
+//   border-bottom: 1px solid ${({ theme }) => theme.border};
+// `
 
 const WeekDayColumn = styled.div`
   padding: 0;
   border-right: 1px solid ${({ theme }) => theme.border};
   position: relative;
-  &:last-child {
-    border-right: none;
-  }
-  
-  /* Create horizontal grid lines */
+  /* Horizontal lines matching the time slot height (30px in your case) */
   background-image: repeating-linear-gradient(
     to bottom,
     transparent,
-    transparent 29px,
-    ${({ theme }) => theme.border} 29px,
-    ${({ theme }) => theme.border} 30px
+  transparent 59.5px,
+  ${({ theme }) => theme.border || '#ececec40'} 59.5px,
+  ${({ theme }) => theme.border || '#ececec40'} 60px
   );
+
+  &:last-child {
+    border-right: none;
+  }
 `
 
 const WeekEventBlock = styled.div`
