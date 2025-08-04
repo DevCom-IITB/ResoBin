@@ -1,36 +1,17 @@
-// import { Empty } from 'antd';
-import { X } from '@styled-icons/heroicons-outline'
 import { Card } from 'antd'
 import { useEffect, useState, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-
-
-// import { CourseSearch } from 'components/CourseFinder'
-// import { QuickReviewContainer } from 'components/QuickReview'
-import {Aside, toast } from 'components/shared'
-import { AsideHeader } from 'components/shared/Aside'
-import { ButtonIconDanger } from 'components/shared/Buttons'
-import { PageHeading, PageTitle } from 'components/shared/Layout'
+import { toast } from 'components/shared'
+import { PageTitle } from 'components/shared/Layout'
 import { API } from 'config/api'
 import { coursePageUrl } from 'helpers'
 import { selectSemesters } from 'store/courseSlice'
 import { selectUserProfile } from 'store/userSlice'
 
 
-const HomeItem = ({ course, hash }) => {
-  const { code, title } = course
-
-  return (
-    <Link to={coursePageUrl(code, title, hash)}>
-      <Card hoverable style={{ display: 'inline-block' }}>
-        <Card.Meta title={code} description={title} />
-      </Card>
-    </Link>
-  )
-}
 
 const CoursesThisSemester = () => {
   const [courseTimetableList, setCourseTimetableList] = useState([])
@@ -39,6 +20,28 @@ const CoursesThisSemester = () => {
 
   const semesterList = useSelector(selectSemesters)
   const [semIdx, setSemIdx] = useState(null)
+
+  const [activeTab, setActiveTab] = useState('current');
+
+  const [favCourseData, setFavCourseData] = useState([]);
+
+  useEffect(() => {
+    const fetchFavCourses = async () => {
+      try {
+        setLoading(true);
+        const response = await API.profile.favorites();
+        setFavCourseData(response.results);
+        console.log("Favorite Courses:", response.results);
+      } catch (error) {
+        toast({ status: 'error', content: error });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFavCourses();
+  }, []);
+
 
   useEffect(() => {
     if (semesterList.length) setSemIdx(semesterList.length - 1)
@@ -85,84 +88,88 @@ const CoursesThisSemester = () => {
       fetchCourseData()
     }
   }, [courseTimetableList])
+  
 
   return (
     <>
-      <TabRow>
-        <Tab active>Courses this Semester</Tab>
-        <Tab>Saved Courses</Tab>
+      <TopBar>
         <TotalCredits>
           Total Credits:{' '}
           {Object.values(coursedata).reduce((sum, course) => sum + (course?.credits || 0), 0)}
         </TotalCredits>
-      </TabRow>
+      </TopBar>
 
-      <ScrollRow>
-        {courseTimetableList.map(({ id, course }) => {
-          const courseData = coursedata[course]
-          if (!courseData) return null
+      <OuterContainer>
+        <TabBar>
+          <Tab
+            active={activeTab === 'current'}
+            onClick={() => setActiveTab('current')}
+          >
+            Courses this Semester
+          </Tab>
+          <Tab
+            active={activeTab === 'saved'}
+            onClick={() => setActiveTab('saved')}
+          >
+            Saved Courses
+          </Tab>
+        </TabBar>
 
-          const { code, credits, professor } = courseData
+        <DividerLine />
 
-          return (
-            <StyledLink key={id} to={coursePageUrl(code)}>
-              <StyledCard hoverable>
-                <Card.Meta
-                  title={<CardTitleRow>{code}</CardTitleRow>}
-                  description={
-                    <>
+        {activeTab === 'current' ? (
+          <ScrollRow>
+            {courseTimetableList.length === 0 && !loading ? (
+              <NoCoursesMsg>No Courses this semester yet!</NoCoursesMsg>
+            ) : (
+              courseTimetableList.map(({ id, course, professor }) => {
+                const courseData = coursedata[course];
+                if (!courseData) return null;
+
+                const { code, credits } = courseData;
+
+                return (
+                  <StyledLink key={id} to={coursePageUrl(code)}>
+                    <StyledCard>
+                      <CardTitleRow>{code}</CardTitleRow>
                       <DetailLine>
                         <ProfTag>{professor ? `Prof. ${professor}` : 'No Instructor'}</ProfTag>
                       </DetailLine>
-                      <DetailLine>Credits: {credits}</DetailLine>
-                    </>
-                  }
-                />
-              </StyledCard>
-            </StyledLink>
-          )
-        })}
-
-        {courseTimetableList.length === 0 && !loading && (
-          <NoCoursesMsg>No Courses this semester yet!</NoCoursesMsg>
+                      <DetailLine>Total Credits: {credits}</DetailLine>
+                    </StyledCard>
+                  </StyledLink>
+                );
+              })
+            )}
+          </ScrollRow>
+        ) : (
+          <ScrollRow>
+            {favCourseData.length === 0 ? (
+              <NoCoursesMsg>No Saved Courses yet!</NoCoursesMsg>
+            ) : (
+              favCourseData.map((course) => {
+                const professor = courseTimetableList.find(item => item.course === course.code)?.professor || null;
+                return(
+                  <StyledLink key={course.code} to={coursePageUrl(course.code)}>
+                    <StyledCard>
+                      <CardTitleRow>{course.code}</CardTitleRow>
+                      <DetailLine>
+                        <ProfTag>{professor ? `Prof. ${professor}` : 'No Instructor'}</ProfTag>
+                      </DetailLine>
+                      <DetailLine>Total Credits: {course.credits}</DetailLine>
+                    </StyledCard>
+                  </StyledLink>
+                )
+              })
+            )}
+          </ScrollRow>
         )}
-      </ScrollRow>
+      </OuterContainer>
     </>
-  )
+  );
 }
 
 const HomeContainer = () => {
-  const [stats, setStats] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [favCourseData, setFavCourseData] = useState([])
-  useEffect(() => {
-    const fetchFavCourses = async () => {
-      // copy this into homepage
-      try {
-        setLoading(true)
-        const response = await API.profile.favorites()
-        setFavCourseData(response.results)
-      } catch (error) {
-        toast({ status: 'error', content: error })
-      } finally {
-        setLoading(false)
-      }
-    }
-    const fetchStats = async () => {
-      try {
-        setLoading(true)
-        const response = await API.stats.list()
-        setStats(response)
-      } catch (error) {
-        toast({ status: 'error', content: error })
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchStats()
-    fetchFavCourses()
-  }, [])
   const profile = useSelector(selectUserProfile)
   return (
     <>
@@ -185,169 +192,113 @@ const HomeContainer = () => {
         >
           Here&apos;s everything you need for today
         </div>
-      </PageTitle>
-
-      {/* <CourseSearch loading={loading} setLoading={setLoading} /> */}
-
-      <Container>
-        <StatsContainer>
-          <AsideHeader title="My Favourites" loading={loading} />
-
-          <Flex>
-            {favCourseData.length !== 0 ? (
-              favCourseData?.map((course) => (
-                <HomeItem key={course.code} course={course} />
-              ))
-            ) : (
-              <NoFavDiv>
-                {!loading && 'No favourite Courses'}
-              </NoFavDiv>
-            )}
-          </Flex>
-
-          <AsideHeader title="Most Favourites" loading={loading} />
-
-          <Flex>
-            {stats?.courses?.popular?.map((course) => (
-              <HomeItem key={course.code} course={course} />
-            ))}
-          </Flex>
-        </StatsContainer>
-        {/* <ReviewContainer>
-          <AsideHeader title="Quick Review" loading={loading} />
-          <QuickReviewContainer />
-        </ReviewContainer> */}
-      </Container>
+      </PageTitle> 
       <CoursesThisSemester />
-      {/* <Aside title="Feed">
-        <Empty description={<PageSubtitle>Coming soon!</PageSubtitle>} />
-      </Aside> */}
     </>
   )
 }
 
 export default HomeContainer
 
-const Container = styled.div`
+const TopBar = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-`
-
-const StatsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem;
-  background: ${({ theme }) => theme.secondary};
-  border-radius: ${({ theme }) => theme.borderRadius};
-`
-
-// const ReviewContainer = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   gap: 0.5rem;
-//   padding: 1rem;
-//   background: ${({ theme }) => theme.secondary};
-//   border-radius: ${({ theme }) => theme.borderRadius};
-//   width: 80%;
-//   margin: auto;
-// `
-
-const Flex = styled.div`
-  display: flex;
-  flex-basis: 100%;
-  gap: 0.5rem;
-  overflow-x: scroll;
-`
-const NoFavDiv = styled.div`
-  color: #302718;
-  font-size: 1rem;
-  font-weight: 500;
-`
-const TabRow = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-`
-
-const Tab = styled.div`
-  font-weight: 600;
-  font-size: 1rem;
+  justify-content: flex-end;
   padding: 0.5rem 1rem;
-  margin-right: 1rem;
-  border-bottom: ${({ active }) => (active ? '3px solid white' : 'none')};
-  color: ${({ active }) => (active ? 'white' : '#999')};
-  cursor: pointer;
-`
+`;
 
 const TotalCredits = styled.div`
-  margin-left: auto;
-  font-weight: 500;
-  font-size: 0.95rem;
-  color: #ccc;
-`
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: white;
+`;
+
+const OuterContainer = styled.div`
+  width: 100%;
+  background-color: #2b273b;
+  padding: 0.75rem 1rem;
+`;
+
+const TabBar = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+`;
+
+const Tab = styled.button`
+  background-color: ${({ active }) => (active ? '#000000' : '#2b273b')};
+  color: ${({ active }) => (active ? '#FFFFFF' : '#b0aecd')};
+  font-size: 1rem;
+  font-weight: ${({ active }) => (active ? '600' : '400')};
+  border: none;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  cursor: pointer;
+`;
+
+
+const DividerLine = styled.hr`
+  border: none;
+  border-top: 1px solid #3e3e60;
+  margin: 0.4rem 0 0.75rem 0;
+`;
 
 const ScrollRow = styled.div`
   display: flex;
   overflow-x: auto;
-  padding-bottom: 1rem;
-`
+  gap: 0.6rem;
+  padding-bottom: 0.5rem;
+`;
 
 const StyledLink = styled(Link)`
-  margin-right: 1rem;
   text-decoration: none;
-`
+`;
 
-const StyledCard = styled(Card)`
-  background: #252540;
-  border-radius: 10px;
-  padding: 1rem;
-  width: 200px;
+const StyledCard = styled.div`
+  background-color: #1e1e2f;
+  border-radius: 8px;
+  padding: 0.5rem;
+  min-width: 110px;
   color: white;
-  transition: transform 0.2s ease;
-  &:hover {
-    transform: scale(1.02);
-    background: #2e2e4d;
-  }
-
-  .ant-card-meta-title {
-    color: white;
-  }
-
-  .ant-card-meta-description {
-    color: #ccc;
-  }
-`
+  font-size: 0.75rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+`;
 
 const CardTitleRow = styled.div`
-  font-size: 1.1rem;
-  font-weight: bold;
-`
-
-const TitleLine = styled.div`
   font-size: 0.9rem;
-  font-weight: 500;
-`
-
-const DetailLine = styled.div`
-  font-size: 0.75rem;
-  margin-top: 4px;
-`
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+`;
 
 const ProfTag = styled.span`
+  display: inline-block;
   background-color: #3e3e60;
   padding: 0.2rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-`
+  font-size: 0.65rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const DetailLine = styled.div`
+  font-size: 0.7rem;
+  color: #bbb;
+  margin-top: 0.25rem;
+`;
 
 const NoCoursesMsg = styled.div`
-  padding: 1rem;
-  font-size: 1rem;
+  font-size: 0.85rem;
   color: #bbb;
-`
+  padding: 0.5rem;
+`;
+
+
+
+
+
+
+
 
 
 
