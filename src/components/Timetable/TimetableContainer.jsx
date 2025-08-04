@@ -113,6 +113,8 @@ const WeekView = ({ currentDate, events, slots: slotData, rows: rowData, coursed
   const ROW_HEIGHT = 30 // Height per time slot in pixels
 
   return (
+    <TimetableWrapper>
+      <TimetableScrollInner>
     <WeekViewContainer>
       <WeekHeader>
         <div /> {/* Empty cell for time column */}
@@ -178,6 +180,8 @@ const WeekView = ({ currentDate, events, slots: slotData, rows: rowData, coursed
         ))}
       </WeekGrid>
     </WeekViewContainer>
+    </TimetableScrollInner>
+    </TimetableWrapper>
   )
 }
 
@@ -919,7 +923,28 @@ const WeekViewContainer = styled.div`
   border-radius: 12px;
   padding: 1rem;
   margin-bottom: 2rem;
+  min-width: 950px; /* Ensure minimum width */
+
 `
+
+const TimetableWrapper = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  background: ${({ theme }) => theme.bg};
+  border-radius: 12px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+  padding: 0;
+  margin: 0 auto;
+  /* Prevent right-side overflow */
+  overflow-y: hidden;
+`
+
+const TimetableScrollInner = styled.div`
+  display: flex;
+  flex-direction: row; /* not max-content */
+  min-width: 100%;    /* fill parent if content is short */
+`
+
 
 const WeekHeader = styled.div`
   display: grid;
@@ -954,6 +979,7 @@ const WeekGrid = styled.div`
   display: grid;
   grid-template-columns: 80px repeat(7, 1fr); // Change from 5 to 7
   min-height: 600px;
+  min-width: 600px;
   color: #FFFFFF0F;
 `
 
