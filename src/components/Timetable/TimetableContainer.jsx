@@ -923,7 +923,7 @@ const WeekViewContainer = styled.div`
   border-radius: 12px;
   padding: 1rem;
   margin-bottom: 2rem;
-  min-width: 950px; /* Ensure minimum width */
+  min-width: 1000px;
 
 `
 
