@@ -1,5 +1,5 @@
 import { LoadingOutlined } from '@ant-design/icons'
-import { ChevronLeft, ChevronRight, X, Plus, Download, Share, ExternalLink } from '@styled-icons/heroicons-outline'
+import { ChevronLeft, ChevronRight, X, ExternalLink } from '@styled-icons/heroicons-outline'
 import { Spin, Alert, Modal, Radio,Tooltip} from 'antd'
 import axios from 'axios'
 import moment from 'moment'
@@ -17,7 +17,7 @@ import {
   PageTitle,
   toast,
 } from 'components/shared'
-import { ButtonIcon, ButtonIconDanger } from 'components/shared/Buttons'
+import { ButtonIconDanger } from 'components/shared/Buttons'
 import { API } from 'config/api'
 import { slots, rows } from 'data/timetable'
 import { coursePageUrl, hash } from 'helpers'
@@ -560,18 +560,6 @@ const TimetableContainer = () => {
 
   const events = getEventsForView()
 
-  const getCurrentDateDisplay = () => {
-    if (currentView === 'Day') {
-      return currentDate.format('D MMMM YYYY')
-    }
-    if (currentView === 'Week') {
-      return currentDate.format('MMMM YYYY')
-    }
-    if (currentView === 'Month') {
-      return currentDate.format('MMMM YYYY')
-    }
-    return currentDate.format('MMMM YYYY')
-  }
 
   const getDayViewDateDisplay = (date) => {
   return `${date.format('dddd')}, ${date.format('D MMMM YYYY')}`; // e.g., "Wednesday, 6 August 2025"
