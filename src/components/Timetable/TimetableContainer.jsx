@@ -1,6 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import { ChevronLeft, ChevronRight, X, Plus, Download, Share, ExternalLink } from '@styled-icons/heroicons-outline'
-import { Spin, Alert, Modal, Radio } from 'antd'
+import { Spin, Alert, Modal, Radio,Tooltip} from 'antd'
 import axios from 'axios'
 import moment from 'moment'
 import { darken } from 'polished'
@@ -27,7 +27,9 @@ import { updateTimetable } from 'store/userSlice'
 import { makeGradient } from 'styles'
 import 'styles/CustomModal.css'
 
+import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableSearch from './TimetableSearch'
+import TimetableShareButton from './TimetableShareButton'
 
 // const WeekGrid = styled.div`
 //   display: grid;
@@ -73,6 +75,19 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
             const height = (event.endRow - event.startRow) * ROW_HEIGHT
 
             return (
+              
+              <Tooltip
+                title={
+
+                  <div>
+                      <div><strong>{event.courseCode} - {course.title}</strong></div>
+                      <div>Slot: {event.slotName}</div>
+                      <div>{event.startTime} - {event.endTime}</div>
+                    </div>
+                    }
+                overlayStyle={{ maxWidth: 250, fontSize: '0.9rem', color: '#333' }} // Example of styling
+                placement="top"
+              >
               <DayEventBlock
                 key={event.id}
                 color={event.color}
@@ -94,6 +109,8 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
                   </RedirectIcon>
                 </Link>
               </DayEventBlock>
+              </Tooltip>
+              
             )
           })}
         </DayEventColumn>
@@ -152,6 +169,18 @@ const WeekView = ({ currentDate, events, slots: slotData, rows: rowData, coursed
                   const height = (event.endRow - event.startRow) * ROW_HEIGHT
 
                   return (
+                                  <Tooltip
+                title={
+
+                  <div>
+                      <div><strong>{event.courseCode} - {course.title}</strong></div>
+                      <div>Slot: {event.slotName}</div>
+                      <div>{event.startTime} - {event.endTime}</div>
+                    </div>
+                    }
+                overlayStyle={{ maxWidth: 250, fontSize: '0.9rem', color: '#333' }} // Example of styling
+                placement="top"
+              >
                     <WeekEventBlock
                       key={event.id}
                       color={event.color}
@@ -173,6 +202,7 @@ const WeekView = ({ currentDate, events, slots: slotData, rows: rowData, coursed
                         </RedirectIcon>
                       </Link>
                     </WeekEventBlock>
+                    </Tooltip>
                   )
                 })}
             </div>
@@ -307,6 +337,7 @@ const TimetableContainer = () => {
     setCurrentView(newView)
     navigate(`/timetable/${newView.toLowerCase()}`)
   }
+
 
   // Add the fetchCourses function
   const fetchCourses = async (params) => {
@@ -542,6 +573,10 @@ const TimetableContainer = () => {
     return currentDate.format('MMMM YYYY')
   }
 
+  const getDayViewDateDisplay = (date) => {
+  return `${date.format('dddd')}, ${date.format('D MMMM YYYY')}`; // e.g., "Wednesday, 6 August 2025"
+}
+
   const getTodayEvents = () => {
     const today = moment()
     const todayDayIndex = today.weekday() === 0 ? 6 : today.weekday() - 1 // Convert Sunday=0 to Saturday=6
@@ -595,28 +630,19 @@ const TimetableContainer = () => {
 
   const warnings = detectClashes()
 
+  const dayDateString = getDayViewDateDisplay(currentDate);
   return (
     <>
-      <PageHeading>
-        <PageTitle>Timetable</PageTitle>
-        <HeaderActions>
-          <ButtonIcon
-            icon={<Download size="20" />}
-            tooltip="Download"
-            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-          />
-          <ButtonIcon
-            icon={<Share size="20" />}
-            tooltip="Share"
-            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-          />
-          <ButtonIcon
-            icon={<Plus size="20" />}
-            tooltip="Add"
-            hoverstyle={{ background: 'rgba(0, 0, 0, 0.3)' }}
-          />
-        </HeaderActions>
-      </PageHeading>
+<PageHeading>
+  <PageTitle>Timetable</PageTitle>
+  <HeaderActions>
+          <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
+
+          <TimetableShareButton coursesInTimetable={courseTimetableList} />
+
+  </HeaderActions>
+</PageHeading>
+
 
       <TimetableHeader>
         <EventCountDisplay>{todayEvents.length} events today</EventCountDisplay>
@@ -640,7 +666,7 @@ const TimetableContainer = () => {
         </ViewSelectorContainer>
       </TimetableHeader>
 
-      <DateDisplay>{getCurrentDateDisplay()}</DateDisplay>
+      <DateDisplay>{dayDateString}</DateDisplay>
 
       <TimetableSearch
         loading={loadingg}
@@ -835,11 +861,13 @@ const DayViewContainer = styled.div`
   border-radius: 12px;
   padding: 1rem;
   margin-bottom: 2rem;
+  
 `
 
 const DayViewGrid = styled.div`
   display: flex;
   min-height: 600px;
+
 `
 
 const DayTimeColumn = styled.div`
@@ -847,6 +875,7 @@ const DayTimeColumn = styled.div`
   display: flex;
   flex-direction: column;
   border-right: 1px solid ${({ theme }) => '#ececec40'};
+  
 `
 
 const TimeSlot = styled.div`
@@ -874,16 +903,22 @@ const DayEventColumn = styled.div`
   flex: 1;
   padding-left: 1rem;
   position: relative;
-  
-  /* Create horizontal grid lines */
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 29px,
-    ${({ theme }) => theme.border} 29px,
-    ${({ theme }) => theme.border} 30px
-  );
+  background-image: 
+    linear-gradient(
+      to bottom,
+      ${({ theme }) => theme.border || '#ececec40'} -0.5px,
+      ${({ theme }) => theme.border || '#ececec40'} 0.5px,
+      transparent -0.5px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 59.5px,
+      ${({ theme }) => theme.border || '#ececec40'} 59.5px,
+      ${({ theme }) => theme.border || '#ececec40'} 60px
+    );
 `
+
 
 const DayEventBlock = styled.div`
   background: ${({ color }) => makeGradient(color)};
@@ -905,6 +940,7 @@ const EventTitle = styled.h4`
   font-size: 1rem;
   font-weight: 500;
   color: black;
+
 `
 
 const EventTime = styled.div`
@@ -1091,13 +1127,16 @@ const MonthDayNumber = styled.div`
     if (isHighlighted) return '#fff';
     return isCurrentMonth ? theme.textColor : theme.textColorSecondary;
   }};
-  background: ${({ isHighlighted }) => isHighlighted ? '#6d669e' : 'transparent'};
-  border-radius: ${({ isHighlighted }) => isHighlighted ? '50%' : '0'};
-  width: ${({ isHighlighted }) => isHighlighted ? '32px' : 'auto'};
-  height: ${({ isHighlighted }) => isHighlighted ? '32px' : 'auto'};
+  background: ${({ isHighlighted }) => (isHighlighted ? '#6d669e' : 'transparent')};
+  border-radius: ${({ isHighlighted }) => (isHighlighted ? '50%' : '0')};
+  width: ${({ isHighlighted }) => (isHighlighted ? '32px' : 'auto')};
+  height: ${({ isHighlighted }) => (isHighlighted ? '32px' : 'auto')};
   display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: ${({ isHighlighted }) => (isHighlighted ? '0 auto' : '0')};
+`
 
-// const MonthEventItem = styled.div`
 //   background: ${({ color }) => color};
 //   color: #fff;
 //   border-radius: 4px;
