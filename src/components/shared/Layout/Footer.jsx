@@ -28,7 +28,7 @@ const Footer = () => {
 
       <h5 style={{ fontWeight: '400' }}>
         Created with ❤️ by&nbsp;
-        <a href="https://www.devcom-iitb.org" target="_blank" rel="noreferrer">
+        <a href="https://devcom.gymkhana.iitb.ac.in/" target="_blank" rel="noreferrer">
           DevCom
         </a>
         &nbsp;in collaboration with&nbsp;
