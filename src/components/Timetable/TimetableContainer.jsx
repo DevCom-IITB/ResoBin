@@ -50,6 +50,7 @@ const TimetableContainer = () => {
   const semesterList = useSelector(selectSemesters)
   const courseAPILoading = useSelector(selectCourseAPILoading)
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [courseTimetableList, setCourseTimetableList] = useState([])
   const [courseData, setCourseData] = useState([])
   const [coursedata, setCoursedata] = useState({})
@@ -365,6 +366,10 @@ const TimetableContainer = () => {
 <TimetablePageHeadingWrapper>
 <PageHeading>
   <PageTitle>Timetable</PageTitle>
+
+  <AddButton onClick={() => setIsModalVisible(true)}>
+      + add
+    </AddButton>
   {/* HeaderActions are moved to the new SubHeader below */}
 </PageHeading></TimetablePageHeadingWrapper>
 
@@ -459,6 +464,40 @@ const TimetableContainer = () => {
   )
 }
 
+// This component calculates its position based on the current time
+const CurrentTimeIndicator = () => {
+  const [topPosition, setTopPosition] = useState(0);
+
+  useEffect(() => {
+    const calculatePosition = () => {
+      const now = moment();
+      const startTime = moment().startOf('day').add(9.5, 'hours'); // 9:30 AM
+      const pixelsPerMinute = 1;
+
+      // --- THIS IS THE CORRECTED LOGIC ---
+      // Check if the current hour is between 9 AM and 10 PM (22:00)
+      if (now.hour() >= 9 && now.hour() < 22) {
+        const minutesSinceStart = now.diff(startTime, 'minutes');
+        setTopPosition(minutesSinceStart * pixelsPerMinute);
+      } else {
+        // If it's outside this time, hide the indicator
+        setTopPosition(0);
+      }
+    };
+
+    calculatePosition();
+    const interval = setInterval(calculatePosition, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  if (topPosition <= 0) {
+    return null; // Don't render if it's outside the active hours
+  }
+
+  return <IndicatorLine style={{ top: `${topPosition}px` }} />;
+};
+
 // Day View Component
 const DayView = ({ currentDate, events, slots: slotData, rows: rowData, coursedata,    currentView,
   handleViewChange,
@@ -470,6 +509,7 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
 
   const timeSlots = Object.values(rowData).map(row => row.title)
   const ROW_HEIGHT = 30 // Height per time slot in pixels
+  const isToday = currentDate.isSame(moment(), 'day');
 
   return (
     
@@ -506,6 +546,9 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
 
         </DayTimeColumn>
         <DayEventColumn>
+
+          {isToday && <CurrentTimeIndicator />}
+
           {dayEvents.map((event) => {
             const course = coursedata[event.courseCode]
             if (!course) return null
@@ -562,131 +605,235 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
 }
 
 // Week View Component  
-const WeekView = ({ currentDate, events, slots: slotData, rows: rowData, coursedata , currentView,
-  handleViewChange,
-  handleClickPrev,
-  handleClickNext,
-  handleTodayClick, dayDateString }) => {
-  // Change weekDays array to include all 7 days
-  const weekDays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
-  const startOfWeek = currentDate.clone().startOf('week') // Remove add(1, 'day') to start from Sunday
+// const WeekView = ({ currentDate, events, slots: slotData, rows: rowData, coursedata , currentView,
+//   handleViewChange,
+//   handleClickPrev,
+//   handleClickNext,
+//   handleTodayClick, dayDateString }) => {
+//   // Change weekDays array to include all 7 days
+//   const weekDays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
+//   const startOfWeek = currentDate.clone().startOf('week') // Remove add(1, 'day') to start from Sunday
   
-  // Add these two lines
-  const timeSlots = Object.values(rowData).map(row => row.title)
-  const ROW_HEIGHT = 30 // Height per time slot in pixels
+//   // Add these two lines
+//   const timeSlots = Object.values(rowData).map(row => row.title)
+//   const ROW_HEIGHT = 30 // Height per time slot in pixels
+
+
+//   return (
+//     <TimetableWrapper>
+//       <TimetableScrollInner>
+    
+//     <WeekViewContainer>
+
+//         <ControlsLayout>
+//       <DateDisplay>{dayDateString}</DateDisplay>
+//         <ViewSelectorContainer>
+//     <StyledRadioGroup onChange={handleViewChange} value={currentView}>
+//       <Radio.Button value="Day">Day</Radio.Button>
+//       <Radio.Button value="Week">Week</Radio.Button>
+//       <Radio.Button value="Month">Month</Radio.Button>
+//     </StyledRadioGroup>
+//     <NavigationContainer>
+//       <NavButton onClick={handleClickPrev}>
+//         <ChevronLeft size="20" />
+//       </NavButton>
+//       <CurrentDateDisplay onClick={handleTodayClick}>
+//         Today
+//       </CurrentDateDisplay>
+//       <NavButton onClick={handleClickNext}>
+//         <ChevronRight size="20" />
+//       </NavButton>
+//     </NavigationContainer>
+//   </ViewSelectorContainer>
+//   </ControlsLayout>
+
+//       <WeekHeader>
+//         <div /> {/* Empty cell for time column */}
+//         {weekDays.map((day, index) => {
+
+//           const date = startOfWeek.clone().add(index, 'days')
+
+//           return (
+//             <WeekDayHeader key={day}>
+//               <DayNumber>{date.format('D')}</DayNumber>
+//               <DayName>{day}</DayName>
+//             </WeekDayHeader>
+//           )
+//         })}
+//       </WeekHeader>
+//       {/* Update grid template columns to accommodate 7 days */}
+      
+//       <WeekGrid>
+//         <WeekTimeColumn>
+// {timeSlots.map((time) => (
+//   <TimeSlot key={time}>
+//     {time.endsWith(':30') ? <TimeText>{time}</TimeText> : null}
+//   </TimeSlot>
+// ))}
+
+//         </WeekTimeColumn>
+//         {weekDays.map((day, dayIndex) => (
+//           <WeekDayColumn key={day}>
+//             <div style={{ position: 'relative', height: '100%' }}>
+//               {events
+//                 .filter(event => event.dayIndex === dayIndex)
+//                 .map((event) => {
+//                   const course = coursedata[event.courseCode]
+//                   if (!course) return null
+
+//                   // Calculate position based on actual row indices - align with time slot top
+//                   const topPosition = event.startRow * ROW_HEIGHT
+//                   const height = (event.endRow - event.startRow) * ROW_HEIGHT
+
+//                   return (
+//                                   <Tooltip
+//                 title={
+
+//                   <div>
+//                       <div><strong>{event.courseCode} - {course.title}</strong></div>
+//                       <div>Slot: {event.slotName}</div>
+//                       <div>{event.startTime} - {event.endTime}</div>
+//                     </div>
+//                     }
+//                 overlayStyle={{ maxWidth: 250, fontSize: '0.9rem', color: '#333' }} // Example of styling
+//                 placement="top"
+//               >
+//                     <WeekEventBlock
+//                       key={event.id}
+//                       color={event.color}
+//                       style={{
+//                         position: 'absolute',
+//                         top: `${topPosition}px`,
+//                         left: '0',
+//                         right: '0',
+//                         height: `${height}px`
+//                       }}
+//                     >
+//                       <Link to={coursePageUrl(event.courseCode, course.title)} style={{ textDecoration: 'none', color: 'inherit', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+//                         <div>
+//                           <EventTitle>{event.courseCode} | {event.slotName}</EventTitle>
+//                           <EventTime>{event.startTime}</EventTime>
+//                         </div>
+//                         <RedirectIcon>
+//                           <ExternalLink size="14" />
+//                         </RedirectIcon>
+//                       </Link>
+//                     </WeekEventBlock>
+//                     </Tooltip>
+//                   )
+//                 })}
+//             </div>
+//           </WeekDayColumn>
+//         ))}
+//       </WeekGrid>
+      
+//     </WeekViewContainer>
+    
+//     </TimetableScrollInner>
+//     </TimetableWrapper>
+//   )
+// }
+// Week View Component
+const WeekView = ({ currentDate, events, slots: slotData, rows: rowData, coursedata }) => {
+  const weekDays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+  const startOfWeek = currentDate.clone().startOf('week');
+  const timeSlots = Object.values(rowData).map(row => row.title);
+  const ROW_HEIGHT = 30;
 
   return (
     <TimetableWrapper>
       <TimetableScrollInner>
-    
-    <WeekViewContainer>
+        <WeekViewContainer>
+          <WeekHeader>
+            <div /> {/* Empty cell for time column */}
+            {weekDays.map((day, index) => {
+              const date = startOfWeek.clone().add(index, 'days');
+              return (
+                <WeekDayHeader key={day}>
+                  <DayNumber>{date.format('D')}</DayNumber>
+                  <DayName>{day}</DayName>
+                </WeekDayHeader>
+              );
+            })}
+          </WeekHeader>
 
-        <ControlsLayout>
-      <DateDisplay>{dayDateString}</DateDisplay>
-        <ViewSelectorContainer>
-    <StyledRadioGroup onChange={handleViewChange} value={currentView}>
-      <Radio.Button value="Day">Day</Radio.Button>
-      <Radio.Button value="Week">Week</Radio.Button>
-      <Radio.Button value="Month">Month</Radio.Button>
-    </StyledRadioGroup>
-    <NavigationContainer>
-      <NavButton onClick={handleClickPrev}>
-        <ChevronLeft size="20" />
-      </NavButton>
-      <CurrentDateDisplay onClick={handleTodayClick}>
-        Today
-      </CurrentDateDisplay>
-      <NavButton onClick={handleClickNext}>
-        <ChevronRight size="20" />
-      </NavButton>
-    </NavigationContainer>
-  </ViewSelectorContainer>
-  </ControlsLayout>
+          <WeekGrid>
+            <WeekTimeColumn>
+              {timeSlots.map((time) => (
+                <TimeSlot key={time}>
+                  {time.endsWith(':30') ? <TimeText>{time}</TimeText> : null}
+                </TimeSlot>
+              ))}
+            </WeekTimeColumn>
 
-      <WeekHeader>
-        <div /> {/* Empty cell for time column */}
-        {weekDays.map((day, index) => {
-          const date = startOfWeek.clone().add(index, 'days')
-          return (
-            <WeekDayHeader key={day}>
-              <DayNumber>{date.format('D')}</DayNumber>
-              <DayName>{day}</DayName>
-            </WeekDayHeader>
-          )
-        })}
-      </WeekHeader>
-      {/* Update grid template columns to accommodate 7 days */}
-      
-      <WeekGrid>
-        <WeekTimeColumn>
-{timeSlots.map((time) => (
-  <TimeSlot key={time}>
-    {time.endsWith(':30') ? <TimeText>{time}</TimeText> : null}
-  </TimeSlot>
-))}
+            {/* --- THIS IS THE CORRECTED LOOP WITH THE TIME INDICATOR --- */}
+            {weekDays.map((day, dayIndex) => {
+              // 1. Check if this column is today's date
+              const columnDate = startOfWeek.clone().add(dayIndex, 'days');
+              const isToday = columnDate.isSame(moment(), 'day');
 
-        </WeekTimeColumn>
-        {weekDays.map((day, dayIndex) => (
-          <WeekDayColumn key={day}>
-            <div style={{ position: 'relative', height: '100%' }}>
-              {events
-                .filter(event => event.dayIndex === dayIndex)
-                .map((event) => {
-                  const course = coursedata[event.courseCode]
-                  if (!course) return null
+              // 2. Return the column with the conditional indicator
+              return (
+                <WeekDayColumn key={day}>
+                  <div style={{ position: 'relative', height: '100%' }}>
+                    {/* The indicator is rendered here only if it's today */}
+                    {isToday && <CurrentTimeIndicator gridStartTime={Object.values(rowData)[0]?.title || '08:00'} />}
 
-                  // Calculate position based on actual row indices - align with time slot top
-                  const topPosition = event.startRow * ROW_HEIGHT
-                  const height = (event.endRow - event.startRow) * ROW_HEIGHT
+                    {events
+                      .filter(event => event.dayIndex === dayIndex)
+                      .map((event) => {
+                        const course = coursedata[event.courseCode];
+                        if (!course) return null;
 
-                  return (
-                                  <Tooltip
-                title={
+                        const topPosition = event.startRow * ROW_HEIGHT;
+                        const height = (event.endRow - event.startRow) * ROW_HEIGHT;
 
-                  <div>
-                      <div><strong>{event.courseCode} - {course.title}</strong></div>
-                      <div>Slot: {event.slotName}</div>
-                      <div>{event.startTime} - {event.endTime}</div>
-                    </div>
-                    }
-                overlayStyle={{ maxWidth: 250, fontSize: '0.9rem', color: '#333' }} // Example of styling
-                placement="top"
-              >
-                    <WeekEventBlock
-                      key={event.id}
-                      color={event.color}
-                      style={{
-                        position: 'absolute',
-                        top: `${topPosition}px`,
-                        left: '0',
-                        right: '0',
-                        height: `${height}px`
-                      }}
-                    >
-                      <Link to={coursePageUrl(event.courseCode, course.title)} style={{ textDecoration: 'none', color: 'inherit', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                        <div>
-                          <EventTitle>{event.courseCode} | {event.slotName}</EventTitle>
-                          <EventTime>{event.startTime}</EventTime>
-                        </div>
-                        <RedirectIcon>
-                          <ExternalLink size="14" />
-                        </RedirectIcon>
-                      </Link>
-                    </WeekEventBlock>
-                    </Tooltip>
-                  )
-                })}
-            </div>
-          </WeekDayColumn>
-        ))}
-      </WeekGrid>
-      
-    </WeekViewContainer>
-    
-    </TimetableScrollInner>
+                        return (
+                          <Tooltip
+                            key={event.id}
+                            title={
+                              <div>
+                                <strong>{event.courseCode} - {course.title}</strong>
+                                <div>Slot: {event.slotName}</div>
+                                <div>{event.startTime} - {event.endTime}</div>
+                              </div>
+                            }
+                            overlayStyle={{ maxWidth: 250, fontSize: '0.9rem', color: '#333' }}
+                            placement="top"
+                          >
+                            <WeekEventBlock
+                              color={event.color}
+                              style={{
+                                position: 'absolute',
+                                top: `${topPosition}px`,
+                                left: '0',
+                                right: '0',
+                                height: `${height}px`
+                              }}
+                            >
+                              <Link to={coursePageUrl(event.courseCode, course.title)} style={{ textDecoration: 'none', color: 'inherit', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                                <div>
+                                  <EventTitle>{event.courseCode} | {event.slotName}</EventTitle>
+                                  <EventTime>{event.startTime}</EventTime>
+                                </div>
+                                <RedirectIcon>
+                                  <ExternalLink size="14" />
+                                </RedirectIcon>
+                              </Link>
+                            </WeekEventBlock>
+                          </Tooltip>
+                        );
+                      })}
+                  </div>
+                </WeekDayColumn>
+              );
+            })}
+          </WeekGrid>
+        </WeekViewContainer>
+      </TimetableScrollInner>
     </TimetableWrapper>
-  )
-}
+  );
+};
 
 // Month View Component
 const MonthView = ({ currentDate , currentView,
@@ -814,6 +961,48 @@ const TimetableAsideItem = ({ course, handleRemove, loading }) => {
 export default TimetableContainer
 
 // Styled Components
+
+const IndicatorLine = styled.div`
+  position: absolute;
+  left: -10px; /* Start from behind the time column for the dot */
+  right: 0;
+  height: 1.5px;
+  background-color: #eb4d4b; /* A nice red color */
+  z-index: 10;
+
+  /* This creates the circle at the beginning of the line */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #eb4d4b;
+    transform: translateY(-50%);
+  }
+`;
+
+const AddButton = styled.button`
+  background-color: #6d669e; /* Adjust color to match your theme */
+  color: #ffffff;
+  border: none;
+  height: 32px;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: ${darken(0.1, '#6d669e')};
+  }
+`;
 
 const SubHeader = styled.div`
   display: flex;
