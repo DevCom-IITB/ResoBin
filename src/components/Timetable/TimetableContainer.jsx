@@ -50,7 +50,6 @@ const TimetableContainer = () => {
   const semesterList = useSelector(selectSemesters)
   const courseAPILoading = useSelector(selectCourseAPILoading)
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [courseTimetableList, setCourseTimetableList] = useState([])
   const [courseData, setCourseData] = useState([])
   const [coursedata, setCoursedata] = useState({})
@@ -367,7 +366,7 @@ const TimetableContainer = () => {
 <PageHeading>
   <PageTitle>Timetable</PageTitle>
 
-  <AddButton onClick={() => setIsModalVisible(true)}>
+  <AddButton>
       + add
     </AddButton>
   {/* HeaderActions are moved to the new SubHeader below */}
@@ -734,16 +733,45 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
 //   )
 // }
 // Week View Component
-const WeekView = ({ currentDate, events, slots: slotData, rows: rowData, coursedata }) => {
-  const weekDays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-  const startOfWeek = currentDate.clone().startOf('week');
-  const timeSlots = Object.values(rowData).map(row => row.title);
-  const ROW_HEIGHT = 30;
+const WeekView = ({ currentDate, events, slots: slotData, rows: rowData, coursedata , currentView,
+  handleViewChange,
+  handleClickPrev,
+  handleClickNext,
+  handleTodayClick, dayDateString }) => {
+  // Change weekDays array to include all 7 days
+  const weekDays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
+  const startOfWeek = currentDate.clone().startOf('week') // Remove add(1, 'day') to start from Sunday
+  
+  // Add these two lines
+  const timeSlots = Object.values(rowData).map(row => row.title)
+  const ROW_HEIGHT = 30 // Height per time slot in pixels
+
 
   return (
     <TimetableWrapper>
       <TimetableScrollInner>
         <WeekViewContainer>
+                   <ControlsLayout>
+       <DateDisplay>{dayDateString}</DateDisplay>
+         <ViewSelectorContainer>
+     <StyledRadioGroup onChange={handleViewChange} value={currentView}>
+       <Radio.Button value="Day">Day</Radio.Button>
+       <Radio.Button value="Week">Week</Radio.Button>
+       <Radio.Button value="Month">Month</Radio.Button>
+     </StyledRadioGroup>
+     <NavigationContainer>
+       <NavButton onClick={handleClickPrev}>
+         <ChevronLeft size="20" />
+       </NavButton>
+       <CurrentDateDisplay onClick={handleTodayClick}>
+         Today
+       </CurrentDateDisplay>
+       <NavButton onClick={handleClickNext}>
+         <ChevronRight size="20" />
+       </NavButton>
+     </NavigationContainer>
+   </ViewSelectorContainer>
+   </ControlsLayout>
           <WeekHeader>
             <div /> {/* Empty cell for time column */}
             {weekDays.map((day, index) => {
