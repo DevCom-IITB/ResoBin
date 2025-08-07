@@ -1,18 +1,20 @@
-import { X } from '@styled-icons/heroicons-outline'
-import { Checkbox, Select, Switch } from 'antd'
+import { InformationCircle, X } from '@styled-icons/heroicons-outline'
+import { Checkbox, Select, Switch, Tooltip } from 'antd'
 import { kebabCase } from 'lodash'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { Form, Slider } from 'components/shared'
+import { Form, Slider, toast } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
+import { API } from 'config/api'
 import tags from 'data/tags.json'
 import { slots } from 'data/timetable'
 import { useQueryString } from 'hooks'
 import { selectDepartments } from 'store/courseSlice'
 
 export const filterKeys = [
-  'p', // ? page number
+  'p',
   'semester',
   'department',
   'credits_min',
@@ -21,12 +23,13 @@ export const filterKeys = [
   'running',
   'tags',
   'slots',
+  'avoid_slots',
+  'avoid_slot_clash',
 ]
 
 const CourseFinderFilterItem = ({ label, onClear, content }) => (
   <CourseFinderFilterItemContainer>
     <FilterTitle>{label}</FilterTitle>
-
     {content || (
       <ButtonIconDanger
         onClick={onClear}
@@ -38,10 +41,53 @@ const CourseFinderFilterItem = ({ label, onClear, content }) => (
   </CourseFinderFilterItemContainer>
 )
 
-// TODO: (Known bug) Changing from mobile to desktop view resets filters but query string isnt affected
 const CourseFinderFilterForm = ({ setLoading }) => {
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
   const [form] = Form.useForm()
+  const [userTimetableCourses, setUserTimetableCourses] = useState([])
+  const [semesters, setSemesters] = useState({})
+  const getSemesters = async () => {
+    try {
+      const response = await API.semesters.list()
+      setSemesters(response[0])
+    } catch (error) {
+      toast({ status: 'error', content: error })
+    }
+  }
+  const getUserTimetableSlots = () => {
+    if (!semesters.season || !semesters.year || !userTimetableCourses?.length)
+      return []
+    return userTimetableCourses.flatMap((item) => [
+      ...(item.lectureSlots || []),
+      ...(item.tutorialSlots || []),
+    ])
+  }
+  useEffect(() => {
+    getSemesters()
+  }, [])
+  useEffect(() => {
+    const fetchUserTimetable = async () => {
+      try {
+        if (!semesters.season || !semesters.year) {
+          setUserTimetableCourses([])
+          return
+        }
+        const response = await API.profile.timetable.read({
+          season: semesters.season,
+          year: semesters.year,
+        })
+        setUserTimetableCourses(response)
+      } catch (error) {
+        toast({
+          status: 'error',
+          content: 'Failed to fetch user timetable',
+          key: 'timetable-error',
+        })
+        setUserTimetableCourses([])
+      }
+    }
+    fetchUserTimetable()
+  }, [semesters])
 
   const handleFilterClear = (formField, qsFields) => () => {
     const defaultInitialValues = {
@@ -52,6 +98,8 @@ const CourseFinderFilterForm = ({ setLoading }) => {
       department: [],
       tags: [],
       slots: [],
+      avoid_slots: [],
+      avoid_slot_clash: false,
     }
 
     form.setFieldsValue({
@@ -65,18 +113,39 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     setLoading(true)
     deleteQueryString('p')
 
-    if (allFields?.credits?.[0] !== 2)
-      setQueryString('credits_min', allFields.credits[0])
+    if (
+      Array.isArray(allFields?.credits) &&
+      typeof allFields.credits[0] === 'number' &&
+      allFields.credits[0] !== 2
+    )
+      setQueryString('credits_min', allFields.credits[0].toString())
     else deleteQueryString('credits_min')
 
-    if (allFields?.credits?.[1] !== 9)
-      setQueryString('credits_max', allFields.credits[1])
+    if (
+      Array.isArray(allFields?.credits) &&
+      typeof allFields.credits[1] === 'number' &&
+      allFields.credits[1] !== 9
+    )
+      setQueryString('credits_max', allFields.credits[1].toString())
     else deleteQueryString('credits_max')
 
     setQueryString('department', allFields.department)
     setQueryString('semester', allFields.semester)
     setQueryString('tags', allFields.tags)
     setQueryString('slots', allFields.slots)
+
+    if (allFields.avoid_slot_clash) {
+      const userSlots = getUserTimetableSlots()
+      if (userSlots && userSlots.length > 0) {
+        setQueryString('avoid_slots', userSlots.join(','))
+        setQueryString('avoid_slot_clash', 'true')
+      } else {
+        deleteQueryString('avoid_slots')
+      }
+    } else {
+      deleteQueryString('avoid_slots')
+      deleteQueryString('avoid_slot_clash')
+    }
 
     if (allFields.halfsem) setQueryString('halfsem', 'true')
     else deleteQueryString('halfsem')
@@ -90,12 +159,10 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     { label: 'Spring', value: 'spring' },
   ]
 
-  const departmentOptions = useSelector(selectDepartments)?.map(
-    (department) => ({
-      label: department.name,
-      value: department.slug,
-    })
-  )
+  const departmentOptions = useSelector(selectDepartments)?.map((d) => ({
+    label: d.name,
+    value: d.slug,
+  }))
 
   const tagOptions = tags.courseTags.map((tag) => ({
     label: tag,
@@ -103,13 +170,13 @@ const CourseFinderFilterForm = ({ setLoading }) => {
   }))
 
   const slotOptions = Object.keys(slots).reduce((acc, slot) => {
-    const label = slot[0].match(/^\d/) ? slot.match(/\d+/g)?.join('') : slot;
-    const value = slot;
+    const label = slot[0].match(/^\d/) ? slot.match(/\d+/g)?.join('') : slot
+    const value = slot
     if (!acc.some((option) => option.label === label)) {
-      acc.push({ label, value });
+      acc.push({ label, value })
     }
-    return acc;
-  }, []);
+    return acc
+  }, [])
 
   return (
     <Form
@@ -128,6 +195,12 @@ const CourseFinderFilterForm = ({ setLoading }) => {
         department: getQueryString('department')?.split(',') ?? [],
         tags: getQueryString('tags')?.split(',') ?? [],
         slots: getQueryString('slots')?.split(',') ?? [],
+        avoid_slots: getQueryString('avoid_slots')
+          ? getQueryString('avoid_slots').split(',')
+          : [],
+        avoid_slot_clash:
+          getQueryString('avoid_slot_clash') === 'true' ||
+          getQueryString('avoid_slots') !== null,
       }}
       style={{ gap: '1rem', padding: '0 0.5rem' }}
     >
@@ -150,25 +223,6 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           <Select
             mode="multiple"
             options={departmentOptions}
-            placeholder="Type something..."
-            showArrow
-          />
-        </Form.Item>
-      </div>
-
-      <div>
-        <CourseFinderFilterItem
-          label={
-            <>
-              Slots <b>(beta)</b>
-            </>
-          }
-          onClear={handleFilterClear('slots', ['slots'])}
-        />
-        <Form.Item name="slots">
-          <Select
-            mode="multiple"
-            options={slotOptions}
             placeholder="Type something..."
             showArrow
           />
@@ -207,8 +261,8 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           <Slider
             range
             min={2}
-            step={null}
             max={9}
+            step={null}
             marks={{
               2: '<3',
               3: '3',
@@ -224,8 +278,41 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           />
         </Form.Item>
       </div>
-
       <div>
+        <CourseFinderFilterItem
+          label="Slots"
+          onClear={handleFilterClear('slots', ['slots'])}
+        />
+        <Form.Item name="slots">
+          <Select
+            mode="multiple"
+            options={slotOptions}
+            placeholder="Select slots..."
+            showArrow
+          />
+        </Form.Item>
+      </div>
+
+      <CourseFinderFilterItem
+        label={
+          <>
+            Avoid Slot Clash
+            <Tooltip title="When enabled, courses with slots that clash with your current timetable will be filtered out">
+              <InformationCircle size={16} style={{ marginLeft: '8px', cursor: 'help' }} />
+            </Tooltip>
+          </>
+        }
+        onClear={handleFilterClear('avoid_slot_clash', [
+          'avoid_slot_clash',
+          'avoid_slots',
+        ])}
+        content={
+          <Form.Item name="avoid_slot_clash" valuePropName="checked">
+            <Switch />
+          </Form.Item>
+        }
+      />
+            <div>
         <CourseFinderFilterItem
           label="Tags"
           onClear={handleFilterClear('tags', ['tags'])}
