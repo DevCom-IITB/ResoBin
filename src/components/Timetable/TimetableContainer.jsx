@@ -970,7 +970,7 @@ const TimeText = styled.span`
   padding-right: 5px;
   font-size: 0.85rem;
   color: ${({ theme }) => theme.textColor};
-  font-weight: 100;
+  font-weight: 400;
   position: relative;
   top: -9px;
 `
