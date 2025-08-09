@@ -305,6 +305,10 @@ const TimetableContainer = () => {
   return `${date.format('dddd')}, ${date.format('D MMMM YYYY')}`; // e.g., "Wednesday, 6 August 2025"
 }
 
+  const getDateDisplay = (date) => {
+  return `${date.format('D MMMM YYYY')}`; // e.g., "Wednesday, 6 August 2025"
+}
+
   const getTodayEvents = () => {
     const today = moment()
     const todayDayIndex = today.weekday() === 0 ? 6 : today.weekday() - 1 // Convert Sunday=0 to Saturday=6
@@ -359,6 +363,7 @@ const TimetableContainer = () => {
   const warnings = detectClashes()
 
   const dayDateString = getDayViewDateDisplay(currentDate);
+  const dateString = getDateDisplay(currentDate);
   return (
     <>
 {/* Row 1: Title and separator line (via updated CSS) */}
@@ -416,13 +421,13 @@ const TimetableContainer = () => {
     handleClickPrev={handleClickPrev}
     handleClickNext={handleClickNext}
     handleTodayClick={handleTodayClick}
-    dayDateString={dayDateString}/>}
+    dayDateString={dateString}/>}
         {currentView === 'Month' && <MonthView currentDate={currentDate}     currentView={currentView}
     handleViewChange={handleViewChange}
     handleClickPrev={handleClickPrev}
     handleClickNext={handleClickNext}
     handleTodayClick={handleTodayClick}
-    dayDateString={dayDateString}/>}
+    dayDateString={dateString}/>}
       </Spin>
 
       <Aside title="My courses" loading={loading}>
@@ -1069,9 +1074,9 @@ const ViewSelectorContainer = styled.div`
 
 const StyledRadioGroup = styled(Radio.Group)`
   display: inline-flex;
-  border: 1px solid #a29ca6;
-  border-radius: 12px;
-  padding: 2px;
+  border: 0.7px solid #a29ca6;
+  border-radius: 8px;
+  padding: 4px;
   background: transparent;
 
   .ant-radio-button-wrapper {
@@ -1079,8 +1084,8 @@ const StyledRadioGroup = styled(Radio.Group)`
     color: #a29ca6;
     border: none !important;               // remove separator borders
     padding: 6px 16px;
-    font-weight: 500;
-    border-radius: 8px;
+    font-weight: 400;
+    border-radius: 6px;
     margin: 0;
     transition: all 0.3s ease;
     display: flex;
@@ -1105,7 +1110,7 @@ const StyledRadioGroup = styled(Radio.Group)`
   .ant-radio-button-wrapper-checked {
     background: #6d669e;
     color: #ffffff;
-    font-weight: 600;
+    font-weight: 500;
   }
 `;
 
@@ -1141,7 +1146,7 @@ const TimeText = styled.span`
   padding-right: 10px;
   font-size: 1rem;
   color: ${({ theme }) => theme.textColor};
-  font-weight: 300;
+  font-weight: 30;
   position: relative;
   top: -12px;                 
 `
@@ -1403,12 +1408,12 @@ const MonthHeader = styled.div`
 `
 
 const MonthDayHeader = styled.div`
-  text-align: center;
+  text-align: left;
   font-size: 0.875rem;
-  font-weight: 600;
-  color: ${({ theme }) => theme.textColor};
+  font-weight: 500;
+  color: #D6C9F8;
   padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 0.2px solid #D6C9F8;
   background: rgba(255, 255, 255, 0.02);
   margin-bottom: -1px;  // This will overlap with the grid below
   margin-right: -1px;
@@ -1430,8 +1435,8 @@ const MonthWeekRow = styled.div`
 `
 
 const MonthDayCell = styled.div`
-  min-height: 100px; // Increased from 100px to 120px to match image
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 95px; 
+  border: 0.2px solid #D6C9F8;
   padding: 0.75rem; // Increased padding slightly
   opacity: ${({ isCurrentMonth }) => (isCurrentMonth ? 1 : 0.5)};
 `
@@ -1439,19 +1444,44 @@ const MonthDayCell = styled.div`
 const MonthDayNumber = styled.div`
   font-size: 1rem;
   font-weight: 600;
+  text-align: left;
+  /* Dynamically sets the text color based on props */
   color: ${({ theme, isCurrentMonth, isHighlighted }) => {
+    // Highlighted text is always white for contrast
     if (isHighlighted) return '#fff';
-    return isCurrentMonth ? theme.textColor : theme.textColorSecondary;
+    // Use theme color for days in the current month, otherwise dim it
+    return isCurrentMonth ? theme.textColor : 'rgba(255, 255, 255, 0.4)';
   }};
-  background: ${({ isHighlighted }) => (isHighlighted ? '#6d669e' : 'transparent')};
-  border-radius: ${({ isHighlighted }) => (isHighlighted ? '50%' : '0')};
-  width: ${({ isHighlighted }) => (isHighlighted ? '32px' : 'auto')};
-  height: ${({ isHighlighted }) => (isHighlighted ? '32px' : 'auto')};
-  display: flex;
-  justify-content: center;
+  position: relative; /* Establishes a positioning context for the ::before pseudo-element */
+  display: inline-flex;
   align-items: center;
-  margin: ${({ isHighlighted }) => (isHighlighted ? '0 auto' : '0')};
-`
+  padding-left: 4px; /* Small space from the cell edge */
+  min-width: 32px;   /* Ensures enough space for the highlight circle */
+  z-index: 1; /* Ensures the number appears above the highlight circle */
+
+  /* Conditionally adds the highlight circle using a pseudo-element */
+  ${({ isHighlighted }) =>
+    isHighlighted &&
+    `
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      /* A common trick to vertically center an absolute element */
+      transform: translate(-22%, -55%);
+      width: 32px;
+      height: 32px;
+      background: rgba(109, 102, 158, 0.4); /* Translucent purple circle */
+      border-radius: 50%; /* Makes the element a circle */
+      z-index: -1; /* Places the circle BEHIND the number text */
+    }
+  `}
+`;
+
+
+
+
 
 //   background: ${({ color }) => color};
 //   color: #fff;
