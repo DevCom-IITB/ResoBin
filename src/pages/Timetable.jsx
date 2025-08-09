@@ -2,7 +2,8 @@ import { Helmet } from 'react-helmet-async'
 
 import { PageContainer } from 'components/shared'
 import { TimetableContainer } from 'components/Timetable'
-import { Exam } from 'components/Timetable/ExamTimetable' 
+import PersonalPlanner from 'components/Timetable/eplanner' 
+import { Exam } from 'components/Timetable/ExamTimetable'
 
 const TimeTable = () => {
   return (
@@ -17,6 +18,7 @@ const TimeTable = () => {
 
       <TimetableContainer />
       <Exam />
+      <PersonalPlanner />
     </PageContainer>
   )
 }
