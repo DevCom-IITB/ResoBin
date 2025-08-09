@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import EplannerAPI from "./eplannerAPI";
 
+
 const styles = {
     crd: {
         border: "1px solid #2b273b",
@@ -109,7 +110,9 @@ const PersonalCard = () => {
 
   // Delete individual task
   const deletePersonalItem = async (itemId) => {
-    
+    if (!window.confirm("Are you sure you want to delete this task?")) {
+      return;
+    }
 
     try {
       setLoading(true);
@@ -227,7 +230,7 @@ const PersonalCard = () => {
                   ✕
                 </button>
                 
-                <h2 style={{ marginBottom: '20px', color: 'white' }}> Personal Planner</h2>
+                <h2 style={{ marginBottom: '0px', color: 'white' }}> Personal Planner</h2>
                 
                 {error && (
                   <div style={{
@@ -280,6 +283,7 @@ const PersonalCard = () => {
                       required
                     />
                   </div>
+                {/* Date */}
                  <div style={{ marginBottom: '15px' }}>
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                     <label htmlFor="eplanner-date" style={{ display: 'block', marginBottom: '5px', color: 'white' }}>
@@ -304,7 +308,7 @@ const PersonalCard = () => {
                       disabled={loading}
                     />
                   </div>
-
+                  {/* Weekdays */}
                   <div style={{ marginBottom: '15px' }}>
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                     <select
@@ -326,7 +330,7 @@ const PersonalCard = () => {
                       }}
                       disabled={loading}
                     >
-                      <option value="">Select weekdays</option>
+                      {/* <option value="">Select weekdays</option> */}
                       <option value="Monday">Monday</option>
                       <option value="Tuesday">Tuesday</option>
                       <option value="Wednesday">Wednesday</option>
@@ -339,11 +343,12 @@ const PersonalCard = () => {
                       <option value="Daily">Daily</option>
                     </select>
                   </div>
-                      <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                          <div style={{ marginBottom: '15px' }}>
-                            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                            <label htmlFor="eplanner-startdate" style={{ display: 'block', marginBottom: '5px', color: 'white' }}>
-                              Start Date
+                  {/* Start and End Date */}
+                  <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+                      <div style={{ marginBottom: '15px' }}>
+                        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                        <label htmlFor="eplanner-startdate" style={{ display: 'block', marginBottom: '5px', color: 'white' }}>
+                          Start Date
                             </label>
                             <input
                               id="eplanner-startdate"
@@ -392,6 +397,7 @@ const PersonalCard = () => {
                             />
                           </div>
                       </div>
+                  {/* Location */}
                   <div style={{ marginBottom: '15px' }}>
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                     <label htmlFor="eplanner-location" style={{ display: 'block', marginBottom: '5px', color: 'white' }}>
@@ -417,6 +423,7 @@ const PersonalCard = () => {
                       disabled={loading}
                     />
                   </div>
+                  {/* Description */}
                   <div style={{ marginBottom: '15px' }}>
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                     <label htmlFor="eplanner-description" style={{ display: 'block', marginBottom: '5px', color: 'white' }}>
@@ -462,7 +469,7 @@ const PersonalCard = () => {
                     >
                       {loading ? ' Saving...' : ' Save Task'}
                     </button>
-                    <button type="button" onClick={removePersonalData} style={{
+                    {/* <button type="button" onClick={removePersonalData} style={{
                       backgroundColor: '#1b1728',
                       color: 'red',
                       padding: '12px 20px',
@@ -474,7 +481,7 @@ const PersonalCard = () => {
                       filter: 'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'
                     }}>
                        Remove
-                    </button>
+                    </button> */}
 
                   </div>
                 </div>
@@ -497,7 +504,7 @@ const PersonalCard = () => {
                       borderRadius: '8px',
                       border: '2px dashed #ced4da'
                     }}>
-                      <p style={{ fontSize: '48px', margin: '10px 0' }}>📋</p>
+                      <p style={{ fontSize: '48px', margin: '10px 0' }}>X</p>
                       <p style={{ color: '#6c757d', margin: '0' }}>No tasks yet. Add your first task above!</p>
                     </div>
                   )}
