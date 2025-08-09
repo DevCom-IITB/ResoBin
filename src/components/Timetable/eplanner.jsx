@@ -76,6 +76,7 @@ const PersonalCard = () => {
         location: location || null
       };
 
+      console.log(" Data being sent:", newItem);
       const savedItem = await EplannerAPI.createPersonal(newItem);
       console.log(" Saved data:", savedItem);
 
@@ -91,28 +92,46 @@ const PersonalCard = () => {
 
     } catch (err) {
       console.error(" Error saving data:", err);
-      alert("Failed to save task. Check console for details.");
+      console.error(" Full error details:", err.message, err.stack);
+      // alert("Failed to save task. Check console for details.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Clear form data (Remove functionality for form)
-  const removePersonalData = () => {
-    setTitle('');
-    setDescription('');
-    setDate('');
-    setWeekdays('');
-    setStartDate('');
-    setEndDate('');
-    setLocation('');
+  // Clear form data and delete all tasks
+  const removePersonalData = async() => {
+    try {
+      setLoading(true);
+      console.log("Deleting all personal data...");
+      
+      const result = await EplannerAPI.deletePersonalall();
+      console.log("Deleted all data:", result);
+      
+      // Clear local state
+      setPersonalItems([]);
+      
+      // Clear form fields
+      setTitle('');
+      setDescription('');
+      setDate('');
+      setWeekdays('');
+      setStartDate('');
+      setEndDate('');
+      setLocation('');
+      
+      alert(`Successfully deleted all tasks!`);
+      
+    } catch (err) {
+      console.error("Error deleting all data:", err);
+      alert("Failed to delete all tasks. Check console for details.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Delete individual task
   const deletePersonalItem = async (itemId) => {
-    if (!window.confirm("Are you sure you want to delete this task?")) {
-      return;
-    }
 
     try {
       setLoading(true);
@@ -121,12 +140,12 @@ const PersonalCard = () => {
       await EplannerAPI.deletePersonal(itemId);
       console.log(" Deleted data with ID:", itemId);
 
-      // Remove from local state
+      
       setPersonalItems(personalItems.filter(item => item.id !== itemId));
 
     } catch (err) {
       console.error(" Error deleting data:", err);
-      alert("Failed to delete task. Check console for details.");
+      // alert("Failed to delete task. Check console for details.");
     } finally {
       setLoading(false);
     }
@@ -309,7 +328,7 @@ const PersonalCard = () => {
                     />
                   </div>
                   {/* Weekdays */}
-                  <div style={{ marginBottom: '15px' }}>
+                  <div style={{ marginBottom: '15px', marginRight: '400px' }}>
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                     <select
                       id="eplanner-weekdays"
@@ -320,8 +339,8 @@ const PersonalCard = () => {
                       style={{
                         width: '100%',
                         padding: '10px',
-                        margin: '0px 0px 0px 0px',
-                        left: '100px',
+                        margin: '0px 50px 0px 0px',
+                        left: '50%',
                         border: '2px solid #201f2e',
                         borderRadius: '4px',
                         fontSize: '16px',
@@ -338,8 +357,6 @@ const PersonalCard = () => {
                       <option value="Friday">Friday</option>
                       <option value="Saturday">Saturday</option>
                       <option value="Sunday">Sunday</option>
-                      <option value="Weekdays">Weekdays (Mon-Fri)</option>
-                      <option value="Weekend">Weekend (Sat-Sun)</option>
                       <option value="Daily">Daily</option>
                     </select>
                   </div>
@@ -450,7 +467,7 @@ const PersonalCard = () => {
                       disabled={loading}
                     />
                   </div>
-                  <div style={{ display: 'flex', gap: '10px' , alignItems: 'center',  marginLeft:'280px'}}>
+                  <div style={{ display: 'flex', gap: '10px' , alignItems: 'center',  marginLeft:'250px'}}>
                     <button
                       type="button"
                       onClick={savePersonalData}
@@ -463,13 +480,13 @@ const PersonalCard = () => {
                         borderRadius: '5px',
                         cursor: loading ? 'not-allowed' : 'pointer',
                         fontSize: '16px',
-                        margin:'0 0 0 0px',
+                        margin:'0 10px 0 0px',
                         filter:'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'
                       }}
                     >
                       {loading ? ' Saving...' : ' Save Task'}
                     </button>
-                    {/* <button type="button" onClick={removePersonalData} style={{
+                    <button type="button" onClick={removePersonalData} style={{
                       backgroundColor: '#1b1728',
                       color: 'red',
                       padding: '12px 20px',
@@ -481,17 +498,17 @@ const PersonalCard = () => {
                       filter: 'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'
                     }}>
                        Remove
-                    </button> */}
+                    </button>
 
                   </div>
                 </div>
                 
                 
                 <div>
-                  <h3 style={{ color: 'white' }}> Your Tasks ({personalItems.length})</h3>
+                  <h3 style={{ color: 'white' , margin:'0px 60px 0px 20px'}}> Your Tasks ({personalItems.length})</h3>
                   
                   {loading && (
-                    <div style={{ textAlign: 'center', padding: '20px' }}>
+                    <div style={{ textAlign: 'center', padding: '0px'}}>
                       <p> Loading tasks...</p>
                     </div>
                   )}

@@ -51,6 +51,15 @@ class EplannerAPI {
         return response.ok;
     }
 
+    static async deletePersonalall(){
+        const response = await fetch(`${BASE_URL}/personals/all/`, {
+            method: 'DELETE',
+        });
+        if(!response.ok)
+            throw new Error("Failed to delete all personals");
+        return response.json();
+    }
+
     static async getReminders(){
         const response = await fetch(`${BASE_URL}/reminders/`);
         if(!response.ok)
