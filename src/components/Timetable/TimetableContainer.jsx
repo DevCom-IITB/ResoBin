@@ -31,7 +31,6 @@ import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableSearch from './TimetableSearch'
 import TimetableShareButton from './TimetableShareButton'
 
-
 const TimetableContainer = () => {
   const dispatch = useDispatch()
   const semesterList = useSelector(selectSemesters)
@@ -64,7 +63,6 @@ const TimetableContainer = () => {
     setCurrentView(newView)
     navigate(`/timetable/${newView.toLowerCase()}`)
   }
-
 
   // Add the fetchCourses function
   const fetchCourses = async (params) => {
@@ -143,9 +141,8 @@ const TimetableContainer = () => {
   };
 
   const removeFromTimetable = (id) => () => {
-    const course = coursedata[
-      courseTimetableList.find((item) => item.id === id)?.course
-    ]
+    const course =
+      coursedata[courseTimetableList.find((item) => item.id === id)?.course]
     const courseName = course?.title ?? 'this course'
     const courseCode = course?.code ?? ''
 
@@ -153,7 +150,11 @@ const TimetableContainer = () => {
       title: `Remove ${courseCode}?`,
       content: (
         <p>
-          Are you sure you want to remove <strong>{courseCode} : {courseName}</strong> from your timetable?
+          Are you sure you want to remove{' '}
+          <strong>
+            {courseCode} : {courseName}
+          </strong>{' '}
+          from your timetable?
         </p>
       ),
       okText: 'Remove',
@@ -236,7 +237,7 @@ const TimetableContainer = () => {
       // NOTE: This logic assumes your `slots` data maps Monday to `col: 1`, Tuesday to `col: 2`, etc.
       // `dayIndex` will be 0 for Monday, 1 for Tuesday... 6 for Sunday. This is the standard.
       const createEventHandler = (slotName, type) => {
-        const slot = slots[slotName];
+        const slot = slots[slotName]
         if (slot) {
           events.push({
             id: `${item.id}-${slotName}${type === 'Tutorial' ? '-tut' : ''}`,
@@ -249,13 +250,17 @@ const TimetableContainer = () => {
             startTime: rows[slot.row.start]?.title || '08:30',
             endTime: rows[slot.row.end]?.title || '09:30',
             color: colorPicker(hash(item.id)),
-            slotName
-          });
+            slotName,
+          })
         }
-      };
+      }
 
-      item.lectureSlots.forEach(slotName => createEventHandler(slotName, 'Lecture'));
-      item.tutorialSlots.forEach(slotName => createEventHandler(slotName, 'Tutorial'));
+      item.lectureSlots.forEach((slotName) =>
+        createEventHandler(slotName, 'Lecture')
+      )
+      item.tutorialSlots.forEach((slotName) =>
+        createEventHandler(slotName, 'Tutorial')
+      )
     })
 
     return events
@@ -263,28 +268,27 @@ const TimetableContainer = () => {
 
   const events = getEventsForView()
 
-
   const getDayViewDateDisplay = (date) => {
-    return `${date.format('dddd')}, ${date.format('D MMMM YYYY')}`; // e.g., "Wednesday, 6 August 2025"
+    return `${date.format('dddd')}, ${date.format('D MMMM YYYY')}` // e.g., "Wednesday, 6 August 2025"
   }
 
   const getDateDisplay = (date) => {
-    const start = date.clone().startOf('isoWeek');
-    const end = date.clone().endOf('isoWeek');
+    const start = date.clone().startOf('isoWeek')
+    const end = date.clone().endOf('isoWeek')
     if (start.month() === end.month()) {
-        return `${start.format('D')} - ${end.format('D MMMM YYYY')}`;
+      return `${start.format('D')} - ${end.format('D MMMM YYYY')}`
     }
-    return `${start.format('D MMM')} - ${end.format('D MMM YYYY')}`;
+    return `${start.format('D MMM')} - ${end.format('D MMM YYYY')}`
   }
 
   const getTodayEvents = () => {
     const today = moment()
     // CORRECTED: Use isoWeekday() for consistency. Mon=1, ..., Sun=7.
-    const todayDayIndex = today.isoWeekday() - 1;
+    const todayDayIndex = today.isoWeekday() - 1
 
-    return events.filter(event => {
+    return events.filter((event) => {
       if (currentView === 'Day') {
-        const selectedDayIndex = currentDate.isoWeekday() - 1;
+        const selectedDayIndex = currentDate.isoWeekday() - 1
         return event.dayIndex === selectedDayIndex
       }
       return event.dayIndex === todayDayIndex
@@ -297,7 +301,7 @@ const TimetableContainer = () => {
     const clashes = []
     const eventsByDayAndTime = {}
 
-    events.forEach(event => {
+    events.forEach((event) => {
       const key = `${event.dayIndex}-${event.startRow}`
       if (!eventsByDayAndTime[key]) {
         eventsByDayAndTime[key] = []
@@ -307,10 +311,18 @@ const TimetableContainer = () => {
 
     Object.values(eventsByDayAndTime).forEach((eventsInSlot) => {
       if (eventsInSlot.length > 1) {
-        const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        const dayNames = [
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+          'Sunday',
+        ]
         const event = eventsInSlot[0]
         const dayName = dayNames[event.dayIndex] || 'Unknown'
-        const courseNames = eventsInSlot.map(e => e.courseCode).join(', ')
+        const courseNames = eventsInSlot.map((e) => e.courseCode).join(', ')
 
         clashes.push(
           `Time clash on ${dayName} (${event.startTime} - ${event.endTime}): ${courseNames}`
@@ -323,18 +335,17 @@ const TimetableContainer = () => {
 
   const warnings = detectClashes()
 
-  const dayDateString = getDayViewDateDisplay(currentDate);
-  const dateString = getDateDisplay(currentDate);
+  const dayDateString = getDayViewDateDisplay(currentDate)
+  const dateString = getDateDisplay(currentDate)
   return (
     <>
       <TimetablePageHeadingWrapper>
         <PageHeading>
           <PageTitle>Timetable</PageTitle>
 
-          <AddButton>
-            + add
-          </AddButton>
-        </PageHeading></TimetablePageHeadingWrapper>
+          <AddButton>+ add</AddButton>
+        </PageHeading>
+      </TimetablePageHeadingWrapper>
 
       <SubHeader>
         <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
@@ -370,30 +381,30 @@ const TimetableContainer = () => {
           />
         )}
         {currentView === 'Week' && (
-            <WeekView 
-                currentDate={currentDate} 
-                events={events} 
-                slots={slots} 
-                rows={rows} 
-                coursedata={coursedata}     
-                currentView={currentView}
-                handleViewChange={handleViewChange}
-                handleClickPrev={handleClickPrev}
-                handleClickNext={handleClickNext}
-                handleTodayClick={handleTodayClick}
-                dayDateString={dateString}
-            />
+          <WeekView
+            currentDate={currentDate}
+            events={events}
+            slots={slots}
+            rows={rows}
+            coursedata={coursedata}
+            currentView={currentView}
+            handleViewChange={handleViewChange}
+            handleClickPrev={handleClickPrev}
+            handleClickNext={handleClickNext}
+            handleTodayClick={handleTodayClick}
+            dayDateString={dateString}
+          />
         )}
         {currentView === 'Month' && (
-            <MonthView 
-                currentDate={currentDate}     
-                currentView={currentView}
-                handleViewChange={handleViewChange}
-                handleClickPrev={handleClickPrev}
-                handleClickNext={handleClickNext}
-                handleTodayClick={handleTodayClick}
-                dayDateString={dayDateString}
-            />
+          <MonthView
+            currentDate={currentDate}
+            currentView={currentView}
+            handleViewChange={handleViewChange}
+            handleClickPrev={handleClickPrev}
+            handleClickNext={handleClickNext}
+            handleTodayClick={handleTodayClick}
+            dayDateString={dayDateString}
+          />
         )}
       </Spin>
 
@@ -436,53 +447,62 @@ const TimetableContainer = () => {
 }
 
 const CurrentTimeIndicator = () => {
-  const [topPosition, setTopPosition] = useState(0);
+  const [topPosition, setTopPosition] = useState(0)
 
   useEffect(() => {
     const calculatePosition = () => {
-      const now = moment();
-      const startTime = moment().startOf('day').add(8.5, 'hours'); // Grid starts at 8:30 AM
-      const ROW_HEIGHT = 30; // From DayView/WeekView
-      const PIXELS_PER_MINUTE = ROW_HEIGHT / 30; // 30px per 30-min slot
+      const now = moment()
+      const startTime = moment().startOf('day').add(8.5, 'hours') // Grid starts at 8:30 AM
+      const ROW_HEIGHT = 30 // From DayView/WeekView
+      const PIXELS_PER_MINUTE = ROW_HEIGHT / 30 // 30px per 30-min slot
 
       if (now.hour() >= 8 && now.hour() < 22) {
-        const minutesSinceStart = now.diff(startTime, 'minutes');
-        setTopPosition(minutesSinceStart * PIXELS_PER_MINUTE);
+        const minutesSinceStart = now.diff(startTime, 'minutes')
+        setTopPosition(minutesSinceStart * PIXELS_PER_MINUTE)
       } else {
-        setTopPosition(-1); // Hide indicator
+        setTopPosition(-1) // Hide indicator
       }
-    };
+    }
 
-    calculatePosition();
-    const interval = setInterval(calculatePosition, 60000);
+    calculatePosition()
+    const interval = setInterval(calculatePosition, 60000)
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(interval)
+  }, [])
 
   if (topPosition < 0) {
-    return null;
+    return null
   }
 
-  return <IndicatorLine style={{ top: `${topPosition}px` }} />;
-};
+  return <IndicatorLine style={{ top: `${topPosition}px` }} />
+}
 
 // Day View Component
-const DayView = ({ currentDate, events, slots: slotData, rows: rowData, coursedata, currentView,
+const DayView = ({
+  currentDate,
+  events,
+  slots: slotData,
+  rows: rowData,
+  coursedata,
+  currentView,
   handleViewChange,
   handleClickPrev,
   handleClickNext,
-  handleTodayClick, dayDateString }) => {
+  handleTodayClick,
+  dayDateString,
+}) => {
   // CORRECTED: Use isoWeekday for consistency (Mon=1, Sun=7)
   const selectedDayIndex = currentDate.isoWeekday() - 1
-  const dayEvents = events.filter(event => event.dayIndex === selectedDayIndex)
+  const dayEvents = events.filter(
+    (event) => event.dayIndex === selectedDayIndex
+  )
 
-  const timeSlots = Object.values(rowData).map(row => row.title)
+  const timeSlots = Object.values(rowData).map((row) => row.title)
   const ROW_HEIGHT = 30
-  const isToday = currentDate.isSame(moment(), 'day');
+  const isToday = currentDate.isSame(moment(), 'day')
 
   return (
     <DayViewContainer>
-
       <ControlsLayout>
         <DateDisplay>{dayDateString}</DateDisplay>
         <ViewSelectorContainer>
@@ -526,12 +546,22 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
                 key={event.id}
                 title={
                   <div>
-                    <div><strong>{event.courseCode} - {course.title}</strong></div>
+                    <div>
+                      <strong>
+                        {event.courseCode} - {course.title}
+                      </strong>
+                    </div>
                     <div>Slot: {event.slotName}</div>
-                    <div>{event.startTime} - {event.endTime}</div>
+                    <div>
+                      {event.startTime} - {event.endTime}
+                    </div>
                   </div>
                 }
-                overlayStyle={{ maxWidth: 250, fontSize: '0.9rem', color: '#333' }}
+                overlayStyle={{
+                  maxWidth: 250,
+                  fontSize: '0.9rem',
+                  color: '#333',
+                }}
                 placement="top"
               >
                 <DayEventBlock
@@ -541,13 +571,28 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
                     top: `${topPosition}px`,
                     left: '0rem',
                     right: '0rem',
-                    height: `${height}px`
+                    height: `${height}px`,
                   }}
                 >
-                  <Link to={coursePageUrl(event.courseCode, course.title)} style={{ textDecoration: 'none', color: 'inherit', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <Link
+                    to={coursePageUrl(event.courseCode, course.title)}
+                    style={{
+                      textDecoration: 'none',
+                      color: 'inherit',
+                      width: '100%',
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                    }}
+                  >
                     <div>
-                      <EventTitle>{event.courseCode} | {event.slotName}</EventTitle>
-                      <EventTime>{event.startTime} - {event.endTime}</EventTime>
+                      <EventTitle>
+                        {event.courseCode} | {event.slotName}
+                      </EventTitle>
+                      <EventTime>
+                        {event.startTime} - {event.endTime}
+                      </EventTime>
                     </div>
                     <RedirectIcon>
                       <ExternalLink size="16" />
@@ -563,25 +608,32 @@ const DayView = ({ currentDate, events, slots: slotData, rows: rowData, courseda
   )
 }
 
-
 // ##################################################################
 // ##               CORRECTED WeekView COMPONENT                 ##
 // ##################################################################
-const WeekView = ({ currentDate, events, rows: rowData, coursedata, currentView,
+const WeekView = ({
+  currentDate,
+  events,
+  rows: rowData,
+  coursedata,
+  currentView,
   handleViewChange,
   handleClickPrev,
   handleClickNext,
-  handleTodayClick, dayDateString }) => {
-
+  handleTodayClick,
+  dayDateString,
+}) => {
   // --- REFACTORED LOGIC ---
   // 1. Get the Monday of the current week. 'isoWeek' is standard and not locale-dependent.
-  const startOfWeek = currentDate.clone().startOf('isoWeek');
-  
-  // 2. Create an array of the 7 moment objects for the week. This is now the single source of truth.
-  const daysOfWeek = Array.from({ length: 7 }, (_, i) => startOfWeek.clone().add(i, 'days'));
+  const startOfWeek = currentDate.clone().startOf('isoWeek')
 
-  const timeSlots = Object.values(rowData).map(row => row.title);
-  const ROW_HEIGHT = 30;
+  // 2. Create an array of the 7 moment objects for the week. This is now the single source of truth.
+  const daysOfWeek = Array.from({ length: 7 }, (_, i) =>
+    startOfWeek.clone().add(i, 'days')
+  )
+
+  const timeSlots = Object.values(rowData).map((row) => row.title)
+  const ROW_HEIGHT = 30
 
   return (
     <TimetableWrapper>
@@ -612,7 +664,7 @@ const WeekView = ({ currentDate, events, rows: rowData, coursedata, currentView,
           <WeekHeader>
             <div /> {/* Empty cell for time column */}
             {/* 3. Map over the generated `daysOfWeek` array. */}
-            {daysOfWeek.map(day => (
+            {daysOfWeek.map((day) => (
               <WeekDayHeader key={day.format('YYYY-MM-DD')}>
                 {/* Get the date number and day name directly from the moment object. */}
                 <DayNumber>{day.format('D')}</DayNumber>
@@ -633,31 +685,42 @@ const WeekView = ({ currentDate, events, rows: rowData, coursedata, currentView,
             {/* 4. Map over the `daysOfWeek` array again for the columns, using the index. */}
             {daysOfWeek.map((day, dayIndex) => {
               // The index (0-6) will correctly correspond to Monday-Sunday.
-              const isToday = day.isSame(moment(), 'day');
-              const dayEvents = events.filter(event => event.dayIndex === dayIndex);
+              const isToday = day.isSame(moment(), 'day')
+              const dayEvents = events.filter(
+                (event) => event.dayIndex === dayIndex
+              )
 
               return (
                 <WeekDayColumn key={day.format('YYYY-MM-DD')}>
                   <div style={{ position: 'relative', height: '100%' }}>
                     {isToday && <CurrentTimeIndicator />}
                     {dayEvents.map((event) => {
-                      const course = coursedata[event.courseCode];
-                      if (!course) return null;
+                      const course = coursedata[event.courseCode]
+                      if (!course) return null
 
-                      const topPosition = event.startRow * ROW_HEIGHT;
-                      const height = (event.endRow - event.startRow) * ROW_HEIGHT;
+                      const topPosition = event.startRow * ROW_HEIGHT
+                      const height =
+                        (event.endRow - event.startRow) * ROW_HEIGHT
 
                       return (
                         <Tooltip
                           key={event.id}
                           title={
                             <div>
-                              <strong>{event.courseCode} - {course.title}</strong>
+                              <strong>
+                                {event.courseCode} - {course.title}
+                              </strong>
                               <div>Slot: {event.slotName}</div>
-                              <div>{event.startTime} - {event.endTime}</div>
+                              <div>
+                                {event.startTime} - {event.endTime}
+                              </div>
                             </div>
                           }
-                          overlayStyle={{ maxWidth: 250, fontSize: '0.9rem', color: '#333' }}
+                          overlayStyle={{
+                            maxWidth: 250,
+                            fontSize: '0.9rem',
+                            color: '#333',
+                          }}
                           placement="top"
                         >
                           <WeekEventBlock
@@ -667,12 +730,25 @@ const WeekView = ({ currentDate, events, rows: rowData, coursedata, currentView,
                               top: `${topPosition}px`,
                               left: '0',
                               right: '0',
-                              height: `${height}px`
+                              height: `${height}px`,
                             }}
                           >
-                            <Link to={coursePageUrl(event.courseCode, course.title)} style={{ textDecoration: 'none', color: 'inherit', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                            <Link
+                              to={coursePageUrl(event.courseCode, course.title)}
+                              style={{
+                                textDecoration: 'none',
+                                color: 'inherit',
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                              }}
+                            >
                               <div>
-                                <EventTitle>{event.courseCode} | {event.slotName}</EventTitle>
+                                <EventTitle>
+                                  {event.courseCode} | {event.slotName}
+                                </EventTitle>
                                 <EventTime>{event.startTime}</EventTime>
                               </div>
                               <RedirectIcon>
@@ -681,27 +757,30 @@ const WeekView = ({ currentDate, events, rows: rowData, coursedata, currentView,
                             </Link>
                           </WeekEventBlock>
                         </Tooltip>
-                      );
+                      )
                     })}
                   </div>
                 </WeekDayColumn>
-              );
+              )
             })}
           </WeekGrid>
         </WeekViewContainer>
       </TimetableScrollInner>
     </TimetableWrapper>
-  );
-};
-
+  )
+}
 
 // Month View Component
 // Month View Component
-const MonthView = ({ currentDate, currentView,
+const MonthView = ({
+  currentDate,
+  currentView,
   handleViewChange,
   handleClickPrev,
   handleClickNext,
-  handleTodayClick, dayDateString }) => {
+  handleTodayClick,
+  dayDateString,
+}) => {
   // Generate calendar grid based on current date
   const startOfMonth = currentDate.clone().startOf('month')
   const endOfMonth = currentDate.clone().endOf('month')
@@ -754,7 +833,7 @@ const MonthView = ({ currentDate, currentView,
         <MonthDayHeader>FRI</MonthDayHeader>
         <MonthDayHeader>SAT</MonthDayHeader>
       </MonthHeader>
-      
+
       <MonthGrid>
         {monthGrid.map((weekRow) => (
           // --- THIS IS THE CORRECTED LINE ---
@@ -816,7 +895,6 @@ const TimetableAsideItem = ({ course, handleRemove, loading }) => {
   )
 }
 
-
 export default TimetableContainer
 
 // ##################################################################
@@ -826,7 +904,7 @@ export default TimetableContainer
 
 const IndicatorLine = styled.div`
   position: absolute;
-  left: -10px; 
+  left: -10px;
   right: 0;
   height: 1.5px;
   background-color: #eb4d4b;
@@ -843,7 +921,7 @@ const IndicatorLine = styled.div`
     background-color: #eb4d4b;
     transform: translateY(-50%);
   }
-`;
+`
 
 const AddButton = styled.button`
   background-color: #6d669e;
@@ -863,7 +941,7 @@ const AddButton = styled.button`
   &:hover {
     background-color: ${darken(0.1, '#6d669e')};
   }
-`;
+`
 
 const SubHeader = styled.div`
   display: flex;
@@ -871,21 +949,20 @@ const SubHeader = styled.div`
   align-items: center;
   padding: 0.5rem 0;
   color: ${({ theme }) => theme.textColor};
-`;
+`
 
 const TimetablePageHeadingWrapper = styled.div`
   padding-bottom: 0.75rem;
   margin-bottom: -10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-`;
+`
 
 const ControlsLayout = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 2.25rem;
   justify-content: space-between;
-`;
-
+`
 
 const EventCountDisplay = styled.div`
   font-size: 1rem;
@@ -937,7 +1014,7 @@ const StyledRadioGroup = styled(Radio.Group)`
     color: #ffffff;
     font-weight: 500;
   }
-`;
+`
 
 const NavigationContainer = styled.div`
   display: flex;
@@ -963,7 +1040,7 @@ const NavButton = styled.button`
 `
 
 const TimeText = styled.span`
-  display: inline-block; 
+  display: inline-block;
   min-width: 30px;
   margin-left: 12px;
   text-align: right;
@@ -1040,8 +1117,7 @@ const DayEventColumn = styled.div`
   flex: 1;
   padding-left: 1rem;
   position: relative;
-  background-image: 
-    linear-gradient(
+  background-image: linear-gradient(
       to bottom,
       ${({ theme }) => theme.border || '#ececec40'} -0.5px,
       ${({ theme }) => theme.border || '#ececec40'} 0.5px,
@@ -1125,8 +1201,8 @@ const WeekDayHeader = styled.div`
   gap: 0.5rem;
   justify-content: center;
   /* Add grid lines to match the columns below */
-  border-bottom: 1px solid #FFFFFF0F;
-  border-right: 1px solid #FFFFFF0F;
+  border-bottom: 1px solid #ffffff0f;
+  border-right: 1px solid #ffffff0f;
 
   /* Remove the vertical line on the very last day */
   &:last-child {
@@ -1151,7 +1227,7 @@ const WeekGrid = styled.div`
   grid-template-columns: 80px repeat(7, 1fr);
   min-height: 600px;
   min-width: 600px;
-  color: #FFFFFF0F;
+  color: #ffffff0f;
 `
 
 const WeekTimeColumn = styled.div`
@@ -1215,9 +1291,9 @@ const MonthDayHeader = styled.div`
   text-align: left;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #D6C9F8;
+  color: #d6c9f8;
   padding: 0.75rem;
-  border: 0.2px solid #D6C9F8;
+  border: 0.2px solid #d6c9f8;
   background: rgba(255, 255, 255, 0.02);
   margin-bottom: -1px;
   margin-right: -1px;
@@ -1239,8 +1315,8 @@ const MonthWeekRow = styled.div`
 `
 
 const MonthDayCell = styled.div`
-  min-height: 95px; 
-  border: 0.2px solid #D6C9F8;
+  min-height: 95px;
+  border: 0.2px solid #d6c9f8;
   padding: 0.75rem;
   opacity: ${({ isCurrentMonth }) => (isCurrentMonth ? 1 : 0.5)};
 `
@@ -1250,8 +1326,8 @@ const MonthDayNumber = styled.div`
   font-weight: 600;
   text-align: left;
   color: ${({ theme, isCurrentMonth, isHighlighted }) => {
-    if (isHighlighted) return '#fff';
-    return isCurrentMonth ? theme.textColor : 'rgba(255, 255, 255, 0.4)';
+    if (isHighlighted) return '#fff'
+    return isCurrentMonth ? theme.textColor : 'rgba(255, 255, 255, 0.4)'
   }};
   position: relative;
   display: inline-flex;
@@ -1266,9 +1342,9 @@ const MonthDayNumber = styled.div`
     &::before {
       content: '';
       position: absolute;
-      left: 0;
+      left: 50%;
       top: 50%;
-      transform: translate(-22%, -55%);
+      transform: translate(-50%, -50%);
       width: 32px;
       height: 32px;
       background: rgba(109, 102, 158, 0.4);
@@ -1276,7 +1352,7 @@ const MonthDayNumber = styled.div`
       z-index: -1;
     }
   `}
-`;
+`
 
 const AsideList = styled.div`
   display: flex;
@@ -1308,11 +1384,11 @@ const RedirectIcon = styled.div`
   right: 0.5rem;
   opacity: 0.7;
   transition: opacity 0.2s;
-  
+
   &:hover {
     opacity: 1;
   }
-  
+
   svg {
     color: rgba(0, 0, 0, 0.6);
   }
