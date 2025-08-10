@@ -21,7 +21,25 @@ class EplannerAPI {
             throw new Error("Failed to create exam");
         return response.json();
     }
+    
+    static async deleteExam(examId){
+        const response = await fetch(`${BASE_URL}/exams/${examId}/`, {
+            method: 'DELETE',
+        });
+        if(!response.ok)
+            throw new Error("Failed to delete exam");
+        return response.ok;
+    }
 
+    static async deleteExamAll(){
+        const response = await fetch(`${BASE_URL}/exams/all/`, {
+            method: 'DELETE',
+        });
+        if(!response.ok)
+            throw new Error("Failed to delete all exams");
+        return response.json();
+    }    
+    
     static async getPersonals(){
         const response = await fetch(`${BASE_URL}/personals/`);
         if(!response.ok)

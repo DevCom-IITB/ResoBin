@@ -351,22 +351,25 @@ const PersonalCard = () => {
                   <div 
                   style={{
                         width: '100%',
-                        padding: '10px 10px 10px 10px',
-                        margin: '0px 0px 0px 0px',
                         border: '1px',
-                        borderRadius: '4px',
+                        borderRadius: '8px',
                         fontSize: '16px',
-                        boxSizing: 'border-box',
+                        // boxSizing: 'border-box',
                         backgroundColor: "#1b1728",
                         color: date ? 'white' : 'transparent',
-                        outline: 'none'
+                        outline: 'none',
+                        padding: '10px',
+                        marginTop:'10px',
+                        position: 'relative',
+                        flex:'1'
                       }}>
                     {/* Show today's date text when no date is selected */}
                     {!date && (
                       <span style={{
                         position: 'absolute',
-                        left: '90px',
-                        top: '125px',
+                        left: '12px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
                         color: '#9ca3af',
                         fontSize: '16px',
                         pointerEvents: 'none'

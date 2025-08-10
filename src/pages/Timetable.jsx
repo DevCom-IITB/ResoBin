@@ -20,7 +20,7 @@ const TimeTable = () => {
       <TimetableContainer />
       <Exam />
       <PersonalPlanner />
-      {/* <ExamPlanner /> */}
+      <ExamPlanner />
     </PageContainer>
   )
 }
