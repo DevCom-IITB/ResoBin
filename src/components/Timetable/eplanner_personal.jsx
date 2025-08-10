@@ -328,10 +328,10 @@ const PersonalCard = () => {
                     />
                   </div>
                 {/* Date */}
-                <div style={{ marginBottom: '15px', display : 'flex', gap: '0px'}}>
-                  <div style={{ display : 'flex', width: '8%', marginTop:'10px'}}>
+                <div style={{ marginBottom: '15px', display : 'flex', gap: '-5px'}}>
+                  <div style={{ display : 'flex', width: '8%', marginTop:'15px'}}>
                     <svg 
-                      width="30" 
+                      width="25" 
                       height="24" 
                       viewBox="0 0 24 24" 
                       fill="none"
@@ -349,20 +349,32 @@ const PersonalCard = () => {
                     </svg>
                   </div>
                   <div 
-                  style={{
-                        width: '100%',
-                        border: '1px',
-                        borderRadius: '8px',
-                        fontSize: '16px',
-                        // boxSizing: 'border-box',
-                        backgroundColor: "#1b1728",
-                        color: date ? 'white' : 'transparent',
-                        outline: 'none',
-                        padding: '10px',
-                        marginTop:'10px',
-                        position: 'relative',
-                        flex:'1'
-                      }}>
+                    role="button"
+                    tabIndex={0}
+                    style={{
+                          width: '100%',
+                          border: '1px',
+                          borderRadius: '8px',
+                          fontSize: '16px',
+                          // boxSizing: 'border-box',
+                          backgroundColor: "#1b1728",
+                          color: date ? 'white' : 'transparent',
+                          outline: 'none',
+                          padding: '10px',
+                          marginTop:'10px',
+                          marginRight:'13px',
+                          position: 'relative',
+                          flex:'1',
+                          cursor: 'pointer'
+                        }}
+                    onClick={() => document.getElementById('eplanner-date').showPicker()}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        document.getElementById('eplanner-date').showPicker();
+                      }
+                    }}
+                  >
                     {/* Show today's date text when no date is selected */}
                     {!date && (
                       <span style={{
@@ -388,6 +400,9 @@ const PersonalCard = () => {
                       style={{
                         backgroundColor: "#1b1728",
                         width: '100%',
+                        color: date ? 'white' : 'transparent',
+                        cursor: 'pointer',
+                        outline: 'none'
                       }}
                     />
                   </div>
@@ -402,7 +417,7 @@ const PersonalCard = () => {
                       style={{
                         width: '100%',
                         padding: '10px',
-                        marginLeft: '40px',
+                        marginLeft: '43px',
                         left: '80%',
                         border: '2px',
                         borderRadius: '4px',
@@ -424,14 +439,32 @@ const PersonalCard = () => {
                     </select>
                   </div>
                   {/* Start and End Date */}
-                  <div style={{ display: 'flex', flexDirection: 'row', gap: '15px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'row', gap: '18px' }}>
                     <div style={{ marginTop : '10px'}}>
                       <svg width="25" height="24" viewBox="0 0 24 24" fill="none">
                         <circle cx="12" cy="12" r="10" stroke="#9ca3af" strokeWidth="2" fill="none"/>
                         <polyline points="12,6 12,12 16,14" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round"/>
                       </svg>
                     </div>
-                      <div style={{ marginBottom: '15px', position: 'relative' }}>
+                      <div 
+                        role="button"
+                        tabIndex={0}
+                        style={{ 
+                          marginBottom: '15px', 
+                          position: 'relative',
+                          cursor: 'pointer',
+                          backgroundColor: "#1b1728",
+                          borderRadius: '4px',
+                          border: '1px'
+                        }}
+                        onClick={() => document.getElementById('eplanner-starttime').showPicker()}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            document.getElementById('eplanner-starttime').showPicker();
+                          }
+                        }}
+                      >
                         {/* Show placeholder text when no start time is selected */}
                         {!starttime && (
                           <span style={{
@@ -454,13 +487,15 @@ const PersonalCard = () => {
                           style={{
                             width: '100%',
                             padding: '10px 15px',
+                            // marginLeft: '41px',
                             border: '2px',
                             borderRadius: '4px',
                             fontSize: '16px',
                             boxSizing: 'border-box',
                             backgroundColor: "#1b1728",
                             color: starttime ? 'white' : 'transparent',
-                            outline: 'none'
+                            outline: 'none',
+                            cursor: 'pointer'
                           }}
                           disabled={loading}
                         />
@@ -468,7 +503,25 @@ const PersonalCard = () => {
 
                       <p style={{ alignSelf: 'center', color: 'white', fontSize: '18px', margin: '5px 49px 30px 49px' }}> to </p>
 
-                      <div style={{ marginBottom: '15px', position: 'relative' }}>
+                      <div 
+                        role="button"
+                        tabIndex={0}
+                        style={{ 
+                          marginBottom: '15px', 
+                          position: 'relative',
+                          cursor: 'pointer',
+                          backgroundColor: "#1b1728",
+                          borderRadius: '4px',
+                          border: '1px'
+                        }}
+                        onClick={() => document.getElementById('eplanner-endtime').showPicker()}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            document.getElementById('eplanner-endtime').showPicker();
+                          }
+                        }}
+                      >
 
                         {/* Show placeholder text when no end time is selected */}
                         {!endtime && (
@@ -498,14 +551,15 @@ const PersonalCard = () => {
                             boxSizing: 'border-box',
                             backgroundColor: "#1b1728",
                             color: endtime ? 'white' : 'transparent',
-                            outline: 'none'
+                            outline: 'none',
+                            cursor: 'pointer'
                           }}
                           disabled={loading}
                         />
                       </div>
                   </div>
                   {/* Location */}
-                  <div style={{ marginBottom: '15px', display: 'flex', flexDirection: 'row', gap: '15px' }}>
+                  <div style={{ marginBottom: '15px', display: 'flex', flexDirection: 'row', gap: '18px' }}>
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
 
                     <div style={{ display: 'flex', marginTop: '5px'}}>
@@ -535,7 +589,7 @@ const PersonalCard = () => {
                     />
                   </div>
                   {/* Description */}
-                  <div style={{ marginBottom: '15px' , display: 'flex', flexDirection: 'row', gap: '15px'}}>
+                  <div style={{ marginBottom: '15px' , display: 'flex', flexDirection: 'row', gap: '18px'}}>
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                     <div style={{ display: 'flex', marginLeft: '2px'}}>
                         <svg width="23" height="25" viewBox="0 0 24 24" fill="none">
