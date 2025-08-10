@@ -343,7 +343,7 @@ const TimetableContainer = () => {
         <PageHeading>
           <PageTitle>Timetable</PageTitle>
 
-          <AddButton>+ add</AddButton>
+          {/* <AddButton>+ add</AddButton> */}
         </PageHeading>
       </TimetablePageHeadingWrapper>
 
