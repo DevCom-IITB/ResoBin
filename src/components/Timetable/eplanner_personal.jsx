@@ -5,12 +5,12 @@ import EplannerAPI from "./eplannerAPI";
 
 const styles = {
     crd: {
-        border: "1px solid #2b273b",
+        border: "1px",
         margin: "10px 5px 10px 5px",
         padding:"15px 25px 15px 25px",
-        borderRadius: "8px",
+        borderRadius: "16px",
         filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))",
-        backgroundColor:"#1b1728"
+        backgroundColor:"#2b273b"
     }
 }
 
@@ -20,8 +20,8 @@ const PersonalCard = () => {
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [weekdays, setWeekdays] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [starttime, setStarttime] = useState('');
+  const [endtime, setEndtime] = useState('');
   const [location, setLocation] = useState('');
   const [isOpen, setIsOpen] = useState(false);
     
@@ -30,7 +30,35 @@ const PersonalCard = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    //  GET - Fetch data from backend
+
+    // Get today's date in readable format for display
+    const getTodayDateReadable = () => {
+        const today = new Date();
+        const options = { 
+            weekday: 'long', 
+            day: 'numeric', 
+            month: 'long', 
+            year: 'numeric' 
+        };
+        return today.toLocaleDateString('en-US', options);
+    };
+
+    // Convert weekday codes to full names for display
+    const getWeekdayDisplay = (weekdayCode) => {
+        const weekdayMap = {
+            'mon': 'Monday',
+            'tue': 'Tuesday', 
+            'wed': 'Wednesday',
+            'thu': 'Thursday',
+            'fri': 'Friday',
+            'sat': 'Saturday',
+            'sun': 'Sunday',
+            'Daily': 'Daily'
+        };
+        return weekdayMap[weekdayCode] || weekdayCode;
+    };
+
+ 
     const fetchPersonalData = async () => {
         try {
             setLoading(true);
@@ -71,8 +99,8 @@ const PersonalCard = () => {
         description: description.trim(),
         date: date || null,
         weekdays: weekdays || '',
-        startdate: startDate || null,
-        enddate: endDate || null,
+        starttime: starttime || null,
+        endtime: endtime || null,
         location: location || null
       };
 
@@ -86,8 +114,8 @@ const PersonalCard = () => {
       setDescription('');
       setDate('');
       setWeekdays('');
-      setStartDate('');
-      setEndDate('');
+      setStarttime('');
+      setEndtime('');
       setLocation('');
 
     } catch (err) {
@@ -116,15 +144,14 @@ const PersonalCard = () => {
       setDescription('');
       setDate('');
       setWeekdays('');
-      setStartDate('');
-      setEndDate('');
+      setStarttime('');
+      setEndtime('');
       setLocation('');
       
-      alert(`Successfully deleted all tasks!`);
+      
       
     } catch (err) {
       console.error("Error deleting all data:", err);
-      alert("Failed to delete all tasks. Check console for details.");
     } finally {
       setLoading(false);
     }
@@ -174,12 +201,12 @@ const PersonalCard = () => {
     setWeekdays(e.target.value);
   }
 
-  const handleStartDateChange = (e) => {
-    setStartDate(e.target.value);
+  const handleStarttimeChange = (e) => {
+    setStarttime(e.target.value);
   }
 
-  const handleEndDateChange = (e) => {
-    setEndDate(e.target.value);
+  const handleEndtimeChange = (e) => {
+    setEndtime(e.target.value);
   }
 
   const handleLocationChange = (e) => {
@@ -208,7 +235,7 @@ const PersonalCard = () => {
             }}
             disabled={loading}
           >
-              E-P {loading && ''}
+              Personal {loading && '...'}
           </button>
           
           {isOpen && (
@@ -242,14 +269,14 @@ const PersonalCard = () => {
                     border: 'none', 
                     fontSize: '20px', 
                     cursor: 'pointer',
-                    color: '#333'
+                    color: '#9ca3af'
                   }}
                   onClick={toggleplanner}
                 >
                   ✕
                 </button>
                 
-                <h2 style={{ marginBottom: '0px', color: 'white' }}> Personal Planner</h2>
+                <h2 style={{ marginBottom: '0px', color: 'white' }}> Personal</h2>
                 
                 {error && (
                   <div style={{
@@ -266,186 +293,253 @@ const PersonalCard = () => {
                 
               
                 <div style={{ 
-                  backgroundColor: '#1b1728', 
+                  backgroundColor: '#2b273b', 
                   padding: '10px', 
                   borderRadius: '8px', 
                   marginBottom: '20px',
                   display: 'flex',
                   flexDirection: 'column',
-                  border: '1px solid #1b1728'
+                  border: '1px'
                 }}>
-                  <h3 style={{ marginBottom: '15px', color: 'white' }}>Add New Task</h3>
 
                   <div style={{ marginBottom: '15px' }}>
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                    <label htmlFor="eplanner-title" style={{ marginBottom: '5px', color: 'white' , display: 'flex'}}>
-                       Title 
-                    </label>
                     <input
                       id="eplanner-title"
                       name="title"
                       type="text"
                       value={title}
                       onChange={handleTitleChange}
-                      placeholder="Enter task title..."
+                      placeholder="Add title"
                       style={{
                         width: '100%',
                         padding: '10px',
-                        border: '2px solid #201f2e',
-                        borderRadius: '4px',
+                        border: '2px',
                         fontSize: '16px',
                         boxSizing: 'border-box',
-                        backgroundColor: "#201f2e",
-                        color: 'white'
+                        backgroundColor: "#2b273b",
+                        color: 'white',
+                        borderBottom: '3px solid #4a4a5e',
+                        margin: '0px 0'
                       }}
+                      
                       disabled={loading}
                       required
                     />
                   </div>
                 {/* Date */}
-                 <div style={{ marginBottom: '15px' }}>
-                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                    <label htmlFor="eplanner-date" style={{ display: 'block', marginBottom: '5px', color: 'white' }}>
-                       Date
-                    </label>
+                <div style={{ marginBottom: '15px', display : 'flex', gap: '0px'}}>
+                  <div style={{ display : 'flex', width: '8%', marginTop:'10px'}}>
+                    <svg 
+                      width="30" 
+                      height="24" 
+                      viewBox="0 0 24 24" 
+                      fill="none"
+                      style={{ marginRight: '10px' }}
+                    >
+                      <rect x="3" y="6" width="18" height="14" rx="2" ry="2" stroke="#9ca3af" strokeWidth="2" fill="none"/>
+                      <circle cx="8" cy="2" r="1" fill="#9ca3af"/>
+                      <circle cx="16" cy="2" r="1" fill="#9ca3af"/>
+                      <line x1="8" y1="2" x2="8" y2="6" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round"/>
+                      <line x1="16" y1="2" x2="16" y2="6" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round"/>
+                      <line x1="3" y1="10" x2="21" y2="10" stroke="#9ca3af" strokeWidth="2"/>
+                      <circle cx="7" cy="13" r="0.5" fill="#9ca3af" opacity="0.6"/>
+                      <circle cx="12" cy="13" r="0.5" fill="#9ca3af" opacity="0.6"/>
+                      <circle cx="17" cy="13" r="0.5" fill="#9ca3af" opacity="0.6"/>
+                    </svg>
+                  </div>
+                  <div 
+                  style={{
+                        width: '100%',
+                        padding: '10px 10px 10px 10px',
+                        margin: '0px 0px 0px 0px',
+                        border: '1px',
+                        borderRadius: '4px',
+                        fontSize: '16px',
+                        boxSizing: 'border-box',
+                        backgroundColor: "#1b1728",
+                        color: date ? 'white' : 'transparent',
+                        outline: 'none'
+                      }}>
+                    {/* Show today's date text when no date is selected */}
+                    {!date && (
+                      <span style={{
+                        position: 'absolute',
+                        left: '90px',
+                        top: '125px',
+                        color: '#9ca3af',
+                        fontSize: '16px',
+                        pointerEvents: 'none'
+                      }}>
+                        {getTodayDateReadable()}
+                      </span>
+                    )}
+                    
                     <input
                       id="eplanner-date"
                       name="date"
                       type="date"
                       value={date}
                       onChange={handleDateChange}
-                      style={{
-                        width: '100%',
-                        padding: '10px',
-                        border: '2px solid #201f2e',
-                        borderRadius: '4px',
-                        fontSize: '16px',
-                        boxSizing: 'border-box',
-                        backgroundColor: "#201f2e",
-                        color: 'white',
-                      }}
                       disabled={loading}
+                      style={{
+                        backgroundColor: "#1b1728",
+                        width: '100%',
+                      }}
                     />
                   </div>
+                </div>
                   {/* Weekdays */}
-                  <div style={{ marginBottom: '15px', marginRight: '400px' }}>
-                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                  <div style={{ marginBottom: '15px', marginRight: '355px' }}>
                     <select
                       id="eplanner-weekdays"
                       name="weekdays"
                       value={weekdays}
-                      placeholder="Does not repeat"
                       onChange={handleWeekdaysChange}
                       style={{
                         width: '100%',
                         padding: '10px',
-                        margin: '0px 50px 0px 0px',
-                        left: '50%',
-                        border: '2px solid #201f2e',
+                        marginLeft: '40px',
+                        left: '80%',
+                        border: '2px',
                         borderRadius: '4px',
                         fontSize: '16px',
-                        backgroundColor: "#201f2e",
-                        color: 'white',
+                        backgroundColor: "#1b1728",
+                        color: weekdays ? 'white' : '#9ca3af',
                       }}
                       disabled={loading}
                     >
-                      {/* <option value="">Select weekdays</option> */}
-                      <option value="Monday">Monday</option>
-                      <option value="Tuesday">Tuesday</option>
-                      <option value="Wednesday">Wednesday</option>
-                      <option value="Thursday">Thursday</option>
-                      <option value="Friday">Friday</option>
-                      <option value="Saturday">Saturday</option>
-                      <option value="Sunday">Sunday</option>
+                      <option value="" style={{ color: '#9ca3af' }}>Does not repeat</option>
+                      <option value="mon">Monday</option>
+                      <option value="tue">Tuesday</option>
+                      <option value="wed">Wednesday</option>
+                      <option value="thu">Thursday</option>
+                      <option value="fri">Friday</option>
+                      <option value="sat">Saturday</option>
+                      <option value="sun">Sunday</option>
                       <option value="Daily">Daily</option>
                     </select>
                   </div>
                   {/* Start and End Date */}
-                  <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                      <div style={{ marginBottom: '15px' }}>
-                        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                        <label htmlFor="eplanner-startdate" style={{ display: 'block', marginBottom: '5px', color: 'white' }}>
-                          Start Date
-                            </label>
-                            <input
-                              id="eplanner-startdate"
-                              name="startdate"
-                              type="date"
-                              value={startDate}
-                              onChange={handleStartDateChange}
-                              style={{
-                                width: '100%',
-                                padding: '10px',
-                                border: '2px solid #201f2e',
-                                borderRadius: '4px',
-                                fontSize: '16px',
-                                boxSizing: 'border-box',
-                                backgroundColor: "#201f2e",
-                                color: 'white',
-                              }}
-                              disabled={loading}
-                            />
-                          </div>
-    
-                          <p style={{ alignSelf: 'center', color: 'white', fontSize: '18px', margin: '30px 68px 30px 68px' }}> to </p>
-    
-                          <div style={{ marginBottom: '15px' }}>
-                            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                            <label htmlFor="eplanner-enddate" style={{ display: 'block', marginBottom: '5px', color: 'white' }}>
-                              End Date
-                            </label>
-                            <input
-                              id="eplanner-enddate"
-                              name="enddate"
-                              type="date"
-                              value={endDate}
-                              onChange={handleEndDateChange}
-                              style={{
-                                width: '100%',
-                                padding: '10px',
-                                border: '2px solid #201f2e',
-                                borderRadius: '4px',
-                                fontSize: '16px',
-                                boxSizing: 'border-box',
-                                backgroundColor: "#201f2e",
-                                color: 'white',
-                              }}
-                              disabled={loading}
-                            />
-                          </div>
+                  <div style={{ display: 'flex', flexDirection: 'row', gap: '15px' }}>
+                    <div style={{ marginTop : '10px'}}>
+                      <svg width="25" height="24" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" stroke="#9ca3af" strokeWidth="2" fill="none"/>
+                        <polyline points="12,6 12,12 16,14" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round"/>
+                      </svg>
+                    </div>
+                      <div style={{ marginBottom: '15px', position: 'relative' }}>
+                        {/* Show placeholder text when no start time is selected */}
+                        {!starttime && (
+                          <span style={{
+                            position: 'absolute',
+                            left: '12px',
+                            top: '10px',
+                            color: '#9ca3af',
+                            fontSize: '16px',
+                            pointerEvents: 'none'
+                          }}>
+                            Start Time
+                          </span>
+                        )}
+                        <input
+                          id="eplanner-starttime"
+                          name="starttime"
+                          type="time"
+                          value={starttime}
+                          onChange={handleStarttimeChange}
+                          style={{
+                            width: '100%',
+                            padding: '10px 15px',
+                            border: '2px',
+                            borderRadius: '4px',
+                            fontSize: '16px',
+                            boxSizing: 'border-box',
+                            backgroundColor: "#1b1728",
+                            color: starttime ? 'white' : 'transparent',
+                            outline: 'none'
+                          }}
+                          disabled={loading}
+                        />
                       </div>
+
+                      <p style={{ alignSelf: 'center', color: 'white', fontSize: '18px', margin: '5px 49px 30px 49px' }}> to </p>
+
+                      <div style={{ marginBottom: '15px', position: 'relative' }}>
+
+                        {/* Show placeholder text when no end time is selected */}
+                        {!endtime && (
+                          <span style={{
+                            position: 'absolute',
+                            left: '12px',
+                            top: '10px',
+                            color: '#9ca3af',
+                            fontSize: '16px',
+                            pointerEvents: 'none'
+                          }}>
+                            End-Time
+                          </span>
+                        )}
+                        <input
+                          id="eplanner-endtime"
+                          name="endtime"
+                          type="time"
+                          value={endtime}
+                          onChange={handleEndtimeChange}
+                          style={{
+                            width: '100%',
+                            padding: '10px 15px',
+                            border: '2px',
+                            borderRadius: '4px',
+                            fontSize: '16px',
+                            boxSizing: 'border-box',
+                            backgroundColor: "#1b1728",
+                            color: endtime ? 'white' : 'transparent',
+                            outline: 'none'
+                          }}
+                          disabled={loading}
+                        />
+                      </div>
+                  </div>
                   {/* Location */}
-                  <div style={{ marginBottom: '15px' }}>
+                  <div style={{ marginBottom: '15px', display: 'flex', flexDirection: 'row', gap: '15px' }}>
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                    <label htmlFor="eplanner-location" style={{ display: 'block', marginBottom: '5px', color: 'white' }}>
-                      Location
-                    </label>
+
+                    <div style={{ display: 'flex', marginTop: '5px'}}>
+                      <svg width="25" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="#9ca3af" strokeWidth="2" fill="none"/>
+                        <circle cx="12" cy="10" r="3" stroke="#9ca3af" strokeWidth="2" fill="none"/>
+                      </svg>
+                    </div>
                     <input
                       id="eplanner-location"
                       name="location"
                       type="text"
                       value={location}
                       onChange={handleLocationChange}
-                      placeholder="Enter location..."
+                      placeholder="Enter location"
                       style={{
                         width: '100%',
                         padding: '10px',
-                        border: '2px solid #201f2e',
+                        border: '2px',
                         borderRadius: '4px',
                         fontSize: '16px',
                         boxSizing: 'border-box',
-                        backgroundColor: "#201f2e",
-                        color: 'white',
+                        backgroundColor: "#1b1728",
+                        color: '#9ca3af',
                       }}
                       disabled={loading}
                     />
                   </div>
                   {/* Description */}
-                  <div style={{ marginBottom: '15px' }}>
+                  <div style={{ marginBottom: '15px' , display: 'flex', flexDirection: 'row', gap: '15px'}}>
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                    <label htmlFor="eplanner-description" style={{ display: 'block', marginBottom: '5px', color: 'white' }}>
-                       Description
-                    </label>
+                    <div style={{ display: 'flex', marginLeft: '2px'}}>
+                        <svg width="23" height="25" viewBox="0 0 24 24" fill="none">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="#9ca3af" strokeWidth="2" fill="none" strokeLinecap="round"/>
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="#9ca3af" strokeWidth="2" fill="none" strokeLinecap="round"/>
+                        </svg>
+                    </div>
                     <textarea
                       id="eplanner-description"
                       name="description"
@@ -456,12 +550,13 @@ const PersonalCard = () => {
                       style={{
                         width: '100%',
                         padding: '10px',
-                        border: '2px solid #201f2e',
+                        border: '2px',
+                        marginLeft: '0px',
                         borderRadius: '4px',
                         fontSize: '16px',
                         boxSizing: 'border-box',
                         resize: 'vertical',
-                        backgroundColor: "#201f2e",
+                        backgroundColor: "#1b1728",
                         color: 'white'
                       }}
                       disabled={loading}
@@ -531,7 +626,7 @@ const PersonalCard = () => {
                       {personalItems.map((item, index) => (
                         <div key={item.id || index} style={{
                           backgroundColor: '#1b1728',
-                          border: '1px solid #dee2e6',
+                          border: '1px',
                           borderRadius: '8px',
                           padding: '15px',
                           marginBottom: '10px',
@@ -576,7 +671,6 @@ const PersonalCard = () => {
                               padding: '0px 0px',
                               borderRadius: '4px',
                               fontSize: '14px',
-                              fontWeight: 'bold',
                               marginRight: '8px'
                             }}>
                               Date: {item.date}
@@ -590,13 +684,12 @@ const PersonalCard = () => {
                               padding: '4px 8px',
                               borderRadius: '4px',
                               fontSize: '14px',
-                              fontWeight: 'bold',
                               marginRight: '8px'
                             }}>
-                              Weekdays: {item.weekdays}
+                              Weekdays: {getWeekdayDisplay(item.weekdays)}
                             </div>
                           )}
-                          {item.startdate && (
+                          {item.starttime && (
                             <div style={{
                               display: 'inline-block',
                               backgroundColor: '#1b1728',
@@ -604,23 +697,20 @@ const PersonalCard = () => {
                               padding: '4px 8px',
                               borderRadius: '4px',
                               fontSize: '14px',
-                              fontWeight: 'bold',
                               marginRight: '8px'
                             }}>
-                              Start: {item.startdate}
+                              Start: {item.starttime}
                             </div>
                           )}
-                          {item.enddate && (
+                          {item.endtime && (
                             <div style={{
                               display: 'inline-block',
                               backgroundColor: '#1b1728',
                               color: 'white',
-                              padding: '4px 8px',
-                              borderRadius: '4px',
-                              fontSize: '14px',
-                              fontWeight: 'bold'
+                              padding: '0px 0px',
+                              borderRadius: '4px'
                             }}>
-                              End: {item.enddate}
+                              End: {item.endtime}
                             </div>
                           )}
                           {item.location && (
