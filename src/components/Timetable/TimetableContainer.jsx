@@ -1,6 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons'
-import { ChevronLeft, ChevronRight, X, ExternalLink } from '@styled-icons/heroicons-outline'
-import { Spin, Alert, Modal, Radio,Tooltip} from 'antd'
+import { ChevronLeft, ChevronRight, X, ExternalLink, Plus, Calendar, BookOpen, Bell } from '@styled-icons/heroicons-outline'
+import { Spin, Alert, Modal, Radio, Tooltip, Dropdown, Menu } from 'antd'
 import axios from 'axios'
 import moment from 'moment'
 import { darken } from 'polished'
@@ -27,6 +27,9 @@ import { updateTimetable } from 'store/userSlice'
 import { makeGradient } from 'styles'
 import 'styles/CustomModal.css'
 
+import ExamPlanner from './eplanner_Exam'
+import PersonalPlanner from './eplanner_personal'
+import ReminderPlanner from './eplanner_reminder'
 import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableSearch from './TimetableSearch'
 import TimetableShareButton from './TimetableShareButton'
@@ -71,12 +74,42 @@ const TimetableContainer = () => {
   }
 
   const [currentView, setCurrentView] = useState(getInitialView)
+  const [dropdownVisible, setDropdownVisible] = useState(false)
 
   const handleViewChange = (e) => {
     const newView = e.target.value
     setCurrentView(newView)
     navigate(`/timetable/${newView.toLowerCase()}`)
   }
+
+  const handleDropdownItemClick = (itemType) => {
+    setDropdownVisible(false);
+    // Dispatch custom event that the component can listen to
+    window.dispatchEvent(new CustomEvent(`toggle-${itemType}-planner`));
+  };
+
+  const addDropdownMenu = (
+    <AddDropdownMenu>
+      <AddMenuItem onClick={() => handleDropdownItemClick('personal')}>
+        <AddMenuIcon>
+          <Calendar size="16" />
+        </AddMenuIcon>
+        Personal
+      </AddMenuItem>
+      <AddMenuItem onClick={() => handleDropdownItemClick('exam')}>
+        <AddMenuIcon>
+          <BookOpen size="16" />
+        </AddMenuIcon>
+        Exam
+      </AddMenuItem>
+      <AddMenuItem onClick={() => handleDropdownItemClick('reminder')}>
+        <AddMenuIcon>
+          <Bell size="16" />
+        </AddMenuIcon>
+        Reminder
+      </AddMenuItem>
+    </AddDropdownMenu>
+  )
 
 
   // Add the fetchCourses function
@@ -366,9 +399,18 @@ const TimetableContainer = () => {
 <PageHeading>
   <PageTitle>Timetable</PageTitle>
 
-  <AddButton>
-      + add
+  <Dropdown
+    overlay={addDropdownMenu}
+    trigger={['click']}
+    visible={dropdownVisible}
+    onVisibleChange={setDropdownVisible}
+    placement="bottomRight"
+  >
+    <AddButton onClick={() => setDropdownVisible(!dropdownVisible)}>
+      <Plus size="16" />
+      add
     </AddButton>
+  </Dropdown>
   {/* HeaderActions are moved to the new SubHeader below */}
 </PageHeading></TimetablePageHeadingWrapper>
 
@@ -459,6 +501,11 @@ const TimetableContainer = () => {
             ))}
         </AsideList>
       </Aside>
+
+      {/* Eplanner Components - Hidden buttons, only triggered by dropdown events */}
+      <PersonalPlanner hideButton />
+      <ExamPlanner hideButton />
+      <ReminderPlanner hideButton />
     </>
   )
 }
@@ -1024,11 +1071,58 @@ const AddButton = styled.button`
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   transition: background-color 0.2s ease;
 
   &:hover {
     background-color: ${darken(0.1, '#6d669e')};
+  }
+`;
+
+const AddDropdownMenu = styled.div`
+  background: #2b273b;
+  border: 1px solid #6d669e;
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  min-width: 160px;
+`;
+
+const AddMenuItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(109, 102, 158, 0.2);
+    color: #ffffff;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 4px;
+  }
+`;
+
+const AddMenuIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(109, 102, 158, 0.3);
+  color: #ffffff;
+  
+  svg {
+    width: 16px;
+    height: 16px;
   }
 `;
 
