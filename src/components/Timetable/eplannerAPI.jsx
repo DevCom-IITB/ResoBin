@@ -51,6 +51,16 @@ class EplannerAPI {
         const response = await APIInstance.post('/eplanner/reminders/', reminderData);
         return response;
     }
+    
+    static async deleteReminder(reminderId){
+        const response = await APIInstance.delete(`/eplanner/reminders/${reminderId}/`);
+        return response;
+    }
+
+    static async deleteReminderall(){
+        const response = await APIInstance.delete('/eplanner/reminders/all/');
+        return response;
+    }
 }
 
 export default EplannerAPI;  // Export the class, not an instance

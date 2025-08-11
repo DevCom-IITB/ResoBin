@@ -14,19 +14,18 @@ const styles = {
     }
 }
 
-const PersonalCard = () => {
+const ReminderCard = () => {
     // Form state
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [weekdays, setWeekdays] = useState('');
   const [starttime, setStarttime] = useState('');
-  const [endtime, setEndtime] = useState('');
-  const [location, setLocation] = useState('');
+  const [isAllDay, setIsAllDay] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-    
-    
-    const [personalItems, setPersonalItems] = useState([]);
+
+
+    const [ReminderItems, setReminderItems] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -56,14 +55,13 @@ const PersonalCard = () => {
         return weekdayMap[weekdayCode] || weekdayCode;
     };
 
- 
-    const fetchPersonalData = async () => {
+
+    const fetchReminderData = async () => {
         try {
             setLoading(true);
             // console.log("Fetching personal data...");
-            
-            const data = await EplannerAPI.getPersonals();
-            setPersonalItems(data);
+            const data = await EplannerAPI.getReminders();
+            setReminderItems(data);
             // console.log(" Fetched data:", data);
 
         } catch (err) {
@@ -77,12 +75,12 @@ const PersonalCard = () => {
     
     useEffect(() => {
         if (isOpen) {
-            fetchPersonalData();
+            fetchReminderData();
         }
     }, [isOpen]);
 
-   
-  const savePersonalData = async () => {
+
+  const saveReminderData = async () => {
     if (!title.trim()) {
       alert("Please enter a title!");
       return;
@@ -97,25 +95,21 @@ const PersonalCard = () => {
         description: description.trim(),
         date: date || null,
         weekdays: weekdays || '',
-        starttime: starttime || null,
-        endtime: endtime || null,
-        location: location || null
+        starttime: isAllDay ? null : (starttime || null),
       };
 
       // console.log(" Data being sent:", newItem);
-      const savedItem = await EplannerAPI.createPersonal(newItem);
+      const savedItem = await EplannerAPI.createReminder(newItem);
       // console.log(" Saved data:", savedItem);
 
-      setPersonalItems([...personalItems, savedItem]);
+      setReminderItems([...ReminderItems, savedItem]);
 
       setTitle('');
       setDescription('');
       setDate('');
       setWeekdays('');
       setStarttime('');
-      setEndtime('');
-      setLocation('');
-
+      setIsAllDay(false);
     } catch (err) {
       console.error(" Error saving data:", err);
       console.error(" Full error details:", err.message, err.stack);
@@ -126,27 +120,23 @@ const PersonalCard = () => {
   };
 
   // Clear form data and delete all tasks
-  const removePersonalData = async() => {
+  const removeReminderData = async() => {
     try {
       setLoading(true);
-      // console.log("Deleting all personal data...");
-      
-      const result = await EplannerAPI.deletePersonalall();
+      // console.log("Deleting all reminder data...");
+
+      const result = await EplannerAPI.deleteReminderall();
       // console.log("Deleted all data:", result);
 
-      
-      setPersonalItems([]);
-      
+      setReminderItems([]);
+
       
       setTitle('');
       setDescription('');
       setDate('');
       setWeekdays('');
       setStarttime('');
-      setEndtime('');
-      setLocation('');
-      
-      
+      setIsAllDay(false);
       
     } catch (err) {
       console.error("Error deleting all data:", err);
@@ -155,17 +145,17 @@ const PersonalCard = () => {
     }
   };
 
-  
-  const deletePersonalItem = async (itemId) => {
+
+  const deleteReminderItem = async (itemId) => {
 
     try {
       setLoading(true);
-      // console.log(" Deleting personal data...");
+      // console.log(" Deleting reminder data...");
 
-      await EplannerAPI.deletePersonal(itemId);
+      await EplannerAPI.deleteReminder(itemId);
       // console.log(" Deleted data with ID:", itemId);
 
-      setPersonalItems(personalItems.filter(item => item.id !== itemId));
+      setReminderItems(ReminderItems.filter(item => item.id !== itemId));
 
     } catch (err) {
       console.error(" Error deleting data:", err);
@@ -202,13 +192,13 @@ const PersonalCard = () => {
     setStarttime(e.target.value);
   }
 
-  const handleEndtimeChange = (e) => {
-    setEndtime(e.target.value);
+  const handleAllDayChange = (e) => {
+    setIsAllDay(e.target.checked);
+    if (e.target.checked) {
+      setStarttime(''); // Clear time when All Day is checked
+    }
   }
 
-  const handleLocationChange = (e) => {
-    setLocation(e.target.value);
-  }
 
     return (
         <div>
@@ -217,7 +207,7 @@ const PersonalCard = () => {
             onClick={toggleplanner} 
             style={{ 
               position: 'fixed',
-              bottom: '85%',
+              bottom: '40%',
               right: '17%',
               zIndex: 9999,
               backgroundColor: '#1b1728',
@@ -232,7 +222,7 @@ const PersonalCard = () => {
             }}
             disabled={loading}
           >
-              Personal {loading && '...'}
+              Reminder {loading && '...'}
           </button>
           
           {isOpen && (
@@ -273,7 +263,7 @@ const PersonalCard = () => {
                   ✕
                 </button>
                 
-                <h2 style={{ marginBottom: '0px', color: 'white' }}> Personal</h2>
+                <h2 style={{ marginBottom: '0px', color: 'white' }}> Reminder</h2>
                 
                 {error && (
                   <div style={{
@@ -404,6 +394,37 @@ const PersonalCard = () => {
                     />
                   </div>
                 </div>
+                  {/* All Day Checkbox */}
+                  <div style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px', marginLeft: '43px' }}>
+                    <label 
+                      htmlFor="eplanner-allday"
+                      style={{ 
+                        color: 'white', 
+                        fontSize: '16px',
+                        cursor: 'pointer',
+                        userSelect: 'none',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px'
+                      }}
+                    >
+                      <input
+                        id="eplanner-allday"
+                        name="allday"
+                        type="checkbox"
+                        checked={isAllDay}
+                        onChange={handleAllDayChange}
+                        style={{
+                          width: '18px',
+                          height: '18px',
+                          accentColor: '#8080FF',
+                          cursor: 'pointer'
+                        }}
+                        disabled={loading}
+                      />
+                      All day
+                    </label>
+                  </div>
                   {/* Weekdays */}
                   <div style={{ marginBottom: '15px', marginRight: '355px' }}>
                     <select
@@ -435,7 +456,8 @@ const PersonalCard = () => {
                       <option value="Daily">Daily</option>
                     </select>
                   </div>
-                  {/* Start and End Date */}
+                  {/* Start Time - Only show when not All Day */}
+                  {!isAllDay && (
                   <div style={{ display: 'flex', flexDirection: 'row', gap: '18px' }}>
                     <div style={{ marginTop : '10px'}}>
                       <svg width="25" height="24" viewBox="0 0 24 24" fill="none">
@@ -497,94 +519,9 @@ const PersonalCard = () => {
                           disabled={loading}
                         />
                       </div>
-
-                      <p style={{ alignSelf: 'center', color: 'white', fontSize: '18px', margin: '5px 49px 30px 49px' }}> to </p>
-
-                      <div 
-                        role="button"
-                        tabIndex={0}
-                        style={{ 
-                          marginBottom: '15px', 
-                          position: 'relative',
-                          cursor: 'pointer',
-                          backgroundColor: "#1b1728",
-                          borderRadius: '4px',
-                          border: '1px'
-                        }}
-                        onClick={() => document.getElementById('eplanner-endtime').showPicker()}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            document.getElementById('eplanner-endtime').showPicker();
-                          }
-                        }}
-                      >
-
-                        {/* Show placeholder text when no end time is selected */}
-                        {!endtime && (
-                          <span style={{
-                            position: 'absolute',
-                            left: '12px',
-                            top: '10px',
-                            color: '#9ca3af',
-                            fontSize: '16px',
-                            pointerEvents: 'none'
-                          }}>
-                            End-Time
-                          </span>
-                        )}
-                        <input
-                          id="eplanner-endtime"
-                          name="endtime"
-                          type="time"
-                          value={endtime}
-                          onChange={handleEndtimeChange}
-                          style={{
-                            width: '100%',
-                            padding: '10px 15px',
-                            border: '2px',
-                            borderRadius: '4px',
-                            fontSize: '16px',
-                            boxSizing: 'border-box',
-                            backgroundColor: "#1b1728",
-                            color: endtime ? 'white' : 'transparent',
-                            outline: 'none',
-                            cursor: 'pointer'
-                          }}
-                          disabled={loading}
-                        />
-                      </div>
                   </div>
-                  {/* Location */}
-                  <div style={{ marginBottom: '15px', display: 'flex', flexDirection: 'row', gap: '18px' }}>
-                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-
-                    <div style={{ display: 'flex', marginTop: '5px'}}>
-                      <svg width="25" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="#9ca3af" strokeWidth="2" fill="none"/>
-                        <circle cx="12" cy="10" r="3" stroke="#9ca3af" strokeWidth="2" fill="none"/>
-                      </svg>
-                    </div>
-                    <input
-                      id="eplanner-location"
-                      name="location"
-                      type="text"
-                      value={location}
-                      onChange={handleLocationChange}
-                      placeholder="Enter location"
-                      style={{
-                        width: '100%',
-                        padding: '10px',
-                        border: '2px',
-                        borderRadius: '4px',
-                        fontSize: '16px',
-                        boxSizing: 'border-box',
-                        backgroundColor: "#1b1728",
-                        color: '#9ca3af',
-                      }}
-                      disabled={loading}
-                    />
-                  </div>
+                  )}
+                    
                   {/* Description */}
                   <div style={{ marginBottom: '15px' , display: 'flex', flexDirection: 'row', gap: '18px'}}>
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
@@ -619,7 +556,7 @@ const PersonalCard = () => {
                   <div style={{ display: 'flex', gap: '10px' , alignItems: 'center',  marginLeft:'250px'}}>
                     <button
                       type="button"
-                      onClick={savePersonalData}
+                      onClick={saveReminderData}
                       disabled={loading}
                       style={{
                         backgroundColor: '#8080FF',
@@ -635,7 +572,7 @@ const PersonalCard = () => {
                     >
                       {loading ? ' Saving...' : ' Save Task'}
                     </button>
-                    <button type="button" onClick={removePersonalData} style={{
+                    <button type="button" onClick={removeReminderData} style={{
                       backgroundColor: '#1b1728',
                       color: 'red',
                       padding: '12px 20px',
@@ -654,15 +591,15 @@ const PersonalCard = () => {
                 
                 
                 <div>
-                  <h3 style={{ color: 'white' , margin:'0px 60px 0px 20px'}}> Your Tasks ({personalItems.length})</h3>
-                  
+                  <h3 style={{ color: 'white' , margin:'0px 60px 0px 20px'}}> Your Tasks ({ReminderItems.length})</h3>
+
                   {loading && (
                     <div style={{ textAlign: 'center', padding: '0px'}}>
                       <p> Loading tasks...</p>
                     </div>
                   )}
-                  
-                  {!loading && personalItems.length === 0 && (
+
+                  {!loading && ReminderItems.length === 0 && (
                     <div style={{
                       textAlign: 'center',
                       padding: '30px',
@@ -674,10 +611,10 @@ const PersonalCard = () => {
                       <p style={{ color: '#6c757d', margin: '0' }}>No tasks yet. Add your first task above!</p>
                     </div>
                   )}
-                  
-                  {!loading && personalItems.length > 0 && (
+
+                  {!loading && ReminderItems.length > 0 && (
                     <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                      {personalItems.map((item, index) => (
+                      {ReminderItems.map((item, index) => (
                         <div key={item.id || index} style={{
                           backgroundColor: '#1b1728',
                           border: '1px',
@@ -689,7 +626,7 @@ const PersonalCard = () => {
                         }}>
                           <button
                             type="button"
-                            onClick={() => deletePersonalItem(item.id)}
+                            onClick={() => deleteReminderItem(item.id)}
                             style={{
                               position: 'absolute',
                               top: '10px',
@@ -753,26 +690,20 @@ const PersonalCard = () => {
                               fontSize: '14px',
                               marginRight: '8px'
                             }}>
-                              Start: {item.starttime}
+                              Time: {item.starttime}
                             </div>
                           )}
-                          {item.endtime && (
+                          {!item.starttime && item.date && (
                             <div style={{
                               display: 'inline-block',
                               backgroundColor: '#1b1728',
                               color: 'white',
-                              padding: '0px 0px',
-                              borderRadius: '4px'
+                              padding: '4px 8px',
+                              borderRadius: '4px',
+                              fontSize: '14px',
+                              marginRight: '8px'
                             }}>
-                              End: {item.endtime}
-                            </div>
-                          )}
-                          {item.location && (
-                            <div style={{
-                              marginTop: '10px',
-                              color: 'white'
-                            }}>
-                              <strong>Location:</strong> {item.location}
+                              All day
                             </div>
                           )}
                         </div>
@@ -787,11 +718,11 @@ const PersonalCard = () => {
     )
 }
 
-const PersonalPlanner = () => {
+const ReminderPlanner = () => {
     
     return (
-        <PersonalCard  />
+        <ReminderCard  />
     )
 }
 
-export default PersonalPlanner;
+export default ReminderPlanner;

@@ -678,7 +678,7 @@ const ExamCard = () => {
                       padding: '30px',
                       backgroundColor: '#1b1728',
                       borderRadius: '8px',
-                      border: '2px dashed #ced4da'
+                      border: '2px'
                     }}>
                       <p style={{ fontSize: '48px', margin: '10px 0' }}>X</p>
                       <p style={{ color: '#6c757d', margin: '0' }}>No tasks yet. Add your first task above!</p>
