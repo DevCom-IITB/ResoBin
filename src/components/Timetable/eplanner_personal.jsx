@@ -25,13 +25,12 @@ const PersonalCard = () => {
   const [location, setLocation] = useState('');
   const [isOpen, setIsOpen] = useState(false);
     
-    // Data state
+    
     const [personalItems, setPersonalItems] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
 
-    // Get today's date in readable format for display
     const getTodayDateReadable = () => {
         const today = new Date();
         const options = { 
@@ -43,7 +42,6 @@ const PersonalCard = () => {
         return today.toLocaleDateString('en-US', options);
     };
 
-    // Convert weekday codes to full names for display
     const getWeekdayDisplay = (weekdayCode) => {
         const weekdayMap = {
             'mon': 'Monday',
@@ -62,12 +60,12 @@ const PersonalCard = () => {
     const fetchPersonalData = async () => {
         try {
             setLoading(true);
-            console.log("Fetching personal data...");
+            // console.log("Fetching personal data...");
             
             const data = await EplannerAPI.getPersonals();
             setPersonalItems(data);
-            console.log(" Fetched data:", data);
-            
+            // console.log(" Fetched data:", data);
+
         } catch (err) {
             console.error(" Error fetching data:", err);
             setError("Failed to load data");
@@ -92,7 +90,7 @@ const PersonalCard = () => {
 
     try {
       setLoading(true);
-      console.log(" Saving personal data...");
+      // console.log(" Saving personal data...");
 
       const newItem = {
         title: title.trim(),
@@ -104,9 +102,9 @@ const PersonalCard = () => {
         location: location || null
       };
 
-      console.log(" Data being sent:", newItem);
+      // console.log(" Data being sent:", newItem);
       const savedItem = await EplannerAPI.createPersonal(newItem);
-      console.log(" Saved data:", savedItem);
+      // console.log(" Saved data:", savedItem);
 
       setPersonalItems([...personalItems, savedItem]);
 
@@ -131,15 +129,15 @@ const PersonalCard = () => {
   const removePersonalData = async() => {
     try {
       setLoading(true);
-      console.log("Deleting all personal data...");
+      // console.log("Deleting all personal data...");
       
       const result = await EplannerAPI.deletePersonalall();
-      console.log("Deleted all data:", result);
+      // console.log("Deleted all data:", result);
+
       
-      // Clear local state
       setPersonalItems([]);
       
-      // Clear form fields
+      
       setTitle('');
       setDescription('');
       setDate('');
@@ -157,17 +155,16 @@ const PersonalCard = () => {
     }
   };
 
-  // Delete individual task
+  
   const deletePersonalItem = async (itemId) => {
 
     try {
       setLoading(true);
-      console.log(" Deleting personal data...");
+      // console.log(" Deleting personal data...");
 
       await EplannerAPI.deletePersonal(itemId);
-      console.log(" Deleted data with ID:", itemId);
+      // console.log(" Deleted data with ID:", itemId);
 
-      
       setPersonalItems(personalItems.filter(item => item.id !== itemId));
 
     } catch (err) {

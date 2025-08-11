@@ -65,11 +65,11 @@ const ExamCard = () => {
     const fetchExamData = async () => {
         try {
             setLoading(true);
-            console.log("Fetching exam data...");
+            // console.log("Fetching exam data...");
 
             const data = await EplannerAPI.getExams();
             setExamItems(data);
-            console.log("Fetched data:", data);
+            // console.log("Fetched data:", data);
             
         } catch (err) {
             console.error("Error fetching data:", err);
@@ -97,7 +97,7 @@ const ExamCard = () => {
         } catch (err) {
             console.error("Error fetching courses:", err);
             setCoursesList([]);
-            // If courses fetch fails, we can still continue with manual input
+            
         }
     };
 
@@ -125,7 +125,7 @@ const ExamCard = () => {
 
       const newItem = {
         course: course.trim(),
-        coursename: course.trim(), // Include both fields for compatibility
+        coursename: course.trim(), 
         description: description.trim(),
         date: date || null,
         starttime: starttime || null,
@@ -152,7 +152,6 @@ const ExamCard = () => {
         setExamItems(prevItems => [...prevItems, mockSavedItem]);
       }
 
-      // Clear form fields after successful save
       setCourse('');
       setDescription('');
       setDate('');
@@ -171,12 +170,11 @@ const ExamCard = () => {
   const removeExamData = async() => {
     try {
       setLoading(true);
-      console.log("Deleting all exam data...");
+      // console.log("Deleting all exam data...");
 
       const result = await EplannerAPI.deleteExamAll();
-      console.log("Deleted all data:", result);
-      
-     
+      // console.log("Deleted all data:", result);
+
       setExamItems([]);
 
      
@@ -201,10 +199,10 @@ const ExamCard = () => {
 
     try {
       setLoading(true);
-      console.log(" Deleting exam data...");
+      // console.log(" Deleting exam data...");  
 
       await EplannerAPI.deleteExam(itemId);
-      console.log(" Deleted data with ID:", itemId);
+      // console.log(" Deleted data with ID:", itemId);
 
       setExamItems(examItems.filter(item => item.id !== itemId));
 
