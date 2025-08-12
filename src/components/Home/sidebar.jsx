@@ -1,3 +1,4 @@
+import { ChevronLeft, ChevronRight } from '@styled-icons/heroicons-outline';
 import moment from 'moment';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
@@ -15,6 +16,8 @@ const Sidebar = () => {
   const [loadingReminders, setLoadingReminders] = useState(false);
   const [setCourseData] = useState({});
   const [selectedDate, setSelectedDate] = useState(moment());
+  const [currentReminderPage, setCurrentReminderPage] = useState(1);
+  const [remindersPerPage] = useState(3);
   
   // Get semester list from Redux store
   const semesterList = useSelector(selectSemesters);
@@ -22,16 +25,13 @@ const Sidebar = () => {
   const fetchSchedule = useCallback(async (date) => {
     setLoadingSchedule(true);
     try {
-      // Get current semester from Redux store
       const currentSemester = semesterList[semesterList.length - 1];
-      
+
       if (currentSemester) {
-        // Fetch user's timetable for current semester
         const timetableResponse = await API.profile.timetable.read(currentSemester);
         const timetableData = timetableResponse.data || timetableResponse;
-        
+
         if (timetableData && timetableData.length > 0) {
-          // First, fetch course data for all courses in timetable
           const courseList = timetableData.map((item) => item.course);
           const coursePromises = courseList.map(async (course) => {
             try {
@@ -41,34 +41,40 @@ const Sidebar = () => {
               return null;
             }
           });
-          
-          const courseDataArray = await Promise.all(coursePromises);
-          const courseDataObj = {};
-          courseDataArray.forEach((course) => {
-            if (course && course.code) {
-              courseDataObj[course.code] = course;
-            }
-          });
-          setCourseData(courseDataObj);
-          
-          // Get the selected day index (Monday = 0, Tuesday = 1, etc.)
+
+                     const courseDataArray = await Promise.all(coursePromises);
+           const courseDataObj = {};
+           courseDataArray.forEach((course) => {
+             if (course && course.code) {
+               courseDataObj[course.code] = course;
+             }
+           });
+           setCourseData(courseDataObj);
+
+
           const selectedDayIndex = date.isoWeekday() - 1; // Convert to 0-based index
-          
-          
+
           // Process timetable items to create schedule - only for today
           const scheduleItems = [];
-          
-          timetableData.forEach((item) => {
-            const course = courseDataObj[item.course];
-            if (!course) return;
-            
-            // Process lecture slots
+
+                     timetableData.forEach((item) => {
+             const course = courseDataObj[item.course];
+             // Note: We don't need to return early if course is missing
+             // The venue info comes from the timetable item, not the course
+
             if (item.lectureSlots && Array.isArray(item.lectureSlots)) {
               item.lectureSlots.forEach((slotName) => {
                 const slot = slots[slotName];
-                if (slot && slot.col - 1 === selectedDayIndex) { // col is 1-based, convert to 0-based
+                if (slot && slot.col - 1 === selectedDayIndex) {
                   const startTime = rows[slot.row.start]?.title || '08:30';
                   const endTime = rows[slot.row.end]?.title || '09:30';
+                  
+                  // Get venue from timetable item data (like in TimetableContainer.jsx)
+                  const venue = item.venue || item.location || item.room || item.building || item.classroom || item.venue_name || 'Venue TBD';
+
+                  const courseCode = item.course;
+                  const courseTitle = course.title;
+
                   
                   scheduleItems.push({
                     id: `${item.id}-${slotName}-lecture`,
@@ -76,22 +82,28 @@ const Sidebar = () => {
                     type: 'Lecture',
                     startTime,
                     endTime,
-                    location: `Slot ${slotName}`,
-                    courseCode: item.course,
-                    courseTitle: course.title,
+                    venue,
+                    courseCode,
+                    courseTitle,
                     professor: item.professor || 'TBD'
                   });
                 }
               });
             }
-            
-            // Process tutorial slots
+
             if (item.tutorialSlots && Array.isArray(item.tutorialSlots)) {
               item.tutorialSlots.forEach((slotName) => {
                 const slot = slots[slotName];
-                if (slot && slot.col - 1 === selectedDayIndex) { // col is 1-based, convert to 0-based
+                if (slot && slot.col - 1 === selectedDayIndex) {
                   const startTime = rows[slot.row.start]?.title || '08:30';
                   const endTime = rows[slot.row.end]?.title || '09:30';
+                  
+                  // Get venue from course data - check multiple possible properties like in example.jsx
+                  const venue = course.venue || course.location || course.room || course.building || course.classroom || course.venue_name || 'Venue TBD';
+
+                  const courseCode = item.course;
+                  const courseTitle = course.title;
+
                   
                   scheduleItems.push({
                     id: `${item.id}-${slotName}-tutorial`,
@@ -99,17 +111,16 @@ const Sidebar = () => {
                     type: 'Tutorial',
                     startTime,
                     endTime,
-                    location: `Slot ${slotName}`,
-                    courseCode: item.course,
-                    courseTitle: course.title,
+                    venue,
+                    courseCode,
+                    courseTitle,
                     professor: item.professor || 'TBD'
                   });
                 }
               });
             }
           });
-          
-          // Sort by start time (convert time strings to minutes for comparison)
+
           scheduleItems.sort((a, b) => {
             const timeToMinutes = (timeStr) => {
               const [hours, minutes] = timeStr.split(':').map(Number);
@@ -117,7 +128,7 @@ const Sidebar = () => {
             };
             return timeToMinutes(a.startTime) - timeToMinutes(b.startTime);
           });
-          
+
           setSchedule(scheduleItems);
         } else {
           setSchedule([]);
@@ -137,26 +148,43 @@ const Sidebar = () => {
     setLoadingReminders(true);
     try {
       // Fetch user's favorites as potential reminders
-      const favoritesResponse = await API.profile.favorites();
-      const favoritesData = favoritesResponse.data?.results || [];
+      const response = await API.profile.favorites();
+      const favorites = response.data || response;
       
-      if (favoritesData.length > 0) {
+      if (favorites && favorites.length > 0) {
         // Create reminders based on favorite courses
-        const courseReminders = favoritesData.slice(0, 3).map((course, index) => ({
-          id: index + 1,
-          title: `${course.code} - ${course.title}`,
-          dueDate: moment().add(index + 1, 'day').endOf('day'),
-          type: 'Course'
+        const reminderItems = favorites.slice(0, 3).map((course, index) => ({
+          id: `reminder-${index}`,
+          title: course.code || course.title,
+          due: 'Next week',
+          type: 'Assignment'
         }));
-        setReminders(courseReminders);
+        setReminders(reminderItems);
       } else {
-        // Fallback to generic reminders if no favorites
-        const genericReminders = [
-          { id: 1, title: 'Assignment Deadline', dueDate: moment().add(1, 'day').endOf('day'), type: 'Assignment' },
-          { id: 2, title: 'Project Review', dueDate: moment().add(2, 'day').endOf('day'), type: 'Project' },
-          { id: 3, title: 'Exam Preparation', dueDate: moment().add(3, 'day').endOf('day'), type: 'Exam' },
+        // Create 20 test notifications to demonstrate pagination
+        const testReminders = [
+          { id: 'reminder-1', title: 'Review course materials', due: 'Today', type: 'Study' },
+          { id: 'reminder-2', title: 'Prepare for tutorial', due: 'Tomorrow', type: 'Preparation' },
+          { id: 'reminder-3', title: 'Submit assignment', due: 'This week', type: 'Assignment' },
+          { id: 'reminder-4', title: 'Read Chapter 5', due: 'Next week', type: 'Reading' },
+          { id: 'reminder-5', title: 'Group project meeting', due: 'Friday', type: 'Meeting' },
+          { id: 'reminder-6', title: 'Lab report due', due: 'Next Monday', type: 'Assignment' },
+          { id: 'reminder-7', title: 'Study for midterm', due: 'Next month', type: 'Exam' },
+          { id: 'reminder-8', title: 'Office hours visit', due: 'This week', type: 'Consultation' },
+          { id: 'reminder-9', title: 'Library book return', due: 'Next week', type: 'Administrative' },
+          { id: 'reminder-10', title: 'Peer review submission', due: 'This Friday', type: 'Assignment' },
+          { id: 'reminder-11', title: 'Research paper outline', due: 'Next week', type: 'Writing' },
+          { id: 'reminder-12', title: 'Online quiz completion', due: 'This weekend', type: 'Assessment' },
+          { id: 'reminder-13', title: 'Study group formation', due: 'Next week', type: 'Organization' },
+          { id: 'reminder-14', title: 'Course evaluation survey', due: 'End of semester', type: 'Feedback' },
+          { id: 'reminder-15', title: 'Textbook purchase', due: 'Next week', type: 'Administrative' },
+          { id: 'reminder-16', title: 'Presentation practice', due: 'This week', type: 'Preparation' },
+          { id: 'reminder-17', title: 'Math homework set 3', due: 'Next Monday', type: 'Assignment' },
+          { id: 'reminder-18', title: 'Programming project', due: 'Next Friday', type: 'Project' },
+          { id: 'reminder-19', title: 'Literature review', due: 'Next month', type: 'Research' },
+          { id: 'reminder-20', title: 'Final exam preparation', due: 'End of semester', type: 'Study' }
         ];
-        setReminders(genericReminders);
+        setReminders(testReminders);
       }
     } catch (error) {
       toast({ status: 'error', content: 'Failed to load reminders', key: 'reminders-error' });
@@ -170,6 +198,11 @@ const Sidebar = () => {
     fetchSchedule(selectedDate); // Use selectedDate instead of moment()
     fetchReminders();
   }, [fetchSchedule, fetchReminders, selectedDate]);
+
+  // Reset to first page when reminders change
+  useEffect(() => {
+    setCurrentReminderPage(1);
+  }, [reminders]);
 
   const handlePrevDay = () => {
     setSelectedDate(selectedDate.clone().subtract(1, 'day'));
@@ -191,7 +224,7 @@ const Sidebar = () => {
           <ScheduleContent>
             <ScheduleTitle>{item.title}</ScheduleTitle>
             <ScheduleTimeDetails>
-              {`${item.startTime} - ${item.endTime} | ${item.location}`}
+              {`${item.startTime} - ${item.endTime} | ${item.venue}`}
             </ScheduleTimeDetails>
             <ScheduleTag type={item.type}>{item.type}</ScheduleTag>
           </ScheduleContent>
@@ -206,36 +239,85 @@ const Sidebar = () => {
       return <ReminderLoading>Loading reminders...</ReminderLoading>;
     }
     if (reminders.length > 0) {
-      return reminders.map((reminder) => (
-        <ReminderItem key={reminder.id}>
-          <BellIcon>🔔</BellIcon>
-          <ReminderDetails>
-            <ReminderTitle>{reminder.title}</ReminderTitle>
-            <ReminderDue>
-              {`due ${moment(reminder.dueDate).calendar().toLowerCase()} | ${moment(reminder.dueDate).format('h:mm A')}`}
-            </ReminderDue>
-          </ReminderDetails>
-        </ReminderItem>
-      ));
+      // Calculate pagination
+      const totalPages = Math.ceil(reminders.length / remindersPerPage);
+      const startIndex = (currentReminderPage - 1) * remindersPerPage;
+      const endIndex = startIndex + remindersPerPage;
+      const currentReminders = reminders.slice(startIndex, endIndex);
+
+      return (
+        <>
+          <RemindersHeader>
+            <RemindersTitle>Upcoming Reminders</RemindersTitle>
+            {totalPages > 1 && (
+              <PaginationContainer>
+                <PaginationButton 
+                  onClick={() => setCurrentReminderPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentReminderPage === 1}
+                >
+                  &lt;
+                </PaginationButton>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <PaginationButton
+                    key={page}
+                    onClick={() => setCurrentReminderPage(page)}
+                    active={page === currentReminderPage}
+                  >
+                    {page}
+                  </PaginationButton>
+                ))}
+                {totalPages > 3 && <PaginationButton disabled>...</PaginationButton>}
+                <PaginationButton 
+                  onClick={() => setCurrentReminderPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentReminderPage === totalPages}
+                >
+                  &gt;
+                </PaginationButton>
+              </PaginationContainer>
+            )}
+          </RemindersHeader>
+          {currentReminders.map((reminder) => (
+            <ReminderItem key={reminder.id}>
+              <BellIcon>🔔</BellIcon>
+              <ReminderDetails>
+                <ReminderTitle>{reminder.title}</ReminderTitle>
+                <ReminderDue>
+                  {`due ${reminder.due || 'TBD'} | ${reminder.type}`}
+                </ReminderDue>
+              </ReminderDetails>
+            </ReminderItem>
+          ))}
+        </>
+      );
     }
     return <ReminderEmpty>No upcoming reminders.</ReminderEmpty>;
   };
 
   return (
     <SidebarContainer>
-      <DateSelector>
-        <DateButton onClick={handlePrevDay}>{'<'}</DateButton>
-        <DateDisplay>{selectedDate.format('dddd, D MMMM YYYY')}</DateDisplay>
-        <DateButton onClick={handleNextDay}>{'>'}</DateButton>
-      </DateSelector>
+             <DateSelector>
+         
+         <DateDisplay>{selectedDate.format('dddd, D MMMM YYYY')}</DateDisplay>
+         
+       </DateSelector>
 
       <SidebarSectionHeader>
+        <LeftItem>
         {selectedDate.isSame(moment(), 'day') ? "Today's Schedule" : `${selectedDate.format('dddd')}'s Schedule`}
+        </LeftItem>
+        <RightGroup>
+        <DateButton onClick={handlePrevDay}>
+           <ChevronLeft size="20" />
+         </DateButton>
+         <DateButton onClick={handleNextDay}>
+           <ChevronRight size="20" />
+         </DateButton>
+         </RightGroup>
       </SidebarSectionHeader>
+      
       <ScheduleContainer>{renderSchedule()}</ScheduleContainer>
 
-      <SidebarSectionHeader>Upcoming Reminders</SidebarSectionHeader>
-      <RemindersContainer>{renderReminders()}</RemindersContainer>
+             <RemindersContainer>{renderReminders()}</RemindersContainer>
     </SidebarContainer>
   );
 };
@@ -248,73 +330,162 @@ const SidebarContainer = styled.div`
   background-color: #1a1523;
   height: 100%;
   color: white;
+  display: flex;
+  flex-direction: column;
 `;
 
 const DateSelector = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #2b273b;
-  border-radius: 999px;
   padding: 0.5rem 1rem;
   margin-bottom: 1.5rem;
+  flex-shrink: 0;
 `;
 
 const DateDisplay = styled.div`
-  font-weight: 500;
-  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #D6C9F8;
+  margin-bottom: -1rem;
+  margin-left: -1.75rem;
+  flex-shrink: 0;
 `;
 
 const DateButton = styled.button`
-  background: none;
+  background: #a18aff;
+  color: #fff;
   border: none;
-  color: white;
-  font-size: 1.2rem;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  padding: 0;
+  transition: background 0.2s;
+  
+  &:hover {
+    background: #8c7ae6;
+  }
 `;
 
 const SidebarSectionHeader = styled.h4`
   font-size: 1rem;
   font-weight: 600;
   color: white;
+  display: flex;
+  const Item = styled.div
   margin-bottom: 1rem;
+  padding: 0.5rem 0;
+  justify-content: space-between; /* pushes left group to left, right group to right */
+  align-items: center;
+  flex-shrink: 0;
+`;
+
+const LeftItem = styled.div`
+  /* stays at left extreme */
+`;
+
+const RightGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.5rem; /* fixed spacing between the two right items */
 `;
 
 const ScheduleContainer = styled.div`
-  border-left: 2px dashed #3e3e60;
-  padding-left: 2rem;
+  position: relative;
+  padding-left: 2.5rem;
   margin-bottom: 2rem;
+  border-radius: 10px;
+  background-color: #231F31;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 310px;
+  min-width: 270px;
+  
+  /* Custom scrollbar styling */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #1a1523;
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #4c4664;
+    border-radius: 3px;
+    
+    &:hover {
+      background: #6d669e;
+    }
+  }
+  
+  /* Firefox scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: #4c4664 #1a1523;
 `;
 
 const ScheduleItem = styled.div`
   position: relative;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  margin-left: 2.5rem;
+
+  /* Aligned dotted line */
+  &::before {
+    content: '';
+    position: absolute;
+    left: -2.5rem;
+    top: 2rem;
+    width: 2px;
+    height: 100%;
+    background: repeating-linear-gradient(
+      to bottom,
+      #D6C9F8 0px,
+      #D6C9F8 4px,
+      transparent 4px,
+      transparent 8px
+    );
+    background-position: 0 0; /* ensures consistent alignment */
+  }
+
+  /* Optional: shift start for very first item without breaking alignment */
+  &:first-child::before {
+    background-position: 0 1.5rem; /* instead of top offset */
+  }
 `;
 
-const TimeLabel = styled.div`
+
+const TimeLabel = styled.span`
   position: absolute;
-  left: -1.5rem;
-  top: -0.5rem;
-  font-size: 0.8rem;
-  color: #b0aecd;
-  width: 1.5rem;
-  text-align: right;
+  left: -2.5rem;
+  top: 0.5rem;
+  font-size: 1rem;
+  color: #D6C9F8;
+  background-color:#231F31;
+  padding: 0 0.5rem;
+  transform: translateX(-50%);
+  white-space: nowrap;
 `;
 
 const ScheduleContent = styled.div`
+  margin-top: 0.5rem;
   padding: 0.5rem 0;
+  margin-left: -1rem;
 `;
 
 const ScheduleTitle = styled.div`
   font-size: 1rem;
   font-weight: 600;
   color: white;
+  margin-top: 2.5rem;
 `;
 
 const ScheduleTimeDetails = styled.div`
   font-size: 0.8rem;
-  color: #b0aecd;
+  color: white;
   margin-bottom: 0.25rem;
 `;
 
@@ -342,6 +513,11 @@ const RemindersContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  flex-shrink: 0;
+  height: 280px; /* Fixed height to show exactly 3 notifications */
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: -1rem;
 `;
 
 const ReminderItem = styled.div`
@@ -362,11 +538,11 @@ const ReminderDetails = styled.div`
 `;
 
 const ReminderTitle = styled.div`
-  font-weight: 500;
+  font-weight: 400;
 `;
 
 const ReminderDue = styled.div`
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #b0aecd;
 `;
 
@@ -388,4 +564,54 @@ const ReminderLoading = styled.p`
 const ReminderEmpty = styled.p`
   color: #b0aecd;
   font-style: italic;
+`;
+
+const RemindersHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+  gap: 0.75rem;
+`;
+
+const RemindersTitle = styled.h4`
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+`;
+
+const PaginationContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+`;
+
+const PaginationButton = styled.button`
+  background: ${({ active, disabled }) => {
+    if (disabled) return '#1a1523';
+    if (active) return '#ffffff';
+    return '#2b273b';
+  }};
+  color: ${({ active, disabled }) => {
+    if (disabled) return '#4c4664';
+    if (active) return '#1a1523';
+    return '#ffffff';
+  }};
+  border: none;
+  border-radius: 4px;
+  width: 23px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  font-size: 0.75rem;
+  font-weight: 400;
+  transition: all 0.2s;
+  
+  &:hover:not(:disabled) {
+    background: ${({ active }) => (active ? '#f0f0f0' : '#3e3e60')};
+  }
 `;
