@@ -1,4 +1,3 @@
-import { Card } from 'antd'
 import axios from 'axios'
 import { useEffect, useState, useCallback } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
@@ -14,6 +13,7 @@ import { coursePageUrl } from 'helpers'
 import { selectSemesters } from 'store/courseSlice'
 import { selectUserProfile } from 'store/userSlice'
 
+import Sidebar from './sidebar'
 
 
 const CoursesThisSemester = () => {
@@ -34,7 +34,6 @@ const CoursesThisSemester = () => {
         setLoading(true);
         const response = await API.profile.favorites();
         setFavCourseData(response.results);
-        console.log("Fav Courses:", response.results);
       } catch (error) {
         toast({ status: 'error', content: error });
       } finally {
@@ -301,32 +300,37 @@ const TopReqCourses = () => {
 const HomeContainer = () => {
   const profile = useSelector(selectUserProfile)
   return (
-    <>
-      <PageTitle
-        style={{
-          color: 'white',
-          fontWeight: 'bold',
-          fontSize: '1.5rem',
-          marginTop: '1rem',
-          marginLeft: '1rem',
-        }}
-      >
-        Welcome back, {profile?.name?.split(' ')?.[0]}!
-        <div
+    <Container>
+      {/* Main content */}
+      <MainContent>
+        <PageTitle
           style={{
-            color: '#b0aecd',
-            fontSize: '1rem',
-            marginTop: '0.3rem',
+            color: 'white',
+            fontWeight: 'bold',
+            fontSize: '1.5rem',
+            marginTop: '1rem',
+            marginLeft: '1rem',
           }}
         >
-          Here&apos;s everything you need for today
-        </div>
-      </PageTitle> 
-      <CoursesThisSemester />
-      <div style={{ marginTop: '16px' }}>
-        <TopReqCourses />
-      </div>
-    </>
+          Welcome back, {profile?.name?.split(' ')?.[0]}!
+          <div
+            style={{
+              color: '#b0aecd',
+              fontSize: '1rem',
+              marginTop: '0.3rem',
+            }}
+          >
+            Here&apos;s everything you need for today
+          </div>
+        </PageTitle> 
+        <CoursesThisSemester />
+      </MainContent>
+
+      {/* Aside-like sidebar */}
+      <AsideContainer>
+        <Sidebar />
+      </AsideContainer>
+    </Container>
   )
 }
 
@@ -547,13 +551,30 @@ const CardBadge = styled.div`
   color: white;
   font-size: 0.75rem;
   font-weight: 600;
+// Layout styled components
+const Container = styled.div`
+  display: flex;
+  background-color: #130d1d;
+  min-height: 100vh;
+  gap: 0;
 `;
 
+const MainContent = styled.div`
+  flex: 1;
+  padding: 2rem;
+  padding-right: 1.5rem;
+`;
 
-
-
-
-
-
-
-
+const AsideContainer = styled.aside`
+  width: 320px;
+  background-color: #1a1523;
+  padding: 0;
+  border-left: 1px solid #2a2636;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.2);
+  color: white;
+  z-index: 10;
+`;
