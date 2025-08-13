@@ -27,11 +27,12 @@ const CourseFinderContainer = () => {
       if (ajaxRequest) ajaxRequest.cancel()
       ajaxRequest = axios.CancelToken.source()
 
-      const response = await API.courses.list({
+      const response = await API.courses.list(
         params,
-        cancelToken: ajaxRequest.token,
-      })
+        { cancelToken: ajaxRequest.token }
+      )
       setCourseData(response)
+      console.log("Fetched Courses:", response)
     } catch (error) {
       if (axios.isCancel(error)) return
       toast({ status: 'error', content: error })
