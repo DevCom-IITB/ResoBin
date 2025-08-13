@@ -146,7 +146,7 @@ const CoursesThisSemester = () => {
                           <CardTitleRow>{code}</CardTitleRow>
                           <DetailLine>
                             <ProfTag>
-                              {semester[0].timetable[0].professor ? `Prof. ${semester[0].timetable[0].professor}` : 'No Instructor'}
+                              {semester[0].timetable[0].professor ? `Prof. ${semester[0].timetable[0].professor}` : 'Unknown'}
                             </ProfTag>
                           </DetailLine>
                           <DetailLine>Credits: {credits}</DetailLine>
@@ -163,7 +163,7 @@ const CoursesThisSemester = () => {
                         <CardTitleRow>{code}</CardTitleRow>
                         <DetailLine>
                           <ProfTag>
-                            {professor ? `Prof. ${professor}` : 'No Instructor'}
+                            {professor ? `Prof. ${professor}` : 'Unknown'}
                           </ProfTag>
                         </DetailLine>
                         <DetailLine>Credits: {credits}</DetailLine>
@@ -237,7 +237,7 @@ const TopReqCourses = () => {
 
   return (
     <CoursesWrapper style={{ marginTop: '16px' }}>
-      <OuterContainer style={{ height: '186.61px', flexDirection: 'column', alignItems: 'flex-start' }}>
+      <OuterContainer style={{ height: '186.61px', flexDirection: 'column', alignItems: 'flex-start', borderTopLeftRadius: '10px', }}>
         {/* Heading + Subheading */}
         <div style={{ padding: '0.75rem 1rem 0 1rem' }}>
           <h3 style={{ color: 'white', margin: 0 }}>Top Contribution Requests</h3>
@@ -266,7 +266,7 @@ const TopReqCourses = () => {
                         <CardTitleRow>{course.code}</CardTitleRow>
                         <DetailLine>
                           <ProfTag>
-                            {course.semester[0].timetable[0] ? `Prof. ${course.semester[0].timetable[0].professor}` : 'No Instructor'}
+                            {course.semester[0].timetable[0] ? `Prof. ${course.semester[0].timetable[0].professor}` : 'Unknown'}
                           </ProfTag>
                         </DetailLine>
                         <UploadBox
@@ -551,10 +551,11 @@ const CardBadge = styled.div`
   color: white;
   font-size: 0.75rem;
   font-weight: 600;
+`
 // Layout styled components
 const Container = styled.div`
   display: flex;
-  background-color: #130d1d;
+  backgroundcolor: #130d1d;
   min-height: 100vh;
   gap: 0;
 `;
