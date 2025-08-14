@@ -30,6 +30,7 @@ import 'styles/CustomModal.css'
 import ExamPlanner from './eplanner_Exam'
 import PersonalPlanner from './eplanner_personal'
 import ReminderPlanner from './eplanner_reminder'
+import EplannerAPI from './eplannerAPI'
 import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableSearch from './TimetableSearch'
 import TimetableShareButton from './TimetableShareButton'
@@ -61,6 +62,13 @@ const TimetableContainer = () => {
 
   const [currentView, setCurrentView] = useState(getInitialView)
   const [dropdownVisible, setDropdownVisible] = useState(false)
+  
+  // Eplanner events state
+  const [eplannerEvents, setEplannerEvents] = useState({
+    personal: [],
+    exam: [],
+    reminder: []
+  })
 
   const handleViewChange = (e) => {
     const newView = e.target.value
@@ -72,6 +80,25 @@ const TimetableContainer = () => {
     setDropdownVisible(false);
     // Dispatch custom event that the component can listen to
     window.dispatchEvent(new CustomEvent(`toggle-${itemType}-planner`));
+  };
+
+  // Fetch eplanner events from API
+  const fetchEplannerEvents = async () => {
+    try {
+      const [personalData, examData, reminderData] = await Promise.all([
+        EplannerAPI.getPersonals().catch(() => []),
+        EplannerAPI.getExams().catch(() => []),
+        EplannerAPI.getReminders().catch(() => [])
+      ]);
+
+      setEplannerEvents({
+        personal: personalData || [],
+        exam: examData || [],
+        reminder: reminderData || []
+      });
+    } catch (error) {
+      console.error('Error fetching eplanner events:', error);
+    }
   };
 
   const addDropdownMenu = (
@@ -128,6 +155,21 @@ const TimetableContainer = () => {
 
     fetchCourses(params)
   }, [getQueryString])
+
+  // Fetch eplanner events on mount and listen for updates
+  useEffect(() => {
+    fetchEplannerEvents();
+
+    const handleEplannerUpdate = () => {
+      fetchEplannerEvents();
+    };
+
+    window.addEventListener('eplanner-updated', handleEplannerUpdate);
+    
+    return () => {
+      window.removeEventListener('eplanner-updated', handleEplannerUpdate);
+    };
+  }, []);
 
   useEffect(() => {
     if (semesterList.length) setSemIdx(semesterList.length - 1)
@@ -297,13 +339,176 @@ const TimetableContainer = () => {
       )
     })
 
+    // Add eplanner events to the events array
+    const addEplannerEvents = () => {
+      // Helper to convert time to row index
+      const timeToRow = (timeStr) => {
+        if (!timeStr) return 0;
+        
+        // Parse time string
+        const [hours, minutes] = timeStr.split(':').map(Number);
+        const timeInMinutes = hours * 60 + minutes;
+        
+        // Time to row mapping based on actual timetable structure (0-based indexing)
+        const timeSlots = [
+          { time: '08:30', row: 0 }, { time: '09:00', row: 1 }, { time: '09:30', row: 2 },
+          { time: '10:00', row: 3 }, { time: '10:30', row: 4 }, { time: '11:00', row: 5 },
+          { time: '11:30', row: 6 }, { time: '12:00', row: 7 }, { time: '12:30', row: 8 },
+          // Lunch break gap
+          { time: '14:00', row: 9 }, { time: '14:30', row: 10 }, { time: '15:00', row: 11 },
+          { time: '15:30', row: 12 }, { time: '16:00', row: 13 }, { time: '16:30', row: 14 },
+          { time: '17:00', row: 15 },
+          // Evening break gap
+          { time: '17:30', row: 16 }, { time: '18:00', row: 17 }, { time: '18:30', row: 18 },
+          { time: '19:00', row: 19 }, { time: '19:30', row: 20 }, { time: '20:00', row: 21 },
+          { time: '20:30', row: 22 }, { time: '21:00', row: 23 }, { time: '21:30', row: 24 },
+          { time: '22:00', row: 25 }
+        ];
+        
+        // Convert time slots to minutes for comparison
+        const timeSlotsInMinutes = timeSlots.map(slot => {
+          const [h, m] = slot.time.split(':').map(Number);
+          return { minutes: h * 60 + m, row: slot.row };
+        });
+        
+        // Find exact match first
+        const exactMatch = timeSlotsInMinutes.find(slot => slot.minutes === timeInMinutes);
+        if (exactMatch) {
+          return exactMatch.row;
+        }
+        
+        // Find the closest time slot if no exact match
+        let closestSlot = timeSlotsInMinutes[0];
+        let minDiff = Math.abs(timeInMinutes - closestSlot.minutes);
+        
+        for (let i = 1; i < timeSlotsInMinutes.length; i += 1) {
+          const diff = Math.abs(timeInMinutes - timeSlotsInMinutes[i].minutes);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestSlot = timeSlotsInMinutes[i];
+          }
+        }
+        
+        return closestSlot.row;
+      };
+
+      // Helper to get day index from date
+      const getDayIndexFromDate = (dateStr) => {
+        if (!dateStr) return -1;
+        const date = moment(dateStr);
+        return date.day() === 0 ? 6 : date.day() - 1; // Convert Sunday=0 to 6, Mon=1 to 0, etc.
+      };
+
+      // Process Personal events
+      eplannerEvents.personal.forEach(event => {
+        if (event.date) {
+          const eventDate = moment(event.date);
+          const dayIndex = eventDate.day() === 0 ? 6 : eventDate.day() - 1; // Convert Sunday=0 to 6, Mon=1 to 0, etc.
+          
+          if (dayIndex >= 0) {
+            const startRow = timeToRow(event.starttime);
+            const endRow = timeToRow(event.endtime) || startRow + 2;
+            
+            events.push({
+              id: `personal-${event.id}`,
+              courseCode: 'PERSONAL',
+              title: event.title,
+              description: event.description,
+              type: 'Personal',
+              dayIndex,
+              startRow,
+              endRow,
+              startTime: event.starttime || '09:00',
+              endTime: event.endtime || '10:00',
+              color: '#4ECDC4',
+              slotName: 'Personal',
+              date: event.date,
+              eventDate: eventDate.format('YYYY-MM-DD') // Store formatted date for comparison
+            });
+          }
+        }
+      });
+
+      // Process Exam events
+      eplannerEvents.exam.forEach(event => {
+        if (event.date) {
+          const eventDate = moment(event.date);
+          const dayIndex = eventDate.day() === 0 ? 6 : eventDate.day() - 1; // Convert Sunday=0 to 6, Mon=1 to 0, etc.
+          
+          if (dayIndex >= 0) {
+            const startRow = timeToRow(event.starttime);
+            const endRow = timeToRow(event.endtime) || startRow + 4;
+            
+            events.push({
+              id: `exam-${event.id}`,
+              courseCode: 'EXAM',
+              title: event.course || event.title || 'Exam',
+              description: event.description,
+              type: 'Exam',
+              dayIndex,
+              startRow,
+              endRow,
+              startTime: event.starttime || '10:00',
+              endTime: event.endtime || '12:00',
+              color: '#FFD93D',
+              slotName: 'Exam',
+              date: event.date,
+              eventDate: eventDate.format('YYYY-MM-DD') // Store formatted date for comparison
+            });
+          }
+        }
+      });
+
+      // Process Reminder events
+      eplannerEvents.reminder.forEach(event => {
+        if (event.date) {
+          const eventDate = moment(event.date);
+          const dayIndex = eventDate.day() === 0 ? 6 : eventDate.day() - 1; // Convert Sunday=0 to 6, Mon=1 to 0, etc.
+          
+          if (dayIndex >= 0) {
+            let startRow;
+            let endRow;
+            
+            if (event.isAllDay) {
+              // For all-day events, show as a small block at the top
+              startRow = 0; // 08:30
+              endRow = 2; // 09:30 (1 hour block)
+            } else {
+              startRow = timeToRow(event.starttime);
+              endRow = timeToRow(event.endtime) || startRow + 2; // Default 1 hour duration
+            }
+            
+            events.push({
+              id: `reminder-${event.id}`,
+              courseCode: 'REMINDER',
+              title: event.title,
+              description: event.description,
+              type: 'Reminder',
+              isAllDay: event.isAllDay,
+              dayIndex,
+              startRow,
+              endRow,
+              startTime: event.isAllDay ? 'All Day' : (event.starttime || '09:00'),
+              endTime: event.isAllDay ? '' : (event.endtime || '10:00'),
+              color: '#FF6B6B',
+              slotName: 'Reminder',
+              date: event.date,
+              eventDate: eventDate.format('YYYY-MM-DD') // Store formatted date for comparison
+            });
+          }
+        }
+      });
+    };
+
+    addEplannerEvents();
+
     return events
   }
 
   const events = getEventsForView()
 
   const getDayViewDateDisplay = (date) => {
-    return `${date.format('dddd')}, ${date.format('D MMMM YYYY')}` // e.g., "Wednesday, 6 August 2025"
+    return `${date.format('dddd')}, ${date.format('D MMMM YYYY')}` 
   }
 
   const getDateDisplay = (date) => {
@@ -443,6 +648,7 @@ const TimetableContainer = () => {
         {currentView === 'Month' && (
           <MonthView
             currentDate={currentDate}
+            events={events}
             currentView={currentView}
             handleViewChange={handleViewChange}
             handleClickPrev={handleClickPrev}
@@ -543,12 +749,74 @@ const DayView = ({
 }) => {
   // CORRECTED: Use isoWeekday for consistency (Mon=1, Sun=7)
   const selectedDayIndex = currentDate.isoWeekday() - 1
-  const dayEvents = events.filter(
-    (event) => event.dayIndex === selectedDayIndex
-  )
+  const currentDateStr = currentDate.format('YYYY-MM-DD')
+  
+  const dayEvents = events.filter((event) => {
+    // For course events (have type 'Lecture' or 'Tutorial'), filter by dayIndex only
+    if (event.type === 'Lecture' || event.type === 'Tutorial') {
+      return event.dayIndex === selectedDayIndex
+    }
+    
+    // For eplanner events (have type 'Personal', 'Exam', 'Reminder'), check both dayIndex and specific date
+    if (event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder') {
+      return event.dayIndex === selectedDayIndex && event.eventDate === currentDateStr
+    }
+    
+    return false
+  })
 
   const timeSlots = Object.values(rowData).map((row) => row.title)
   const ROW_HEIGHT = 30
+
+  // Process events for display - courses have absolute priority and overlap eplanner events
+  const processEventsForDisplay = (eventsToProcess) => {
+    const processedEvents = []
+    
+    // Separate courses and eplanner events
+    const courseEvents = eventsToProcess.filter(event => event.type === 'Lecture' || event.type === 'Tutorial')
+    const eplannerEvents = eventsToProcess.filter(event => event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder')
+    
+    // Function to check if two events overlap
+    const eventsOverlap = (event1, event2) => {
+      return event1.startRow < event2.endRow && event1.endRow > event2.startRow
+    }
+    
+    // Add eplanner events only if they don't overlap with any course
+    eplannerEvents.forEach(eplannerEvent => {
+      const hasOverlappingCourse = courseEvents.some(courseEvent => {
+        return eventsOverlap(eplannerEvent, courseEvent)
+      })
+      
+      if (!hasOverlappingCourse) {
+        processedEvents.push({
+          ...eplannerEvent,
+          displayStartRow: eplannerEvent.startRow,
+          displayTop: eplannerEvent.startRow * ROW_HEIGHT,
+          displayHeight: (eplannerEvent.endRow - eplannerEvent.startRow) * ROW_HEIGHT,
+          stackPosition: 0,
+          totalInStack: 1,
+          zIndex: 5
+        })
+      }
+    })
+    
+    // Add all course events (they have priority)
+    courseEvents.forEach(event => {
+      processedEvents.push({
+        ...event,
+        displayStartRow: event.startRow,
+        displayTop: event.startRow * ROW_HEIGHT,
+        displayHeight: (event.endRow - event.startRow) * ROW_HEIGHT,
+        stackPosition: 0,
+        totalInStack: 1,
+        zIndex: 10
+      })
+    })
+    
+    return processedEvents
+  }
+  
+  const processedDayEvents = processEventsForDisplay(dayEvents)
   const isToday = currentDate.isSame(moment(), 'day')
 
   return (
@@ -584,12 +852,76 @@ const DayView = ({
         </DayTimeColumn>
         <DayEventColumn>
           {isToday && <CurrentTimeIndicator />}
-          {dayEvents.map((event) => {
+          {processedDayEvents.map((event) => {
             const course = coursedata[event.courseCode]
+            
+            // Handle eplanner events (Personal, Exam, Reminder)
+            if (event.type && ['Personal', 'Exam', 'Reminder'].includes(event.type)) {
+              return (
+                <Tooltip
+                  key={event.id}
+                  title={
+                    <div>
+                      <div>
+                        <strong>
+                          {event.title} ({event.type})
+                        </strong>
+                      </div>
+                      {event.description && <div>{event.description}</div>}
+                      <div>
+                        {event.isAllDay ? 'All Day' : `${event.startTime} - ${event.endTime}`}
+                      </div>
+                      {event.date && <div>Date: {event.date}</div>}
+                    </div>
+                  }
+                  overlayStyle={{
+                    maxWidth: 250,
+                    fontSize: '0.9rem',
+                    color: '#333',
+                  }}
+                  placement="top"
+                >
+                  <DayEventBlock
+                    color={event.color}
+                    style={{
+                      position: 'absolute',
+                      top: `${event.displayTop}px`,
+                      left: '0rem',
+                      right: '0rem',
+                      height: `${event.displayHeight}px`,
+                      padding: '0', // Remove padding for eplanner events
+                      zIndex: event.zIndex || 5,
+                    }}
+                  >
+                    <div style={{ 
+                      textAlign: 'center', 
+                      color: 'white', 
+                      padding: '4px',
+                      height: '100%',
+                      width: '100%',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      borderRadius: '8px'
+                    }}>
+                      <div style={{ 
+                        fontSize: event.totalInStack > 1 ? '0.75rem' : '1rem', 
+                        fontWeight: '600',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                      }}>
+                        {event.isAllDay && event.type === 'Reminder' ? 'All Day Reminder' : event.type}
+                      </div>
+                    </div>
+                  </DayEventBlock>
+                </Tooltip>
+              )
+            }
+            
+            // Handle course events
             if (!course) return null
-
-            const topPosition = event.startRow * ROW_HEIGHT
-            const height = (event.endRow - event.startRow) * ROW_HEIGHT
 
             return (
               <Tooltip
@@ -618,10 +950,11 @@ const DayView = ({
                   color={event.color}
                   style={{
                     position: 'absolute',
-                    top: `${topPosition}px`,
+                    top: `${event.displayTop}px`,
                     left: '0rem',
                     right: '0rem',
-                    height: `${height}px`,
+                    height: `${event.displayHeight}px`,
+                    zIndex: event.zIndex || 10,
                   }}
                 >
                   <Link
@@ -637,10 +970,10 @@ const DayView = ({
                     }}
                   >
                     <div>
-                      <EventTitle>
+                      <EventTitle style={{ fontSize: event.totalInStack > 1 ? '0.8rem' : '1rem' }}>
                         {event.courseCode} | {event.slotName}
                       </EventTitle>
-                      <EventTime>
+                      <EventTime style={{ fontSize: event.totalInStack > 1 ? '0.7rem' : '0.8rem' }}>
                         {event.startTime} - {event.endTime}
                       </EventTime>
                     </div>
@@ -684,6 +1017,52 @@ const WeekView = ({
 
   const timeSlots = Object.values(rowData).map((row) => row.title)
   const ROW_HEIGHT = 30
+
+  // Process events for display - courses have absolute priority and overlap eplanner events
+  const processEventsForDisplay = (eventsToProcess) => {
+    const processedEvents = []
+    
+    // Separate courses and eplanner events
+    const courseEvents = eventsToProcess.filter(event => event.type === 'Lecture' || event.type === 'Tutorial')
+    const eplannerEvents = eventsToProcess.filter(event => event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder')
+    
+    // Function to check if two events overlap
+    const eventsOverlap = (event1, event2) => {
+      return event1.startRow < event2.endRow && event1.endRow > event2.startRow
+    }
+    
+    // Add eplanner events only if they don't overlap with any course
+    eplannerEvents.forEach(eplannerEvent => {
+      const hasOverlappingCourse = courseEvents.some(courseEvent => eventsOverlap(eplannerEvent, courseEvent))
+      
+      if (!hasOverlappingCourse) {
+        processedEvents.push({
+          ...eplannerEvent,
+          displayStartRow: eplannerEvent.startRow,
+          displayTop: eplannerEvent.startRow * ROW_HEIGHT,
+          displayHeight: (eplannerEvent.endRow - eplannerEvent.startRow) * ROW_HEIGHT,
+          stackPosition: 0,
+          totalInStack: 1,
+          zIndex: 5
+        })
+      }
+    })
+    
+    // Add all course events (they have priority)
+    courseEvents.forEach(event => {
+      processedEvents.push({
+        ...event,
+        displayStartRow: event.startRow,
+        displayTop: event.startRow * ROW_HEIGHT,
+        displayHeight: (event.endRow - event.startRow) * ROW_HEIGHT,
+        stackPosition: 0,
+        totalInStack: 1,
+        zIndex: 10
+      })
+    })
+    
+    return processedEvents
+  }
 
   return (
     <TimetableWrapper>
@@ -736,21 +1115,96 @@ const WeekView = ({
             {daysOfWeek.map((day, dayIndex) => {
               // The index (0-6) will correctly correspond to Monday-Sunday.
               const isToday = day.isSame(moment(), 'day')
-              const dayEvents = events.filter(
-                (event) => event.dayIndex === dayIndex
-              )
+              const currentDayStr = day.format('YYYY-MM-DD')
+              
+              const dayEvents = events.filter((event) => {
+                // For course events (have type 'Lecture' or 'Tutorial'), filter by dayIndex only
+                if (event.type === 'Lecture' || event.type === 'Tutorial') {
+                  return event.dayIndex === dayIndex
+                }
+                
+                // For eplanner events (have type 'Personal', 'Exam', 'Reminder'), check both dayIndex and specific date
+                if (event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder') {
+                  return event.dayIndex === dayIndex && event.eventDate === currentDayStr
+                }
+                
+                return false
+              })
+
+              // Process events for overlapping display
+              const processedDayEvents = processEventsForDisplay(dayEvents)
 
               return (
                 <WeekDayColumn key={day.format('YYYY-MM-DD')}>
                   <div style={{ position: 'relative', height: '100%' }}>
                     {isToday && <CurrentTimeIndicator />}
-                    {dayEvents.map((event) => {
+                    {processedDayEvents.map((event) => {
                       const course = coursedata[event.courseCode]
+                      
+                      // Handle eplanner events (Personal, Exam, Reminder)
+                      if (event.type && ['Personal', 'Exam', 'Reminder'].includes(event.type)) {
+                        return (
+                          <Tooltip
+                            key={event.id}
+                            title={
+                              <div>
+                                <strong>
+                                  {event.title} ({event.type})
+                                </strong>
+                                {event.description && <div>{event.description}</div>}
+                                <div>
+                                  {event.isAllDay ? 'All Day' : `${event.startTime} - ${event.endTime}`}
+                                </div>
+                                {event.date && <div>Date: {event.date}</div>}
+                              </div>
+                            }
+                            overlayStyle={{
+                              maxWidth: 250,
+                              fontSize: '0.9rem',
+                              color: '#333',
+                            }}
+                            placement="top"
+                          >
+                            <WeekEventBlock
+                              color={event.color}
+                              style={{
+                                position: 'absolute',
+                                top: `${event.displayTop}px`,
+                                left: '0',
+                                right: '0',
+                                height: `${event.displayHeight}px`,
+                                zIndex: event.zIndex || 5,
+                              }}
+                            >
+                              <div style={{
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                padding: '4px',
+                                color: 'white',
+                                overflow: 'hidden',
+                                borderRadius: '6px'
+                              }}>
+                                <div style={{ 
+                                  fontSize: event.totalInStack > 1 ? '0.7rem' : '0.9rem', 
+                                  fontWeight: '600',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  whiteSpace: 'nowrap',
+                                  textAlign: 'center'
+                                }}>
+                                  {event.isAllDay && event.type === 'Reminder' ? 'All Day' : event.type}
+                                </div>
+                              </div>
+                            </WeekEventBlock>
+                          </Tooltip>
+                        )
+                      }
+                      
+                      // Handle course events
                       if (!course) return null
-
-                      const topPosition = event.startRow * ROW_HEIGHT
-                      const height =
-                        (event.endRow - event.startRow) * ROW_HEIGHT
 
                       return (
                         <Tooltip
@@ -777,10 +1231,11 @@ const WeekView = ({
                             color={event.color}
                             style={{
                               position: 'absolute',
-                              top: `${topPosition}px`,
+                              top: `${event.displayTop}px`,
                               left: '0',
                               right: '0',
-                              height: `${height}px`,
+                              height: `${event.displayHeight}px`,
+                              zIndex: event.zIndex || 10,
                             }}
                           >
                             <Link
@@ -796,10 +1251,12 @@ const WeekView = ({
                               }}
                             >
                               <div>
-                                <EventTitle>
+                                <EventTitle style={{ fontSize: event.totalInStack > 1 ? '0.65rem' : '0.75rem' }}>
                                   {event.courseCode} | {event.slotName}
                                 </EventTitle>
-                                <EventTime>{event.startTime}</EventTime>
+                                <EventTime style={{ fontSize: event.totalInStack > 1 ? '0.6rem' : '0.7rem' }}>
+                                  {event.startTime}
+                                </EventTime>
                               </div>
                               <RedirectIcon>
                                 <ExternalLink size="14" />
@@ -824,6 +1281,7 @@ const WeekView = ({
 // Month View Component
 const MonthView = ({
   currentDate,
+  events,
   currentView,
   handleViewChange,
   handleClickPrev,
@@ -889,19 +1347,56 @@ const MonthView = ({
           // --- THIS IS THE CORRECTED LINE ---
           // The key is now derived from the first day of the week, which is stable and unique.
           <MonthWeekRow key={weekRow[0].format('YYYY-MM-DD')}>
-            {weekRow.map((currentDay) => (
-              <MonthDayCell
-                key={currentDay.format('YYYY-MM-DD')}
-                isCurrentMonth={currentDay.month() === currentDate.month()}
-              >
-                <MonthDayNumber
+            {weekRow.map((currentDay) => {
+              // Filter events for this specific day
+              const dayEvents = events.filter(event => {
+                if (event.date) {
+                  return moment(event.date).isSame(currentDay, 'day');
+                }
+                return false;
+              });
+
+              return (
+                <MonthDayCell
+                  key={currentDay.format('YYYY-MM-DD')}
                   isCurrentMonth={currentDay.month() === currentDate.month()}
-                  isHighlighted={currentDay.isSame(moment(), 'day')}
                 >
-                  {currentDay.date()}
-                </MonthDayNumber>
-              </MonthDayCell>
-            ))}
+                  <MonthDayNumber
+                    isCurrentMonth={currentDay.month() === currentDate.month()}
+                    isHighlighted={currentDay.isSame(moment(), 'day')}
+                  >
+                    {currentDay.date()}
+                  </MonthDayNumber>
+                  
+                  {/* Display events for this day */}
+                  {dayEvents.map((event) => (
+                    <MonthEventBlock key={event.id} color={event.color}>
+                      <div style={{ 
+                        fontSize: '0.7rem', 
+                        fontWeight: 'bold',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                      }}>
+                        {event.type || event.title}
+                      </div>
+                      {event.description && (
+                        <div style={{ 
+                          fontSize: '0.6rem', 
+                          opacity: 0.8,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          marginTop: '1px'
+                        }}>
+                          {event.description}
+                        </div>
+                      )}
+                    </MonthEventBlock>
+                  ))}
+                </MonthDayCell>
+              );
+            })}
           </MonthWeekRow>
         ))}
       </MonthGrid>
@@ -1227,6 +1722,12 @@ const DayEventColumn = styled.div`
       ${({ theme }) => theme.border || '#ececec40'} 29.5px,
       ${({ theme }) => theme.border || '#ececec40'} 30px
     );
+  
+  /* Ensure no text elements bleed through */
+  & > * {
+    position: relative;
+    z-index: 5;
+  }
 `
 
 const DayEventBlock = styled.div`
@@ -1238,9 +1739,15 @@ const DayEventBlock = styled.div`
   color: ${({ theme }) => theme.textColor};
   cursor: pointer;
   transition: all 0.2s;
+  z-index: 10;
+  position: relative;
+  overflow: hidden;
+  word-wrap: break-word;
+  word-break: break-word;
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 15;
   }
 `
 
@@ -1249,6 +1756,9 @@ const EventTitle = styled.h4`
   font-size: 1rem;
   font-weight: 500;
   color: black;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 const EventTime = styled.div`
@@ -1257,6 +1767,19 @@ const EventTime = styled.div`
   margin-bottom: 0.25rem;
   font-weight: 400;
   color: black;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`
+
+const EventText = styled.div`
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: white;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 const WeekViewContainer = styled.div`
@@ -1362,10 +1885,23 @@ const WeekEventBlock = styled.div`
   transition: all 0.2s;
   width: 100%;
   box-sizing: border-box;
+  z-index: 5;
+  position: relative;
+  overflow: hidden;
+  word-wrap: break-word;
+  word-break: break-word;
 
   &:hover {
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 6;
+  }
+
+  /* Handle text overflow in week view */
+  & > * {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 `
 
@@ -1449,6 +1985,20 @@ const MonthDayNumber = styled.div`
       z-index: -1;
     }
   `}
+`
+
+const MonthEventBlock = styled.div`
+  background: ${({ color }) => color};
+  background-color: transparent;
+  color: white;
+  border: 1px solid ${({ color }) => color};
+  border-radius: 4px;
+  padding: 2px 6px;
+  margin: 2px 0;
+  font-size: 0.7rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 const AsideList = styled.div`

@@ -117,6 +117,9 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false }) => {
 
       setReminderItems([...ReminderItems, savedItem]);
 
+      // Notify timetable to refresh
+      window.dispatchEvent(new CustomEvent('eplanner-updated'));
+
       setTitle('');
       setDescription('');
       setDate('');
@@ -142,6 +145,9 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false }) => {
       // console.log("Deleted all data:", result);
 
       setReminderItems([]);
+
+      // Notify timetable to refresh
+      window.dispatchEvent(new CustomEvent('eplanner-updated'));
 
       
       setTitle('');

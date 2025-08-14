@@ -149,6 +149,9 @@ const ExamCard = ({ isEmbedded = false, hideButton = false }) => {
       try {
         const savedItem = await EplannerAPI.createExam(newItem);
         setExamItems([...examItems, savedItem]);
+        
+        // Notify timetable to refresh
+        window.dispatchEvent(new CustomEvent('eplanner-updated'));
       } catch (apiError) {
         // Fallback: create a mock item with a temporary ID for local testing
         const mockSavedItem = { 
@@ -163,6 +166,9 @@ const ExamCard = ({ isEmbedded = false, hideButton = false }) => {
         };
         
         setExamItems(prevItems => [...prevItems, mockSavedItem]);
+        
+        // Notify timetable to refresh
+        window.dispatchEvent(new CustomEvent('eplanner-updated'));
       }
 
       setCourse('');
@@ -189,6 +195,9 @@ const ExamCard = ({ isEmbedded = false, hideButton = false }) => {
       // console.log("Deleted all data:", result);
 
       setExamItems([]);
+
+      // Notify timetable to refresh
+      window.dispatchEvent(new CustomEvent('eplanner-updated'));
 
      
       setCourse('');

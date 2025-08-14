@@ -121,6 +121,9 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
 
       setPersonalItems([...personalItems, savedItem]);
 
+      // Notify timetable to refresh
+      window.dispatchEvent(new CustomEvent('eplanner-updated'));
+
       setTitle('');
       setDescription('');
       setDate('');
@@ -150,6 +153,8 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
       
       setPersonalItems([]);
       
+      // Notify timetable to refresh
+      window.dispatchEvent(new CustomEvent('eplanner-updated'));
       
       setTitle('');
       setDescription('');
@@ -179,6 +184,9 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
       // console.log(" Deleted data with ID:", itemId);
 
       setPersonalItems(personalItems.filter(item => item.id !== itemId));
+
+      // Notify timetable to refresh
+      window.dispatchEvent(new CustomEvent('eplanner-updated'));
 
     } catch (err) {
       console.error(" Error deleting data:", err);
