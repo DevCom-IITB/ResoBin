@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
+
 import {
   Aside,
   Card,
@@ -438,7 +439,7 @@ const TimetableContainer = () => {
           
           if (dayIndex >= 0) {
             const startRow = timeToRow(event.starttime);
-            const endRow = timeToRow(event.endtime) || startRow + 2;
+            const endRow = event.endtime ? timeToRow(event.endtime) : startRow + 2;
             
             events.push({
               id: `personal-${event.id}`,
@@ -468,8 +469,8 @@ const TimetableContainer = () => {
           
           if (dayIndex >= 0) {
             const startRow = timeToRow(event.starttime);
-            const endRow = timeToRow(event.endtime) || startRow + 4;
-            
+            const endRow = event.endtime ? timeToRow(event.endtime) : startRow + 4;
+
             events.push({
               id: `exam-${event.id}`,
               courseCode: 'EXAM',
@@ -898,7 +899,16 @@ const DayView = ({
             const course = coursedata[event.courseCode]
             
             // Handle eplanner events (Personal, Exam, Reminder)
-            if (event.type && ['Personal', 'Exam', 'Reminder'].includes(event.type)) {
+             if (event.type && ['Personal', 'Exam', 'Reminder'].includes(event.type)) {
+                        // Choose description, or course name (for Exam), or fallback to title
+                        let displayName = event.description?.trim();
+                        if (!displayName) {
+                          if (event.type === 'Exam' && coursedata[event.title]) {
+                            displayName = coursedata[event.title]?.title || event.title;
+                          } else {
+                            displayName = event.title;
+                          }
+                        }
               return (
                 <Tooltip
                   key={event.id}
@@ -966,7 +976,7 @@ const DayView = ({
                         maxWidth: 'calc(100% - 56px)',
                         margin: 0,
                       }}>
-                        {event.isAllDay && event.type === 'Reminder' ? 'All Day Reminder' : event.title}
+                        {displayName}
                       </div>
                       <div style={{
                         display: 'flex',
@@ -1289,7 +1299,17 @@ const WeekView = ({
                       const course = coursedata[event.courseCode]
                       
                       // Handle eplanner events (Personal, Exam, Reminder)
-                      if (event.type && ['Personal', 'Exam', 'Reminder'].includes(event.type)) {
+                        if (event.type && ['Personal', 'Exam', 'Reminder'].includes(event.type)) {
+                        // Choose description, or course name (for Exam), or fallback to title
+                        let displayName = event.description?.trim();
+                        if (!displayName) {
+                          if (event.type === 'Exam' && coursedata[event.title]) {
+                            displayName = coursedata[event.title]?.title || event.title;
+                          } else {
+                            displayName = event.title;
+                          }
+                        }
+
                         return (
                           <Tooltip
                             key={event.id}
@@ -1351,7 +1371,7 @@ const WeekView = ({
                                   marginBottom: '5px',
                                   zIndex: '999'
                                 }}>
-                                  {event.isAllDay && event.type === 'Reminder' ? 'All Day' : event.title}
+                        {displayName}
                                 </div>
                                 <div style={{
                                   fontSize: '0.6rem',
@@ -1912,11 +1932,12 @@ const DayEventBlock = styled.div`
   cursor: pointer;
   transition: all 0.2s;
   z-index: 10;
-  position: relative;
+  // position: relative;
   overflow: hidden;
   word-wrap: break-word;
   word-break: break-word;
   max-width: 100%;
+  
   box-sizing: border-box;
   &:hover {
     transform: translateY(-2px);
