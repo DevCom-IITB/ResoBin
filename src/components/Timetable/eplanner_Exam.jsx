@@ -41,21 +41,35 @@ const ExamCard = ({ isEmbedded = false, hideButton = false }) => {
   const [semesters, setSemesters] = useState(null)
     
     
-    const [examItems, setExamItems] = useState([]);
-    const [coursesList, setCoursesList] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-
-    // Listen for custom event from dropdown
+  const [examItems, setExamItems] = useState([]);
+  const [coursesList, setCoursesList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [editingId, setEditingId] = useState(null); // Track which item is being edited    // Listen for custom event from dropdown
     useEffect(() => {
         const handleToggleEvent = () => {
             setIsOpen(!isOpen);
         };
+
+        const handleEditEvent = (event) => {
+            const { eventId, eventData } = event.detail;
+            // Open the modal and populate form with event data
+            setIsOpen(true);
+            setEditingId(eventId);
+            setCourse(eventData.title || eventData.courseCode || '');
+            setDescription(eventData.description || '');
+            setDate(eventData.date || '');
+            setStarttime(eventData.startTime || '');
+            setEndtime(eventData.endTime || '');
+            setLocation(eventData.location || '');
+        };
         
         window.addEventListener('toggle-exam-planner', handleToggleEvent);
+        window.addEventListener('edit-exam-event', handleEditEvent);
         
         return () => {
             window.removeEventListener('toggle-exam-planner', handleToggleEvent);
+            window.removeEventListener('edit-exam-event', handleEditEvent);
         };
     }, [isOpen]);
 
@@ -136,7 +150,7 @@ const ExamCard = ({ isEmbedded = false, hideButton = false }) => {
     try {
       setLoading(true);
 
-      const newItem = {
+      const itemData = {
         course: course.trim(),
         coursename: course.trim(), 
         description: description.trim(),
@@ -146,31 +160,40 @@ const ExamCard = ({ isEmbedded = false, hideButton = false }) => {
         location: location || null
       };
 
-      try {
-        const savedItem = await EplannerAPI.createExam(newItem);
-        setExamItems([...examItems, savedItem]);
-        
-        // Notify timetable to refresh
-        window.dispatchEvent(new CustomEvent('eplanner-updated'));
-      } catch (apiError) {
-        // Fallback: create a mock item with a temporary ID for local testing
-        const mockSavedItem = { 
-          course: course.trim(),
-          coursename: course.trim(),
-          description: description.trim(),
-          date: date || null,
-          starttime: starttime || null,
-          endtime: endtime || null,
-          location: location || null,
-          id: Date.now() 
-        };
-        
-        setExamItems(prevItems => [...prevItems, mockSavedItem]);
-        
-        // Notify timetable to refresh
-        window.dispatchEvent(new CustomEvent('eplanner-updated'));
+      if (editingId) {
+        // Update existing item
+        try {
+          const updatedItem = await EplannerAPI.updateExam(editingId, itemData);
+          setExamItems(examItems.map(item => 
+            item.id === editingId ? updatedItem : item
+          ));
+        } catch (apiError) {
+          // Fallback for local testing
+          const updatedItem = { ...itemData, id: editingId };
+          setExamItems(examItems.map(item => 
+            item.id === editingId ? updatedItem : item
+          ));
+        }
+        setEditingId(null); // Clear editing state
+      } else {
+        // Create new item
+        try {
+          const savedItem = await EplannerAPI.createExam(itemData);
+          setExamItems([...examItems, savedItem]);
+        } catch (apiError) {
+          // Fallback: create a mock item with a temporary ID for local testing
+          const mockSavedItem = { 
+            ...itemData,
+            id: Date.now() 
+          };
+          setExamItems(prevItems => [...prevItems, mockSavedItem]);
+        }
       }
 
+      // Notify timetable to refresh
+      window.dispatchEvent(new CustomEvent('eplanner-updated'));
+
+      // Clear form
       setCourse('');
       setDescription('');
       setDate('');
@@ -218,22 +241,54 @@ const ExamCard = ({ isEmbedded = false, hideButton = false }) => {
 
  
   const deleteExamItem = async (itemId) => {
-
     try {
       setLoading(true);
-      // console.log(" Deleting exam data...");  
 
       await EplannerAPI.deleteExam(itemId);
-      // console.log(" Deleted data with ID:", itemId);
-
       setExamItems(examItems.filter(item => item.id !== itemId));
+
+      // If we were editing this item, clear the editing state
+      if (editingId === itemId) {
+        setEditingId(null);
+        // Clear form
+        setCourse('');
+        setDescription('');
+        setDate('');
+        setStarttime('');
+        setEndtime('');
+        setLocation('');
+      }
+
+      // Notify timetable to refresh
+      window.dispatchEvent(new CustomEvent('eplanner-updated'));
 
     } catch (err) {
       console.error(" Error deleting data:", err);
-      // alert("Failed to delete task. Check console for details.");
     } finally {
       setLoading(false);
     }
+  };
+
+  // Edit exam item - populate form with existing data
+  const editExamItem = (item) => {
+    setCourse(item.course || item.coursename || '');
+    setDescription(item.description || '');
+    setDate(item.date || '');
+    setStarttime(item.starttime || '');
+    setEndtime(item.endtime || '');
+    setLocation(item.location || '');
+    setEditingId(item.id);
+  };
+
+  // Cancel edit - clear form and editing state
+  const cancelEdit = () => {
+    setEditingId(null);
+    setCourse('');
+    setDescription('');
+    setDate('');
+    setStarttime('');
+    setEndtime('');
+    setLocation('');
   };
 
     const toggleplanner = () => {
@@ -651,7 +706,7 @@ const ExamCard = ({ isEmbedded = false, hideButton = false }) => {
                       disabled={loading}
                     />
                   </div>
-                  <div style={{ display: 'flex', gap: '10px' , alignItems: 'center',  marginLeft:'250px'}}>
+                  <div style={{ display: 'flex', gap: '10px' , alignItems: 'center',  marginLeft:'200px'}}>
                     <button
                       type="button"
                       onClick={saveExamData}
@@ -668,8 +723,33 @@ const ExamCard = ({ isEmbedded = false, hideButton = false }) => {
                         filter:'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'
                       }}
                     >
-                      {loading ? ' Saving...' : ' Save Task'}
+                      {(() => {
+                        if (loading) {
+                          return editingId ? 'Updating...' : 'Saving...';
+                        }
+                        return editingId ? 'Update Task' : 'Save Task';
+                      })()}
                     </button>
+                    {editingId && (
+                      <button
+                        type="button"
+                        onClick={cancelEdit}
+                        disabled={loading}
+                        style={{
+                          backgroundColor: '#6c757d',
+                          color: 'white',
+                          padding: '12px 20px',
+                          border: 'none',
+                          borderRadius: '5px',
+                          cursor: loading ? 'not-allowed' : 'pointer',
+                          fontSize: '16px',
+                          margin:'0 10px 0 0px',
+                          filter:'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    )}
                     <button type="button" onClick={removeExamData} style={{
                       backgroundColor: '#1b1728',
                       color: 'red',
@@ -681,7 +761,7 @@ const ExamCard = ({ isEmbedded = false, hideButton = false }) => {
                       margin:'0 0 0 0px',
                       filter: 'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'
                     }}>
-                       Remove
+                       Remove All
                     </button>
 
                   </div>
@@ -714,32 +794,55 @@ const ExamCard = ({ isEmbedded = false, hideButton = false }) => {
                       {examItems.map((item, index) => (
                         <div key={item.id || index} style={{
                           backgroundColor: '#1b1728',
-                          border: '1px',
                           borderRadius: '8px',
                           padding: '15px',
                           marginBottom: '10px',
                           boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                          position: 'relative'
+                          position: 'relative',
+                          border: editingId === item.id ? '2px solid #8080FF' : '1px solid transparent'
                         }}>
-                          <button
-                            type="button"
-                            onClick={() => deleteExamItem(item.id)}
-                            style={{
-                              position: 'absolute',
-                              top: '10px',
-                              right: '10px',
-                              backgroundColor: 'transparent',
-                              border: 'none',
-                              color: '#ff6b6b',
-                              fontSize: '16px',
-                              cursor: 'pointer',
-                              padding: '5px',
-                              borderRadius: '3px'
-                            }}
-                            title="Delete task"
-                          >
-                            X
-                          </button>
+                          <div style={{
+                            position: 'absolute',
+                            top: '10px',
+                            right: '10px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '5px'
+                          }}>
+                            <button
+                              type="button"
+                              onClick={() => deleteExamItem(item.id)}
+                              style={{
+                                backgroundColor: 'transparent',
+                                border: 'none',
+                                color: '#ff6b6b',
+                                fontSize: '16px',
+                                cursor: 'pointer',
+                                padding: '5px',
+                                borderRadius: '3px'
+                              }}
+                              title="Delete task"
+                            >
+                              ✕
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => editExamItem(item)}
+                              disabled={loading}
+                              style={{
+                                backgroundColor: 'transparent',
+                                border: 'none',
+                                color: editingId === item.id ? '#8080FF' : '#FFD93D',
+                                fontSize: '14px',
+                                cursor: loading ? 'not-allowed' : 'pointer',
+                                padding: '3px',
+                                borderRadius: '3px'
+                              }}
+                              title="Edit task"
+                            >
+                              ✎
+                            </button>
+                          </div>
                           
                           <h4 style={{ margin: '0 0 10px 0', color: 'white', paddingRight: '30px' }}>
                              {item.course || item.coursename}

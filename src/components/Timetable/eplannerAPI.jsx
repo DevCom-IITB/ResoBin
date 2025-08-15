@@ -11,6 +11,11 @@ class EplannerAPI {
         const response = await APIInstance.post('/eplanner/exams/', examData);
         return response;
     }
+
+    static async updateExam(examId, examData){
+        const response = await APIInstance.put(`/eplanner/exams/${examId}/`, examData);
+        return response;
+    }
     
     static async deleteExam(examId){
         const response = await APIInstance.delete(`/eplanner/exams/${examId}/`);
@@ -32,6 +37,11 @@ class EplannerAPI {
         return response;
     }
 
+    static async updatePersonal(personalId, personalData){
+        const response = await APIInstance.put(`/eplanner/personals/${personalId}/`, personalData);
+        return response;
+    }
+
     static async deletePersonal(personalId){
         const response = await APIInstance.delete(`/eplanner/personals/${personalId}/`);
         return response;
@@ -49,6 +59,11 @@ class EplannerAPI {
 
     static async createReminder(reminderData){
         const response = await APIInstance.post('/eplanner/reminders/', reminderData);
+        return response;
+    }
+
+    static async updateReminder(reminderId, reminderData){
+        const response = await APIInstance.put(`/eplanner/reminders/${reminderId}/`, reminderData);
         return response;
     }
     

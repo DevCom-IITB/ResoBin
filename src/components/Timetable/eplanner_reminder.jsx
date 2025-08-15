@@ -25,20 +25,33 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false }) => {
   const [isOpen, setIsOpen] = useState(isEmbedded);
 
 
-    const [ReminderItems, setReminderItems] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-
-    // Listen for custom event from dropdown
+  const [ReminderItems, setReminderItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [editingId, setEditingId] = useState(null); // Track which item is being edited    // Listen for custom event from dropdown
     useEffect(() => {
         const handleToggleEvent = () => {
             setIsOpen(!isOpen);
         };
+
+        const handleEditEvent = (event) => {
+            const { eventId, eventData } = event.detail;
+            // Open the modal and populate form with event data
+            setIsOpen(true);
+            setEditingId(eventId);
+            setTitle(eventData.title || '');
+            setDescription(eventData.description || '');
+            setDate(eventData.date || '');
+            setStarttime(eventData.startTime || '');
+            setIsAllDay(eventData.isAllDay || false);
+        };
         
         window.addEventListener('toggle-reminder-planner', handleToggleEvent);
+        window.addEventListener('edit-reminder-event', handleEditEvent);
         
         return () => {
             window.removeEventListener('toggle-reminder-planner', handleToggleEvent);
+            window.removeEventListener('edit-reminder-event', handleEditEvent);
         };
     }, [isOpen]);
 
@@ -101,35 +114,43 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false }) => {
 
     try {
       setLoading(true);
-      // console.log(" Saving personal data...");
 
-      const newItem = {
+      const itemData = {
         title: title.trim(),
         description: description.trim(),
         date: date || null,
         weekdays: weekdays || '',
         starttime: isAllDay ? null : (starttime || null),
+        isAllDay
       };
 
-      // console.log(" Data being sent:", newItem);
-      const savedItem = await EplannerAPI.createReminder(newItem);
-      // console.log(" Saved data:", savedItem);
-
-      setReminderItems([...ReminderItems, savedItem]);
+      if (editingId) {
+        // Update existing item
+        const updatedItem = await EplannerAPI.updateReminder(editingId, itemData);
+        setReminderItems(ReminderItems.map(item => 
+          item.id === editingId ? updatedItem : item
+        ));
+        setEditingId(null); // Clear editing state
+      } else {
+        // Create new item
+        const savedItem = await EplannerAPI.createReminder(itemData);
+        setReminderItems([...ReminderItems, savedItem]);
+      }
 
       // Notify timetable to refresh
       window.dispatchEvent(new CustomEvent('eplanner-updated'));
 
+      // Clear form
       setTitle('');
       setDescription('');
       setDate('');
       setWeekdays('');
       setStarttime('');
       setIsAllDay(false);
+
     } catch (err) {
       console.error(" Error saving data:", err);
       console.error(" Full error details:", err.message, err.stack);
-      // alert("Failed to save task. Check console for details.");
     } finally {
       setLoading(false);
     }
@@ -166,22 +187,54 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false }) => {
 
 
   const deleteReminderItem = async (itemId) => {
-
     try {
       setLoading(true);
-      // console.log(" Deleting reminder data...");
 
       await EplannerAPI.deleteReminder(itemId);
-      // console.log(" Deleted data with ID:", itemId);
-
       setReminderItems(ReminderItems.filter(item => item.id !== itemId));
+
+      // If we were editing this item, clear the editing state
+      if (editingId === itemId) {
+        setEditingId(null);
+        // Clear form
+        setTitle('');
+        setDescription('');
+        setDate('');
+        setWeekdays('');
+        setStarttime('');
+        setIsAllDay(false);
+      }
+
+      // Notify timetable to refresh
+      window.dispatchEvent(new CustomEvent('eplanner-updated'));
 
     } catch (err) {
       console.error(" Error deleting data:", err);
-      // alert("Failed to delete task. Check console for details.");
     } finally {
       setLoading(false);
     }
+  };
+
+  // Edit reminder item - populate form with existing data
+  const editReminderItem = (item) => {
+    setTitle(item.title || '');
+    setDescription(item.description || '');
+    setDate(item.date || '');
+    setWeekdays(item.weekdays || '');
+    setStarttime(item.starttime || '');
+    setIsAllDay(item.isAllDay || (!item.starttime && item.date)); // All day if no starttime but has date
+    setEditingId(item.id);
+  };
+
+  // Cancel edit - clear form and editing state
+  const cancelEdit = () => {
+    setEditingId(null);
+    setTitle('');
+    setDescription('');
+    setDate('');
+    setWeekdays('');
+    setStarttime('');
+    setIsAllDay(false);
   };
 
     const toggleplanner = () => {
@@ -574,7 +627,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false }) => {
                       disabled={loading}
                     />
                   </div>
-                  <div style={{ display: 'flex', gap: '10px' , alignItems: 'center',  marginLeft:'250px'}}>
+                  <div style={{ display: 'flex', gap: '10px' , alignItems: 'center',  marginLeft:'200px'}}>
                     <button
                       type="button"
                       onClick={saveReminderData}
@@ -591,8 +644,33 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false }) => {
                         filter:'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'
                       }}
                     >
-                      {loading ? ' Saving...' : ' Save Task'}
+                      {(() => {
+                        if (loading) {
+                          return editingId ? 'Updating...' : 'Saving...';
+                        }
+                        return editingId ? 'Update Task' : 'Save Task';
+                      })()}
                     </button>
+                    {editingId && (
+                      <button
+                        type="button"
+                        onClick={cancelEdit}
+                        disabled={loading}
+                        style={{
+                          backgroundColor: '#6c757d',
+                          color: 'white',
+                          padding: '12px 20px',
+                          border: 'none',
+                          borderRadius: '5px',
+                          cursor: loading ? 'not-allowed' : 'pointer',
+                          fontSize: '16px',
+                          margin:'0 10px 0 0px',
+                          filter:'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    )}
                     <button type="button" onClick={removeReminderData} style={{
                       backgroundColor: '#1b1728',
                       color: 'red',
@@ -604,7 +682,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false }) => {
                       margin:'0 0 0 0px',
                       filter: 'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'
                     }}>
-                       Remove
+                       Remove All
                     </button>
 
                   </div>
@@ -638,32 +716,55 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false }) => {
                       {ReminderItems.map((item, index) => (
                         <div key={item.id || index} style={{
                           backgroundColor: '#1b1728',
-                          border: '1px',
                           borderRadius: '8px',
                           padding: '15px',
                           marginBottom: '10px',
                           boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                          position: 'relative'
+                          position: 'relative',
+                          border: editingId === item.id ? '2px solid #8080FF' : '1px solid transparent'
                         }}>
-                          <button
-                            type="button"
-                            onClick={() => deleteReminderItem(item.id)}
-                            style={{
-                              position: 'absolute',
-                              top: '10px',
-                              right: '10px',
-                              backgroundColor: 'transparent',
-                              border: 'none',
-                              color: '#ff6b6b',
-                              fontSize: '16px',
-                              cursor: 'pointer',
-                              padding: '5px',
-                              borderRadius: '3px'
-                            }}
-                            title="Delete task"
-                          >
-                            X
-                          </button>
+                          <div style={{
+                            position: 'absolute',
+                            top: '10px',
+                            right: '10px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '5px'
+                          }}>
+                            <button
+                              type="button"
+                              onClick={() => deleteReminderItem(item.id)}
+                              style={{
+                                backgroundColor: 'transparent',
+                                border: 'none',
+                                color: '#ff6b6b',
+                                fontSize: '16px',
+                                cursor: 'pointer',
+                                padding: '5px',
+                                borderRadius: '3px'
+                              }}
+                              title="Delete task"
+                            >
+                              ✕
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => editReminderItem(item)}
+                              disabled={loading}
+                              style={{
+                                backgroundColor: 'transparent',
+                                border: 'none',
+                                color: editingId === item.id ? '#8080FF' : '#FF6B6B',
+                                fontSize: '14px',
+                                cursor: loading ? 'not-allowed' : 'pointer',
+                                padding: '3px',
+                                borderRadius: '3px'
+                              }}
+                              title="Edit task"
+                            >
+                              ✎
+                            </button>
+                          </div>
                           
                           <h4 style={{ margin: '0 0 10px 0', color: 'white', paddingRight: '30px' }}>
                              {item.title}

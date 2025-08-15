@@ -26,20 +26,35 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
   const [isOpen, setIsOpen] = useState(isEmbedded); // Auto-open if embedded
     
     
-    const [personalItems, setPersonalItems] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-
-    // Listen for custom event from dropdown
+  const [personalItems, setPersonalItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [editingId, setEditingId] = useState(null); // Track which item is being edited    // Listen for custom event from dropdown
     useEffect(() => {
         const handleToggleEvent = () => {
             setIsOpen(!isOpen);
         };
+
+        const handleEditEvent = (event) => {
+            const { eventId, eventData } = event.detail;
+            // Open the modal and populate form with event data
+            setIsOpen(true);
+            setEditingId(eventId);
+            setTitle(eventData.title || '');
+            setDescription(eventData.description || '');
+            setDate(eventData.date || '');
+            setWeekdays(eventData.weekdays || '');
+            setStarttime(eventData.startTime || '');
+            setEndtime(eventData.endTime || '');
+            setLocation(eventData.location || '');
+        };
         
         window.addEventListener('toggle-personal-planner', handleToggleEvent);
+        window.addEventListener('edit-personal-event', handleEditEvent);
         
         return () => {
             window.removeEventListener('toggle-personal-planner', handleToggleEvent);
+            window.removeEventListener('edit-personal-event', handleEditEvent);
         };
     }, [isOpen]);
 
@@ -103,9 +118,8 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
 
     try {
       setLoading(true);
-      // console.log(" Saving personal data...");
 
-      const newItem = {
+      const itemData = {
         title: title.trim(),
         description: description.trim(),
         date: date || null,
@@ -115,15 +129,23 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
         location: location || null
       };
 
-      // console.log(" Data being sent:", newItem);
-      const savedItem = await EplannerAPI.createPersonal(newItem);
-      // console.log(" Saved data:", savedItem);
-
-      setPersonalItems([...personalItems, savedItem]);
+      if (editingId) {
+        // Update existing item
+        const updatedItem = await EplannerAPI.updatePersonal(editingId, itemData);
+        setPersonalItems(personalItems.map(item => 
+          item.id === editingId ? updatedItem : item
+        ));
+        setEditingId(null); // Clear editing state
+      } else {
+        // Create new item
+        const savedItem = await EplannerAPI.createPersonal(itemData);
+        setPersonalItems([...personalItems, savedItem]);
+      }
 
       // Notify timetable to refresh
       window.dispatchEvent(new CustomEvent('eplanner-updated'));
 
+      // Clear form
       setTitle('');
       setDescription('');
       setDate('');
@@ -135,7 +157,6 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
     } catch (err) {
       console.error(" Error saving data:", err);
       console.error(" Full error details:", err.message, err.stack);
-      // alert("Failed to save task. Check console for details.");
     } finally {
       setLoading(false);
     }
@@ -175,25 +196,56 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
 
   
   const deletePersonalItem = async (itemId) => {
-
     try {
       setLoading(true);
-      // console.log(" Deleting personal data...");
-
       await EplannerAPI.deletePersonal(itemId);
-      // console.log(" Deleted data with ID:", itemId);
-
       setPersonalItems(personalItems.filter(item => item.id !== itemId));
+      
+      // If we were editing this item, clear the editing state
+      if (editingId === itemId) {
+        setEditingId(null);
+        // Clear form
+        setTitle('');
+        setDescription('');
+        setDate('');
+        setWeekdays('');
+        setStarttime('');
+        setEndtime('');
+        setLocation('');
+      }
 
       // Notify timetable to refresh
       window.dispatchEvent(new CustomEvent('eplanner-updated'));
 
     } catch (err) {
       console.error(" Error deleting data:", err);
-      // alert("Failed to delete task. Check console for details.");
     } finally {
       setLoading(false);
     }
+  };
+
+  // Edit personal item - populate form with existing data
+  const editPersonalItem = (item) => {
+    setTitle(item.title || '');
+    setDescription(item.description || '');
+    setDate(item.date || '');
+    setWeekdays(item.weekdays || '');
+    setStarttime(item.starttime || '');
+    setEndtime(item.endtime || '');
+    setLocation(item.location || '');
+    setEditingId(item.id);
+  };
+
+  // Cancel edit - clear form and editing state
+  const cancelEdit = () => {
+    setEditingId(null);
+    setTitle('');
+    setDescription('');
+    setDate('');
+    setWeekdays('');
+    setStarttime('');
+    setEndtime('');
+    setLocation('');
   };
 
     const toggleplanner = () => {
@@ -639,7 +691,7 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
                       disabled={loading}
                     />
                   </div>
-                  <div style={{ display: 'flex', gap: '10px' , alignItems: 'center',  marginLeft:'250px'}}>
+                  <div style={{ display: 'flex', gap: '10px' , alignItems: 'center',  marginLeft:'200px'}}>
                     <button
                       type="button"
                       onClick={savePersonalData}
@@ -656,8 +708,33 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
                         filter:'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'
                       }}
                     >
-                      {loading ? ' Saving...' : ' Save Task'}
+                      {(() => {
+                        if (loading) {
+                          return editingId ? 'Updating...' : 'Saving...';
+                        }
+                        return editingId ? 'Update Task' : 'Save Task';
+                      })()}
                     </button>
+                    {editingId && (
+                      <button
+                        type="button"
+                        onClick={cancelEdit}
+                        disabled={loading}
+                        style={{
+                          backgroundColor: '#6c757d',
+                          color: 'white',
+                          padding: '12px 20px',
+                          border: 'none',
+                          borderRadius: '5px',
+                          cursor: loading ? 'not-allowed' : 'pointer',
+                          fontSize: '16px',
+                          margin:'0 10px 0 0px',
+                          filter:'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    )}
                     <button type="button" onClick={removePersonalData} style={{
                       backgroundColor: '#1b1728',
                       color: 'red',
@@ -669,7 +746,7 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
                       margin:'0 0 0 0px',
                       filter: 'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'
                     }}>
-                       Remove
+                       Remove All
                     </button>
 
                   </div>
@@ -703,32 +780,55 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
                       {personalItems.map((item, index) => (
                         <div key={item.id || index} style={{
                           backgroundColor: '#1b1728',
-                          border: '1px',
                           borderRadius: '8px',
                           padding: '15px',
                           marginBottom: '10px',
                           boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                          position: 'relative'
+                          position: 'relative',
+                          border: editingId === item.id ? '2px solid #8080FF' : '1px solid transparent'
                         }}>
-                          <button
-                            type="button"
-                            onClick={() => deletePersonalItem(item.id)}
-                            style={{
-                              position: 'absolute',
-                              top: '10px',
-                              right: '10px',
-                              backgroundColor: 'transparent',
-                              border: 'none',
-                              color: '#ff6b6b',
-                              fontSize: '16px',
-                              cursor: 'pointer',
-                              padding: '5px',
-                              borderRadius: '3px'
-                            }}
-                            title="Delete task"
-                          >
-                            X
-                          </button>
+                          <div style={{
+                            position: 'absolute',
+                            top: '10px',
+                            right: '10px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '5px'
+                          }}>
+                            <button
+                              type="button"
+                              onClick={() => deletePersonalItem(item.id)}
+                              style={{
+                                backgroundColor: 'transparent',
+                                border: 'none',
+                                color: '#ff6b6b',
+                                fontSize: '16px',
+                                cursor: 'pointer',
+                                padding: '5px',
+                                borderRadius: '3px'
+                              }}
+                              title="Delete task"
+                            >
+                              ✕
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => editPersonalItem(item)}
+                              disabled={loading}
+                              style={{
+                                backgroundColor: 'transparent',
+                                border: 'none',
+                                color: editingId === item.id ? '#8080FF' : '#4ECDC4',
+                                fontSize: '14px',
+                                cursor: loading ? 'not-allowed' : 'pointer',
+                                padding: '3px',
+                                borderRadius: '3px'
+                              }}
+                              title="Edit task"
+                            >
+                              ✎
+                            </button>
+                          </div>
                           
                           <h4 style={{ margin: '0 0 10px 0', color: 'white', paddingRight: '30px' }}>
                              {item.title}

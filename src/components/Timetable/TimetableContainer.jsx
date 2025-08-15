@@ -101,6 +101,37 @@ const TimetableContainer = () => {
     }
   };
 
+  // Edit handler functions for eplanner events
+  const handleEditPersonal = useCallback((event) => {
+    // Dispatch custom event to trigger personal eplanner modal in edit mode
+    window.dispatchEvent(new CustomEvent('edit-personal-event', {
+      detail: {
+        eventId: event.id,
+        eventData: event
+      }
+    }));
+  }, []);
+
+  const handleEditExam = useCallback((event) => {
+    // Dispatch custom event to trigger exam eplanner modal in edit mode  
+    window.dispatchEvent(new CustomEvent('edit-exam-event', {
+      detail: {
+        eventId: event.id,
+        eventData: event
+      }
+    }));
+  }, []);
+
+  const handleEditReminder = useCallback((event) => {
+    // Dispatch custom event to trigger reminder eplanner modal in edit mode
+    window.dispatchEvent(new CustomEvent('edit-reminder-event', {
+      detail: {
+        eventId: event.id,
+        eventData: event
+      }
+    }));
+  }, []);
+
   const addDropdownMenu = (
     <AddDropdownMenu>
       <AddMenuItem onClick={() => handleDropdownItemClick('personal')}>
@@ -594,8 +625,8 @@ const TimetableContainer = () => {
       add
     </AddButton>
   </Dropdown>
-  {/* HeaderActions are moved to the new SubHeader below */}
-</PageHeading></TimetablePageHeadingWrapper>
+        </PageHeading>
+      </TimetablePageHeadingWrapper>
 
       <SubHeader>
         <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
@@ -628,6 +659,9 @@ const TimetableContainer = () => {
             handleClickNext={handleClickNext}
             handleTodayClick={handleTodayClick}
             dayDateString={dayDateString}
+            handleEditPersonal={handleEditPersonal}
+            handleEditExam={handleEditExam}
+            handleEditReminder={handleEditReminder}
           />
         )}
         {currentView === 'Week' && (
@@ -746,10 +780,16 @@ const DayView = ({
   handleClickNext,
   handleTodayClick,
   dayDateString,
+  handleEditPersonal,
+  handleEditExam,
+  handleEditReminder,
 }) => {
-  // CORRECTED: Use isoWeekday for consistency (Mon=1, Sun=7)
-  const selectedDayIndex = currentDate.isoWeekday() - 1
-  const currentDateStr = currentDate.format('YYYY-MM-DD')
+  // --- REFACTORED LOGIC (following WeekView pattern) ---
+  // 1. Get the specific day as a moment object - this is our single source of truth
+  // This follows the same pattern as WeekView where we use moment objects consistently
+  const selectedDay = currentDate.clone()
+  const selectedDayIndex = selectedDay.isoWeekday() - 1 // Convert to 0-6 (Mon=0, Sun=6)
+  const currentDateStr = selectedDay.format('YYYY-MM-DD')
   
   const dayEvents = events.filter((event) => {
     // For course events (have type 'Lecture' or 'Tutorial'), filter by dayIndex only
@@ -817,10 +857,12 @@ const DayView = ({
   }
   
   const processedDayEvents = processEventsForDisplay(dayEvents)
-  const isToday = currentDate.isSame(moment(), 'day')
+  const isToday = selectedDay.isSame(moment(), 'day')
 
   return (
-    <DayViewContainer>
+    <TimetableWrapper>
+      <TimetableScrollInner>
+        <DayViewContainer>
       <ControlsLayout>
         <DateDisplay>{dayDateString}</DateDisplay>
         <ViewSelectorContainer>
@@ -886,8 +928,8 @@ const DayView = ({
                     style={{
                       position: 'absolute',
                       top: `${event.displayTop}px`,
-                      left: '0rem',
-                      right: '0rem',
+                      left: '0.25rem',
+                      width: 'calc(100% - 0.5rem)',
                       height: `${event.displayHeight}px`,
                       padding: '0', // Remove padding for eplanner events
                       zIndex: event.zIndex || 5,
@@ -902,17 +944,90 @@ const DayView = ({
                       overflow: 'hidden',
                       display: 'flex',
                       flexDirection: 'column',
-                      justifyContent: 'center',
-                      borderRadius: '8px'
+                      justifyContent: 'space-between',
+                      borderRadius: '8px',
+                      position: 'relative'
                     }}>
-                      <div style={{ 
-                        fontSize: event.totalInStack > 1 ? '0.75rem' : '1rem', 
+                      <div style={{
+                        fontSize: event.totalInStack > 1 ? '0.7rem' : '1rem',
                         fontWeight: '600',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
+                        whiteSpace: 'nowrap',
+                        textAlign: 'left',
+                        color: '#222',
+                        background: 'transparent',
+                        padding: '4px 12px',
+                        borderRadius: '8px',
+                        position: 'absolute',
+                        left: -3,
+                        top: 0,
+                        zIndex: 100,
+                        maxWidth: 'calc(100% - 56px)',
+                        margin: 0,
                       }}>
-                        {event.isAllDay && event.type === 'Reminder' ? 'All Day Reminder' : event.type}
+                        {event.isAllDay && event.type === 'Reminder' ? 'All Day Reminder' : event.title}
+                      </div>
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        fontSize: '0.9rem',
+                        opacity: 0.9,
+                        fontWeight: '500',
+                        color: 'black',
+                        flexDirection: 'row',
+                      }}>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          marginTop: '30px',
+                          marginLeft: "5px",
+                          flexDirection: 'row',
+                        }}>
+                          <span>{event.type}</span>
+
+                        </div>
+                        <div style={{ marginBottom: '8px', marginRight: '9px' }}>
+                          <button type="button" style={{
+                            background: 'transparent',
+                            border: 'none',
+                            borderRadius: '4px',
+                            padding: '2px 4px',
+                            cursor: 'pointer',
+                            color: 'black',
+                          }} onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if (event.type === 'Personal') handleEditPersonal(event);
+                            else if (event.type === 'Exam') handleEditExam(event);
+                            else if (event.type === 'Reminder') handleEditReminder(event);
+                          }} title="Edit Event">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                              <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                          </button>
+                        
+                       
+                          <button type="button" style={{
+                            background: 'transparent',
+                            border: 'none',
+                            borderRadius: '4px',
+                            padding: '2px 4px',
+                            cursor: 'pointer',
+                            color: 'black'
+                          }} onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            // Bookmark functionality will be added later
+                          }} title="Bookmark Event">
+                            <svg width="30" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                              <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16l7-3 7 3z"/>
+                            </svg>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </DayEventBlock>
@@ -951,8 +1066,8 @@ const DayView = ({
                   style={{
                     position: 'absolute',
                     top: `${event.displayTop}px`,
-                    left: '0rem',
-                    right: '0rem',
+                    left: '0.25rem',
+                    width: 'calc(100% - 0.5rem)',
                     height: `${event.displayHeight}px`,
                     zIndex: event.zIndex || 10,
                   }}
@@ -969,17 +1084,47 @@ const DayView = ({
                       justifyContent: 'space-between',
                     }}
                   >
-                    <div>
-                      <EventTitle style={{ fontSize: event.totalInStack > 1 ? '0.8rem' : '1rem' }}>
-                        {event.courseCode} | {event.slotName}
-                      </EventTitle>
-                      <EventTime style={{ fontSize: event.totalInStack > 1 ? '0.7rem' : '0.8rem' }}>
-                        {event.startTime} - {event.endTime}
-                      </EventTime>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div style={{ flex: 1 }}>
+                        <EventTitle style={{ fontSize: event.totalInStack > 1 ? '0.8rem' : '1rem' }}>
+                          {event.courseCode} | {event.slotName}
+                        </EventTitle>
+                        <EventTime style={{ fontSize: event.totalInStack > 1 ? '0.7rem' : '0.8rem' }}>
+                          {event.startTime} - {event.endTime}
+                        </EventTime>
+                      </div>
+                      <div style={{ display: 'flex', gap: '4px' }}>
+                        <button type="button" style={{
+                          background: 'transparent',
+                          border: 'none',
+                          borderRadius: '4px',
+                          padding: '2px 4px',
+                          cursor: 'pointer',
+                          color: 'black'
+                        }} onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          // Bookmark functionality will be added later
+                        }}>
+                          <svg width="30" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16l7-3 7 3z"/>
+                          </svg>
+                        </button>
+                      </div>
                     </div>
-                    <RedirectIcon>
-                      <ExternalLink size="16" />
-                    </RedirectIcon>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                      <div style={{ 
+                        fontSize: '0.9rem', 
+                        opacity: 0.8,
+                        color: 'black',
+                        fontWeight: '500'
+                      }}>
+                        {event.slotName && event.slotName.startsWith('L') ? 'Lab' : 'Lecture'}
+                      </div>
+                      <RedirectIcon>
+                        <ExternalLink size="16" />
+                      </RedirectIcon>
+                    </div>
                   </Link>
                 </DayEventBlock>
               </Tooltip>
@@ -987,7 +1132,9 @@ const DayView = ({
           })}
         </DayEventColumn>
       </DayViewGrid>
-    </DayViewContainer>
+        </DayViewContainer>
+      </TimetableScrollInner>
+    </TimetableWrapper>
   )
 }
 
@@ -1177,15 +1324,22 @@ const WeekView = ({
                               }}
                             >
                               <div style={{
-                                width: '100%',
-                                height: '100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                padding: '4px',
-                                color: 'white',
-                                overflow: 'hidden',
-                                borderRadius: '6px'
+                                fontSize: event.totalInStack > 1 ? '0.7rem' : '1rem',
+                        fontWeight: '600',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        textAlign: 'left',
+                        color: '#222',
+                        background: 'transparent',
+                        padding: '4px 12px',
+                        borderRadius: '8px',
+                        position: 'absolute',
+                        left: -3,
+                        top: 0,
+                        zIndex: 100,
+                        maxWidth: 'calc(100% - 56px)',
+                        margin: 0
                               }}>
                                 <div style={{ 
                                   fontSize: event.totalInStack > 1 ? '0.7rem' : '0.9rem', 
@@ -1193,9 +1347,20 @@ const WeekView = ({
                                   overflow: 'hidden',
                                   textOverflow: 'ellipsis',
                                   whiteSpace: 'nowrap',
-                                  textAlign: 'center'
+                                  textAlign: 'left',
+                                  marginBottom: '5px',
+                                  zIndex: '999'
                                 }}>
-                                  {event.isAllDay && event.type === 'Reminder' ? 'All Day' : event.type}
+                                  {event.isAllDay && event.type === 'Reminder' ? 'All Day' : event.title}
+                                </div>
+                                <div style={{
+                                  fontSize: '0.6rem',
+                                  opacity: 0.9,
+                                  textAlign: 'left',
+                                  fontWeight: '500',
+                                  marginRight:'20px'
+                                }}>
+                                  {event.type}
                                 </div>
                               </div>
                             </WeekEventBlock>
@@ -1250,17 +1415,23 @@ const WeekView = ({
                                 justifyContent: 'space-between',
                               }}
                             >
-                              <div>
-                                <EventTitle style={{ fontSize: event.totalInStack > 1 ? '0.65rem' : '0.75rem' }}>
-                                  {event.courseCode} | {event.slotName}
-                                </EventTitle>
-                                <EventTime style={{ fontSize: event.totalInStack > 1 ? '0.6rem' : '0.7rem' }}>
-                                  {event.startTime}
-                                </EventTime>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                  <EventTitle style={{ fontSize: event.totalInStack > 1 ? '0.65rem' : '0.75rem' }}>
+                                    {event.courseCode} | {event.slotName}
+                                  </EventTitle>
+                                  <EventTime style={{ fontSize: event.totalInStack > 1 ? '0.6rem' : '0.7rem' }}>
+                                    {event.startTime}
+                                  </EventTime>
+                                </div>
+
                               </div>
-                              <RedirectIcon>
-                                <ExternalLink size="14" />
-                              </RedirectIcon>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                                
+                                <RedirectIcon>
+                                  <ExternalLink size="14" />
+                                </RedirectIcon>
+                              </div>
                             </Link>
                           </WeekEventBlock>
                         </Tooltip>
@@ -1641,7 +1812,7 @@ const TimeText = styled.span`
   color: ${({ theme }) => theme.textColor};
   font-weight: 400;
   position: relative;
-  top: -9px;
+  top: -10px;
 `
 
 const CurrentDateDisplay = styled.button`
@@ -1672,11 +1843,17 @@ const DayViewContainer = styled.div`
   border-radius: 12px;
   padding: 1rem;
   margin-bottom: 2rem;
+  min-width: 1000px;
+  display: flex;
+  flex-direction: column;
 `
 
 const DayViewGrid = styled.div`
   display: flex;
+  height: 600px;
   min-height: 600px;
+  min-width: 1080px;
+  border-radius: 8px;
 `
 
 const DayTimeColumn = styled.div`
@@ -1707,8 +1884,9 @@ const TimeSlot = styled.div`
 
 const DayEventColumn = styled.div`
   flex: 1;
-  padding-left: 1rem;
   position: relative;
+  overflow: hidden;
+  height: 100%;
   background-image: linear-gradient(
       to bottom,
       ${({ theme }) => theme.border || '#ececec40'} -0.5px,
@@ -1722,12 +1900,6 @@ const DayEventColumn = styled.div`
       ${({ theme }) => theme.border || '#ececec40'} 29.5px,
       ${({ theme }) => theme.border || '#ececec40'} 30px
     );
-  
-  /* Ensure no text elements bleed through */
-  & > * {
-    position: relative;
-    z-index: 5;
-  }
 `
 
 const DayEventBlock = styled.div`
@@ -1744,6 +1916,8 @@ const DayEventBlock = styled.div`
   overflow: hidden;
   word-wrap: break-word;
   word-break: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -1792,13 +1966,15 @@ const WeekViewContainer = styled.div`
 
 const TimetableWrapper = styled.div`
   width: 100%;
+  max-height: 70vh;
   overflow-x: auto;
+  overflow-y: auto;
   background: ${({ theme }) => theme.bg};
   border-radius: 12px;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
   padding: 0;
   margin: 0 auto;
-  overflow-y: hidden;
+  contain: layout style;
 `
 
 const TimetableScrollInner = styled.div`
@@ -1818,6 +1994,7 @@ const WeekDayHeader = styled.div`
   padding: 0.75rem 0.5rem; /* Adjusted padding for better alignment */
   display: flex;
   align-items: center;
+  width: 145.7px;
   gap: 0.5rem;
   justify-content: center;
   /* Add grid lines to match the columns below */
@@ -1845,8 +2022,8 @@ const DayName = styled.span`
 const WeekGrid = styled.div`
   display: grid;
   grid-template-columns: 80px repeat(7, 1fr);
-  min-height: 600px;
-  min-width: 600px;
+  min-height: 100px;
+  min-width: 1100px;
   color: #ffffff0f;
 `
 
@@ -1860,6 +2037,7 @@ const WeekDayColumn = styled.div`
   padding: 0;
   border-right: 1px solid ${({ theme }) => theme.border};
   position: relative;
+  
   background-image: repeating-linear-gradient(
     to bottom,
     transparent,
