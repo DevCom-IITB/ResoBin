@@ -496,7 +496,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                     </label>
                   </div>
                   {/* Weekdays */}
-                  <div style={{ marginBottom: '15px', marginRight: '355px' }}>
+                  {/* <div style={{ marginBottom: '15px', marginRight: '355px' }}>
                     <select
                       id="eplanner-weekdays"
                       name="weekdays"
@@ -519,7 +519,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                       <option value="Daily">Daily</option>
                       <option value="Weekly">Weekly</option>
                     </select>
-                  </div>
+                  </div> */}
                   {/* Start Time - Only show when not All Day */}
                   {!isAllDay && (
                   <div style={{ display: 'flex', flexDirection: 'row', gap: '18px' }}>

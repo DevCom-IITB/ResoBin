@@ -475,7 +475,7 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                   </div>
                 </div>
                   {/* Weekdays */}
-                  <div style={{ marginBottom: '15px', marginRight: '355px' }}>
+                  {/* <div style={{ marginBottom: '15px', marginRight: '355px' }}>
                     <select
                       id="eplanner-weekdays"
                       name="weekdays"
@@ -498,7 +498,7 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                       <option value="Weekly">Weekly</option>
                       <option value="Daily">Daily</option>
                     </select>
-                  </div>
+                  </div> */}
                   {/* Start and End Date */}
                   <div style={{ display: 'flex', flexDirection: 'row', gap: '18px' }}>
                     <div style={{ marginTop : '10px'}}>

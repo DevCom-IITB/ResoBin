@@ -1024,7 +1024,7 @@ const DayView = ({
                           </button>
                         
                        
-                          <button type="button" style={{
+                          {/* <button type="button" style={{
                             background: 'transparent',
                             border: 'none',
                             borderRadius: '4px',
@@ -1039,7 +1039,7 @@ const DayView = ({
                             <svg width="30" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                               <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16l7-3 7 3z"/>
                             </svg>
-                          </button>
+                          </button> */}
                         </div>
                       </div>
                     </div>
@@ -1106,7 +1106,7 @@ const DayView = ({
                           {event.startTime} - {event.endTime}
                         </EventTime>
                       </div>
-                      <div style={{ display: 'flex', gap: '4px' }}>
+                      {/* <div style={{ display: 'flex', gap: '4px' }}>
                         <button type="button" style={{
                           background: 'transparent',
                           border: 'none',
@@ -1123,7 +1123,7 @@ const DayView = ({
                             <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16l7-3 7 3z"/>
                           </svg>
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                       <div style={{ 
@@ -1427,7 +1427,7 @@ const WeekView = ({
                             </svg>
                           </button>
                         
-                       
+{/*                        
                           <button type="button" style={{
                             background: 'transparent',
                             border: 'none',
@@ -1443,7 +1443,7 @@ const WeekView = ({
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                               <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16l7-3 7 3z"/>
                             </svg>
-                          </button>
+                          </button> */}
                         </div>
                       </div>
                     </div>
