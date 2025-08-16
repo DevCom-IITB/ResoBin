@@ -495,13 +495,7 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                       disabled={loading}
                     >
                       <option value="" style={{ color: '#9ca3af' }}>Does not repeat</option>
-                      <option value="mon">Monday</option>
-                      <option value="tue">Tuesday</option>
-                      <option value="wed">Wednesday</option>
-                      <option value="thu">Thursday</option>
-                      <option value="fri">Friday</option>
-                      <option value="sat">Saturday</option>
-                      <option value="sun">Sunday</option>
+                      <option value="Weekly">Weekly</option>
                       <option value="Daily">Daily</option>
                     </select>
                   </div>

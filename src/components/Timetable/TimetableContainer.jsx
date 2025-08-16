@@ -678,6 +678,9 @@ const TimetableContainer = () => {
             handleClickNext={handleClickNext}
             handleTodayClick={handleTodayClick}
             dayDateString={dateString}
+            handleEditPersonal={handleEditPersonal}
+            handleEditExam={handleEditExam}
+            handleEditReminder={handleEditReminder}
           />
         )}
         {currentView === 'Month' && (
@@ -1162,6 +1165,9 @@ const WeekView = ({
   handleClickNext,
   handleTodayClick,
   dayDateString,
+  handleEditPersonal,
+  handleEditExam,
+  handleEditReminder,
 }) => {
   // --- REFACTORED LOGIC ---
   // 1. Get the Monday of the current week. 'isoWeek' is standard and not locale-dependent.
@@ -1333,20 +1339,34 @@ const WeekView = ({
                             }}
                             placement="top"
                           >
-                            <WeekEventBlock
-                              color={event.color}
-                              style={{
-                                position: 'absolute',
-                                top: `${event.displayTop}px`,
-                                left: '0',
-                                right: '0',
-                                height: `${event.displayHeight}px`,
-                                zIndex: event.zIndex || 5,
-                              }}
-                            >
-                              <div style={{
-                                fontSize: event.totalInStack > 1 ? '0.7rem' : '1rem',
-                        fontWeight: '600',
+                           <WeekEventBlock
+                    color={event.color}
+                    style={{
+                      position: 'absolute',
+                      top: `${event.displayTop}px`,
+                      left: '0.25rem',
+                      width: 'calc(100% - 0.5rem)',
+                      height: `${event.displayHeight}px`,
+                      padding: '0', // Remove padding for eplanner events
+                      zIndex: event.zIndex || 5,
+                    }}
+                  >
+                    <div style={{ 
+                      textAlign: 'center', 
+                      color: 'white', 
+                      padding: '4px',
+                      height: '100%',
+                      width: '100%',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      borderRadius: '8px',
+                      position: 'relative'
+                    }}>
+                      <div style={{
+                        fontSize: '0.8rem',
+                        fontWeight: '500',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
@@ -1360,34 +1380,77 @@ const WeekView = ({
                         top: 0,
                         zIndex: 100,
                         maxWidth: 'calc(100% - 56px)',
-                        margin: 0
-                              }}>
-                                <div style={{ 
-                                  fontSize: event.totalInStack > 1 ? '0.7rem' : '0.9rem', 
-                                  fontWeight: '600',
-                                  overflow: 'hidden',
-                                  textOverflow: 'ellipsis',
-                                  whiteSpace: 'nowrap',
-                                  textAlign: 'left',
-                                  marginBottom: '5px',
-                                  zIndex: '999'
-                                }}>
+                        marginTop: '4px',
+                      }}>
                         {displayName}
-                                </div>
-                                <div style={{
-                                  fontSize: '0.6rem',
-                                  opacity: 0.9,
-                                  textAlign: 'left',
-                                  fontWeight: '500',
-                                  marginRight:'20px'
-                                }}>
-                                  {event.type}
-                                </div>
-                              </div>
-                            </WeekEventBlock>
-                          </Tooltip>
-                        )
-                      }
+                      </div>
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        fontSize: '0.7rem',
+                        opacity: 0.9,
+                        fontWeight: '500',
+                        color: 'black',
+                        flexDirection: 'row',
+                        
+                      }}>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          marginTop: '15px',
+                          marginLeft: "5px",
+                          flexDirection: 'row',
+                        }}>
+                          <span>{event.type}</span>
+
+                        </div>
+                        <div style={{ margin: '30px 0px 10px 15px' }}>
+                          <button type="button" style={{
+                            background: 'transparent',
+                            border: 'none',
+                            borderRadius: '4px',
+                            padding: '2px 4px',
+                            cursor: 'pointer',
+                            color: 'black',
+                          }} onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if (event.type === 'Personal') handleEditPersonal(event);
+                            else if (event.type === 'Exam') handleEditExam(event);
+                            else if (event.type === 'Reminder') handleEditReminder(event);
+                          }} title="Edit Event">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                              <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                          </button>
+                        
+                       
+                          <button type="button" style={{
+                            background: 'transparent',
+                            border: 'none',
+                            borderRadius: '4px',
+                            padding: '0px 4px',
+                            cursor: 'pointer',
+                            color: 'black'
+                          }} onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            // Bookmark functionality will be added later
+                          }} title="Bookmark Event">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                              <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16l7-3 7 3z"/>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </WeekEventBlock>
+                </Tooltip>
+              )
+            }
                       
                       // Handle course events
                       if (!course) return null
@@ -2036,7 +2099,7 @@ const WeekDayHeader = styled.div`
   padding: 0.75rem 0.5rem; /* Adjusted padding for better alignment */
   display: flex;
   align-items: center;
-  width: 145.7px;
+  width: 143.5px;
   gap: 0.5rem;
   justify-content: center;
   /* Add grid lines to match the columns below */
@@ -2065,7 +2128,7 @@ const WeekGrid = styled.div`
   display: grid;
   grid-template-columns: 80px repeat(7, 1fr);
   min-height: 100px;
-  // min-width: 1100px;
+  min-width: 148px;
   color: #ffffff0f;
 `
 
@@ -2079,7 +2142,8 @@ const WeekDayColumn = styled.div`
   padding: 0;
   border-right: 1px solid ${({ theme }) => theme.border};
   position: relative;
-  
+  width: 143.5px;
+
   background-image: repeating-linear-gradient(
     to bottom,
     transparent,
@@ -2101,7 +2165,7 @@ const WeekEventBlock = styled.div`
   margin-bottom: 0.5rem;
   color: ${({ theme }) => theme.textColor};
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   transition: all 0.2s;
   width: 100%;
   box-sizing: border-box;
