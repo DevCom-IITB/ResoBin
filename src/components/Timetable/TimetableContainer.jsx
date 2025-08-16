@@ -979,7 +979,7 @@ const DayView = ({
                         maxWidth: 'calc(100% - 56px)',
                         margin: 0,
                       }}>
-                        {displayName}
+                        {event.title}
                       </div>
                       <div style={{
                         display: 'flex',
@@ -2084,9 +2084,6 @@ const WeekViewContainer = styled.div`
 
 const TimetableWrapper = styled.div`
   width: 100%;
-  max-height: 70vh;
-  overflow-x: auto;
-  overflow-y: auto;
   background: ${({ theme }) => theme.bg};
   border-radius: 12px;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
@@ -2098,7 +2095,7 @@ const TimetableWrapper = styled.div`
 const TimetableScrollInner = styled.div`
   display: flex;
   flex-direction: row;
-  min-width: 100%;
+  width: 100%;
 `
 
 const WeekHeader = styled.div`
