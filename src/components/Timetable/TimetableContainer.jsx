@@ -1560,31 +1560,52 @@ const MonthView = ({
                   </MonthDayNumber>
                   
                   {/* Display events for this day */}
-                  {dayEvents.map((event) => (
-                    <MonthEventBlock key={event.id} color={event.color}>
-                      <div style={{ 
-                        fontSize: '0.7rem', 
-                        fontWeight: 'bold',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
-                      }}>
-                        {event.type || event.title}
-                      </div>
-                      {event.description && (
+                  {dayEvents.map((event) => {
+                    let timeDisplay = null;
+                    if (event.isAllDay) {
+                      timeDisplay = (
                         <div style={{ 
-                          fontSize: '0.6rem', 
+                          color: 'yellow',
                           opacity: 0.8,
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
-                          marginTop: '1px'
+                          marginTop: '3px',
+                          padding: '0px 4px'
                         }}>
-                          {event.description}
+                          All Day
                         </div>
-                      )}
-                    </MonthEventBlock>
-                  ))}
+                      );
+                    } else if (event.startTime) {
+                      timeDisplay = (
+                        <div style={{ 
+                          color: 'yellow',
+                          opacity: 0.8,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          marginTop: '3px',
+                          padding: '0px 10px'
+                        }}>
+                          {event.startTime.slice(0,5)}
+                        </div>
+                      );
+                    }
+                    return (
+                      <MonthEventBlock key={event.id} color={event.color}>
+                        <div style={{ 
+                          marginTop: '3px',
+                          color: 'yellow',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}>
+                          {event.type || event.title}
+                        </div>
+                        {timeDisplay}
+                      </MonthEventBlock>
+                    );
+                  })}
                 </MonthDayCell>
               );
             })}
@@ -2139,6 +2160,7 @@ const MonthGrid = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 0;
+  
 `
 
 const MonthWeekRow = styled.div`
@@ -2148,6 +2170,7 @@ const MonthWeekRow = styled.div`
 
 const MonthDayCell = styled.div`
   min-height: 95px;
+  min-width: 100px;
   border: 0.2px solid #d6c9f8;
   padding: 0.75rem;
   opacity: ${({ isCurrentMonth }) => (isCurrentMonth ? 1 : 0.5)};
@@ -2190,7 +2213,7 @@ const MonthEventBlock = styled.div`
   background: ${({ color }) => color};
   background-color: transparent;
   color: white;
-  border: 1px solid ${({ color }) => color};
+  border: 1px solid yellow;
   border-radius: 4px;
   padding: 2px 6px;
   margin: 2px 0;
@@ -2198,6 +2221,9 @@ const MonthEventBlock = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 `
 
 const AsideList = styled.div`
