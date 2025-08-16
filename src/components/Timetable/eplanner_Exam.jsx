@@ -29,8 +29,8 @@ const getTodayDateReadable = () => {
     };
 
 
-const ExamCard = ({ isEmbedded = false, hideButton = false }) => {
-    
+const ExamCard = ({ isEmbedded = false, hideButton = false, selectedDate, selectedCourse }) => {
+
   const [course, setCourse] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
@@ -150,11 +150,12 @@ const ExamCard = ({ isEmbedded = false, hideButton = false }) => {
     try {
       setLoading(true);
 
+      const eventDate = date || selectedDate || null;
       const itemData = {
         course: course.trim(),
         coursename: course.trim(), 
         description: description.trim(),
-        date: date || null,
+        date: eventDate,
         starttime: starttime || null,
         endtime: endtime || null,
         location: location || null
@@ -915,10 +916,10 @@ const ExamCard = ({ isEmbedded = false, hideButton = false }) => {
     )
 }
 
-const ExamPlanner = ({ hideButton }) => {
+const ExamPlanner = ({ hideButton , selectedDate}) => {
     
     return (
-        <ExamCard hideButton={hideButton} />
+        <ExamCard hideButton={hideButton} selectedDate={selectedDate} />
     )
 }
 

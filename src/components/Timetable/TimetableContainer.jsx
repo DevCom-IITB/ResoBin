@@ -729,10 +729,10 @@ const TimetableContainer = () => {
         </AsideList>
       </Aside>
 
-      {/* Eplanner Components - Hidden buttons, only triggered by dropdown events */}
-      <PersonalPlanner hideButton />
-      <ExamPlanner hideButton />
-      <ReminderPlanner hideButton />
+  {/* Eplanner Components - Hidden buttons, only triggered by dropdown events */}
+  <PersonalPlanner hideButton selectedDate={currentDate.format('YYYY-MM-DD')} />
+  <ExamPlanner hideButton selectedDate={currentDate.format('YYYY-MM-DD')} />
+  <ReminderPlanner hideButton selectedDate={currentDate.format('YYYY-MM-DD')} />
     </>
   )
 }
@@ -1297,13 +1297,14 @@ const WeekView = ({
                     {isToday && <CurrentTimeIndicator />}
                     {processedDayEvents.map((event) => {
                       const course = coursedata[event.courseCode]
-                      
+                      console.log(course);
+
                       // Handle eplanner events (Personal, Exam, Reminder)
                         if (event.type && ['Personal', 'Exam', 'Reminder'].includes(event.type)) {
                         // Choose description, or course name (for Exam), or fallback to title
                         let displayName = event.description?.trim();
                         if (!displayName) {
-                          if (event.type === 'Exam' && coursedata[event.title]) {
+                          if (event.type === 'Exam') {
                             displayName = coursedata[event.title]?.title || event.title;
                           } else {
                             displayName = event.title;
@@ -1316,7 +1317,7 @@ const WeekView = ({
                             title={
                               <div>
                                 <strong>
-                                  {event.title} ({event.type})
+                                  {event.courseCode} ({event.type})
                                 </strong>
                                 {event.description && <div>{event.description}</div>}
                                 <div>
@@ -1585,7 +1586,7 @@ const MonthView = ({
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
                           marginTop: '3px',
-                          padding: '0px 10px'
+                          padding: '0px 8px'
                         }}>
                           {event.startTime.slice(0,5)}
                         </div>
@@ -2223,7 +2224,7 @@ const MonthEventBlock = styled.div`
   white-space: nowrap;
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 5px;
 `
 
 const AsideList = styled.div`

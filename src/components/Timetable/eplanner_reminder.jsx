@@ -14,11 +14,11 @@ const styles = {
     }
 }
 
-const ReminderCard = ({ isEmbedded = false, hideButton = false }) => {
+const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) => {
     // Form state
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [date, setDate] = useState('');
+    const [date, setDate] = useState('');
   const [weekdays, setWeekdays] = useState('');
   const [starttime, setStarttime] = useState('');
   const [isAllDay, setIsAllDay] = useState(false);
@@ -114,16 +114,16 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false }) => {
 
     try {
       setLoading(true);
-
+      // Use selectedDate if date is not chosen
+      const eventDate = date || selectedDate || null;
       const itemData = {
         title: title.trim(),
         description: description.trim(),
-        date: date || null,
+        date: eventDate,
         weekdays: weekdays || '',
         starttime: isAllDay ? null : (starttime || null),
         isAllDay
       };
-
       if (editingId) {
         // Update existing item
         const updatedItem = await EplannerAPI.updateReminder(editingId, itemData);
@@ -136,10 +136,8 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false }) => {
         const savedItem = await EplannerAPI.createReminder(itemData);
         setReminderItems([...ReminderItems, savedItem]);
       }
-
       // Notify timetable to refresh
       window.dispatchEvent(new CustomEvent('eplanner-updated'));
-
       // Clear form
       setTitle('');
       setDescription('');
@@ -147,10 +145,8 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false }) => {
       setWeekdays('');
       setStarttime('');
       setIsAllDay(false);
-
     } catch (err) {
-      console.error(" Error saving data:", err);
-      console.error(" Full error details:", err.message, err.stack);
+      console.error("Error saving data:", err);
     } finally {
       setLoading(false);
     }
@@ -840,11 +836,10 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false }) => {
     )
 }
 
-const ReminderPlanner = ({ hideButton }) => {
-    
-    return (
-        <ReminderCard hideButton={hideButton} />
-    )
+const ReminderPlanner = ({ hideButton, selectedDate }) => {
+  return (
+    <ReminderCard hideButton={hideButton} selectedDate={selectedDate} />
+  )
 }
 
 export default ReminderPlanner;

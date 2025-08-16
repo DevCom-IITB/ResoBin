@@ -14,7 +14,7 @@ const styles = {
     }
 }
 
-const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
+const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) => {
     // Form state
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -115,20 +115,19 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
       alert("Please enter a title!");
       return;
     }
-
     try {
       setLoading(true);
-
+      // Use selectedDate if date is not chosen
+      const eventDate = date || selectedDate || null;
       const itemData = {
         title: title.trim(),
         description: description.trim(),
-        date: date || null,
+        date: eventDate,
         weekdays: weekdays || '',
         starttime: starttime || null,
         endtime: endtime || null,
         location: location || null
       };
-
       if (editingId) {
         // Update existing item
         const updatedItem = await EplannerAPI.updatePersonal(editingId, itemData);
@@ -141,10 +140,8 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
         const savedItem = await EplannerAPI.createPersonal(itemData);
         setPersonalItems([...personalItems, savedItem]);
       }
-
       // Notify timetable to refresh
       window.dispatchEvent(new CustomEvent('eplanner-updated'));
-
       // Clear form
       setTitle('');
       setDescription('');
@@ -153,10 +150,8 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
       setStarttime('');
       setEndtime('');
       setLocation('');
-
     } catch (err) {
-      console.error(" Error saving data:", err);
-      console.error(" Full error details:", err.message, err.stack);
+      console.error("Error saving data:", err);
     } finally {
       setLoading(false);
     }
@@ -910,11 +905,10 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false }) => {
     )
 }
 
-const PersonalPlanner = ({ hideButton }) => {
-    
-    return (
-        <PersonalCard hideButton={hideButton} />
-    )
+const PersonalPlanner = ({ hideButton, selectedDate }) => {
+  return (
+    <PersonalCard hideButton={hideButton} selectedDate={selectedDate} />
+  )
 }
 
 export default PersonalPlanner;
