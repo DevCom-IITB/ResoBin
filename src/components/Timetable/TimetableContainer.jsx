@@ -1476,49 +1476,62 @@ const WeekView = ({
                           }}
                           placement="top"
                         >
-                          <WeekEventBlock
-                            color={event.color}
-                            style={{
-                              position: 'absolute',
-                              top: `${event.displayTop}px`,
-                              left: '0',
-                              right: '0',
-                              height: `${event.displayHeight}px`,
-                              zIndex: event.zIndex || 10,
-                            }}
-                          >
-                            <Link
-                              to={coursePageUrl(event.courseCode, course.title)}
-                              style={{
-                                textDecoration: 'none',
-                                color: 'inherit',
-                                width: '100%',
-                                height: '100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'space-between',
-                              }}
-                            >
-                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                <div style={{ flex: 1, minWidth: 0 }}>
-                                  <EventTitle style={{ fontSize: event.totalInStack > 1 ? '0.65rem' : '0.75rem' }}>
-                                    {event.courseCode} | {event.slotName}
-                                  </EventTitle>
-                                  <EventTime style={{ fontSize: event.totalInStack > 1 ? '0.6rem' : '0.7rem' }}>
-                                    {event.startTime}
-                                  </EventTime>
+                      <WeekEventBlock
+                        color={event.color}
+                        style={{
+                          position: 'absolute',
+                          top: `${event.displayTop}px`,
+                          left: '0.25rem',
+                          width: 'calc(100% - 0.5rem)',
+                          height: `${event.displayHeight}px`,
+                          zIndex: event.zIndex || 10,
+                        }}
+                      >
+                         
+                        <Link
+                          to={coursePageUrl(event.courseCode, course.title)}
+                          style={{
+                            textDecoration: 'none',
+                            color: 'inherit',
+                            width: '80%',
+                            height: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            
+                          }}
+                        >
+                        
+                        <div style={{ display:'Flex', flexDirection:'row'}}>
+                          <div style={{justifyContent: 'space-between' }}>
+                            <div style={{ flex: 1 , marginBottom: '1rem'}}>
+                              <EventTitle style={{ fontSize: '0.7rem'  }}>
+                                {event.courseCode} | {event.slotName}
+                              </EventTitle>
+                              <EventTime style={{ fontSize: '0.5rem' }}>
+                                {event.startTime}
+                              </EventTime>
+                                <div style={{ 
+                                  fontSize: '0.5rem', 
+                                  opacity: 0.8,
+                                  color: 'black',
+                                  fontWeight: '500',
+                                  marginBottom: '3rem'
+                                }}>
+                                  {event.slotName && event.slotName.startsWith('L') ? 'Lab' : 'Lecture'}
                                 </div>
+                           </div>
+                          </div>
+                        </div>        
 
-                              </div>
-                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                                
-                                <RedirectIcon>
-                                  <ExternalLink size="14" />
-                                </RedirectIcon>
-                              </div>
-                            </Link>
-                          </WeekEventBlock>
-                        </Tooltip>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'right' }}>
+                            <RedirectIcon>
+                              <ExternalLink size="16" />
+                            </RedirectIcon>
+                          </div>
+                        </Link>
+                </WeekEventBlock>
+                    </Tooltip>
                       )
                     })}
                   </div>
@@ -2167,6 +2180,7 @@ const WeekEventBlock = styled.div`
   cursor: pointer;
   font-size: 0.8rem;
   transition: all 0.2s;
+  align: right;
   width: 100%;
   box-sizing: border-box;
   z-index: 5;
