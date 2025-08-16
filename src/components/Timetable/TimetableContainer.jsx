@@ -1297,7 +1297,7 @@ const WeekView = ({
                     {isToday && <CurrentTimeIndicator />}
                     {processedDayEvents.map((event) => {
                       const course = coursedata[event.courseCode]
-                      console.log(course);
+                      // console.log(course);
 
                       // Handle eplanner events (Personal, Exam, Reminder)
                         if (event.type && ['Personal', 'Exam', 'Reminder'].includes(event.type)) {
@@ -1317,7 +1317,7 @@ const WeekView = ({
                             title={
                               <div>
                                 <strong>
-                                  {event.courseCode} ({event.type})
+                                  {event.title} ({event.type})
                                 </strong>
                                 {event.description && <div>{event.description}</div>}
                                 <div>
@@ -1888,12 +1888,11 @@ const DayViewContainer = styled.div`
   min-width: 1000px;
   display: flex;
   flex-direction: column;
+  margin-bottom: 4rem;
 `
 
 const DayViewGrid = styled.div`
   display: flex;
-  height: 600px;
-  min-height: 600px;
   min-width: 1080px;
   border-radius: 8px;
 `
@@ -1954,7 +1953,7 @@ const DayEventBlock = styled.div`
   cursor: pointer;
   transition: all 0.2s;
   z-index: 10;
-  // position: relative;
+  position: relative;
   overflow: hidden;
   word-wrap: break-word;
   word-break: break-word;
@@ -2066,7 +2065,7 @@ const WeekGrid = styled.div`
   display: grid;
   grid-template-columns: 80px repeat(7, 1fr);
   min-height: 100px;
-  min-width: 1100px;
+  // min-width: 1100px;
   color: #ffffff0f;
 `
 
