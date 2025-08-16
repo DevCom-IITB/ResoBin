@@ -217,7 +217,7 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
               >
                 <CourseResourceContainer />
               </Tabs.TabPane>
-              <Tabs.TabPane key="workload" tab={`Gradings`}>
+              <Tabs.TabPane key="grading" tab="Gradings">
                 <CourseGradingContainer />
               </Tabs.TabPane>
             </Tabs>
