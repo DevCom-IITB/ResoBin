@@ -1382,7 +1382,7 @@ const WeekView = ({
                         maxWidth: 'calc(100% - 56px)',
                         marginTop: '4px',
                       }}>
-                        {displayName}
+                        {event.title}
                       </div>
                       <div style={{
                         display: 'flex',
@@ -1515,8 +1515,9 @@ const WeekView = ({
                                   fontSize: '0.5rem', 
                                   opacity: 0.8,
                                   color: 'black',
-                                  fontWeight: '500',
-                                  marginBottom: '3rem'
+                                  fontWeight: '600',
+                                  marginBottom: '3rem',
+                                  fontStyle: 'Bold',
                                 }}>
                                   {event.slotName && event.slotName.startsWith('L') ? 'Lab' : 'Lecture'}
                                 </div>
