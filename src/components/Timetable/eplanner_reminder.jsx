@@ -1,4 +1,6 @@
+import moment from "moment";
 import React, { useState, useEffect } from "react";
+
 
 import EplannerAPI from "./eplannerAPI";
 
@@ -15,6 +17,7 @@ const styles = {
 }
 
 const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) => {
+  // ...existing code...
     // Form state
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -26,6 +29,40 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
 
 
   const [ReminderItems, setReminderItems] = useState([]);
+  // Expanded reminders for display (show repeated instances)
+  // This function expands reminders for daily/weekly repeat, and includes non-repeating ones
+  function expandRepeatingReminders(reminders) {
+    if (!Array.isArray(reminders)) return [];
+    const expanded = [];
+    const today = moment();
+    reminders.forEach(reminder => {
+      if (!reminder.date) return; // skip if no date
+      const baseDate = moment(reminder.date);
+      if (reminder.weekdays === 'Daily') {
+        // Expand for next 30 days
+        let i = 0;
+        while (i < 30) {
+          const newDate = baseDate.clone().add(i, 'days');
+          expanded.push({ ...reminder, date: newDate.format('YYYY-MM-DD'), repeatType: 'Daily' });
+          i += 1;
+        }
+      } else if (reminder.weekdays === 'Weekly') {
+        // Expand for next 10 weeks (same weekday)
+        let i = 0;
+        while (i < 10) {
+          const newDate = baseDate.clone().add(i, 'weeks');
+          expanded.push({ ...reminder, date: newDate.format('YYYY-MM-DD'), repeatType: 'Weekly' });
+          i += 1;
+        }
+      } else {
+        // Non-repeating, just add as is
+        expanded.push({ ...reminder, repeatType: 'None' });
+      }
+    });
+    // Sort by date ascending
+    return expanded.sort((a, b) => moment(a.date).diff(moment(b.date)));
+  }
+  const displayedReminders = expandRepeatingReminders(ReminderItems);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [editingId, setEditingId] = useState(null); // Track which item is being edited    // Listen for custom event from dropdown
@@ -496,7 +533,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                     </label>
                   </div>
                   {/* Weekdays */}
-                  {/* <div style={{ marginBottom: '15px', marginRight: '355px' }}>
+                  <div style={{ marginBottom: '15px', marginRight: '355px' }}>
                     <select
                       id="eplanner-weekdays"
                       name="weekdays"
@@ -506,8 +543,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                         width: '100%',
                         padding: '10px',
                         marginLeft: '43px',
-                        left: '80%',
-                        border: '2px',
+                        border: '2px solid #4a4a5e',
                         borderRadius: '4px',
                         fontSize: '16px',
                         backgroundColor: "#1b1728",
@@ -519,7 +555,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                       <option value="Daily">Daily</option>
                       <option value="Weekly">Weekly</option>
                     </select>
-                  </div> */}
+                  </div>
                   {/* Start Time - Only show when not All Day */}
                   {!isAllDay && (
                   <div style={{ display: 'flex', flexDirection: 'row', gap: '18px' }}>
@@ -680,7 +716,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                 
                 
                 <div>
-                  <h3 style={{ color: 'white' , margin:'0px 60px 0px 20px'}}> Your Tasks ({ReminderItems.length})</h3>
+                  <h3 style={{ color: 'white' , margin:'0px 60px 0px 20px'}}> Your Tasks ({displayedReminders.length})</h3>
 
                   {loading && (
                     <div style={{ textAlign: 'center', padding: '0px'}}>
@@ -688,7 +724,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                     </div>
                   )}
 
-                  {!loading && ReminderItems.length === 0 && (
+                  {!loading && displayedReminders.length === 0 && (
                     <div style={{
                       textAlign: 'center',
                       padding: '30px',
@@ -701,9 +737,9 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                     </div>
                   )}
 
-                  {!loading && ReminderItems.length > 0 && (
+                  {!loading && displayedReminders.length > 0 && (
                     <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                      {ReminderItems.map((item, index) => (
+                      {displayedReminders.map((item, index) => (
                         <div key={item.id || index} style={{
                           backgroundColor: '#1b1728',
                           borderRadius: '8px',

@@ -164,10 +164,8 @@ const ExamCard = ({ isEmbedded = false, hideButton = false, selectedDate, select
       if (editingId) {
         // Update existing item
         try {
-          const updatedItem = await EplannerAPI.updateExam(editingId, itemData);
-          setExamItems(examItems.map(item => 
-            item.id === editingId ? updatedItem : item
-          ));
+          await EplannerAPI.updateExam(editingId, itemData);
+          await fetchExamData();
         } catch (apiError) {
           // Fallback for local testing
           const updatedItem = { ...itemData, id: editingId };

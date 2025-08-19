@@ -36,6 +36,7 @@ import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableSearch from './TimetableSearch'
 import TimetableShareButton from './TimetableShareButton'
 
+
 const TimetableContainer = () => {
   const dispatch = useDispatch()
   const semesterList = useSelector(selectSemesters)
@@ -48,6 +49,7 @@ const TimetableContainer = () => {
   const [semIdx, setSemIdx] = useState(null)
   const [currentDate, setCurrentDate] = useState(moment())
   const [loadingg, setLoadingg] = useState(true)
+  // const [reminderItems, ]
 
   const { getQueryString } = useQueryString()
   let ajaxRequest = null
@@ -433,17 +435,35 @@ const TimetableContainer = () => {
 
       // Process Personal events
       eplannerEvents.personal.forEach(event => {
-        if (event.date) {
-          const eventDate = moment(event.date);
-          const dayIndex = eventDate.day() === 0 ? 6 : eventDate.day() - 1; // Convert Sunday=0 to 6, Mon=1 to 0, etc.
-          
-          if (dayIndex >= 0) {
-            const startRow = timeToRow(event.starttime);
-            const endRow = event.endtime ? timeToRow(event.endtime) : startRow + 2;
-            
-            events.push({
+        if(!event.date) return;
+        const startDate = moment(event.date, 'YYYY-MM-DD');
+        const repeatType = event.weekdays;
+
+        let repeatCount = 1;
+        let step = 1;
+        if(repeatType === 'Daily') {
+          repeatCount = 30;
+          step = 1;
+        } else if(repeatType === 'Weekly') {
+          repeatCount = 10;
+          step = 7;
+        }
+        for (let i = 0; i < repeatCount; i += 1) {
+          const thisDate = startDate.clone().add(i * step, 'days');
+          const dayIndex = thisDate.day() === 0 ? 6 : thisDate.day() - 1;
+          const eventDateStr = thisDate.format('YYYY-MM-DD');
+
+          let startRow;
+          let endRow;
+          if(event.isAllDay){
+            startRow = 0;
+            endRow = 2;
+          } else {
+            startRow = timeToRow(event.starttime);
+            endRow = timeToRow(event.endtime) || startRow + 2;
+          }
+          events.push({
               id: `personal-${event.id}`,
-              courseCode: 'PERSONAL',
               title: event.title,
               description: event.description,
               type: 'Personal',
@@ -455,10 +475,9 @@ const TimetableContainer = () => {
               color: '#4ECDC4',
               slotName: 'Personal',
               date: event.date,
-              eventDate: eventDate.format('YYYY-MM-DD') // Store formatted date for comparison
+              eventDate: eventDateStr // Store formatted date for comparison
             });
-          }
-        }
+         }
       });
 
       // Process Exam events
@@ -473,7 +492,7 @@ const TimetableContainer = () => {
 
             events.push({
               id: `exam-${event.id}`,
-              courseCode: 'EXAM',
+              courseCode: event.courseCode,
               title: event.course || event.title || 'Exam',
               description: event.description,
               type: 'Exam',
@@ -493,41 +512,52 @@ const TimetableContainer = () => {
 
       // Process Reminder events
       eplannerEvents.reminder.forEach(event => {
-        if (event.date) {
-          const eventDate = moment(event.date);
-          const dayIndex = eventDate.day() === 0 ? 6 : eventDate.day() - 1; // Convert Sunday=0 to 6, Mon=1 to 0, etc.
-          
-          if (dayIndex >= 0) {
-            let startRow;
-            let endRow;
-            
-            if (event.isAllDay) {
-              // For all-day events, show as a small block at the top
-              startRow = 0; // 08:30
-              endRow = 2; // 09:30 (1 hour block)
-            } else {
-              startRow = timeToRow(event.starttime);
-              endRow = timeToRow(event.endtime) || startRow + 2; // Default 1 hour duration
-            }
-            
-            events.push({
-              id: `reminder-${event.id}`,
-              courseCode: 'REMINDER',
-              title: event.title,
-              description: event.description,
-              type: 'Reminder',
-              isAllDay: event.isAllDay,
-              dayIndex,
-              startRow,
-              endRow,
-              startTime: event.isAllDay ? 'All Day' : (event.starttime || '09:00'),
-              endTime: event.isAllDay ? '' : (event.endtime || '10:00'),
-              color: '#FF6B6B',
-              slotName: 'Reminder',
-              date: event.date,
-              eventDate: eventDate.format('YYYY-MM-DD') // Store formatted date for comparison
-            });
+        if (!event.date) return;
+        const startDate = moment(event.date, 'YYYY-MM-DD');
+        const repeatType = event.weekdays;
+
+        // How many times to repeat? (30 days for daily, 10 weeks for weekly, 1 for none)
+        let repeatCount = 1;
+        let step = 1;
+        if (repeatType === 'Daily') {
+          repeatCount = 30;
+          step = 1;
+        } else if (repeatType === 'Weekly') {
+          repeatCount = 10;
+          step = 7;
+        }
+
+        for (let i = 0; i < repeatCount; i+=1) {
+          const thisDate = startDate.clone().add(i * step, 'days');
+          const dayIndex = thisDate.day() === 0 ? 6 : thisDate.day() - 1;
+          const eventDateStr = thisDate.format('YYYY-MM-DD');
+
+          let startRow;
+          let endRow;
+          if (event.isAllDay) {
+            startRow = 0;
+            endRow = 2;
+          } else {
+            startRow = timeToRow(event.starttime);
+            endRow = timeToRow(event.endtime) || startRow + 2;
           }
+
+          events.push({
+            id: `reminder-${event.id}-${eventDateStr}`,
+            title: event.title,
+            description: event.description,
+            type: 'Reminder',
+            isAllDay: event.isAllDay,
+            dayIndex,
+            startRow,
+            endRow,
+            startTime: event.isAllDay ? 'All Day' : (event.starttime || '09:00'),
+            endTime: event.isAllDay ? '' : (event.endtime || '10:00'),
+            color: '#FF6B6B',
+            slotName: 'Reminder',
+            date: event.date,
+            eventDate: eventDateStr
+          });
         }
       });
     };
@@ -1465,7 +1495,7 @@ const WeekView = ({
                               </strong>
                               <div>Slot: {event.slotName}</div>
                               <div>
-                                {event.startTime} - {event.endTime}
+                                {event.startTime.slice(0,5)} - {event.endTime.slice(0,5)}
                               </div>
                             </div>
                           }
