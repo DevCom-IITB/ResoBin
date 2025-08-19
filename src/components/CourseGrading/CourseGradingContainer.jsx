@@ -129,10 +129,12 @@ const CourseGradingContainer = () => {
                 }))
                 .sort((a, b) => gradeOrder.indexOf(a.grade) - gradeOrder.indexOf(b.grade))
 
+              const divisionTotal = parseInt(grades.Total || grades.total || 0, 10)
+
               return (
                 <Container key={`${entry.year}-${entry.semester}-${division}`}>
                   <h3>
-                    {division.charAt(0).toUpperCase() + division.slice(1)} - Total Students : {entry.totalStudents}
+                    {division.charAt(0).toUpperCase() + division.slice(1)} - Total Students : {divisionTotal}
                   </h3>
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart
