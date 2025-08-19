@@ -716,7 +716,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                 
                 
                 <div>
-                  <h3 style={{ color: 'white' , margin:'0px 60px 0px 20px'}}> Your Tasks ({displayedReminders.length})</h3>
+                  <h3 style={{ color: 'white' , margin:'0px 60px 0px 20px'}}> Your Tasks ({ReminderItems.length})</h3>
 
                   {loading && (
                     <div style={{ textAlign: 'center', padding: '0px'}}>
@@ -724,7 +724,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                     </div>
                   )}
 
-                  {!loading && displayedReminders.length === 0 && (
+                  {!loading && ReminderItems.length === 0 && (
                     <div style={{
                       textAlign: 'center',
                       padding: '30px',
@@ -737,9 +737,9 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                     </div>
                   )}
 
-                  {!loading && displayedReminders.length > 0 && (
+                  {!loading && ReminderItems.length > 0 && (
                     <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                      {displayedReminders.map((item, index) => (
+                      {ReminderItems.map((item, index) => (
                         <div key={item.id || index} style={{
                           backgroundColor: '#1b1728',
                           borderRadius: '8px',
