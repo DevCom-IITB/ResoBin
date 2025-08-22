@@ -137,11 +137,6 @@ const Table = ({ timetable }) => {
     return extractDate(a) - extractDate(b);
   });
 
-  const slotMap = {
-    1: "09:00 - 12:00",
-    2: "13:30 - 16:30",
-    3: "18:00 - 21:00",
-  };
 
   return (
     <div style={styles.container}>
@@ -157,18 +152,22 @@ const Table = ({ timetable }) => {
             <thead>
               <tr>
                 <th style={styles.th}>Day/Date</th>
-                <th style={styles.th}>09:00 - 12:00</th>
-                <th style={styles.th}>13:30 - 16:30</th>
-                <th style={styles.th}>18:00 - 21:00</th>
+                <th style={styles.th}>08:30 - 10:30</th>
+                <th style={styles.th}>11:00 - 13:00</th>
+                <th style={styles.th}>13:30 - 15:30</th>
+                <th style={styles.th}>16:00 - 18:00</th>
+                <th style={styles.th}>18:30 - 20:30</th>
               </tr>
             </thead>
             <tbody>
               {sortedDates.map((date, idx) => {
                 const slotData = timetable[date] || {};
                 const rowSlots = {
-                  "09:00 - 12:00": slotData[1] || [],
-                  "13:30 - 16:30": slotData[2] || [],
-                  "18:00 - 21:00": slotData[3] || [],
+                  "08:30 - 10:30": slotData[1] || [],
+                  "11:00 - 13:00": slotData[2] || [],
+                  "13:30 - 15:30": slotData[3] || [],
+                  "16:00 - 18:00": slotData[4] || [],
+                  "18:30 - 20:30": slotData[5] || [],
                 };
 
                 return (
@@ -273,21 +272,16 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
 
           if (!firstSlot) return 0;
 
-
-          if (/^[A-Za-z]/.test(firstSlot)) {
-            return 0;
+          // Extract all leading digits before any letter
+          const match = firstSlot.match(/^\d+/);
+          if (match) {
+            return parseInt(match[0], 10);
           }
-
-
-          if (/^\d/.test(firstSlot)) {
-            return parseInt(firstSlot[0], 10);
-          }
-
 
           return 0;
         });
-        // console.log('Courses:', courses);
-        // console.log('All Lecture Slots:', slots);
+        console.log('Courses:', courses);
+        console.log('All Lecture Slots:', slots);
         setCoursesAndSlots(courses, slots);
       } catch (error) {
         toast({
@@ -330,13 +324,11 @@ const PopupExample = () => {
     }
     const fetchSchedule = async () => {
 
-      const userCourses = courses.map((code) => {
-        const slotMatch = code.match(/\d+/);
-        const slotNumber = slotMatch ? parseInt(slotMatch[0][0], 10) : undefined;
-        return {
-          course_code: code,
-          ...(slotNumber ? { course_slot_number: slotNumber } : {}),
-        };
+      const userCourses = courses.map((code, idx) => {
+        const slotNumber = slots[idx];
+        return slotNumber
+          ? { course_code: code, course_slot_number: slotNumber }
+          : { course_code: code };
       });
 
       try {
@@ -358,7 +350,7 @@ const PopupExample = () => {
             if (!dayDate || !mappedSlot || !courseCode) return;
 
             if (!temp[dayDate]) {
-              temp[dayDate] = { 1: [], 2: [], 3: [] };
+              temp[dayDate] = { 1: [], 2: [], 3: [], 4: [], 5: [] };
             }
 
             temp[dayDate][mappedSlot].push(courseCode);
