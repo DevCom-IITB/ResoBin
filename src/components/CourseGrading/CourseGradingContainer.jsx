@@ -35,7 +35,6 @@ const CourseGradingContainer = () => {
         const responseData = res
 
         if (!Array.isArray(responseData)) {
-          console.error('Unexpected API format', res)
           setGradingData([])
           setYearOptions([])
           setSemesterOptions([])
@@ -64,7 +63,6 @@ const CourseGradingContainer = () => {
         setSelectedYear(latestYear)
         setSelectedSemester(semestersForLatestYear[0])
       } catch (err) {
-        console.error('Error fetching grading stats:', err)
         setGradingData([])
         setYearOptions([])
         setSemesterOptions([])
