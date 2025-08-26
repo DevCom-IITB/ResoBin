@@ -107,10 +107,6 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     })
 
     deleteQueryString(...qsFields, 'p')
-
-    if (formField === 'avoid_slot_clash') {
-      setAvoidSlotClash(false)
-    }
   }
 
   const handleFilterUpdate = (_, allFields) => {
@@ -330,31 +326,6 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           />
         </Form.Item>
       </div>
-
-      <div>
-        <CourseFinderFilterItem
-          label="Slots"
-          onClear={handleFilterClear('slots', ['slots'])}
-        />
-        <Form.Item name="slots">
-          <Select
-            mode="multiple"
-            options={slotOptions}
-            placeholder="Select slots..."
-            showArrow
-          />
-        </Form.Item>
-      </div>
-
-      <CourseFinderFilterItem
-        label="Avoid Slot Clash"
-        onClear={handleFilterClear('avoid_slot_clash', ['avoid_slot_clash', 'avoid_slots'])}
-        content={
-          <Form.Item name="avoid_slot_clash" valuePropName="checked">
-            <Switch onChange={(checked) => setAvoidSlotClash(checked)} />
-          </Form.Item>
-        }
-      />
     </Form>
   )
 }
