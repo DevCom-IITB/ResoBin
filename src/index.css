@@ -1,0 +1,39 @@
+div.Popup-Window .Close-button {
+  
+    margin: auto;
+    display: block;
+    color: rgb(243, 235, 243);
+    background-color: #1a1624;
+  }
+  
+  .Popup-Window{
+    position :fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid black;
+    padding: 20px;
+    box-shadow: 0 4px 6px black;
+    z-index: 1000;
+  }
+  .popup
+  {
+    margin: 0;
+    text-align: center;
+    z-index: 999;
+  }
+
+  .popup-button{
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    transform: translateX(-30%);
+    display: inline-block;
+    margin: 10px auto;
+    color: rgb(246, 249, 246);
+    background-color: #1a1624;
+    z-index: 999;
+  }
+  
+  
