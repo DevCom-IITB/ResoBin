@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'components/shared';
 import { API } from 'config/api';
 import { hash } from 'helpers'
-import { useQueryString, useColorPicker } from 'hooks'
+import { useColorPicker } from 'hooks'
 import { makeGradient } from 'styles/utils'
 
 
@@ -225,7 +225,6 @@ const Table = ({ timetable }) => {
 
 
 const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
-  const [userTimetableCourses, setUserTimetableCourses] = useState([])
   const [semesters, setSemesters] = useState({})
   const getSemesters = async () => {
     try {
@@ -243,7 +242,6 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
     const fetchUserTimetable = async () => {
       try {
         if (!semesters.season || !semesters.year) {
-          setUserTimetableCourses([])
           setCoursesAndSlots([], []);
           return
         }
@@ -251,7 +249,6 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
           season: semesters.season,
           year: semesters.year,
         })
-        setUserTimetableCourses(response)
         // console.log('User Timetable Courses:', response);
 
         const filtered = response.filter(item => {
@@ -285,7 +282,6 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
           content: 'Failed to fetch user timetable',
           key: 'timetable-error',
         })
-        setUserTimetableCourses([])
         setCoursesAndSlots([], []);
       }
     }
