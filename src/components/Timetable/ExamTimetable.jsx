@@ -1,14 +1,10 @@
-import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
-import { toast } from 'components/shared';
-import { API } from 'config/api';
+import { toast } from 'components/shared'
+import { API } from 'config/api'
 import { hash } from 'helpers'
 import { useColorPicker } from 'hooks'
 import { makeGradient } from 'styles/utils'
-
-
-
 
 export const filterKeys = [
   'p',
@@ -24,13 +20,14 @@ export const filterKeys = [
   'avoid_slot_clash',
 ]
 
-const montserratFontId = 'montserrat-font-link';
+const montserratFontId = 'montserrat-font-link'
 if (!document.getElementById(montserratFontId)) {
-  const link = document.createElement('link');
-  link.id = montserratFontId;
-  link.rel = 'stylesheet';
-  link.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap';
-  document.head.appendChild(link);
+  const link = document.createElement('link')
+  link.id = montserratFontId
+  link.rel = 'stylesheet'
+  link.href =
+    'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap'
+  document.head.appendChild(link)
 }
 
 const styles = {
@@ -113,7 +110,7 @@ const styles = {
     border: '1px solid white ',
   },
   courses: {
-    background: "linear-gradient(90deg, #3a3456 0%, #1B1728 100%)",
+    background: 'linear-gradient(90deg, #3a3456 0%, #1B1728 100%)',
     color: 'black',
     marginTop: '1rem',
     padding: '0.9rem 1.2rem',
@@ -122,21 +119,22 @@ const styles = {
     fontSize: '16px',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
     border: '1px solid white ',
-  }
-};
+  },
+}
 
 const Table = ({ timetable }) => {
   const colorPicker = useColorPicker()
 
   const sortedDates = Object.keys(timetable).sort((a, b) => {
     const extractDate = (str) => {
-      const datePart = str.split(' ')[1];
-      const [day, month, year] = datePart.split('/').map(num => parseInt(num, 10));
-      return new Date(2000 + year, month - 1, day);
-    };
-    return extractDate(a) - extractDate(b);
-  });
-
+      const datePart = str.split(' ')[1]
+      const [day, month, year] = datePart
+        .split('/')
+        .map((num) => parseInt(num, 10))
+      return new Date(2000 + year, month - 1, day)
+    }
+    return extractDate(a) - extractDate(b)
+  })
 
   return (
     <div style={styles.container}>
@@ -161,14 +159,14 @@ const Table = ({ timetable }) => {
             </thead>
             <tbody>
               {sortedDates.map((date, idx) => {
-                const slotData = timetable[date] || {};
+                const slotData = timetable[date] || {}
                 const rowSlots = {
-                  "08:30 - 10:30": slotData[1] || [],
-                  "11:00 - 13:00": slotData[2] || [],
-                  "13:30 - 15:30": slotData[3] || [],
-                  "16:00 - 18:00": slotData[4] || [],
-                  "18:30 - 20:30": slotData[5] || [],
-                };
+                  '08:30 - 10:30': slotData[1] || [],
+                  '11:00 - 13:00': slotData[2] || [],
+                  '13:30 - 15:30': slotData[3] || [],
+                  '16:00 - 18:00': slotData[4] || [],
+                  '18:30 - 20:30': slotData[5] || [],
+                }
 
                 return (
                   <tr
@@ -185,20 +183,31 @@ const Table = ({ timetable }) => {
                         style={{
                           ...styles.td,
                           padding: courses.length ? 0 : styles.td.padding,
-                          background: courses.length ? 'none' : styles.td.backgroundColor,
+                          background: courses.length
+                            ? 'none'
+                            : styles.td.backgroundColor,
                         }}
                       >
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.5rem',
+                          }}
+                        >
                           {courses.map((courseCode) => (
                             <span
                               key={courseCode}
                               style={{
-                                background: makeGradient(colorPicker(hash(courseCode))),
+                                background: makeGradient(
+                                  colorPicker(hash(courseCode))
+                                ),
                                 color: 'black',
                                 borderRadius: '12px',
                                 padding: '0.5rem 1.5rem',
                                 fontWeight: 600,
-                                fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+                                fontFamily:
+                                  'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
                                 margin: '0.3rem 0.3rem',
                                 display: 'inline-block',
                                 textShadow: '0 1px 2px rgba(0,0,0,0.15)',
@@ -213,16 +222,15 @@ const Table = ({ timetable }) => {
                       </td>
                     ))}
                   </tr>
-                );
+                )
               })}
             </tbody>
           </table>
         </div>
       </div>
     </div>
-  );
-};
-
+  )
+}
 
 const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
   const [semesters, setSemesters] = useState({})
@@ -242,7 +250,7 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
     const fetchUserTimetable = async () => {
       try {
         if (!semesters.season || !semesters.year) {
-          setCoursesAndSlots([], []);
+          setCoursesAndSlots([], [])
           return
         }
         const response = await API.profile.timetable.read({
@@ -251,111 +259,107 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
         })
         // console.log('User Timetable Courses:', response);
 
-        const filtered = response.filter(item => {
-          const firstSlot = Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
-            ? item.lectureSlots[0]
-            : '';
+        const filtered = response.filter((item) => {
+          const firstSlot =
+            Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
+              ? item.lectureSlots[0]
+              : ''
 
-          return !(typeof firstSlot === 'string' && firstSlot.startsWith('L'));
-        });
+          return !(typeof firstSlot === 'string' && firstSlot.startsWith('L'))
+        })
 
-        const courses = filtered.map(item => item.course);
-        const slots = filtered.map(item => {
-          const firstSlot = Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
-            ? item.lectureSlots[0]
-            : '';
+        const courses = filtered.map((item) => item.course)
+        const slots = filtered.map((item) => {
+          const firstSlot =
+            Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
+              ? item.lectureSlots[0]
+              : ''
 
-          if (!firstSlot) return 0;
+          if (!firstSlot) return 0
 
           // Extract all leading digits before any letter
-          const match = firstSlot.match(/^\d+/);
+          const match = firstSlot.match(/^\d+/)
           if (match) {
-            return parseInt(match[0], 10);
+            return parseInt(match[0], 10)
           }
 
-          return 0;
-        });
-        setCoursesAndSlots(courses, slots);
+          return 0
+        })
+        setCoursesAndSlots(courses, slots)
       } catch (error) {
         toast({
           status: 'error',
           content: 'Failed to fetch user timetable',
           key: 'timetable-error',
         })
-        setCoursesAndSlots([], []);
+        setCoursesAndSlots([], [])
       }
     }
     fetchUserTimetable()
   }, [semesters, setCoursesAndSlots])
-  return null;
+  return null
 }
 
 const PopupExample = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [timetable, setTimetable] = useState({});
-  const [courses, setCourses] = useState([]);
-  const [slots, setSlots] = useState([]);
-
+  const [isOpen, setIsOpen] = useState(false)
+  const [timetable, setTimetable] = useState({})
+  const [courses, setCourses] = useState([])
+  const [slots, setSlots] = useState([])
 
   const setCoursesAndSlots = React.useCallback((coursesArr, slotsArr) => {
-    setCourses(coursesArr);
-    setSlots(slotsArr);
-  }, []);
-
+    setCourses(coursesArr)
+    setSlots(slotsArr)
+  }, [])
 
   const togglePopup = () => {
-    setIsOpen(!isOpen);
-  };
-
+    setIsOpen(!isOpen)
+  }
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) return
     if (!courses.length) {
-      setTimetable({});
-      return;
+      setTimetable({})
+      return
     }
     const fetchSchedule = async () => {
-
       const userCourses = courses.map((code, idx) => {
-        const slotNumber = slots[idx];
+        const slotNumber = slots[idx]
         return slotNumber
           ? { course_code: code, course_slot_number: slotNumber }
-          : { course_code: code };
-      });
+          : { course_code: code }
+      })
 
       try {
-        const res = await axios.post('http://localhost:8000/api/get-schedule-batch/', {
-          courses: userCourses,
-        });
-        const schedules = res.data;
+        const res = await API.examSchedule.getBatch({ courses: userCourses })
+        
+        // const res = await axios.post('http://localhost:8000/api/get-schedule-batch/', {
+        //   courses: userCourses,
+        // });
+        const temp = {}
+        res.filter(Boolean).forEach((schedule) => {
+          const {
+            dayDate,
+            mappedSlot,
+            courseCode,
+          } = schedule
 
-        const temp = {};
-        schedules
-          .filter(Boolean)
-          .forEach((schedule) => {
-            const {
-              day_date: dayDate,
-              mapped_slot: mappedSlot,
-              course_code: courseCode,
-            } = schedule;
+          if (!dayDate || !mappedSlot || !courseCode) return
 
-            if (!dayDate || !mappedSlot || !courseCode) return;
+          if (!temp[dayDate]) {
+            temp[dayDate] = { 1: [], 2: [], 3: [], 4: [], 5: [] }
+          }
 
-            if (!temp[dayDate]) {
-              temp[dayDate] = { 1: [], 2: [], 3: [], 4: [], 5: [] };
-            }
+          temp[dayDate][mappedSlot].push(courseCode)
+        })
 
-            temp[dayDate][mappedSlot].push(courseCode);
-          });
-
-        setTimetable(temp);
+        setTimetable(temp)
       } catch (err) {
-        setTimetable({});
+        setTimetable({})
       }
-    };
+    }
 
-    fetchSchedule();
-  }, [courses, slots, isOpen]);
+    fetchSchedule()
+  }, [courses, slots, isOpen])
 
   return (
     <div className="popup">
@@ -413,15 +417,15 @@ const PopupExample = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
 export const Exam = () => {
   return (
     <div className="Exam">
       <PopupExample />
     </div>
-  );
-};
+  )
+}
 
-export default Exam;
+export default Exam

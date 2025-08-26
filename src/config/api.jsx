@@ -223,6 +223,9 @@ export const API = {
     list: async ({ code }) => APIInstance.get(`/courses/${code}/grading-stats-nested`),
   },
 
+  examSchedule: {
+    getBatch: async ({ courses }) => APIInstance.post('/get-schedule-batch/', { courses }),
+  },
   // * Developer stats endpoints
   GitHub: {
     getContributors: async () => {
