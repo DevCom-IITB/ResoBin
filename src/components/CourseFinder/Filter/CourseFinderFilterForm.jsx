@@ -1,5 +1,5 @@
-import { X } from '@styled-icons/heroicons-outline'
-import { Checkbox, Select, Switch } from 'antd'
+import { InformationCircle, X } from '@styled-icons/heroicons-outline'
+import { Checkbox, Select, Switch, Tooltip } from 'antd'
 import { kebabCase } from 'lodash'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -23,7 +23,8 @@ export const filterKeys = [
   'running',
   'tags',
   'slots',
-  'slotclash',
+  'avoid_slots',
+  'avoid_slot_clash',
 ]
 
 const CourseFinderFilterItem = ({ label, onClear, content }) => (
@@ -44,40 +45,38 @@ const CourseFinderFilterForm = ({ setLoading }) => {
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
   const [form] = Form.useForm()
   const [userTimetableCourses, setUserTimetableCourses] = useState([])
-  const [loadingTimetable, setLoadingTimetable] = useState(false)
-  const [avoidSlotClash, setAvoidSlotClash] = useState(
-    getQueryString('avoid_slot_clash') === 'true' || getQueryString('avoid_slots') !== null
-  )
-
-  const getUserTimetableSlots = () => {
-    if (!userTimetableCourses?.length) {
-      // console.log(
-      //   'userTimetableCourses is empty or undefined:',
-      //   userTimetableCourses
-      // )
-      return []
+  const [semesters, setSemesters] = useState({})
+  const getSemesters = async () => {
+    try {
+      const response = await API.semesters.list()
+      setSemesters(response[0])
+    } catch (error) {
+      toast({ status: 'error', content: error })
     }
-    const userSlots = userTimetableCourses.flatMap((item, idx) => {
-      // console.log(`Timetable course #${idx}:`, item)
-      
-      return [
-        ...(item.lectureSlots || []),
-        ...(item.tutorialSlots || []),
-      ]
-    })
-    // console.log('User Timetable Slots:', slots)
-    return userSlots
   }
-
+  const getUserTimetableSlots = () => {
+    if (!semesters.season || !semesters.year || !userTimetableCourses?.length)
+      return []
+    return userTimetableCourses.flatMap((item) => [
+      ...(item.lectureSlots || []),
+      ...(item.tutorialSlots || []),
+    ])
+  }
+  useEffect(() => {
+    getSemesters()
+  }, [])
   useEffect(() => {
     const fetchUserTimetable = async () => {
       try {
-        setLoadingTimetable(true)
-        const season = 'spring'
-        const year = '2025'
-        const response = await API.profile.timetable.read({ season, year })
+        if (!semesters.season || !semesters.year) {
+          setUserTimetableCourses([])
+          return
+        }
+        const response = await API.profile.timetable.read({
+          season: semesters.season,
+          year: semesters.year,
+        })
         setUserTimetableCourses(response)
-        console.log('Fetched timetable slots: here', response)
       } catch (error) {
         toast({
           status: 'error',
@@ -85,12 +84,10 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           key: 'timetable-error',
         })
         setUserTimetableCourses([])
-      } finally {
-        setLoadingTimetable(false)
       }
     }
     fetchUserTimetable()
-  }, [])
+  }, [semesters])
 
   const handleFilterClear = (formField, qsFields) => () => {
     const defaultInitialValues = {
@@ -202,9 +199,12 @@ const CourseFinderFilterForm = ({ setLoading }) => {
         department: getQueryString('department')?.split(',') ?? [],
         tags: getQueryString('tags')?.split(',') ?? [],
         slots: getQueryString('slots')?.split(',') ?? [],
-        avoid_slots: getQueryString('avoid_slots') ? getQueryString('avoid_slots').split(',') : [],
+        avoid_slots: getQueryString('avoid_slots')
+          ? getQueryString('avoid_slots').split(',')
+          : [],
         avoid_slot_clash:
-          getQueryString('avoid_slot_clash') === 'true' || getQueryString('avoid_slots') !== null,
+          getQueryString('avoid_slot_clash') === 'true' ||
+          getQueryString('avoid_slots') !== null,
       }}
       style={{ gap: '1rem', padding: '0 0.5rem' }}
     >
@@ -282,8 +282,41 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           />
         </Form.Item>
       </div>
-
       <div>
+        <CourseFinderFilterItem
+          label="Slots"
+          onClear={handleFilterClear('slots', ['slots'])}
+        />
+        <Form.Item name="slots">
+          <Select
+            mode="multiple"
+            options={slotOptions}
+            placeholder="Select slots..."
+            showArrow
+          />
+        </Form.Item>
+      </div>
+
+      <CourseFinderFilterItem
+        label={
+          <>
+            Avoid Slot Clash
+            <Tooltip title="When enabled, courses with slots that clash with your current timetable will be filtered out">
+              <InformationCircle size={16} style={{ marginLeft: '8px', cursor: 'help' }} />
+            </Tooltip>
+          </>
+        }
+        onClear={handleFilterClear('avoid_slot_clash', [
+          'avoid_slot_clash',
+          'avoid_slots',
+        ])}
+        content={
+          <Form.Item name="avoid_slot_clash" valuePropName="checked">
+            <Switch />
+          </Form.Item>
+        }
+      />
+            <div>
         <CourseFinderFilterItem
           label="Tags"
           onClear={handleFilterClear('tags', ['tags'])}

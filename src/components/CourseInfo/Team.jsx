@@ -15,12 +15,12 @@ const Team = () => {
       })
       .then((data) => {
         const isaaMember = data.find((member) =>
-          member.name.includes('Shravya')
+          member.name.includes('Avani Hasmukh')
         )
         const updatedMembers = isaaMember
           ? [
               isaaMember,
-              ...data.filter((member) => !member.name.includes('Shravya')),
+              ...data.filter((member) => !member.name.includes('Avani Hasmukh')),
             ]
           : data
 

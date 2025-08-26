@@ -82,6 +82,8 @@ module.exports = {
         peerDependencies: true,
       },
     ],
+    // THIS IS THE FIX TO PREVENT THE ERROR LOOP
+    'import/prefer-default-export': 'off',
     'import/order': [
       'error',
       {
