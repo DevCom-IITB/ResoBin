@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
-import { Form, toast } from 'components/shared';
+import { toast } from 'components/shared';
 import { API } from 'config/api';
 import { hash } from 'helpers'
 import { useQueryString, useColorPicker } from 'hooks'
@@ -225,8 +225,6 @@ const Table = ({ timetable }) => {
 
 
 const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
-  const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
-  const [form] = Form.useForm()
   const [userTimetableCourses, setUserTimetableCourses] = useState([])
   const [semesters, setSemesters] = useState({})
   const getSemesters = async () => {
@@ -280,8 +278,6 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
 
           return 0;
         });
-        console.log('Courses:', courses);
-        console.log('All Lecture Slots:', slots);
         setCoursesAndSlots(courses, slots);
       } catch (error) {
         toast({
