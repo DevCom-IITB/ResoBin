@@ -139,7 +139,7 @@ const Table = ({ timetable }) => {
           }}
         >
           These slots are based on the official PDF circulated by ASC. Your
-          professors might change the date of the exam. Do confirm with others.
+          professors might change the date of the exam. Do confirm with others!
         </p>
         <div
           style={{
