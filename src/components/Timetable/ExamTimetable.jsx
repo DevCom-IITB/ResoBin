@@ -1,24 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import { toast } from 'components/shared'
 import { API } from 'config/api'
 import { hash } from 'helpers'
 import { useColorPicker } from 'hooks'
 import { makeGradient } from 'styles/utils'
-
-export const filterKeys = [
-  'p',
-  'semester',
-  'department',
-  'credits_min',
-  'credits_max',
-  'halfsem',
-  'running',
-  'tags',
-  'slots',
-  'avoid_slots',
-  'avoid_slot_clash',
-]
 
 const montserratFontId = 'montserrat-font-link'
 if (!document.getElementById(montserratFontId)) {
@@ -140,17 +126,20 @@ const Table = ({ timetable }) => {
     <div style={styles.container}>
       <div style={{ ...styles.card, maxHeight: 'none', overflowY: 'visible' }}>
         <h2 style={styles.title}>📚 Mid-semester Examinations</h2>
-        <p style={{
-          color: '#ffeb3b',
-          fontSize: '14px',
-          textAlign: 'center',
-          margin: '0.5rem 0 1rem',
-          padding: '0.5rem',
-          backgroundColor: 'rgba(0,0,0,0.2)',
-          borderRadius: '4px',
-          fontStyle: 'italic'
-        }}>
-          These slots are based on the official PDF circulated by ASC. Your professors might change the date of the exam. Do confirm with others.
+        <p
+          style={{
+            color: '#ffeb3b',
+            fontSize: '14px',
+            textAlign: 'center',
+            margin: '0.5rem 0 1rem',
+            padding: '0.5rem',
+            backgroundColor: 'rgba(0,0,0,0.2)',
+            borderRadius: '4px',
+            fontStyle: 'italic',
+          }}
+        >
+          These slots are based on the official PDF circulated by ASC. Your
+          professors might change the date of the exam. Do confirm with others.
         </p>
         <div
           style={{
@@ -250,7 +239,6 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
     try {
       const response = await API.semesters.list()
       setSemesters(response[0])
-      // console.log('Fetched timetable slots: here', response)
     } catch (error) {
       toast({ status: 'error', content: error })
     }
@@ -258,6 +246,7 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
   useEffect(() => {
     getSemesters()
   }, [])
+
   useEffect(() => {
     const fetchUserTimetable = async () => {
       try {
@@ -269,7 +258,6 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
           season: semesters.season,
           year: semesters.year,
         })
-        // console.log('User Timetable Courses:', response);
 
         const filtered = response.filter((item) => {
           const firstSlot =
@@ -289,7 +277,6 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
 
           if (!firstSlot) return 0
 
-          // Extract all leading digits before any letter
           const match = firstSlot.match(/^\d+/)
           if (match) {
             return parseInt(match[0], 10)
@@ -309,18 +296,26 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
     }
     fetchUserTimetable()
   }, [semesters, setCoursesAndSlots])
+
   return null
 }
 
 const PopupExample = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [timetable, setTimetable] = useState({})
-  const [courses, setCourses] = useState([])
-  const [slots, setSlots] = useState([])
+
+  // 👇 atomic state: array of { course_code, course_slot_number? }
+  const [userCourses, setUserCourses] = useState([])
+  const lastRequestRef = useRef(0)
 
   const setCoursesAndSlots = React.useCallback((coursesArr, slotsArr) => {
-    setCourses(coursesArr)
-    setSlots(slotsArr)
+    const combined = coursesArr.map((code, idx) => {
+      const slotNumber = slotsArr[idx]
+      return slotNumber
+        ? { course_code: code, course_slot_number: slotNumber }
+        : { course_code: code }
+    })
+    setUserCourses(combined)
   }, [])
 
   const togglePopup = () => {
@@ -329,32 +324,24 @@ const PopupExample = () => {
 
   useEffect(() => {
     if (!isOpen) return
-    if (!courses.length) {
+    if (!userCourses.length) {
       setTimetable({})
       return
     }
-    const fetchSchedule = async () => {
-      const userCourses = courses.map((code, idx) => {
-        const slotNumber = slots[idx]
-        return slotNumber
-          ? { course_code: code, course_slot_number: slotNumber }
-          : { course_code: code }
-      })
 
+    const requestId = lastRequestRef.current + 1
+
+    const fetchSchedule = async () => {
       try {
         const res = await API.examSchedule.getBatch({ courses: userCourses })
-        
-        // const res = await axios.post('http://localhost:8000/api/get-schedule-batch/', {
-        //   courses: userCourses,
-        // });
+        // if (requestId !== lastRequestRef.current) return // ignore stale responses
         const temp = {}
-        res.filter(Boolean).forEach((schedule) => {
-          const {
-            dayDate,
-            mappedSlot,
-            courseCode,
-          } = schedule
+        const successfulSchedules = res.filter(
+          (schedule) => schedule && !schedule.error
+        )
 
+        successfulSchedules.forEach((schedule) => {
+          const { dayDate, mappedSlot, courseCode } = schedule
           if (!dayDate || !mappedSlot || !courseCode) return
 
           if (!temp[dayDate]) {
@@ -366,12 +353,13 @@ const PopupExample = () => {
 
         setTimetable(temp)
       } catch (err) {
+        if (requestId !== lastRequestRef.current) return
         setTimetable({})
       }
     }
 
     fetchSchedule()
-  }, [courses, slots, isOpen])
+  }, [userCourses, isOpen])
 
   return (
     <div className="popup">
