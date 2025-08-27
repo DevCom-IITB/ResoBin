@@ -140,6 +140,18 @@ const Table = ({ timetable }) => {
     <div style={styles.container}>
       <div style={{ ...styles.card, maxHeight: 'none', overflowY: 'visible' }}>
         <h2 style={styles.title}>📚 Mid-semester Examinations</h2>
+        <p style={{
+          color: '#ffeb3b',
+          fontSize: '14px',
+          textAlign: 'center',
+          margin: '0.5rem 0 1rem',
+          padding: '0.5rem',
+          backgroundColor: 'rgba(0,0,0,0.2)',
+          borderRadius: '4px',
+          fontStyle: 'italic'
+        }}>
+          These slots are based on the official PDF circulated by ASC. Your professors might change the date of the exam. Do confirm with others.
+        </p>
         <div
           style={{
             maxHeight: '320px',
