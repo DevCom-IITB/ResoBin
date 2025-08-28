@@ -138,7 +138,7 @@ const Table = ({ timetable }) => {
             fontStyle: 'italic',
           }}
         >
-          These slots are based on the official PDF circulated by ASC. Your
+          Exam slots are auto-generated from your ResoBin timetable using the official ASC PDF. Your
           professors might change the date of the exam. Do confirm with others!
         </p>
         <div
