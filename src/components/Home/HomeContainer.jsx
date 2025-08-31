@@ -13,6 +13,8 @@ import { coursePageUrl } from 'helpers'
 import { selectSemesters } from 'store/courseSlice'
 import { selectUserProfile } from 'store/userSlice'
 
+import QuickActions from './QuickActions'
+import SearchBar from './SearchBar'
 import Sidebar from './sidebar'
 
 
@@ -236,7 +238,7 @@ const TopReqCourses = () => {
   }, []);
 
   return (
-    <CoursesWrapper style={{ marginTop: '16px' }}>
+    <CoursesWrapper style={{ marginTop: '2.5rem' }}>
       <OuterContainer style={{ height: '186.61px', flexDirection: 'column', alignItems: 'flex-start', borderTopLeftRadius: '10px', }}>
         {/* Heading + Subheading */}
         <div style={{ padding: '0.75rem 1rem 0 1rem' }}>
@@ -298,41 +300,66 @@ const TopReqCourses = () => {
 
 
 const HomeContainer = () => {
-  const profile = useSelector(selectUserProfile)
+  const profile = useSelector(selectUserProfile);
+  const [loadingg, setLoadingg] = useState(true);
+  const [courseData, setCourseData] = useState([]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      setLoadingg(true);
+      try {
+        const response = await API.courses.list({
+          params: {
+            search_fields: "code,title,description",
+            q: "",
+          },
+        });
+        setCourseData(response.results);
+      } catch (error) {
+        toast({ status: "error", content: error });
+      } finally {
+        setLoadingg(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
+  const addToTimetable = async (code, id) => {
+    // copy your add logic from original TimetableContainer
+    // or just leave a stub if not needed yet
+    console.log("Add to timetable:", code, id);
+  };
+
   return (
     <Container>
-      {/* Main content */}
       <MainContent>
-        <PageTitle
-          style={{
-            color: 'white',
-            fontWeight: 'bold',
-            fontSize: '1.5rem',
-            marginTop: '1rem',
-            marginLeft: '1rem',
-          }}
-        >
-          Welcome back, {profile?.name?.split(' ')?.[0]}!
-          <div
-            style={{
-              color: '#b0aecd',
-              fontSize: '1rem',
-              marginTop: '0.3rem',
-            }}
-          >
-            Here&apos;s everything you need for today
+        <HeaderRow>
+          <div>
+            <WelcomeText>
+              Welcome back, {profile?.name?.split(' ')?.[0]}!
+            </WelcomeText>
+            <Subtitle>Here&apos;s everything you need for today</Subtitle>
           </div>
-        </PageTitle> 
+          <SearchBar
+            loading={loadingg}
+            setLoading={setLoadingg}
+            data={courseData}
+            addToTimetable={addToTimetable}
+          />
+        </HeaderRow>
+
+        <QuickActions />
         <CoursesThisSemester />
+        <TopReqCourses />
       </MainContent>
 
-      {/* Aside-like sidebar */}
       <AsideContainer>
         <Sidebar />
       </AsideContainer>
     </Container>
-  )
-}
+  );
+};
 
 export default HomeContainer
 
@@ -341,6 +368,7 @@ const TabsRow = styled.div`
   align-items: center;
   justify-content: flex-start;
   gap: 1rem; 
+  margin-top: 2.5rem;
 `;
 
 
@@ -578,4 +606,24 @@ const AsideContainer = styled.aside`
   box-shadow: -4px 0 15px rgba(0, 0, 0, 0.2);
   color: white;
   z-index: 10;
+`;
+
+const HeaderRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem;
+`;
+
+const WelcomeText = styled.h1`
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin: 0;
+`;
+
+const Subtitle = styled.div`
+  color: #b0aecd;
+  font-size: 1rem;
+  margin-top: 0.3rem;
 `;
