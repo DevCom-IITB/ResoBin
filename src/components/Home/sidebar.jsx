@@ -1,10 +1,12 @@
-import { ChevronLeft, ChevronRight } from '@styled-icons/heroicons-outline';
+import { Bell, ChevronLeft, ChevronRight } from '@styled-icons/heroicons-outline';
 import moment from 'moment';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components/macro';
 
+import BellIcon from 'assets/svgs/bell-icon.svg'
 import { toast } from 'components/shared';
+import EplannerAPI from "components/Timetable/eplannerAPI";
 import { API } from 'config/api';
 import { slots, rows } from 'data/timetable';
 import { selectSemesters } from 'store/courseSlice';
@@ -146,53 +148,16 @@ const Sidebar = () => {
 
   const fetchReminders = useCallback(async () => {
     setLoadingReminders(true);
-    try {
-      // Fetch user's favorites as potential reminders
-      const response = await API.profile.favorites();
-      const favorites = response.data || response;
-      
-      if (favorites && favorites.length > 0) {
-        // Create reminders based on favorite courses
-        const reminderItems = favorites.slice(0, 3).map((course, index) => ({
-          id: `reminder-${index}`,
-          title: course.code || course.title,
-          due: 'Next week',
-          type: 'Assignment'
-        }));
-        setReminders(reminderItems);
-      } else {
-        // Create 20 test notifications to demonstrate pagination
-        const testReminders = [
-          { id: 'reminder-1', title: 'Review course materials', due: 'Today', type: 'Study' },
-          { id: 'reminder-2', title: 'Prepare for tutorial', due: 'Tomorrow', type: 'Preparation' },
-          { id: 'reminder-3', title: 'Submit assignment', due: 'This week', type: 'Assignment' },
-          { id: 'reminder-4', title: 'Read Chapter 5', due: 'Next week', type: 'Reading' },
-          { id: 'reminder-5', title: 'Group project meeting', due: 'Friday', type: 'Meeting' },
-          { id: 'reminder-6', title: 'Lab report due', due: 'Next Monday', type: 'Assignment' },
-          { id: 'reminder-7', title: 'Study for midterm', due: 'Next month', type: 'Exam' },
-          { id: 'reminder-8', title: 'Office hours visit', due: 'This week', type: 'Consultation' },
-          { id: 'reminder-9', title: 'Library book return', due: 'Next week', type: 'Administrative' },
-          { id: 'reminder-10', title: 'Peer review submission', due: 'This Friday', type: 'Assignment' },
-          { id: 'reminder-11', title: 'Research paper outline', due: 'Next week', type: 'Writing' },
-          { id: 'reminder-12', title: 'Online quiz completion', due: 'This weekend', type: 'Assessment' },
-          { id: 'reminder-13', title: 'Study group formation', due: 'Next week', type: 'Organization' },
-          { id: 'reminder-14', title: 'Course evaluation survey', due: 'End of semester', type: 'Feedback' },
-          { id: 'reminder-15', title: 'Textbook purchase', due: 'Next week', type: 'Administrative' },
-          { id: 'reminder-16', title: 'Presentation practice', due: 'This week', type: 'Preparation' },
-          { id: 'reminder-17', title: 'Math homework set 3', due: 'Next Monday', type: 'Assignment' },
-          { id: 'reminder-18', title: 'Programming project', due: 'Next Friday', type: 'Project' },
-          { id: 'reminder-19', title: 'Literature review', due: 'Next month', type: 'Research' },
-          { id: 'reminder-20', title: 'Final exam preparation', due: 'End of semester', type: 'Study' }
-        ];
-        setReminders(testReminders);
-      }
+    try{
+        const data = await EplannerAPI.getReminders();
+        setReminders(data);
     } catch (error) {
       toast({ status: 'error', content: 'Failed to load reminders', key: 'reminders-error' });
       setReminders([]);
     } finally {
       setLoadingReminders(false);
     }
-  }, []);
+}, []);
 
   useEffect(() => {
     fetchSchedule(selectedDate); // Use selectedDate instead of moment()
@@ -276,17 +241,26 @@ const Sidebar = () => {
               </PaginationContainer>
             )}
           </RemindersHeader>
-          {currentReminders.map((reminder) => (
-            <ReminderItem key={reminder.id}>
-              <BellIcon>🔔</BellIcon>
-              <ReminderDetails>
-                <ReminderTitle>{reminder.title}</ReminderTitle>
-                <ReminderDue>
-                  {`due ${reminder.due || 'TBD'} | ${reminder.type}`}
-                </ReminderDue>
-              </ReminderDetails>
-            </ReminderItem>
-          ))}
+          {currentReminders.map((reminder) => {
+            let dueTime = "time";
+            if (reminder.isAllDay){
+              dueTime = "All Day";
+            }
+            else{
+              dueTime = reminder.starttime.slice(0, 5);
+            }
+            return (
+              <ReminderItem key={reminder.id}>
+                <img src={BellIcon} alt="Reminder" width={22} height={22} />
+                <ReminderDetails>
+                  <ReminderTitle>{reminder.title}</ReminderTitle>
+                  <ReminderDue>
+                    {`Due ${reminder.date} | ${dueTime}`}
+                  </ReminderDue>
+                </ReminderDetails>
+              </ReminderItem>
+            );
+          })}
         </>
       );
     }
@@ -528,13 +502,9 @@ const ReminderItem = styled.div`
   padding: 0.75rem;
 `;
 
-const BellIcon = styled.div`
-  font-size: 1.2rem;
-  margin-right: 1rem;
-`;
-
 const ReminderDetails = styled.div`
   color: white;
+  margin-left: 0.75rem;
 `;
 
 const ReminderTitle = styled.div`

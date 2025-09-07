@@ -125,7 +125,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
             // console.log("Fetching personal data...");
             const data = await EplannerAPI.getReminders();
             setReminderItems(data);
-            // console.log(" Fetched data:", data);
+            console.log("Fetched reminder data:", data);
 
         } catch (err) {
             console.error(" Error fetching data:", err);
