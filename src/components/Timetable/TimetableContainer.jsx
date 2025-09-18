@@ -99,6 +99,7 @@ const TimetableContainer = () => {
         exam: examData || [],
         reminder: reminderData || []
       });
+      console.log('Fetched eplanner events:', { personalData, examData, reminderData });
     } catch (error) {
       console.error('Error fetching eplanner events:', error);
     }
@@ -248,6 +249,7 @@ const TimetableContainer = () => {
 
   const handleTodayClick = () => {
     setCurrentDate(moment()); // Reset to today's date
+    console.log('Today clicked, date reset to:', moment().format('YYYY-MM-DD'));
   };
 
   const removeFromTimetable = (id) => () => {
@@ -568,6 +570,7 @@ const TimetableContainer = () => {
   }
 
   const events = getEventsForView()
+  console.log('All Events:', events);
 
   const getDayViewDateDisplay = (date) => {
     return `${date.format('dddd')}, ${date.format('D MMMM YYYY')}` 

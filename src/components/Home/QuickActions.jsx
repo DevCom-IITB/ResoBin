@@ -8,8 +8,8 @@ import styled from "styled-components/macro";
 const QuickActions = () => {
   const navigate = useNavigate();
   const actions = [
-    { id: "add-event", icon: <FiCalendar />, title: "Add Event", subtitle: "sync it to your timetable" },
-    { id: "set-reminder", icon: <FiBell />, title: "Set Reminder", subtitle: "Stay on track" },
+    { id: "add-event", icon: <FiCalendar />, title: "Add Event", subtitle: "sync it to your timetable", onClick: () => navigate(`/timetable/month`) },
+    { id: "set-reminder", icon: <FiBell />, title: "Set Reminder", subtitle: "Stay on track", onClick: () => navigate(`/timetable/day`) },
     { id: "request-resource", icon: <FaRegFile />, title: "Request Resource", subtitle: "Ask for study material", onClick: () => navigate(`/courses`) },
     { id: "upload-resource", icon: <FiUpload />, title: "Upload Resource", subtitle: "Contribute study material", onClick: () => navigate(`/contribute`) },
   ];

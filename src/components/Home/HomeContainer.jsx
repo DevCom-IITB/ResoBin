@@ -238,8 +238,8 @@ const TopReqCourses = () => {
   }, []);
 
   return (
-    <CoursesWrapper style={{ marginTop: '2.5rem' }}>
-      <OuterContainer style={{ height: '186.61px', flexDirection: 'column', alignItems: 'flex-start', borderTopLeftRadius: '10px', }}>
+    <CoursesWrapper style={{ marginTop: '2rem', marginBottom: '2rem' }}>
+      <OuterContainer style={{ height: '190.61px', flexDirection: 'column', alignItems: 'flex-start', borderTopLeftRadius: '10px', }}>
         {/* Heading + Subheading */}
         <div style={{ padding: '0.75rem 1rem 0 1rem' }}>
           <h3 style={{ color: 'white', margin: 0 }}>Top Contribution Requests</h3>
@@ -249,8 +249,8 @@ const TopReqCourses = () => {
         </div>
 
         {/* Scrollable Row with Arrows */}
-        <div style={{ display: 'flex', alignItems: 'center', width: '100%', padding: '0.5rem 1rem' }}>
-          <ArrowSideButton onClick={handlePrevPage} disabled={page === 0}>
+        <div style={{ display: 'flex', alignItems: 'center', width: '100%', padding: '0.5rem 1rem 0.5rem 0rem' }}>
+          <ArrowSideButton onClick={handlePrevPage} disabled={page === 0} style={{ width: '56px'}}>
             &lt;
           </ArrowSideButton>
 
@@ -263,7 +263,7 @@ const TopReqCourses = () => {
                   .slice(page * COURSES_PER_PAGE, (page + 1) * COURSES_PER_PAGE)
                   .map((course) => (
                     <StyledLink key={course.code} to={coursePageUrl(course.code)}>
-                      <StyledCard style={{ position: 'relative' }}>
+                      <StyledCard>
                         <CardBadge>{course.resourceRequestersCount}</CardBadge>
                         <CardTitleRow>{course.code}</CardTitleRow>
                         <DetailLine>
@@ -289,6 +289,7 @@ const TopReqCourses = () => {
           <ArrowSideButton
             onClick={() => handleNextPage(courseData.length)}
             disabled={page + 1 >= Math.ceil(courseData.length / COURSES_PER_PAGE)}
+            style={{ width: '56px'}}
           >
             &gt;
           </ArrowSideButton>
