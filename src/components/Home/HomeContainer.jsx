@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useEffect, useState, useCallback } from 'react'
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+// import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useSelector } from 'react-redux'
 import { Link, useNavigate} from 'react-router-dom'
 import styled from 'styled-components/macro'
