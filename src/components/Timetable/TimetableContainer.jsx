@@ -505,7 +505,7 @@ const TimetableContainer = () => {
               endRow,
               startTime: event.starttime || '09:00',
               endTime: event.endtime || '10:00',
-              color: '#4ECDC4',
+              color: '#00D2FF',
               slotName: 'Personal',
               date: event.date, // Original date
               eventDate: eventDateStr, // This occurrence's date
@@ -535,7 +535,7 @@ const TimetableContainer = () => {
               endRow,
               startTime: event.starttime || '10:00',
               endTime: event.endtime || '12:00',
-              color: '#FFD93D',
+              color: '#FF6B35',
               slotName: 'Exam',
               date: event.date,
               eventDate: eventDate.format('YYYY-MM-DD') // Store formatted date for comparison
@@ -561,7 +561,7 @@ const TimetableContainer = () => {
           step = 7;
         }
 
-        for (let i = 0; i < repeatCount; i+=1) {
+        for (let i = 0; i < repeatCount; i += 1) {
           const thisDate = startDate.clone().add(i * step, 'days');
           const dayIndex = thisDate.day() === 0 ? 6 : thisDate.day() - 1;
           const eventDateStr = thisDate.format('YYYY-MM-DD');
@@ -597,6 +597,7 @@ const TimetableContainer = () => {
           });
         }
       });
+
     };
 
     addEplannerEvents();
@@ -671,7 +672,8 @@ const TimetableContainer = () => {
     const clashes = []
     const eventsByDayAndTime = {}
 
-    events.forEach((event) => {
+    // Filter out reminder events from clash detection
+    events.filter(event => event.type !== 'Reminder').forEach((event) => {
       const key = `${event.dayIndex}-${event.startRow}`
       if (!eventsByDayAndTime[key]) {
         eventsByDayAndTime[key] = []
@@ -900,8 +902,8 @@ const DayView = ({
       return event.dayIndex === selectedDayIndex
     }
     
-    // For eplanner events (have type 'Personal', 'Exam', 'Reminder'), check both dayIndex and specific date
-    if (event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder') {
+    // For eplanner events (have type 'Personal', 'Exam'), check both dayIndex and specific date
+    if (event.type === 'Personal' || event.type === 'Exam') {
       return event.dayIndex === selectedDayIndex && event.eventDate === currentDateStr
     }
     
@@ -917,7 +919,7 @@ const DayView = ({
     
     // Separate courses and eplanner events
     const courseEvents = eventsToProcess.filter(event => event.type === 'Lecture' || event.type === 'Tutorial')
-    const eplannerEvents = eventsToProcess.filter(event => event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder')
+    const eplannerEvents = eventsToProcess.filter(event => event.type === 'Personal' || event.type === 'Exam')
     
     // Function to check if two events overlap
     const eventsOverlap = (event1, event2) => {
@@ -1000,8 +1002,8 @@ const DayView = ({
           {processedDayEvents.map((event) => {
             const course = coursedata[event.courseCode]
             
-            // Handle eplanner events (Personal, Exam, Reminder)
-             if (event.type && ['Personal', 'Exam', 'Reminder'].includes(event.type)) {
+            // Handle eplanner events (Personal, Exam)
+             if (event.type && ['Personal', 'Exam'].includes(event.type)) {
                         // Choose description, or course name (for Exam), or fallback to title
                         let displayName = event.description?.trim();
                         if (!displayName) {
@@ -1081,24 +1083,8 @@ const DayView = ({
                           borderRadius: '8px',
                           marginBottom: '-0.6rem'
                         }}>
-                          {event.title}
+                          {event.title} |  {event.isAllDay ? 'All Day' : event.startTime.substring(0, 5)}
                         </div>
-                        {(event.isAllDay || event.startTime) && (
-                          <div style={{
-                            fontSize: event.totalInStack > 1 ? '0.7rem' : '0.8rem',
-                            fontWeight: '500',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            textAlign: 'left',
-                            color: '#222',
-                            background: 'transparent',
-                            padding: '0px 12px',
-                            marginBottom: '-0.35rem'
-                          }}>
-                            {event.isAllDay ? 'All Day' : event.startTime.substring(0, 5)}
-                          </div>
-                        )}
                       </div>
                       <div style={{
                         display: 'flex',
@@ -1134,7 +1120,6 @@ const DayView = ({
                             e.stopPropagation();
                             if (event.type === 'Personal') handleEditPersonal(event);
                             else if (event.type === 'Exam') handleEditExam(event);
-                            else if (event.type === 'Reminder') handleEditReminder(event);
                           }} title="Edit Event">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
@@ -1218,16 +1203,12 @@ const DayView = ({
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div style={{ flex: 1 }}>
-                        <div style={{ marginBottom: '-0.6rem'}}>
                           <EventTitle style={{ fontSize: event.totalInStack > 1 ? '0.8rem' : '1rem' }}>
-                            {event.courseCode} | {event.slotName}
+                            {event.courseCode} | {event.slotName} | {(event.endRow - event.startRow) >= 2 && (event.slotName && event.slotName.startsWith('L') ? 'Lab' : 'Lecture')}
                           </EventTitle>
-                        </div>
-                        <div style={{ marginBottom: '-0.6rem' }}>
                           <EventTime style={{ fontSize: event.totalInStack > 1 ? '0.7rem' : '0.8rem' }}>
                             {event.startTime} - {event.endTime}
                           </EventTime>
-                        </div>
                       </div>
                       {/* <div style={{ display: 'flex', gap: '4px' }}>
                         <button type="button" style={{
@@ -1247,16 +1228,7 @@ const DayView = ({
                           </svg>
                         </button>
                       </div> */}
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                      <div style={{ 
-                        fontSize: '0.9rem', 
-                        opacity: 0.8,
-                        color: 'black',
-                        fontWeight: '500'
-                      }}>
-                        {(event.endRow - event.startRow) >= 2 && (event.slotName && event.slotName.startsWith('L') ? 'Lab' : 'Lecture')}
-                      </div>
+                    
                       <RedirectIcon>
                         <ExternalLink size="16" />
                       </RedirectIcon>
@@ -1310,7 +1282,7 @@ const WeekView = ({
     
     // Separate courses and eplanner events
     const courseEvents = eventsToProcess.filter(event => event.type === 'Lecture' || event.type === 'Tutorial')
-    const eplannerEvents = eventsToProcess.filter(event => event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder')
+    const eplannerEvents = eventsToProcess.filter(event => event.type === 'Personal' || event.type === 'Exam')
     
     // Function to check if two events overlap
     const eventsOverlap = (event1, event2) => {
@@ -1409,8 +1381,8 @@ const WeekView = ({
                   return event.dayIndex === dayIndex
                 }
                 
-                // For eplanner events (have type 'Personal', 'Exam', 'Reminder'), check both dayIndex and specific date
-                if (event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder') {
+                // For eplanner events (have type 'Personal', 'Exam'), check both dayIndex and specific date
+                if (event.type === 'Personal' || event.type === 'Exam') {
                   return event.dayIndex === dayIndex && event.eventDate === currentDayStr
                 }
                 
@@ -1428,8 +1400,8 @@ const WeekView = ({
                       const course = coursedata[event.courseCode]
                       // console.log(course);
 
-                      // Handle eplanner events (Personal, Exam, Reminder)
-                        if (event.type && ['Personal', 'Exam', 'Reminder'].includes(event.type)) {
+                      // Handle eplanner events (Personal, Exam)
+                        if (event.type && ['Personal', 'Exam'].includes(event.type)) {
                         // Choose description, or course name (for Exam), or fallback to title
                         let displayName = event.description?.trim();
                         if (!displayName) {
@@ -1563,7 +1535,6 @@ const WeekView = ({
                             e.stopPropagation();
                             if (event.type === 'Personal') handleEditPersonal(event);
                             else if (event.type === 'Exam') handleEditExam(event);
-                            else if (event.type === 'Reminder') handleEditReminder(event);
                           }} title="Edit Event">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
@@ -1804,7 +1775,40 @@ const MonthView = ({
                   {/* Display events for this day */}
                   {dayEvents.map((event) => {
                     let timeDisplay = null;
-                    if (event.isAllDay) {
+                    
+                    // For eplanner events, show time information (not title)
+                    if (event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder') {
+                      if (event.isAllDay) {
+                        timeDisplay = (
+                          <div style={{ 
+                            color: event.color,
+                            opacity: 0.8,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            marginTop: '3px',
+                            padding: '0px 4px'
+                          }}>
+                            All Day
+                          </div>
+                        );
+                      } else if (event.startTime) {
+                        timeDisplay = (
+                          <div style={{ 
+                            color: event.color,
+                            opacity: 0.8,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            marginTop: '3px',
+                            padding: '0px 8px'
+                          }}>
+                            {event.startTime.slice(0,5)}
+                          </div>
+                        );
+                      }
+                    } else if (event.isAllDay) {
+                      // For course events, keep original logic
                       timeDisplay = (
                         <div style={{ 
                           color: 'yellow',
@@ -1815,7 +1819,7 @@ const MonthView = ({
                           marginTop: '3px',
                           padding: '0px 4px'
                         }}>
-                          All Day
+                          {event.title}
                         </div>
                       );
                     } else if (event.startTime) {
@@ -1837,13 +1841,18 @@ const MonthView = ({
                       <MonthEventBlock key={event.id} color={event.color}>
                         <div style={{ 
                           marginTop: '3px',
-                          color: 'yellow',
+                          color: event.color,
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
                         }}>
                           {(() => {
-                            // Check if event duration is less than 1 hour
+                            // For eplanner events (Personal, Exam, Reminder), always show title
+                            if (event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder') {
+                              return event.title;
+                            }
+                            
+                            // For course events, check if event duration is less than 1 hour
                             let showType = true;
                             if (event.startTime && event.endTime) {
                               const startHour = parseInt(event.startTime.split(':')[0], 10);
@@ -2480,8 +2489,8 @@ const MonthDayNumber = styled.div`
 const MonthEventBlock = styled.div`
   background: ${({ color }) => color};
   background-color: transparent;
-  color: white;
-  border: 1px solid yellow;
+  color: ${({ color }) => color};
+  border: 1px solid ${({ color }) => color};
   border-radius: 4px;
   padding: 2px 6px;
   margin: 2px 0;
