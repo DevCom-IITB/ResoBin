@@ -324,12 +324,10 @@ const Sidebar = () => {
       };
   
       addEplannerEvents();
-
-      console.log("events: ",events)
       return events
     }
 
-  const fetchSchedule = (date) => {
+  const fetchSchedule = useCallback(async(date) => {
     setLoadingSchedule(true);
     const events = getEventsForView();
 
@@ -343,9 +341,10 @@ const Sidebar = () => {
       return event.eventDate === todayStr;
     });
 
+    filtered.sort((a, b) => a.startTime.localeCompare(b.startTime));
     setSchedule(filtered);
     setLoadingSchedule(false);
-  };
+  },[]);
 
 
   const fetchReminders = useCallback(async () => {
@@ -415,6 +414,7 @@ const Sidebar = () => {
       const startIndex = (currentReminderPage - 1) * remindersPerPage;
       const endIndex = startIndex + remindersPerPage;
       const currentReminders = reminders.slice(startIndex, endIndex);
+      let reminderReturned = 0;
 
       return (
         <>
@@ -483,6 +483,7 @@ const Sidebar = () => {
             else{
               dueTime = reminder.starttime.slice(0, 5);
             }
+            reminderReturned = 1;
             return (
               <ReminderItem key={reminder.id}>
                 <img src={BellIcon} alt="Reminder" width={22} height={22} />
@@ -495,6 +496,7 @@ const Sidebar = () => {
               </ReminderItem>
             );
           })}
+          {(reminderReturned === 0) && <ReminderEmpty>No upcoming reminders.</ReminderEmpty>}
         </>
       );
     }

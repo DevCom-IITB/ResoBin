@@ -229,7 +229,7 @@ const TopReqCourses = () => {
       search_fields: "code,title,description",
       q: "",
       ordering: "-resource_requesters_count_db",
-      page_size: 20,
+      page_size: 100,
     });
   };
 
@@ -326,12 +326,6 @@ const HomeContainer = () => {
     fetchCourses();
   }, []);
 
-  const addToTimetable = async (code, id) => {
-    // copy your add logic from original TimetableContainer
-    // or just leave a stub if not needed yet
-    console.log("Add to timetable:", code, id);
-  };
-
   return (
     <Container>
       <MainContent>
@@ -346,7 +340,6 @@ const HomeContainer = () => {
             loading={loadingg}
             setLoading={setLoadingg}
             data={courseData}
-            addToTimetable={addToTimetable}
           />
         </HeaderRow>
 
