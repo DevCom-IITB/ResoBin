@@ -398,7 +398,7 @@ const TimetableContainer = () => {
           { time: '17:30', row: 16 }, { time: '18:00', row: 17 }, { time: '18:30', row: 18 },
           { time: '19:00', row: 19 }, { time: '19:30', row: 20 }, { time: '20:00', row: 21 },
           { time: '20:30', row: 22 }, { time: '21:00', row: 23 }, { time: '21:30', row: 24 },
-          { time: '22:00', row: 25 }
+          { time: '22:00', row: 25 }, { time: '22:30', row: 26 }
         ];
         
         // Convert time slots to minutes for comparison
@@ -426,6 +426,36 @@ const TimetableContainer = () => {
         }
         
         return closestSlot.row;
+      };
+
+      // Helper function to ensure proper event sizing within bounds
+      const calculateEventBounds = (startTime, endTime) => {
+        const maxRow = 26; // Now includes 22:30 as row 26
+        let startRow = timeToRow(startTime);
+        
+        // Default span based on event type
+        let defaultSpan = 2; // Default 2 rows for personal/reminder
+        if (!endTime) defaultSpan = 4; // Default 4 rows for exams without end time
+        
+        let endRow = endTime ? timeToRow(endTime) : startRow + defaultSpan;
+
+        // Ensure startRow is within bounds
+        startRow = Math.max(0, Math.min(startRow, maxRow));
+        
+        // For events starting at 21:30 (row 24), ensure they extend exactly 2 rows to 22:30 (row 26)
+        if (startRow === 24) {
+          endRow = 26; // Always extend to 22:30 for events starting at 21:30
+        } else {
+          // For other events, cap endRow to maximum available row
+          endRow = Math.min(endRow, maxRow);
+        }
+        
+        // Ensure minimum event size (at least 1 row difference)
+        if (endRow <= startRow) {
+          endRow = Math.min(startRow + 1, maxRow);
+        }
+
+        return { startRow, endRow };
       };
 
       // Helper to get day index from date
@@ -461,11 +491,12 @@ const TimetableContainer = () => {
             startRow = 0;
             endRow = 2;
           } else {
-            startRow = timeToRow(event.starttime);
-            endRow = timeToRow(event.endtime) || startRow + 2;
+            const bounds = calculateEventBounds(event.starttime, event.endtime);
+            startRow = bounds.startRow;
+            endRow = bounds.endRow;
           }
           events.push({
-              id: `personal-${event.id}`,
+              id: `personal-${event.id}-${eventDateStr}`,
               title: event.title,
               description: event.description,
               type: 'Personal',
@@ -474,10 +505,12 @@ const TimetableContainer = () => {
               endRow,
               startTime: event.starttime || '09:00',
               endTime: event.endtime || '10:00',
-              color: '#4ECDC4',
+              color: '#00D2FF',
               slotName: 'Personal',
-              date: event.date,
-              eventDate: eventDateStr // Store formatted date for comparison
+              date: event.date, // Original date
+              eventDate: eventDateStr, // This occurrence's date
+              weekdays: repeatType, // Preserve the repeat pattern
+              originalEventId: event.id // Preserve original event ID
             });
          }
       });
@@ -489,8 +522,7 @@ const TimetableContainer = () => {
           const dayIndex = eventDate.day() === 0 ? 6 : eventDate.day() - 1; // Convert Sunday=0 to 6, Mon=1 to 0, etc.
           
           if (dayIndex >= 0) {
-            const startRow = timeToRow(event.starttime);
-            const endRow = event.endtime ? timeToRow(event.endtime) : startRow + 4;
+            const { startRow, endRow } = calculateEventBounds(event.starttime, event.endtime || null);
 
             events.push({
               id: `exam-${event.id}`,
@@ -503,7 +535,7 @@ const TimetableContainer = () => {
               endRow,
               startTime: event.starttime || '10:00',
               endTime: event.endtime || '12:00',
-              color: '#FFD93D',
+              color: '#FF6B35',
               slotName: 'Exam',
               date: event.date,
               eventDate: eventDate.format('YYYY-MM-DD') // Store formatted date for comparison
@@ -529,7 +561,7 @@ const TimetableContainer = () => {
           step = 7;
         }
 
-        for (let i = 0; i < repeatCount; i+=1) {
+        for (let i = 0; i < repeatCount; i += 1) {
           const thisDate = startDate.clone().add(i * step, 'days');
           const dayIndex = thisDate.day() === 0 ? 6 : thisDate.day() - 1;
           const eventDateStr = thisDate.format('YYYY-MM-DD');
@@ -540,8 +572,9 @@ const TimetableContainer = () => {
             startRow = 0;
             endRow = 2;
           } else {
-            startRow = timeToRow(event.starttime);
-            endRow = timeToRow(event.endtime) || startRow + 2;
+            const bounds = calculateEventBounds(event.starttime, event.endtime);
+            startRow = bounds.startRow;
+            endRow = bounds.endRow;
           }
 
           events.push({
@@ -557,11 +590,14 @@ const TimetableContainer = () => {
             endTime: event.isAllDay ? '' : (event.endtime || '10:00'),
             color: '#FF6B6B',
             slotName: 'Reminder',
-            date: event.date,
-            eventDate: eventDateStr
+            date: event.date, // Original date
+            eventDate: eventDateStr, // This occurrence's date
+            weekdays: repeatType, // Preserve the repeat pattern
+            originalEventId: event.id // Preserve original event ID
           });
         }
       });
+
     };
 
     addEplannerEvents();
@@ -587,14 +623,45 @@ const TimetableContainer = () => {
 
   const getTodayEvents = () => {
     const today = moment()
-    // CORRECTED: Use isoWeekday() for consistency. Mon=1, ..., Sun=7.
-    const todayDayIndex = today.isoWeekday() - 1
+    const todayDayIndex = today.isoWeekday() - 1 // Mon=0, ..., Sun=6
+    const todayDateString = today.format('YYYY-MM-DD')
 
     return events.filter((event) => {
       if (currentView === 'Day') {
         const selectedDayIndex = currentDate.isoWeekday() - 1
+        const selectedDateString = currentDate.format('YYYY-MM-DD')
+
+        // For course events, check day index
+        if (event.type === 'Lecture' || event.type === 'Tutorial') {
+          return event.dayIndex === selectedDayIndex
+        }
+        
+        // For eplanner events (Personal, Exam, Reminder), check the actual date
+        if (event.eventDate) {
+          return event.eventDate === selectedDateString
+        }
+        if (event.date) {
+          return moment(event.date).format('YYYY-MM-DD') === selectedDateString
+        }
+        
         return event.dayIndex === selectedDayIndex
       }
+
+      // For other views, check today's events
+      // For course events, check if today matches the day of week
+      if (event.type === 'Lecture' || event.type === 'Tutorial') {
+        return event.dayIndex === todayDayIndex
+      }
+      
+      // For eplanner events (Personal, Exam, Reminder), check the actual date
+      if (event.eventDate) {
+        return event.eventDate === todayDateString
+      }
+      if (event.date) {
+        return moment(event.date).format('YYYY-MM-DD') === todayDateString
+      }
+      
+      // Fallback to day index for other events
       return event.dayIndex === todayDayIndex
     })
   }
@@ -605,7 +672,8 @@ const TimetableContainer = () => {
     const clashes = []
     const eventsByDayAndTime = {}
 
-    events.forEach((event) => {
+    // Filter out reminder events from clash detection
+    events.filter(event => event.type !== 'Reminder').forEach((event) => {
       const key = `${event.dayIndex}-${event.startRow}`
       if (!eventsByDayAndTime[key]) {
         eventsByDayAndTime[key] = []
@@ -834,8 +902,8 @@ const DayView = ({
       return event.dayIndex === selectedDayIndex
     }
     
-    // For eplanner events (have type 'Personal', 'Exam', 'Reminder'), check both dayIndex and specific date
-    if (event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder') {
+    // For eplanner events (have type 'Personal', 'Exam'), check both dayIndex and specific date
+    if (event.type === 'Personal' || event.type === 'Exam') {
       return event.dayIndex === selectedDayIndex && event.eventDate === currentDateStr
     }
     
@@ -851,7 +919,7 @@ const DayView = ({
     
     // Separate courses and eplanner events
     const courseEvents = eventsToProcess.filter(event => event.type === 'Lecture' || event.type === 'Tutorial')
-    const eplannerEvents = eventsToProcess.filter(event => event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder')
+    const eplannerEvents = eventsToProcess.filter(event => event.type === 'Personal' || event.type === 'Exam')
     
     // Function to check if two events overlap
     const eventsOverlap = (event1, event2) => {
@@ -934,8 +1002,8 @@ const DayView = ({
           {processedDayEvents.map((event) => {
             const course = coursedata[event.courseCode]
             
-            // Handle eplanner events (Personal, Exam, Reminder)
-             if (event.type && ['Personal', 'Exam', 'Reminder'].includes(event.type)) {
+            // Handle eplanner events (Personal, Exam)
+             if (event.type && ['Personal', 'Exam'].includes(event.type)) {
                         // Choose description, or course name (for Exam), or fallback to title
                         let displayName = event.description?.trim();
                         if (!displayName) {
@@ -995,16 +1063,6 @@ const DayView = ({
                       position: 'relative'
                     }}>
                       <div style={{
-                        fontSize: event.totalInStack > 1 ? '0.7rem' : '1rem',
-                        fontWeight: '600',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        textAlign: 'left',
-                        color: '#222',
-                        background: 'transparent',
-                        padding: '4px 12px',
-                        borderRadius: '8px',
                         position: 'absolute',
                         left: -3,
                         top: 0,
@@ -1012,7 +1070,21 @@ const DayView = ({
                         maxWidth: 'calc(100% - 56px)',
                         margin: 0,
                       }}>
-                        {event.title}
+                        <div style={{
+                          fontSize: event.totalInStack > 1 ? '0.8rem' : '1rem',
+                          fontWeight: '600',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          textAlign: 'left',
+                          color: '#222',
+                          background: 'transparent',
+                          padding: '4px 12px',
+                          borderRadius: '8px',
+                          marginBottom: '-0.6rem'
+                        }}>
+                          {event.title} |  {event.isAllDay ? 'All Day' : event.startTime.substring(0, 5)}
+                        </div>
                       </div>
                       <div style={{
                         display: 'flex',
@@ -1032,7 +1104,7 @@ const DayView = ({
                           marginLeft: "5px",
                           flexDirection: 'row',
                         }}>
-                          <span>{event.type}</span>
+                          {(event.endRow - event.startRow) >= 2 && <span>{event.type}</span>}
 
                         </div>
                         <div style={{ marginBottom: '8px', marginRight: '9px' }}>
@@ -1048,7 +1120,6 @@ const DayView = ({
                             e.stopPropagation();
                             if (event.type === 'Personal') handleEditPersonal(event);
                             else if (event.type === 'Exam') handleEditExam(event);
-                            else if (event.type === 'Reminder') handleEditReminder(event);
                           }} title="Edit Event">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
@@ -1132,12 +1203,12 @@ const DayView = ({
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div style={{ flex: 1 }}>
-                        <EventTitle style={{ fontSize: event.totalInStack > 1 ? '0.8rem' : '1rem' }}>
-                          {event.courseCode} | {event.slotName}
-                        </EventTitle>
-                        <EventTime style={{ fontSize: event.totalInStack > 1 ? '0.7rem' : '0.8rem' }}>
-                          {event.startTime} - {event.endTime}
-                        </EventTime>
+                          <EventTitle style={{ fontSize: event.totalInStack > 1 ? '0.8rem' : '1rem' }}>
+                            {event.courseCode} | {event.slotName} | {(event.endRow - event.startRow) >= 2 && (event.slotName && event.slotName.startsWith('L') ? 'Lab' : 'Lecture')}
+                          </EventTitle>
+                          <EventTime style={{ fontSize: event.totalInStack > 1 ? '0.7rem' : '0.8rem' }}>
+                            {event.startTime} - {event.endTime}
+                          </EventTime>
                       </div>
                       {/* <div style={{ display: 'flex', gap: '4px' }}>
                         <button type="button" style={{
@@ -1157,16 +1228,7 @@ const DayView = ({
                           </svg>
                         </button>
                       </div> */}
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                      <div style={{ 
-                        fontSize: '0.9rem', 
-                        opacity: 0.8,
-                        color: 'black',
-                        fontWeight: '500'
-                      }}>
-                        {event.slotName && event.slotName.startsWith('L') ? 'Lab' : 'Lecture'}
-                      </div>
+                    
                       <RedirectIcon>
                         <ExternalLink size="16" />
                       </RedirectIcon>
@@ -1220,7 +1282,7 @@ const WeekView = ({
     
     // Separate courses and eplanner events
     const courseEvents = eventsToProcess.filter(event => event.type === 'Lecture' || event.type === 'Tutorial')
-    const eplannerEvents = eventsToProcess.filter(event => event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder')
+    const eplannerEvents = eventsToProcess.filter(event => event.type === 'Personal' || event.type === 'Exam')
     
     // Function to check if two events overlap
     const eventsOverlap = (event1, event2) => {
@@ -1319,8 +1381,8 @@ const WeekView = ({
                   return event.dayIndex === dayIndex
                 }
                 
-                // For eplanner events (have type 'Personal', 'Exam', 'Reminder'), check both dayIndex and specific date
-                if (event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder') {
+                // For eplanner events (have type 'Personal', 'Exam'), check both dayIndex and specific date
+                if (event.type === 'Personal' || event.type === 'Exam') {
                   return event.dayIndex === dayIndex && event.eventDate === currentDayStr
                 }
                 
@@ -1338,8 +1400,8 @@ const WeekView = ({
                       const course = coursedata[event.courseCode]
                       // console.log(course);
 
-                      // Handle eplanner events (Personal, Exam, Reminder)
-                        if (event.type && ['Personal', 'Exam', 'Reminder'].includes(event.type)) {
+                      // Handle eplanner events (Personal, Exam)
+                        if (event.type && ['Personal', 'Exam'].includes(event.type)) {
                         // Choose description, or course name (for Exam), or fallback to title
                         let displayName = event.description?.trim();
                         if (!displayName) {
@@ -1398,16 +1460,6 @@ const WeekView = ({
                       position: 'relative'
                     }}>
                       <div style={{
-                        fontSize: '0.8rem',
-                        fontWeight: '500',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        textAlign: 'left',
-                        color: '#222',
-                        background: 'transparent',
-                        padding: '4px 12px',
-                        borderRadius: '8px',
                         position: 'absolute',
                         left: -3,
                         top: 0,
@@ -1415,13 +1467,43 @@ const WeekView = ({
                         maxWidth: 'calc(100% - 56px)',
                         marginTop: '4px',
                       }}>
-                        {event.title}
+                        <div style={{
+                          fontSize: '0.7rem',
+                          fontWeight: '600',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          textAlign: 'left',
+                          color: '#222',
+                          background: 'transparent',
+                          padding: '4px 12px',
+                          borderRadius: '8px',
+                          marginBottom: '-0.25rem'
+                        }}>
+                          {event.title}
+                        </div>
+                        {(event.isAllDay || event.startTime) && (
+                          <div style={{
+                            fontSize: '0.5rem',
+                            fontWeight: '500',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            textAlign: 'left',
+                            color: '#222',
+                            background: 'transparent',
+                            padding: '0px 12px',
+                            marginBottom: '-0.35rem',
+                          }}>
+                            {event.isAllDay ? 'All Day' : event.startTime.substring(0, 5)}
+                          </div>
+                        )}
                       </div>
                       <div style={{
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        fontSize: '0.7rem',
+                        fontSize: '0.5rem',
                         opacity: 0.9,
                         fontWeight: '500',
                         color: 'black',
@@ -1430,6 +1512,7 @@ const WeekView = ({
                       }}>
                         <div style={{
                           display: 'flex',
+                          fontSize: '0.7rem',
                           alignItems: 'center',
                           gap: '4px',
                           marginTop: '15px',
@@ -1452,7 +1535,6 @@ const WeekView = ({
                             e.stopPropagation();
                             if (event.type === 'Personal') handleEditPersonal(event);
                             else if (event.type === 'Exam') handleEditExam(event);
-                            else if (event.type === 'Reminder') handleEditReminder(event);
                           }} title="Edit Event">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
@@ -1537,22 +1619,24 @@ const WeekView = ({
                         
                         <div style={{ display:'Flex', flexDirection:'row'}}>
                           <div style={{justifyContent: 'space-between' }}>
-                            <div style={{ flex: 1 , marginBottom: '1rem'}}>
-                              <EventTitle style={{ fontSize: '0.7rem'  }}>
-                                {event.courseCode} | {event.slotName}
-                              </EventTitle>
-                              <EventTime style={{ fontSize: '0.5rem' }}>
-                                {event.startTime}
-                              </EventTime>
+                            <div style={{ flex: 1 , marginBottom: '1rem' }}>
+                              <div style={{ marginBottom: '-0.25rem' }}>
+                                <EventTitle style={{ fontSize: '0.7rem' }}>
+                                  {event.courseCode} | {event.slotName}
+                                </EventTitle>
+                              </div>
+                              <div style={{ marginBottom: '-0.35rem' }}>
+                                <EventTime style={{ fontSize: '0.5rem', fontWeight: '500' }}>
+                                  {event.startTime}
+                                </EventTime>
+                              </div>
                                 <div style={{ 
-                                  fontSize: '0.5rem', 
-                                  opacity: 0.8,
+                                  fontSize: '0.7rem',
                                   color: 'black',
-                                  fontWeight: '600',
+                                  fontWeight: '500',
                                   marginBottom: '3rem',
-                                  fontStyle: 'Bold',
                                 }}>
-                                  {event.slotName && event.slotName.startsWith('L') ? 'Lab' : 'Lecture'}
+                                  {(event.slotName && event.slotName.startsWith('L') ? 'Lab' : 'Lecture')}
                                 </div>
                            </div>
                           </div>
@@ -1579,7 +1663,6 @@ const WeekView = ({
   )
 }
 
-// Month View Component
 // Month View Component
 const MonthView = ({
   currentDate,
@@ -1646,12 +1729,31 @@ const MonthView = ({
 
       <MonthGrid>
         {monthGrid.map((weekRow) => (
-          // --- THIS IS THE CORRECTED LINE ---
+          
           // The key is now derived from the first day of the week, which is stable and unique.
           <MonthWeekRow key={weekRow[0].format('YYYY-MM-DD')}>
             {weekRow.map((currentDay) => {
               // Filter events for this specific day
               const dayEvents = events.filter(event => {
+                // For eplanner events (Personal, Exam, Reminder), check eventDate first
+                if (event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder') {
+                  if (event.eventDate) {
+                    return moment(event.eventDate).isSame(currentDay, 'day');
+                  }
+                  // Fallback to original date if eventDate is not available
+                  if (event.date) {
+                    return moment(event.date).isSame(currentDay, 'day');
+                  }
+                  return false;
+                }
+                
+                // For course events (Lecture, Tutorial), check if it's the right day of week
+                // if (event.type === 'Lecture' || event.type === 'Tutorial') {
+                //   const currentDayIndex = currentDay.day() === 0 ? 6 : currentDay.day() - 1;
+                //   return event.dayIndex === currentDayIndex;
+                // }
+                
+                // Fallback for other event types
                 if (event.date) {
                   return moment(event.date).isSame(currentDay, 'day');
                 }
@@ -1673,7 +1775,40 @@ const MonthView = ({
                   {/* Display events for this day */}
                   {dayEvents.map((event) => {
                     let timeDisplay = null;
-                    if (event.isAllDay) {
+                    
+                    // For eplanner events, show time information (not title)
+                    if (event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder') {
+                      if (event.isAllDay) {
+                        timeDisplay = (
+                          <div style={{ 
+                            color: event.color,
+                            opacity: 0.8,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            marginTop: '3px',
+                            padding: '0px 4px'
+                          }}>
+                            All Day
+                          </div>
+                        );
+                      } else if (event.startTime) {
+                        timeDisplay = (
+                          <div style={{ 
+                            color: event.color,
+                            opacity: 0.8,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            marginTop: '3px',
+                            padding: '0px 8px'
+                          }}>
+                            {event.startTime.slice(0,5)}
+                          </div>
+                        );
+                      }
+                    } else if (event.isAllDay) {
+                      // For course events, keep original logic
                       timeDisplay = (
                         <div style={{ 
                           color: 'yellow',
@@ -1684,7 +1819,7 @@ const MonthView = ({
                           marginTop: '3px',
                           padding: '0px 4px'
                         }}>
-                          All Day
+                          {event.title}
                         </div>
                       );
                     } else if (event.startTime) {
@@ -1706,12 +1841,31 @@ const MonthView = ({
                       <MonthEventBlock key={event.id} color={event.color}>
                         <div style={{ 
                           marginTop: '3px',
-                          color: 'yellow',
+                          color: event.color,
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
                         }}>
-                          {event.type || event.title}
+                          {(() => {
+                            // For eplanner events (Personal, Exam, Reminder), always show title
+                            if (event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder') {
+                              return event.title;
+                            }
+                            
+                            // For course events, check if event duration is less than 1 hour
+                            let showType = true;
+                            if (event.startTime && event.endTime) {
+                              const startHour = parseInt(event.startTime.split(':')[0], 10);
+                              const startMin = parseInt(event.startTime.split(':')[1], 10);
+                              const endHour = parseInt(event.endTime.split(':')[0], 10);
+                              const endMin = parseInt(event.endTime.split(':')[1], 10);
+                              const durationMinutes = (endHour * 60 + endMin) - (startHour * 60 + startMin);
+                              showType = durationMinutes >= 60;
+                            } else if (event.endRow && event.startRow) {
+                              showType = (event.endRow - event.startRow) >= 2;
+                            }
+                            return showType ? (event.type || event.title) : event.title;
+                          })()}
                         </div>
                         {timeDisplay}
                       </MonthEventBlock>
@@ -1995,20 +2149,24 @@ const DayViewContainer = styled.div`
   border-radius: 12px;
   padding: 1rem;
   margin-bottom: 2rem;
-  min-width: 1000px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 800px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 4rem;
+  overflow-x: auto;
 `
 
 const DayViewGrid = styled.div`
   display: flex;
-  min-width: 1080px;
+  min-width: 800px;
+  width: 100%;
   border-radius: 8px;
 `
 
 const DayTimeColumn = styled.div`
   width: 80px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   border-right: 1px solid ${({ theme }) => '#ececec40'};
@@ -2035,9 +2193,11 @@ const TimeSlot = styled.div`
 
 const DayEventColumn = styled.div`
   flex: 1;
+  min-width: 0;
   position: relative;
   overflow: hidden;
   height: 100%;
+  width: 100%;
   background-image: linear-gradient(
       to bottom,
       ${({ theme }) => theme.border || '#ececec40'} -0.5px,
@@ -2113,16 +2273,20 @@ const WeekViewContainer = styled.div`
   border-radius: 12px;
   padding: 1rem;
   margin-bottom: 2rem;
-  min-width: 1000px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
 `
 
 const TimetableWrapper = styled.div`
   width: 100%;
+  max-width: 100%;
   background: ${({ theme }) => theme.bg};
   border-radius: 12px;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
   padding: 0;
   margin: 0 auto;
+  overflow: hidden;
   contain: layout style;
 `
 
@@ -2135,6 +2299,8 @@ const TimetableScrollInner = styled.div`
 const WeekHeader = styled.div`
   display: grid;
   grid-template-columns: 80px repeat(7, 1fr);
+  min-width: 800px;
+  width: 100%;
   /* The border-bottom and margin-bottom have been removed */
 `
 
@@ -2143,7 +2309,7 @@ const WeekDayHeader = styled.div`
   padding: 0.75rem 0.5rem; /* Adjusted padding for better alignment */
   display: flex;
   align-items: center;
-  width: 143.5px;
+  min-width: 0;
   gap: 0.5rem;
   justify-content: center;
   /* Add grid lines to match the columns below */
@@ -2172,7 +2338,8 @@ const WeekGrid = styled.div`
   display: grid;
   grid-template-columns: 80px repeat(7, 1fr);
   min-height: 100px;
-  min-width: 148px;
+  min-width: 800px;
+  width: 100%;
   color: #ffffff0f;
 `
 
@@ -2186,7 +2353,8 @@ const WeekDayColumn = styled.div`
   padding: 0;
   border-right: 1px solid ${({ theme }) => theme.border};
   position: relative;
-  width: 143.5px;
+  min-width: 0;
+  width: 100%;
 
   background-image: repeating-linear-gradient(
     to bottom,
@@ -2321,8 +2489,8 @@ const MonthDayNumber = styled.div`
 const MonthEventBlock = styled.div`
   background: ${({ color }) => color};
   background-color: transparent;
-  color: white;
-  border: 1px solid yellow;
+  color: ${({ color }) => color};
+  border: 1px solid ${({ color }) => color};
   border-radius: 4px;
   padding: 2px 6px;
   margin: 2px 0;

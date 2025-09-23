@@ -17,11 +17,10 @@ const styles = {
 }
 
 const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) => {
-  // ...existing code...
     // Form state
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-    const [date, setDate] = useState('');
+  const [date, setDate] = useState('');
   const [weekdays, setWeekdays] = useState('');
   const [starttime, setStarttime] = useState('');
   const [isAllDay, setIsAllDay] = useState(false);
