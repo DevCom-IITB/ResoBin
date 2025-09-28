@@ -9,7 +9,7 @@ import styled, { createGlobalStyle } from 'styled-components/macro'
 import { useQueryString, useResponsive } from 'hooks'
 import { selectIsDropdownActive } from 'store/settingsSlice'
 
-const  SearchBar = ({ loading, setLoading, data}) => {
+const SearchBar = ({ loading, setLoading, data }) => {
   const { isDesktop } = useResponsive()
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
   const showFilter = useSelector(selectIsDropdownActive)
@@ -21,10 +21,13 @@ const  SearchBar = ({ loading, setLoading, data}) => {
     setSearch(value)
     setQueryString('q', value)
     deleteQueryString('p')
+    if (!value) {
+      setLoading(false)
+    }
   }
 
   const filterSuggestions = (value) => {
-    if (!data ) {
+    if (!data) {
       return []
     }
 

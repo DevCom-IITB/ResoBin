@@ -56,6 +56,8 @@ const TimetableContainer = () => {
 
   const navigate = useNavigate()
   const location = useLocation()
+  const autoOpen = location.state?.autoOpen;
+
 
   const getInitialView = () => {
     if (location.pathname.includes('/day')) return 'Day'
@@ -84,6 +86,40 @@ const TimetableContainer = () => {
     // Dispatch custom event that the component can listen to
     window.dispatchEvent(new CustomEvent(`toggle-${itemType}-planner`));
   };
+
+  useEffect(() => {
+    if (autoOpen === "reminder") {
+      // simulate clicking Add -> Reminder
+      handleDropdownItemClick("reminder");
+
+      // clear the flag so it won't auto-trigger again
+      try {
+        const nextState = { ...(location.state || {}) };
+        delete nextState.autoOpen;
+        navigate(location.pathname + (location.search || ""), {
+          replace: true,
+          state: nextState,
+        });
+      } catch {
+        // ignore
+      }
+    }else if (autoOpen === "personal") {
+      handleDropdownItemClick("personal");
+
+      // clear the flag so it won't auto-trigger again
+      try {
+        const nextState = { ...(location.state || {}) };
+        delete nextState.autoOpen;
+        navigate(location.pathname + (location.search || ""), {
+          replace: true,
+          state: nextState,
+        });
+      } catch {
+        // ignore
+      }
+    }
+  }, [autoOpen]);
+
 
   // Fetch eplanner events from API
   const fetchEplannerEvents = async () => {
