@@ -16,7 +16,7 @@ const TimeTable = () => {
       </Helmet>
 
       <TimetableContainer />
-      <Exam />
+      {/* <Exam /> */}
     </PageContainer>
   )
 }
