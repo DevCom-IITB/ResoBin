@@ -32,7 +32,7 @@ const CourseFinderContainer = () => {
         cancelToken: ajaxRequest.token
       })
       setCourseData(response)
-      console.log("Fetched Courses:", response)
+      console.log('Fetched Courses: nnn', response)
     } catch (error) {
       if (axios.isCancel(error)) return
       toast({ status: 'error', content: error })
