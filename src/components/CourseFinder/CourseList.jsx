@@ -21,7 +21,7 @@ const CourseFinderList = ({
   setLoading,
 }) => {
   const { getQueryString, setQueryString } = useQueryString()
-  const pageNo = getQueryString('p') || 1
+  const pageNo = parseInt(getQueryString('p'), 10) || 1
 
   const handlePageChange = (page) => {
     setLoading(true)
@@ -56,8 +56,8 @@ const CourseFinderList = ({
 
       {!loading && (
         <Pagination
-          defaultPageSize="10"
-          defaultCurrent={pageNo}
+          pageSize={10}
+          current={pageNo}
           responsive
           showSizeChanger={false}
           hideOnSinglePage

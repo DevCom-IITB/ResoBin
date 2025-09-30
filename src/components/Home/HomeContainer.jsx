@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useEffect, useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 // import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useSelector } from 'react-redux'
 import { Link, useNavigate} from 'react-router-dom'
@@ -302,29 +302,7 @@ const TopReqCourses = () => {
 
 const HomeContainer = () => {
   const profile = useSelector(selectUserProfile);
-  const [loadingg, setLoadingg] = useState(true);
-  const [courseData, setCourseData] = useState([]);
-
-  useEffect(() => {
-    const fetchCourses = async () => {
-      setLoadingg(true);
-      try {
-        const response = await API.courses.list({
-          params: {
-            search_fields: "code,title,description",
-            q: "",
-          },
-        });
-        setCourseData(response.results);
-      } catch (error) {
-        toast({ status: "error", content: error });
-      } finally {
-        setLoadingg(false);
-      }
-    };
-
-    fetchCourses();
-  }, []);
+  const [loadingg, setLoadingg] = useState(false); // No longer needed for course fetching
 
   const addToTimetable = async (code, id) => {
     // copy your add logic from original TimetableContainer
@@ -345,8 +323,6 @@ const HomeContainer = () => {
           <SearchBar
             loading={loadingg}
             setLoading={setLoadingg}
-            data={courseData}
-            addToTimetable={addToTimetable}
           />
         </HeaderRow>
 

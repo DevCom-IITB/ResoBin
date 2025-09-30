@@ -1,80 +1,135 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import { Search } from '@styled-icons/heroicons-outline'
 import { Input } from 'antd'
+import axios from 'axios'
 import { rgba } from 'polished'
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import styled, { createGlobalStyle } from 'styled-components/macro'
 
+import { API } from 'config/api'
 import { useQueryString, useResponsive } from 'hooks'
 import { selectIsDropdownActive } from 'store/settingsSlice'
 
-const  SearchBar = ({ loading, setLoading, data}) => {
+let ajaxRequest = null
+
+const SearchBar = ({ loading, setLoading }) => {
   const { isDesktop } = useResponsive()
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
   const showFilter = useSelector(selectIsDropdownActive)
 
   const [search, setSearch] = useState(getQueryString('q'))
+  const [suggestions, setSuggestions] = useState([])
+  const [searchLoading, setSearchLoading] = useState(false)
+
+  const searchCourses = async (searchTerm) => {
+    if (!searchTerm || searchTerm.length < 1) {
+      setSuggestions([])
+      return
+    }
+
+    setSearchLoading(true)
+    
+    // Add minimum loading time to make animation more visible
+    const minLoadingTime = 800 // 800ms minimum loading time
+    const startTime = Date.now()
+    
+    try {
+      if (ajaxRequest) ajaxRequest.cancel()
+      ajaxRequest = axios.CancelToken.source()
+
+      // Simple approach: always search in code field for course codes
+      const response = await API.courses.list({
+        params: {
+          search_fields: "code",
+          q: searchTerm.toUpperCase(),
+          page_size: 50, // Get more results to filter from
+        },
+        cancelToken: ajaxRequest.token
+      })
+
+      console.log(`Search API Response for '${searchTerm}':`, response)
+      
+      // API interceptor unwraps the response data
+      // @ts-ignore - API interceptor handles response unwrapping
+      const courses = response?.results || []
+      console.log("All courses from API:", courses.map(c => c.code))
+      
+      // Simple filtering: show courses that START with the search term
+      const filteredCourses = courses.filter(course => 
+        course.code.toUpperCase().startsWith(searchTerm.toUpperCase())
+      )
+      
+      console.log(`Courses starting with '${searchTerm}':`, filteredCourses.map(c => c.code))
+      
+      // Limit to 10 results and sort alphabetically
+      const limitedCourses = filteredCourses.slice(0, 10).sort((a, b) => 
+        a.code.localeCompare(b.code)
+      )
+      
+      const formattedSuggestions = limitedCourses.map((course) => ({
+        id: course.code,
+        value: `${course.code}${course.title ? ` - ${course.title}` : ''}`,
+        link: `/courses/${course.code}`,
+        course
+      }))
+
+      // Ensure minimum loading time for better UX
+      const elapsedTime = Date.now() - startTime
+      const remainingTime = Math.max(0, minLoadingTime - elapsedTime)
+      
+      setTimeout(() => {
+        setSuggestions(formattedSuggestions)
+        console.log("Search found", formattedSuggestions.length, "courses for:", searchTerm)
+        setSearchLoading(false)
+        setLoading(false) // Stop the main loading spinner
+      }, remainingTime)
+      
+    } catch (error) {
+      if (axios.isCancel(error)) return
+      console.error("Search error:", error)
+      
+      // Ensure minimum loading time even for errors
+      const elapsedTime = Date.now() - startTime
+      const remainingTime = Math.max(0, minLoadingTime - elapsedTime)
+      
+      setTimeout(() => {
+        setSuggestions([])
+        setSearchLoading(false)
+        setLoading(false) // Stop the main loading spinner
+      }, remainingTime)
+    }
+  }
 
   const handleSearch = (value) => {
-    setLoading(true)
     setSearch(value)
     setQueryString('q', value)
     deleteQueryString('p')
-  }
-
-  const filterSuggestions = (value) => {
-    if (!data ) {
-      return []
+    
+    // Only show loading if there's actually a search term
+    if (value && value.trim().length > 0) {
+      setLoading(true)
+      searchCourses(value)
+    } else {
+      setLoading(false)
+      setSuggestions([])
     }
-
-    const lowercaseValue = value ? value.toLowerCase() : ''
-
-    const suggestions = []
-
-    data.forEach(({ code, semester }) => {
-      const lowercaseCode = code.toLowerCase()
-
-      if (lowercaseCode.includes(lowercaseValue)) {
-        if (semester.length > 0) {
-          const { timetable } = semester[0]
-
-          if (timetable.length > 0) {
-            timetable.forEach(
-              ({ id, division, lectureSlots, tutorialSlots }) => {
-                const suggestion = {
-                  id,
-                  value: `${code} - ${division}`,
-                  link: `/courses/${code}`,
-                }
-
-                if (lectureSlots.length > 0 && tutorialSlots.length > 0) {
-                  suggestion.value += ` - ${lectureSlots.join(
-                    ', '
-                  )} - ${tutorialSlots.join(', ')}`
-                } else if (lectureSlots.length > 0) {
-                  suggestion.value += ` - ${lectureSlots.join(', ')}`
-                } else if (tutorialSlots.length > 0) {
-                  suggestion.value += ` - ${tutorialSlots.join(', ')}`
-                }
-
-                suggestions.push(suggestion)
-              }
-            )
-          } else {
-            suggestions.push({
-              id: -1,
-              value: code,
-              link: `/courses/${code}`,
-            })
-          }
-        }
-      }
-    })
-    return suggestions
   }
 
-  const suggestions = filterSuggestions(search)
+  // Debounce the search to avoid too many API calls
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (search && typeof search === 'string' && search.length >= 1) {
+        setLoading(true) // Start loading when search begins
+        searchCourses(search)
+      } else {
+        setSuggestions([])
+        setLoading(false) // Stop loading when no search term
+      }
+    }, 500) // Increased from 300ms to 500ms for longer loading visibility
+
+    return () => clearTimeout(timeoutId)
+  }, [search])
 
   return (
     <>
