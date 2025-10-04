@@ -181,6 +181,8 @@ const HomeContainer = () => {
             fontSize: '1.5rem',
             marginTop: '1rem',
             marginLeft: '1rem',
+            lineHeight: '1.2',
+            wordWrap: 'break-word',
           }}
         >
           Welcome back, {profile?.name?.split(' ')?.[0]}!
@@ -240,7 +242,12 @@ const Tab = styled.button`
   padding: 0.3rem 0.75rem;
   border-radius: 999px;
   cursor: pointer;
-`;
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+  }
+  `;
 
 
 const DividerLine = styled.hr`
@@ -254,6 +261,16 @@ const ScrollRow = styled.div`
   overflow-x: auto;
   gap: 0.6rem;
   padding-bottom: 0.5rem;
+  padding: 0.5rem 0.25rem 0.5rem 0; /* Add right spacing */
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #3e3e60;
+    border-radius: 4px;
+  }
 `;
 
 const StyledLink = styled(Link)`
@@ -306,12 +323,20 @@ const Container = styled.div`
   background-color: #130d1d;
   min-height: 100vh;
   gap: 0;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
 `;
 
 const MainContent = styled.div`
   flex: 1;
   padding: 2rem;
   padding-right: 1.5rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 `;
 
 const AsideContainer = styled.aside`
@@ -326,4 +351,13 @@ const AsideContainer = styled.aside`
   box-shadow: -4px 0 15px rgba(0, 0, 0, 0.2);
   color: white;
   z-index: 10;
+
+  @media (max-width: 1024px) {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-left: none;
+    border-top: 1px solid #2a2636;
+    box-shadow: none;
+  }
 `;
