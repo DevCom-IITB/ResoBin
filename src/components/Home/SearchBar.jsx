@@ -48,19 +48,19 @@ const SearchBar = ({ loading, setLoading }) => {
         cancelToken: ajaxRequest.token
       })
 
-      // console.log(`Search API Response for '${searchTerm}':`, response)
+      // //console.log(`Search API Response for '${searchTerm}':`, response)
       
       // API interceptor unwraps the response data
       // @ts-ignore - API interceptor handles response unwrapping
       const courses = response?.results || []
-      // console.log("All courses from API:", courses.map(c => c.code))
+      // //console.log("All courses from API:", courses.map(c => c.code))
       
       // Simple filtering: show courses that START with the search term
       const filteredCourses = courses.filter(course => 
         course.code.toUpperCase().startsWith(searchTerm.toUpperCase())
       )
       
-      // console.log(`Courses starting with '${searchTerm}':`, filteredCourses.map(c => c.code))
+      // //console.log(`Courses starting with '${searchTerm}':`, filteredCourses.map(c => c.code))
       
       // Limit to 10 results and sort alphabetically
       const limitedCourses = filteredCourses.slice(0, 10).sort((a, b) => 
@@ -80,14 +80,14 @@ const SearchBar = ({ loading, setLoading }) => {
       
       setTimeout(() => {
         setSuggestions(formattedSuggestions)
-        // console.log("Search found", formattedSuggestions.length, "courses for:", searchTerm)
+        // //console.log("Search found", formattedSuggestions.length, "courses for:", searchTerm)
         setSearchLoading(false)
         setLoading(false) // Stop the main loading spinner
       }, remainingTime)
       
     } catch (error) {
       if (axios.isCancel(error)) return
-      // console.error("Search error:", error)
+      // //console.error("Search error:", error)
       
       // Ensure minimum loading time even for errors
       const elapsedTime = Date.now() - startTime

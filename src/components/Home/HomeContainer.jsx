@@ -422,11 +422,7 @@ const HomeContainer = () => {
   const profile = useSelector(selectUserProfile);
   const [loadingg, setLoadingg] = useState(false); // No longer needed for course fetching
 
-  const addToTimetable = async (code, id) => {
-    // copy your add logic from original TimetableContainer
-    // or just leave a stub if not needed yet
-    console.log("Add to timetable:", code, id);
-  };
+
 
   return (
     <Container>
