@@ -147,6 +147,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
       alert("Please enter a title!");
       return;
     }
+    
 
     try {
       setLoading(true);

@@ -29,7 +29,7 @@ const getTodayDateReadable = () => {
     };
 
 
-const ExamCard = ({ isEmbedded = false, hideButton = false, selectedDate, selectedCourse }) => {
+const ExamCard = ({ isEmbedded = false, hideButton = false, selectedDate, selectedCourse = null }) => {
 
   const [course, setCourse] = useState('');
   const [description, setDescription] = useState('');
@@ -147,6 +147,12 @@ const ExamCard = ({ isEmbedded = false, hideButton = false, selectedDate, select
       return;
     }
 
+        // Validate time combination
+    if (starttime && endtime && starttime >= endtime) {
+      alert("End time must be after start time!");
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -158,7 +164,7 @@ const ExamCard = ({ isEmbedded = false, hideButton = false, selectedDate, select
         date: eventDate,
         starttime: starttime || null,
         endtime: endtime || null,
-        location: location || null
+        location: location.trim() || ''
       };
 
       if (editingId) {
@@ -321,6 +327,11 @@ const ExamCard = ({ isEmbedded = false, hideButton = false, selectedDate, select
   const handleLocationChange = (e) => {
     setLocation(e.target.value);
   }
+
+  const isTimeValid = () => {
+  if (!starttime || !endtime) return true; // If either is empty, no validation needed
+  return starttime < endtime;
+  };
 
     return (
         <div>
@@ -630,6 +641,7 @@ const ExamCard = ({ isEmbedded = false, hideButton = false, selectedDate, select
                           type="time"
                           value={endtime}
                           onChange={handleEndtimeChange}
+                          {...(starttime && { min: starttime })} // Only set min when starttime exists
                           style={{
                             width: '100%',
                             padding: '8px 15px',
@@ -646,6 +658,20 @@ const ExamCard = ({ isEmbedded = false, hideButton = false, selectedDate, select
                         />
                       </div>
                   </div>
+                    {/* Time validation warning */}
+                      {starttime && endtime && !isTimeValid() && (
+                      <div style={{
+                        backgroundColor: '#f8d7da',
+                        color: '#721c24',
+                        border: '1px solid #f5c6cb',
+                        borderRadius: '4px',
+                        padding: '10px',
+                        marginBottom: '15px',
+                        fontSize: '14px'
+                      }}>
+                        ⚠️ End time must be after start time
+                      </div>
+                  )}
                   {/* Location */}
                   <div style={{ marginBottom: '15px' , display: 'flex', flexDirection: "row", gap: '15px'}}>
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
@@ -709,14 +735,14 @@ const ExamCard = ({ isEmbedded = false, hideButton = false, selectedDate, select
                     <button
                       type="button"
                       onClick={saveExamData}
-                      disabled={loading}
+                      disabled={loading || (starttime && endtime && !isTimeValid())}
                       style={{
-                        backgroundColor: '#8080FF',
+                        backgroundColor: (starttime && endtime && !isTimeValid()) ? '#6c757d' : '#8080FF',
                         color: 'white',
                         padding: '12px 20px',
                         border: 'none',
                         borderRadius: '5px',
-                        cursor: loading ? 'not-allowed' : 'pointer',
+                        cursor: (loading || (starttime && endtime && !isTimeValid())) ? 'not-allowed' : 'pointer',
                         fontSize: '16px',
                         margin:'0 10px 0 0px',
                         filter:'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'

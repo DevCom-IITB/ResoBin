@@ -115,6 +115,13 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
       alert("Please enter a title!");
       return;
     }
+    
+    // Validate time combination
+    if (starttime && endtime && starttime >= endtime) {
+      alert("End time must be after start time!");
+      return;
+    }
+    
     try {
       setLoading(true);
       // Use selectedDate if date is not chosen
@@ -126,7 +133,7 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
         weekdays: weekdays || '',
         starttime: starttime || null,
         endtime: endtime || null,
-        location: location || null
+        location: location.trim() || ''
       };
       if (editingId) {
         // Update existing item
@@ -277,6 +284,12 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
   const handleLocationChange = (e) => {
     setLocation(e.target.value);
   }
+
+  // Check if the time combination is valid
+  const isTimeValid = () => {
+    if (!starttime || !endtime) return true; // If either is empty, no validation needed
+    return starttime < endtime;
+  };
 
     return (
         <div>
@@ -527,7 +540,7 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                         }}
                       >
                         {/* Show placeholder text when no start time is selected */}
-                        {!starttime && (
+                        {(!starttime) &&  (
                           <span style={{
                             position: 'absolute',
                             left: '12px',
@@ -585,7 +598,7 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                       >
 
                         {/* Show placeholder text when no end time is selected */}
-                        {!endtime && (
+                        {(!endtime) && (
                           <span style={{
                             position: 'absolute',
                             left: '12px',
@@ -597,13 +610,14 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                             End-Time
                           </span>
                         )}
-                        <input
-                          id="eplanner-endtime"
-                          name="endtime"
-                          type="time"
-                          value={endtime}
-                          onChange={handleEndtimeChange}
-                          style={{
+                          <input
+                            id="eplanner-endtime"
+                            name="endtime"
+                            type="time"
+                            value={endtime}
+                            onChange={handleEndtimeChange}
+                            {...(starttime && { min: starttime })} // Only set min when starttime exists
+                            style={{
                             width: '100%',
                             padding: '10px 15px',
                             border: '2px',
@@ -619,6 +633,22 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                         />
                       </div>
                   </div>
+                  
+                  {/* Time validation warning */}
+                  {starttime && endtime && !isTimeValid() && (
+                    <div style={{
+                      backgroundColor: '#f8d7da',
+                      color: '#721c24',
+                      border: '1px solid #f5c6cb',
+                      borderRadius: '4px',
+                      padding: '10px',
+                      marginBottom: '15px',
+                      fontSize: '14px'
+                    }}>
+                      ⚠️ End time must be after start time
+                    </div>
+                  )}
+                  
                   {/* Location */}
                   <div style={{ marginBottom: '15px', display: 'flex', flexDirection: 'row', gap: '18px' }}>
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
@@ -684,14 +714,14 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                     <button
                       type="button"
                       onClick={savePersonalData}
-                      disabled={loading}
+                      disabled={loading || (starttime && endtime && !isTimeValid())}
                       style={{
-                        backgroundColor: '#8080FF',
+                        backgroundColor: (starttime && endtime && !isTimeValid()) ? '#6c757d' : '#8080FF',
                         color: 'white',
                         padding: '12px 20px',
                         border: 'none',
                         borderRadius: '5px',
-                        cursor: loading ? 'not-allowed' : 'pointer',
+                        cursor: (loading || (starttime && endtime && !isTimeValid())) ? 'not-allowed' : 'pointer',
                         fontSize: '16px',
                         margin:'0 10px 0 0px',
                         filter:'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'
