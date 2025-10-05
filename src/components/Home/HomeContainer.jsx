@@ -537,7 +537,7 @@ const TabsRow = styled.div`
   justify-content: space-between;
   gap: 1rem;
   margin-top: 2.5rem;
-  margin-left: 1rem;
+  margin-left: 1.6%;
   flex-wrap: wrap;
 
   @media (max-width: 768px) {
@@ -605,8 +605,7 @@ const OuterContainer = styled.div`
   flex-direction: row;
   overflow: hidden;
   min-height: 130px;
-  margin-left: -0.85rem;
-
+  margin-left: -1.4%;
   @media (max-width: 768px) {
     flex-direction: row;
     min-height: auto;
