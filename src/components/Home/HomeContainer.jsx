@@ -201,7 +201,7 @@ const CoursesThisSemester = () => {
       </TabsRow>
 
       <CoursesWrapper>
-        <OuterContainer>
+        <OuterContainer style={{borderTopLeftRadius: '0px' }}>
           <ArrowSideButton onClick={handlePrevPage} disabled={page === 0} >
             &lt;
           </ArrowSideButton>
@@ -605,6 +605,7 @@ const OuterContainer = styled.div`
   flex-direction: row;
   overflow: hidden;
   min-height: 130px;
+  margin-left: -0.85rem;
 
   @media (max-width: 768px) {
     flex-direction: row;
