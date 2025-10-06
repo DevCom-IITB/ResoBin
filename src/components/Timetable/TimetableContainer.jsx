@@ -799,12 +799,6 @@ const TimetableContainer = () => {
         <TimetableShareButton coursesInTimetable={courseTimetableList} />
       </SubHeader>
 
-      <TimetableSearch
-        loading={loadingg}
-        setLoading={setLoadingg}
-        data={courseData}
-        addToTimetable={addToTimetable}
-      />
 
       {loading && <LoaderAnimation />}
       <Spin
