@@ -20,7 +20,7 @@ const SearchBar = ({ loading, setLoading }) => {
 
   const [search, setSearch] = useState(getQueryString('q'))
   const [suggestions, setSuggestions] = useState([])
-  const [searchLoading, setSearchLoading] = useState(false)
+  const [setSearchLoading] = useState(false)
 
   const searchCourses = async (searchTerm) => {
     if (!searchTerm || searchTerm.length < 1) {

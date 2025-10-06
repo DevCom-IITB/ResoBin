@@ -1,5 +1,4 @@
 import {
-  Bell,
   ChevronLeft,
   ChevronRight,
 } from '@styled-icons/heroicons-outline'
@@ -50,7 +49,7 @@ const Sidebar = () => {
 
   // Fetch eplanner events
   const fetchEplannerEvents = async () => {
-    try {
+
       const [personalData, examData, reminderData] = await Promise.all([
         EplannerAPI.getPersonals().catch(() => []),
         EplannerAPI.getExams().catch(() => []),
@@ -62,9 +61,6 @@ const Sidebar = () => {
         exam: examData || [],
         reminder: reminderData || [],
       })
-    } catch (error) {
-      console.error('Error fetching eplanner events:', error)
-    }
   }
 
   // Fetch course metadata
@@ -99,12 +95,6 @@ const Sidebar = () => {
 
   // Actual event builder
   const getEventsForView = () => {
-    // Helper to get day index from date
-    const getDayIndexFromDate = (dateStr) => {
-      if (!dateStr) return -1
-      const date = moment(dateStr)
-      return date.day() === 0 ? 6 : date.day() - 1 // Convert Sunday=0 to 6, Mon=1 to 0, etc.
-    }
     const events = []
 
     courseTimetableList.forEach((item) => {

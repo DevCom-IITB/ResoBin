@@ -41,11 +41,11 @@ const Heading = styled.h3`
   font-weight: 500;
   margin-bottom: 0.8rem;
 `;
-
 const ActionsGrid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
+  width: 100%;
 
   @media (max-width: 768px) {
     gap: 0.8rem;
@@ -53,7 +53,6 @@ const ActionsGrid = styled.div`
 
   @media (max-width: 480px) {
     gap: 0.5rem;
-    justify-content: center;
   }
 `;
 
@@ -62,24 +61,19 @@ const ActionCard = styled.div`
   border: 3px solid rgba(255, 255, 255, 0.6);
   border-radius: 8px;
   padding: 1rem;
-  width: 200px;
   height: 130px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.2s ease-in-out;
+  text-align: center;
 
   &:hover {
     border-color: #9b7bff;
   }
 
-  @media (max-width: 1024px) {
-    width: 48%;
-  }
-
   @media (max-width: 768px) {
-    width: 100%;
     height: auto;
     padding: 0.8rem;
   }
