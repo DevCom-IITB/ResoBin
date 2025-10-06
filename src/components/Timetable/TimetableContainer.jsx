@@ -67,6 +67,7 @@ const TimetableContainer = () => {
 
   const [currentView, setCurrentView] = useState(getInitialView)
   const [dropdownVisible, setDropdownVisible] = useState(false)
+  const [coursesModalVisible, setCoursesModalVisible] = useState(false)
   
   // Eplanner events state
   const [eplannerEvents, setEplannerEvents] = useState({
@@ -83,8 +84,12 @@ const TimetableContainer = () => {
 
   const handleDropdownItemClick = (itemType) => {
     setDropdownVisible(false);
-    // Dispatch custom event that the component can listen to
-    window.dispatchEvent(new CustomEvent(`toggle-${itemType}-planner`));
+    if (itemType === 'courses') {
+      setCoursesModalVisible(true);
+    } else {
+      // Dispatch custom event that the component can listen to
+      window.dispatchEvent(new CustomEvent(`toggle-${itemType}-planner`));
+    }
   };
 
   useEffect(() => {
@@ -192,6 +197,12 @@ const TimetableContainer = () => {
         </AddMenuIcon>
         Reminder
       </AddMenuItem>
+      <AddMenuItem onClick={() => handleDropdownItemClick('courses')}>
+        <AddMenuIcon>
+          <BookOpen size="16" />
+        </AddMenuIcon>
+        Courses
+      </AddMenuItem>
     </AddDropdownMenu>
   )
 
@@ -288,6 +299,21 @@ const TimetableContainer = () => {
     console.log('Today clicked, date reset to:', moment().format('YYYY-MM-DD'));
   };
 
+  const handleSaveCourses = async () => {
+    try {
+      setLoading(true)
+      setCoursesModalVisible(false)
+      toast({ 
+        status: 'success', 
+        content: `Timetable saved successfully with ${courseTimetableList.length} courses!` 
+      })
+    } catch (error) {
+      toast({ status: 'error', content: 'Failed to save timetable changes' })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const removeFromTimetable = (id) => () => {
     const course =
       coursedata[courseTimetableList.find((item) => item.id === id)?.course]
@@ -309,6 +335,7 @@ const TimetableContainer = () => {
       cancelText: 'Cancel',
       centered: true,
       className: 'custom-dark-modal',
+      zIndex: 10001, // Higher than courses modal (10000)
       onOk: async () => {
         try {
           setLoading(true)
@@ -868,6 +895,89 @@ const TimetableContainer = () => {
             ))}
         </AsideList>
       </Aside>
+
+      {/* Courses Modal */}
+      {coursesModalVisible && (
+        <CoursesModal>
+          <CoursesModalContent>
+            <CoursesModalHeader> 
+           <div style={{ 
+             display: 'flex', 
+             alignItems: 'center', 
+             justifyContent: 'center', 
+             height: '32px', 
+             width: '40px', 
+             backgroundColor: '#3b3452', 
+             borderRadius: '6px', 
+             marginRight: '12px'
+           }}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="white"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="white"
+              style={{ width: '30px', height: '20px' }}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6.75 4.5A1.5 1.5 0 018.25 3h7.5a1.5 1.5 0 011.5 1.5v16.75a.75.75 0 01-1.155.629L12 17.25l-4.095 2.879A.75.75 0 016.75 21.25V4.5z"
+              />
+            </svg>
+          </div>
+              <h2>Courses</h2>
+              <CloseButton onClick={() => setCoursesModalVisible(false)}>
+                ✕
+              </CloseButton>
+            </CoursesModalHeader>
+            <div style={{ width: '100%' }}>
+            <TimetableSearch
+              loading={loadingg}
+              setLoading={setLoadingg}
+              data={courseData}
+              addToTimetable={addToTimetable}
+              />
+              </div>
+            
+ 
+              <h2 style={{color: 'white', fontWeight: 'bold', paddingTop: '16px'}}>My Courses</h2>
+            
+            <CoursesContainer>
+              <CoursesCardGrid>
+                {courseTimetableList.map(({ id, course }) => (
+                  <CourseCardSmall key={id}>
+                    <CourseCardContent>
+                      <CourseCodeTitle>{course}</CourseCodeTitle>
+                      {/* <CourseSubtitle>{coursedata[course]?.title || 'Loading...'}</CourseSubtitle>
+                      <CourseCreditsText>Credits: {coursedata[course]?.credits || 'N/A'}</CourseCreditsText> */}
+                    </CourseCardContent>
+                    <RemoveButtonCard
+                      onClick={removeFromTimetable(id)}
+                      title="Remove from timetable"
+                    >
+                      remove
+                    </RemoveButtonCard>
+                  </CourseCardSmall>
+                ))}
+                {courseTimetableList.length === 0 && (
+                  <EmptyState>
+                    <EmptyStateIcon>📚</EmptyStateIcon>
+                    <EmptyStateText>No courses added yet</EmptyStateText>
+                    <EmptyStateSubtext>Use the search above to add courses to your timetable</EmptyStateSubtext>
+                  </EmptyState>
+                )}
+              </CoursesCardGrid>
+              
+              <SaveButtonContainer>
+                <SaveButton onClick={handleSaveCourses} disabled={loading}>
+                  {loading ? 'Saving...' : 'Save'}
+                </SaveButton>
+              </SaveButtonContainer>
+            </CoursesContainer>
+          </CoursesModalContent>
+        </CoursesModal>
+      )}
 
   {/* Eplanner Components - Hidden buttons, only triggered by dropdown events */}
   <PersonalPlanner hideButton selectedDate={currentDate.format('YYYY-MM-DD')} />
@@ -2578,3 +2688,198 @@ const RedirectIcon = styled.div`
     color: rgba(0, 0, 0, 0.6);
   }
 `
+
+// Courses Modal Styled Components
+const CoursesModal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+`
+
+const CoursesModalContent = styled.div`
+  background: #2b273b;
+  border-radius: 16px;
+  padding: 1rem;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+`
+
+const CoursesModalHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  
+  h2 {
+    color: white;
+    padding-right: 280px;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+`
+
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: white;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  
+  &:hover {
+    opacity: 1;
+  }
+`
+
+const CoursesContainer = styled.div`
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`
+
+const CoursesCardGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 2rem;
+`
+
+const CourseCardSmall = styled.div`
+  background: #1b1728;
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: 10px;
+  position: relative;
+  // border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+`
+
+const CourseCodeTitle = styled.h3`
+  color: white;
+  margin: -10px 20px 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding-bottom: 10px;
+`
+
+const CourseSubtitle = styled.p`
+  color: #9ca3af;
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+`
+
+const CourseCreditsText = styled.p`
+  color: #9ca3af;
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+`
+
+const RemoveButtonCard = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #D2C4F5;
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  font-weight: 500;
+  
+  &:hover {
+    opacity: 1;
+  }
+`
+
+const SaveButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+  margin-left: auto;
+`
+
+const SaveButton = styled.button`
+  background: #8080FF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  
+  &:hover:not(:disabled) {
+    background: #7070EE;
+  }
+  
+  &:disabled {
+    background: #666;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+`
+
+const Icon = styled.span`
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+`
+
+const EmptyState = styled.div`
+  text-align: center;
+  padding: 3rem 1rem;
+  color: ${({ theme }) => theme.textColor || '#666'};
+`
+
+const EmptyStateIcon = styled.div`
+  font-size: 3rem;
+  margin-bottom: 1rem;
+`
+
+const EmptyStateText = styled.h3`
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+`
+
+const EmptyStateSubtext = styled.p`
+  margin: 0;
+  opacity: 0.7;
+  font-size: 0.9rem;
+`
+
+const CourseCardContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+

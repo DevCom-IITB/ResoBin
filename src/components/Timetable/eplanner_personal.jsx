@@ -710,7 +710,7 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                       disabled={loading}
                     />
                   </div>
-                  <div style={{ display: 'flex', gap: '10px' , alignItems: 'center',  marginLeft:'200px'}}>
+                  <div style={{ display: 'flex', gap: '10px' , alignItems: 'right',  marginLeft:'auto'}}>
                     <button
                       type="button"
                       onClick={savePersonalData}
@@ -731,7 +731,7 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                         if (loading) {
                           return editingId ? 'Updating...' : 'Saving...';
                         }
-                        return editingId ? 'Update Task' : 'Save Task';
+                        return editingId ? 'Update Task' : 'Save';
                       })()}
                     </button>
                     {editingId && (
@@ -754,7 +754,7 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                         Cancel
                       </button>
                     )}
-                    <button type="button" onClick={removePersonalData} style={{
+                    {/* <button type="button" onClick={removePersonalData} style={{
                       backgroundColor: '#1b1728',
                       color: 'red',
                       padding: '12px 20px',
@@ -766,14 +766,14 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                       filter: 'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'
                     }}>
                        Remove All
-                    </button>
+                    </button> */}
 
                   </div>
                 </div>
                 
                 
                 <div>
-                  <h3 style={{ color: 'white' , margin:'0px 60px 0px 20px'}}> Your Tasks ({personalItems.length})</h3>
+                  <h3 style={{ color: 'white' , marginLeft:'auto', marginBottom:'7px'}}> Your Personal Tasks ({personalItems.length})</h3>
                   
                   {loading && (
                     <div style={{ textAlign: 'center', padding: '0px'}}>

@@ -224,7 +224,7 @@ const CoursesThisSemester = () => {
                       if (!courseData) return null
                       const { code, credits, semester } = courseData
                       return (
-                        <StyledLink key={id} to={coursePageUrl(code)}>
+                        <Link key={id} to={coursePageUrl(code)}>
                           <StyledCard>
                             <CardTitleRow>{code}</CardTitleRow>
                             <DetailLine>
@@ -236,14 +236,14 @@ const CoursesThisSemester = () => {
                             </DetailLine>
                             <DetailLine>Credits: {credits}</DetailLine>
                           </StyledCard>
-                        </StyledLink>
+                        </Link>
                       )
                     }
                     const { code, credits, semester } = item
                     if (!code) return null
                     const professor = semester[0]?.timetable[0]?.professor
                     return (
-                      <StyledLink key={code} to={coursePageUrl(code)}>
+                      <Link key={code} to={coursePageUrl(code)}>
                         <StyledCard>
                           <CardTitleRow>{code}</CardTitleRow>
                           <DetailLine>
@@ -253,7 +253,7 @@ const CoursesThisSemester = () => {
                           </DetailLine>
                           <DetailLine>Credits: {credits}</DetailLine>
                         </StyledCard>
-                      </StyledLink>
+                      </Link>
                     )
                   })
               )}
@@ -370,7 +370,7 @@ const TopReqCourses = () => {
                 courseData
                   .slice(page * COURSES_PER_PAGE, (page + 1) * COURSES_PER_PAGE)
                   .map((course) => (
-                    <StyledLink
+                    <Link
                       key={course.code}
                       to={coursePageUrl(course.code)}
                     >
@@ -398,7 +398,7 @@ const TopReqCourses = () => {
                           />
                         </UploadBox>
                       </StyledCard>
-                    </StyledLink>
+                    </Link>
                   ))
               )}
             </ScrollRow>
@@ -587,14 +587,12 @@ const TotalCredits = styled.div`
 
 const CoursesWrapper = styled.div`
   width: 100%;
-  max-width: 960px;
+  max-width: min(100%, 960px);
   margin: 0 auto;
   padding: 0 1rem;
-
-  @media (max-width: 768px) {
-    padding: 0;
-  }
 `;
+
+
 
 const OuterContainer = styled.div`
   width: 100%;
@@ -605,7 +603,7 @@ const OuterContainer = styled.div`
   flex-direction: row;
   overflow: hidden;
   min-height: 130px;
-  margin-left: -1.4%;
+  margin-left: 0;
   @media (max-width: 768px) {
     flex-direction: row;
     min-height: auto;

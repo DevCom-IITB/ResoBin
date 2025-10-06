@@ -653,7 +653,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                       disabled={loading}
                     />
                   </div>
-                  <div style={{ display: 'flex', gap: '10px' , alignItems: 'center',  marginLeft:'200px'}}>
+                  <div style={{ display: 'flex', gap: '10px' , alignItems: 'center',  marginLeft:'auto'}}>
                     <button
                       type="button"
                       onClick={saveReminderData}
@@ -674,7 +674,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                         if (loading) {
                           return editingId ? 'Updating...' : 'Saving...';
                         }
-                        return editingId ? 'Update Task' : 'Save Task';
+                        return editingId ? 'Update Task' : 'Save ';
                       })()}
                     </button>
                     {editingId && (
@@ -697,7 +697,7 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                         Cancel
                       </button>
                     )}
-                    <button type="button" onClick={removeReminderData} style={{
+                    {/* <button type="button" onClick={removeReminderData} style={{
                       backgroundColor: '#1b1728',
                       color: 'red',
                       padding: '12px 20px',
@@ -709,14 +709,14 @@ const ReminderCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                       filter: 'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))'
                     }}>
                        Remove All
-                    </button>
+                    </button> */}
 
                   </div>
                 </div>
                 
                 
-                <div>
-                  <h3 style={{ color: 'white' , margin:'0px 60px 0px 20px'}}> Your Tasks ({ReminderItems.length})</h3>
+                <div style={{ marginBottom: 'auto' }}>
+                  <h3 style={{ color: 'white' , marginLeft:'auto', marginBottom:'7px'}}> Your Reminders ({ReminderItems.length})</h3>
 
                   {loading && (
                     <div style={{ textAlign: 'center', padding: '0px'}}>
