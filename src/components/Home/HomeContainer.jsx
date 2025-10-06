@@ -587,14 +587,12 @@ const TotalCredits = styled.div`
 
 const CoursesWrapper = styled.div`
   width: 100%;
-  max-width: 960px;
+  max-width: min(100%, 960px);
   margin: 0 auto;
   padding: 0 1rem;
-
-  @media (max-width: 768px) {
-    padding: 0;
-  }
 `;
+
+
 
 const OuterContainer = styled.div`
   width: 100%;
@@ -605,7 +603,7 @@ const OuterContainer = styled.div`
   flex-direction: row;
   overflow: hidden;
   min-height: 130px;
-  margin-left: -1.4%;
+  margin-left: 0;
   @media (max-width: 768px) {
     flex-direction: row;
     min-height: auto;
