@@ -2,12 +2,11 @@ import axios from 'axios'
 import React, { useState, useCallback, useEffect } from 'react'
 // import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import {useNavigate } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import uploadIcon from 'assets/svgs/cloud-upload-white.svg'
 import { toast } from 'components/shared'
-import { PageTitle } from 'components/shared/Layout'
 import { API } from 'config/api'
 import { coursePageUrl } from 'helpers'
 import { selectSemesters } from 'store/courseSlice'
@@ -454,21 +453,24 @@ const HomeContainer = () => {
 
 export default HomeContainer
 
+
 const Container = styled.div`
   display: flex;
   background-color: #130d1d;
   min-height: 100vh;
-  flex-wrap: wrap;
+  width: 100%;
+  flex-wrap: nowrap;
 `;
 
 const MainContent = styled.div`
-  flex: 1;
-  padding: 2rem;
-  padding-right: 1.5rem;
+  flex: 1 1 auto;
+  width: 100%;
   min-width: 0;
+  padding: clamp(1rem, 2vw, 2rem);
+  padding-right: clamp(0.75rem, 1.5vw, 1.5rem);
 
   @media (max-width: 1024px) {
-    padding: 1.5rem;
+    padding: clamp(0.75rem, 2vw, 1.5rem);
   }
 
   @media (max-width: 768px) {
@@ -477,7 +479,7 @@ const MainContent = styled.div`
 `;
 
 const AsideContainer = styled.aside`
-  width: 320px;
+  flex: 0 0 clamp(260px, 22vw, 360px);
   background-color: #1a1523;
   border-left: 1px solid #2a2636;
   position: sticky;
@@ -487,10 +489,6 @@ const AsideContainer = styled.aside`
   box-shadow: -4px 0 15px rgba(0, 0, 0, 0.2);
   color: white;
   z-index: 10;
-
-  @media (max-width: 1024px) {
-    width: 260px;
-  }
 
   @media (max-width: 768px) {
     display: none;
@@ -513,7 +511,7 @@ const HeaderRow = styled.div`
 const WelcomeText = styled.h1`
   color: white;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: clamp(1.25rem, 2.2vw, 1.5rem);
   margin: 0;
 
   @media (max-width: 768px) {
@@ -523,7 +521,7 @@ const WelcomeText = styled.h1`
 
 const Subtitle = styled.div`
   color: #b0aecd;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
   margin-top: 0.3rem;
 
   @media (max-width: 768px) {
@@ -537,12 +535,11 @@ const TabsRow = styled.div`
   justify-content: space-between;
   gap: 1rem;
   margin-top: 2.5rem;
-  margin-left: 1.6%;
+  margin-left: clamp(0.95rem, 1vw, 1.05rem);;
   flex-wrap: wrap;
 
   @media (max-width: 768px) {
-    margin-left: 0;
-    justify-content: center;
+    justify-content: flex-start;
   }
 `;
 
@@ -551,7 +548,8 @@ const TabsWrapper = styled.div`
   border-radius: 10px 10px 0 0;
   display: flex;
   flex-wrap: wrap;
-  height: 40px;
+  min-height: 40px;
+  height: auto;
 
   @media (max-width: 600px) {
     height: auto;
@@ -561,7 +559,7 @@ const TabsWrapper = styled.div`
 const Tab = styled.button`
   background-color: ${({ active }) => (active ? '#2B273B' : 'transparent')};
   color: ${({ active }) => (active ? '#FFFFFF' : '#b0aecd')};
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
   font-weight: ${({ active }) => (active ? '600' : '400')};
   border: none;
   padding: 0.6rem 1.2rem;
@@ -577,22 +575,15 @@ const Tab = styled.button`
 
 const TotalCredits = styled.div`
   color: #d6c9f8;
-  font-size: 15px;
+  font-size: clamp(13px, 1.2vw, 16px);
   font-weight: 500;
-
-  @media (max-width: 768px) {
-    font-size: 13px;
-  }
 `;
 
 const CoursesWrapper = styled.div`
   width: 100%;
-  max-width: min(100%, 960px);
-  margin: 0 auto;
-  padding: 0 1rem;
+  margin: 0;
+  padding: 0 clamp(0.5rem, 1.5vw, 1rem);
 `;
-
-
 
 const OuterContainer = styled.div`
   width: 100%;
@@ -604,6 +595,7 @@ const OuterContainer = styled.div`
   overflow: hidden;
   min-height: 130px;
   margin-left: 0;
+
   @media (max-width: 768px) {
     flex-direction: row;
     min-height: auto;
@@ -612,17 +604,17 @@ const OuterContainer = styled.div`
 `;
 
 const ScrollWrapper = styled.div`
-  flex: 1;
+  flex: 1 1 auto;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: flex-start;
   overflow-x: auto;
 `;
 
 const ScrollRow = styled.div`
   display: flex;
   overflow-x: auto;
-  gap: 0.6rem;
+  gap: clamp(0.4rem, 1vw, 0.75rem);
   padding-bottom: 0.5rem;
   flex-wrap: nowrap;
 
@@ -633,11 +625,11 @@ const ScrollRow = styled.div`
 
 const StyledCard = styled.div`
   position: relative;
-  width: 160px;
-  height: 95px;
+  width: clamp(130px, 16vw, 180px);
+  height: auto;
   background: #231f31;
   border-radius: 7px;
-  padding: 0.5rem;
+  padding: clamp(0.4rem, 1vw, 0.6rem);
   color: white;
   font-size: 0.75rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
@@ -655,9 +647,9 @@ const ArrowSideButton = styled.button`
   background-color: #6d5dfc;
   border: none;
   color: white;
-  font-size: 1.2rem;
-  width: 28px;
-  height: 28px;
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  width: clamp(24px, 2.2vw, 32px);
+  height: clamp(24px, 2.2vw, 32px);
   border-radius: 6px;
   cursor: pointer;
   display: flex;
@@ -668,11 +660,5 @@ const ArrowSideButton = styled.button`
   &:disabled {
     opacity: 0.4;
     cursor: not-allowed;
-  }
-
-  @media (max-width: 768px) {
-    width: 24px;
-    height: 24px;
-    font-size: 1rem;
   }
 `;
