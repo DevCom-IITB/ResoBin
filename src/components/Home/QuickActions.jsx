@@ -47,21 +47,27 @@ const ActionsGrid = styled.div`
   gap: 1rem;
   width: 100%;
 
-  @media (max-width: 768px) {
-    gap: 0.8rem;
+  /* Large screens: 4 in a row */
+  grid-template-columns: repeat(4, 1fr);
+
+  /* Medium screens: 2 per row */
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
   }
 
-  @media (max-width: 480px) {
-    gap: 0.5rem;
+  /* Small screens: stack vertically */
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
   }
 `;
+
 
 const ActionCard = styled.div`
   background-color: transparent;
   border: 3px solid rgba(255, 255, 255, 0.6);
   border-radius: 8px;
   padding: 1rem;
-  height: 130px;
+  height: 150px;
   display: flex;
   flex-direction: column;
   justify-content: center;
