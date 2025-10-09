@@ -1313,9 +1313,8 @@ const DayView = ({
                               display: 'flex',
                               justifyContent: 'space-between',
                               alignItems: 'center',
-                              fontSize: '0.9rem',
+                              fontSize: '0.8rem',
                               opacity: 0.9,
-                              // fontWeight: '500',
                               color: 'black',
                               flexDirection: 'row',
                             }}

@@ -1,7 +1,4 @@
-import {
-  ChevronLeft,
-  ChevronRight,
-} from '@styled-icons/heroicons-outline'
+import { ChevronLeft, ChevronRight } from '@styled-icons/heroicons-outline'
 import moment from 'moment'
 import React, { useEffect, useState, useCallback } from 'react'
 import { useSelector } from 'react-redux'
@@ -49,18 +46,17 @@ const Sidebar = () => {
 
   // Fetch eplanner events
   const fetchEplannerEvents = async () => {
+    const [personalData, examData, reminderData] = await Promise.all([
+      EplannerAPI.getPersonals().catch(() => []),
+      EplannerAPI.getExams().catch(() => []),
+      EplannerAPI.getReminders().catch(() => []),
+    ])
 
-      const [personalData, examData, reminderData] = await Promise.all([
-        EplannerAPI.getPersonals().catch(() => []),
-        EplannerAPI.getExams().catch(() => []),
-        EplannerAPI.getReminders().catch(() => []),
-      ])
-
-      setEplannerEvents({
-        personal: personalData || [],
-        exam: examData || [],
-        reminder: reminderData || [],
-      })
+    setEplannerEvents({
+      personal: personalData || [],
+      exam: examData || [],
+      reminder: reminderData || [],
+    })
   }
 
   // Fetch course metadata
@@ -358,8 +354,65 @@ const Sidebar = () => {
   const fetchReminders = useCallback(async () => {
     setLoadingReminders(true)
     try {
-      const data = await EplannerAPI.getReminders()
-      setReminders(data)
+      const response = await EplannerAPI.getReminders()
+      const data = Array.isArray(response) ? response : response.data || []
+
+      // Filter and sort reminders
+      const currentDate = moment()
+      const currentDateTime = moment()
+
+      const filteredAndSortedReminders = data
+        .filter((reminder) => {
+          // Filter out expired reminders
+          const reminderDate = moment(reminder.date, 'YYYY-MM-DD')
+
+          // For all-day reminders, only check date
+          if (reminder.isAllDay) {
+            return reminderDate.isSameOrAfter(currentDate, 'day')
+          }
+
+          // For timed reminders, check both date and time
+          if (reminder.starttime) {
+            const reminderDateTime = moment(
+              `${reminder.date} ${reminder.starttime}`,
+              'YYYY-MM-DD HH:mm'
+            )
+            return reminderDateTime.isAfter(currentDateTime)
+          }
+
+          // Fallback: only check date if no time specified
+          return reminderDate.isSameOrAfter(currentDate, 'day')
+        })
+        .sort((a, b) => {
+          const dateA = moment(a.date, 'YYYY-MM-DD')
+          const dateB = moment(b.date, 'YYYY-MM-DD')
+
+          // First, sort by date
+          const dateDiff = dateA.diff(dateB, 'days')
+          if (dateDiff !== 0) {
+            return dateDiff
+          }
+
+          // If dates are the same, sort by time
+          // All-day events come first
+          if (a.isAllDay && !b.isAllDay) return -1
+          if (!a.isAllDay && b.isAllDay) return 1
+          if (a.isAllDay && b.isAllDay) return 0
+
+          // Sort by start time
+          const timeToMinutes = (timeStr) => {
+            if (!timeStr) return 0
+            const [hours, minutes] = timeStr.split(':').map(Number)
+            return hours * 60 + minutes
+          }
+
+          const timeA = timeToMinutes(a.starttime)
+          const timeB = timeToMinutes(b.starttime)
+
+          return timeA - timeB
+        })
+
+      setReminders(filteredAndSortedReminders)
     } catch (error) {
       toast({
         status: 'error',
