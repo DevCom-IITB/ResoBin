@@ -259,7 +259,8 @@ const Sidebar = () => {
             events.push({
               id: `exam-${event.id}`,
               courseCode: event.courseCode,
-              title: event.course || event.title || 'Exam',
+              title: event.course || event.coursename || event.title || 'Exam',
+              course: event.course || event.coursename,
               description: event.description,
               type: 'Exam',
               dayIndex,
@@ -468,7 +469,7 @@ const Sidebar = () => {
         </ScheduleItem>
       ))
     }
-    return <ScheduleEmpty>Nothing scheduled for today.</ScheduleEmpty>
+    return <ScheduleEmpty>Nothing scheduled for this day.</ScheduleEmpty>
   }
 
   const renderReminders = () => {
@@ -799,7 +800,11 @@ const ScheduleTag = styled.span`
       case 'Tutorial':
         return '#644646'
       case 'Personal':
-        return '#46644c'
+        return '#64e47eff'
+      case 'Exam':
+        return '#60c2e6ff'
+      case 'Reminder':
+        return '#f04949ff'
       default:
         return '#3e3e60'
     }
@@ -850,6 +855,7 @@ const ScheduleLoading = styled.p`
 
 const ScheduleEmpty = styled.p`
   color: #b0aecd;
+  padding-top: 0.8rem;
   font-style: italic;
 `
 
