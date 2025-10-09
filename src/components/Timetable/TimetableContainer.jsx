@@ -1,5 +1,14 @@
 import { LoadingOutlined } from '@ant-design/icons'
-import { ChevronLeft, ChevronRight, X, ExternalLink, Plus, Calendar, BookOpen, Bell } from '@styled-icons/heroicons-outline'
+import {
+  ChevronLeft,
+  ChevronRight,
+  X,
+  ExternalLink,
+  Plus,
+  Calendar,
+  BookOpen,
+  Bell,
+} from '@styled-icons/heroicons-outline'
 import { Spin, Alert, Modal, Radio, Tooltip, Dropdown, Menu } from 'antd'
 import axios from 'axios'
 import moment from 'moment'
@@ -8,7 +17,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
-
 
 import {
   Aside,
@@ -36,7 +44,6 @@ import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableSearch from './TimetableSearch'
 import TimetableShareButton from './TimetableShareButton'
 
-
 const TimetableContainer = () => {
   const dispatch = useDispatch()
   const semesterList = useSelector(selectSemesters)
@@ -56,8 +63,7 @@ const TimetableContainer = () => {
 
   const navigate = useNavigate()
   const location = useLocation()
-  const autoOpen = location.state?.autoOpen;
-
+  const autoOpen = location.state?.autoOpen
 
   const getInitialView = () => {
     if (location.pathname.includes('/day')) return 'Day'
@@ -68,12 +74,12 @@ const TimetableContainer = () => {
   const [currentView, setCurrentView] = useState(getInitialView)
   const [dropdownVisible, setDropdownVisible] = useState(false)
   const [coursesModalVisible, setCoursesModalVisible] = useState(false)
-  
+
   // Eplanner events state
   const [eplannerEvents, setEplannerEvents] = useState({
     personal: [],
     exam: [],
-    reminder: []
+    reminder: [],
   })
 
   const handleViewChange = (e) => {
@@ -83,48 +89,47 @@ const TimetableContainer = () => {
   }
 
   const handleDropdownItemClick = (itemType) => {
-    setDropdownVisible(false);
+    setDropdownVisible(false)
     if (itemType === 'courses') {
-      setCoursesModalVisible(true);
+      setCoursesModalVisible(true)
     } else {
       // Dispatch custom event that the component can listen to
-      window.dispatchEvent(new CustomEvent(`toggle-${itemType}-planner`));
+      window.dispatchEvent(new CustomEvent(`toggle-${itemType}-planner`))
     }
-  };
+  }
 
   useEffect(() => {
-    if (autoOpen === "reminder") {
+    if (autoOpen === 'reminder') {
       // simulate clicking Add -> Reminder
-      handleDropdownItemClick("reminder");
+      handleDropdownItemClick('reminder')
 
       // clear the flag so it won't auto-trigger again
       try {
-        const nextState = { ...(location.state || {}) };
-        delete nextState.autoOpen;
-        navigate(location.pathname + (location.search || ""), {
+        const nextState = { ...(location.state || {}) }
+        delete nextState.autoOpen
+        navigate(location.pathname + (location.search || ''), {
           replace: true,
           state: nextState,
-        });
+        })
       } catch {
         // ignore
       }
-    }else if (autoOpen === "personal") {
-      handleDropdownItemClick("personal");
+    } else if (autoOpen === 'personal') {
+      handleDropdownItemClick('personal')
 
       // clear the flag so it won't auto-trigger again
       try {
-        const nextState = { ...(location.state || {}) };
-        delete nextState.autoOpen;
-        navigate(location.pathname + (location.search || ""), {
+        const nextState = { ...(location.state || {}) }
+        delete nextState.autoOpen
+        navigate(location.pathname + (location.search || ''), {
           replace: true,
           state: nextState,
-        });
+        })
       } catch {
         // ignore
       }
     }
-  }, [autoOpen]);
-
+  }, [autoOpen])
 
   // Fetch eplanner events from API
   const fetchEplannerEvents = async () => {
@@ -132,50 +137,60 @@ const TimetableContainer = () => {
       const [personalData, examData, reminderData] = await Promise.all([
         EplannerAPI.getPersonals().catch(() => []),
         EplannerAPI.getExams().catch(() => []),
-        EplannerAPI.getReminders().catch(() => [])
-      ]);
+        EplannerAPI.getReminders().catch(() => []),
+      ])
 
       setEplannerEvents({
         personal: personalData || [],
         exam: examData || [],
-        reminder: reminderData || []
-      });
-      console.log('Fetched eplanner events:', { personalData, examData, reminderData });
+        reminder: reminderData || [],
+      })
+      console.log('Fetched eplanner events:', {
+        personalData,
+        examData,
+        reminderData,
+      })
     } catch (error) {
-      console.error('Error fetching eplanner events:', error);
+      console.error('Error fetching eplanner events:', error)
     }
-  };
+  }
 
   // Edit handler functions for eplanner events
   const handleEditPersonal = useCallback((event) => {
     // Dispatch custom event to trigger personal eplanner modal in edit mode
-    window.dispatchEvent(new CustomEvent('edit-personal-event', {
-      detail: {
-        eventId: event.id,
-        eventData: event
-      }
-    }));
-  }, []);
+    window.dispatchEvent(
+      new CustomEvent('edit-personal-event', {
+        detail: {
+          eventId: event.id,
+          eventData: event,
+        },
+      })
+    )
+  }, [])
 
   const handleEditExam = useCallback((event) => {
-    // Dispatch custom event to trigger exam eplanner modal in edit mode  
-    window.dispatchEvent(new CustomEvent('edit-exam-event', {
-      detail: {
-        eventId: event.id,
-        eventData: event
-      }
-    }));
-  }, []);
+    // Dispatch custom event to trigger exam eplanner modal in edit mode
+    window.dispatchEvent(
+      new CustomEvent('edit-exam-event', {
+        detail: {
+          eventId: event.id,
+          eventData: event,
+        },
+      })
+    )
+  }, [])
 
   const handleEditReminder = useCallback((event) => {
     // Dispatch custom event to trigger reminder eplanner modal in edit mode
-    window.dispatchEvent(new CustomEvent('edit-reminder-event', {
-      detail: {
-        eventId: event.id,
-        eventData: event
-      }
-    }));
-  }, []);
+    window.dispatchEvent(
+      new CustomEvent('edit-reminder-event', {
+        detail: {
+          eventId: event.id,
+          eventData: event,
+        },
+      })
+    )
+  }, [])
 
   const addDropdownMenu = (
     <AddDropdownMenu>
@@ -205,7 +220,6 @@ const TimetableContainer = () => {
       </AddMenuItem>
     </AddDropdownMenu>
   )
-
 
   // Add the fetchCourses function
   const fetchCourses = async (params) => {
@@ -240,18 +254,18 @@ const TimetableContainer = () => {
 
   // Fetch eplanner events on mount and listen for updates
   useEffect(() => {
-    fetchEplannerEvents();
+    fetchEplannerEvents()
 
     const handleEplannerUpdate = () => {
-      fetchEplannerEvents();
-    };
+      fetchEplannerEvents()
+    }
 
-    window.addEventListener('eplanner-updated', handleEplannerUpdate);
-    
+    window.addEventListener('eplanner-updated', handleEplannerUpdate)
+
     return () => {
-      window.removeEventListener('eplanner-updated', handleEplannerUpdate);
-    };
-  }, []);
+      window.removeEventListener('eplanner-updated', handleEplannerUpdate)
+    }
+  }, [])
 
   useEffect(() => {
     if (semesterList.length) setSemIdx(semesterList.length - 1)
@@ -295,17 +309,17 @@ const TimetableContainer = () => {
   }
 
   const handleTodayClick = () => {
-    setCurrentDate(moment()); // Reset to today's date
-    console.log('Today clicked, date reset to:', moment().format('YYYY-MM-DD'));
-  };
+    setCurrentDate(moment()) // Reset to today's date
+    console.log('Today clicked, date reset to:', moment().format('YYYY-MM-DD'))
+  }
 
   const handleSaveCourses = async () => {
     try {
       setLoading(true)
       setCoursesModalVisible(false)
-      toast({ 
-        status: 'success', 
-        content: `Timetable saved successfully with ${courseTimetableList.length} courses!` 
+      toast({
+        status: 'success',
+        content: `Timetable saved successfully with ${courseTimetableList.length} courses!`,
       })
     } catch (error) {
       toast({ status: 'error', content: 'Failed to save timetable changes' })
@@ -442,150 +456,172 @@ const TimetableContainer = () => {
     const addEplannerEvents = () => {
       // Helper to convert time to row index
       const timeToRow = (timeStr) => {
-        if (!timeStr) return 0;
-        
+        if (!timeStr) return 0
+
         // Parse time string
-        const [hours, minutes] = timeStr.split(':').map(Number);
-        const timeInMinutes = hours * 60 + minutes;
-        
+        const [hours, minutes] = timeStr.split(':').map(Number)
+        const timeInMinutes = hours * 60 + minutes
+
         // Time to row mapping based on actual timetable structure (0-based indexing)
         const timeSlots = [
-          { time: '08:30', row: 0 }, { time: '09:00', row: 1 }, { time: '09:30', row: 2 },
-          { time: '10:00', row: 3 }, { time: '10:30', row: 4 }, { time: '11:00', row: 5 },
-          { time: '11:30', row: 6 }, { time: '12:00', row: 7 }, { time: '12:30', row: 8 },
+          { time: '08:30', row: 0 },
+          { time: '09:00', row: 1 },
+          { time: '09:30', row: 2 },
+          { time: '10:00', row: 3 },
+          { time: '10:30', row: 4 },
+          { time: '11:00', row: 5 },
+          { time: '11:30', row: 6 },
+          { time: '12:00', row: 7 },
+          { time: '12:30', row: 8 },
           // Lunch break gap
-          { time: '14:00', row: 9 }, { time: '14:30', row: 10 }, { time: '15:00', row: 11 },
-          { time: '15:30', row: 12 }, { time: '16:00', row: 13 }, { time: '16:30', row: 14 },
+          { time: '14:00', row: 9 },
+          { time: '14:30', row: 10 },
+          { time: '15:00', row: 11 },
+          { time: '15:30', row: 12 },
+          { time: '16:00', row: 13 },
+          { time: '16:30', row: 14 },
           { time: '17:00', row: 15 },
           // Evening break gap
-          { time: '17:30', row: 16 }, { time: '18:00', row: 17 }, { time: '18:30', row: 18 },
-          { time: '19:00', row: 19 }, { time: '19:30', row: 20 }, { time: '20:00', row: 21 },
-          { time: '20:30', row: 22 }, { time: '21:00', row: 23 }, { time: '21:30', row: 24 },
-          { time: '22:00', row: 25 }, { time: '22:30', row: 26 }
-        ];
-        
+          { time: '17:30', row: 16 },
+          { time: '18:00', row: 17 },
+          { time: '18:30', row: 18 },
+          { time: '19:00', row: 19 },
+          { time: '19:30', row: 20 },
+          { time: '20:00', row: 21 },
+          { time: '20:30', row: 22 },
+          { time: '21:00', row: 23 },
+          { time: '21:30', row: 24 },
+          { time: '22:00', row: 25 },
+          { time: '22:30', row: 26 },
+        ]
+
         // Convert time slots to minutes for comparison
-        const timeSlotsInMinutes = timeSlots.map(slot => {
-          const [h, m] = slot.time.split(':').map(Number);
-          return { minutes: h * 60 + m, row: slot.row };
-        });
-        
+        const timeSlotsInMinutes = timeSlots.map((slot) => {
+          const [h, m] = slot.time.split(':').map(Number)
+          return { minutes: h * 60 + m, row: slot.row }
+        })
+
         // Find exact match first
-        const exactMatch = timeSlotsInMinutes.find(slot => slot.minutes === timeInMinutes);
+        const exactMatch = timeSlotsInMinutes.find(
+          (slot) => slot.minutes === timeInMinutes
+        )
         if (exactMatch) {
-          return exactMatch.row;
+          return exactMatch.row
         }
-        
+
         // Find the closest time slot if no exact match
-        let closestSlot = timeSlotsInMinutes[0];
-        let minDiff = Math.abs(timeInMinutes - closestSlot.minutes);
-        
+        let closestSlot = timeSlotsInMinutes[0]
+        let minDiff = Math.abs(timeInMinutes - closestSlot.minutes)
+
         for (let i = 1; i < timeSlotsInMinutes.length; i += 1) {
-          const diff = Math.abs(timeInMinutes - timeSlotsInMinutes[i].minutes);
+          const diff = Math.abs(timeInMinutes - timeSlotsInMinutes[i].minutes)
           if (diff < minDiff) {
-            minDiff = diff;
-            closestSlot = timeSlotsInMinutes[i];
+            minDiff = diff
+            closestSlot = timeSlotsInMinutes[i]
           }
         }
-        
-        return closestSlot.row;
-      };
+
+        return closestSlot.row
+      }
 
       // Helper function to ensure proper event sizing within bounds
       const calculateEventBounds = (startTime, endTime) => {
-        const maxRow = 26; // Now includes 22:30 as row 26
-        let startRow = timeToRow(startTime);
-        
+        const maxRow = 26 // Now includes 22:30 as row 26
+        let startRow = timeToRow(startTime)
+
         // Default span based on event type
-        let defaultSpan = 2; // Default 2 rows for personal/reminder
-        if (!endTime) defaultSpan = 4; // Default 4 rows for exams without end time
-        
-        let endRow = endTime ? timeToRow(endTime) : startRow + defaultSpan;
+        let defaultSpan = 2 // Default 2 rows for personal/reminder
+        if (!endTime) defaultSpan = 4 // Default 4 rows for exams without end time
+
+        let endRow = endTime ? timeToRow(endTime) : startRow + defaultSpan
 
         // Ensure startRow is within bounds
-        startRow = Math.max(0, Math.min(startRow, maxRow));
-        
+        startRow = Math.max(0, Math.min(startRow, maxRow))
+
         // For events starting at 21:30 (row 24), ensure they extend exactly 2 rows to 22:30 (row 26)
         if (startRow === 24) {
-          endRow = 26; // Always extend to 22:30 for events starting at 21:30
+          endRow = 26 // Always extend to 22:30 for events starting at 21:30
         } else {
           // For other events, cap endRow to maximum available row
-          endRow = Math.min(endRow, maxRow);
-        }
-        
-        // Ensure minimum event size (at least 1 row difference)
-        if (endRow <= startRow) {
-          endRow = Math.min(startRow + 1, maxRow);
+          endRow = Math.min(endRow, maxRow)
         }
 
-        return { startRow, endRow };
-      };
+        // Ensure minimum event size (at least 1 row difference)
+        if (endRow <= startRow) {
+          endRow = Math.min(startRow + 1, maxRow)
+        }
+
+        return { startRow, endRow }
+      }
 
       // Helper to get day index from date
       const getDayIndexFromDate = (dateStr) => {
-        if (!dateStr) return -1;
-        const date = moment(dateStr);
-        return date.day() === 0 ? 6 : date.day() - 1; // Convert Sunday=0 to 6, Mon=1 to 0, etc.
-      };
+        if (!dateStr) return -1
+        const date = moment(dateStr)
+        return date.day() === 0 ? 6 : date.day() - 1 // Convert Sunday=0 to 6, Mon=1 to 0, etc.
+      }
 
       // Process Personal events
-      eplannerEvents.personal.forEach(event => {
-        if(!event.date) return;
-        const startDate = moment(event.date, 'YYYY-MM-DD');
-        const repeatType = event.weekdays;
+      eplannerEvents.personal.forEach((event) => {
+        if (!event.date) return
+        const startDate = moment(event.date, 'YYYY-MM-DD')
+        const repeatType = event.weekdays
 
-        let repeatCount = 1;
-        let step = 1;
-        if(repeatType === 'Daily') {
-          repeatCount = 30;
-          step = 1;
-        } else if(repeatType === 'Weekly') {
-          repeatCount = 10;
-          step = 7;
+        let repeatCount = 1
+        let step = 1
+        if (repeatType === 'Daily') {
+          repeatCount = 30
+          step = 1
+        } else if (repeatType === 'Weekly') {
+          repeatCount = 10
+          step = 7
         }
         for (let i = 0; i < repeatCount; i += 1) {
-          const thisDate = startDate.clone().add(i * step, 'days');
-          const dayIndex = thisDate.day() === 0 ? 6 : thisDate.day() - 1;
-          const eventDateStr = thisDate.format('YYYY-MM-DD');
+          const thisDate = startDate.clone().add(i * step, 'days')
+          const dayIndex = thisDate.day() === 0 ? 6 : thisDate.day() - 1
+          const eventDateStr = thisDate.format('YYYY-MM-DD')
 
-          let startRow;
-          let endRow;
-          if(event.isAllDay){
-            startRow = 0;
-            endRow = 2;
+          let startRow
+          let endRow
+          if (event.isAllDay) {
+            startRow = 0
+            endRow = 2
           } else {
-            const bounds = calculateEventBounds(event.starttime, event.endtime);
-            startRow = bounds.startRow;
-            endRow = bounds.endRow;
+            const bounds = calculateEventBounds(event.starttime, event.endtime)
+            startRow = bounds.startRow
+            endRow = bounds.endRow
           }
           events.push({
-              id: `personal-${event.id}-${eventDateStr}`,
-              title: event.title,
-              description: event.description,
-              type: 'Personal',
-              dayIndex,
-              startRow,
-              endRow,
-              startTime: event.starttime || '09:00',
-              endTime: event.endtime || '10:00',
-              color: '#00D2FF',
-              slotName: 'Personal',
-              date: event.date, // Original date
-              eventDate: eventDateStr, // This occurrence's date
-              weekdays: repeatType, // Preserve the repeat pattern
-              originalEventId: event.id // Preserve original event ID
-            });
-         }
-      });
+            id: `personal-${event.id}-${eventDateStr}`,
+            title: event.title,
+            description: event.description,
+            type: 'Personal',
+            dayIndex,
+            startRow,
+            endRow,
+            startTime: event.starttime || '09:00',
+            endTime: event.endtime || '10:00',
+            color: '#00D2FF',
+            slotName: 'Personal',
+            date: event.date, // Original date
+            eventDate: eventDateStr, // This occurrence's date
+            weekdays: repeatType, // Preserve the repeat pattern
+            originalEventId: event.id, // Preserve original event ID
+          })
+        }
+      })
 
       // Process Exam events
-      eplannerEvents.exam.forEach(event => {
+      eplannerEvents.exam.forEach((event) => {
         if (event.date) {
-          const eventDate = moment(event.date);
-          const dayIndex = eventDate.day() === 0 ? 6 : eventDate.day() - 1; // Convert Sunday=0 to 6, Mon=1 to 0, etc.
-          
+          const eventDate = moment(event.date)
+          const dayIndex = eventDate.day() === 0 ? 6 : eventDate.day() - 1 // Convert Sunday=0 to 6, Mon=1 to 0, etc.
+
           if (dayIndex >= 0) {
-            const { startRow, endRow } = calculateEventBounds(event.starttime, event.endtime || null);
+            const { startRow, endRow } = calculateEventBounds(
+              event.starttime,
+              event.endtime || null
+            )
 
             events.push({
               id: `exam-${event.id}`,
@@ -601,43 +637,43 @@ const TimetableContainer = () => {
               color: '#FF6B35',
               slotName: 'Exam',
               date: event.date,
-              eventDate: eventDate.format('YYYY-MM-DD') // Store formatted date for comparison
-            });
+              eventDate: eventDate.format('YYYY-MM-DD'), // Store formatted date for comparison
+            })
           }
         }
-      });
+      })
 
       // Process Reminder events
-      eplannerEvents.reminder.forEach(event => {
-        if (!event.date) return;
-        const startDate = moment(event.date, 'YYYY-MM-DD');
-        const repeatType = event.weekdays;
+      eplannerEvents.reminder.forEach((event) => {
+        if (!event.date) return
+        const startDate = moment(event.date, 'YYYY-MM-DD')
+        const repeatType = event.weekdays
 
         // How many times to repeat? (30 days for daily, 10 weeks for weekly, 1 for none)
-        let repeatCount = 1;
-        let step = 1;
+        let repeatCount = 1
+        let step = 1
         if (repeatType === 'Daily') {
-          repeatCount = 30;
-          step = 1;
+          repeatCount = 30
+          step = 1
         } else if (repeatType === 'Weekly') {
-          repeatCount = 10;
-          step = 7;
+          repeatCount = 10
+          step = 7
         }
 
         for (let i = 0; i < repeatCount; i += 1) {
-          const thisDate = startDate.clone().add(i * step, 'days');
-          const dayIndex = thisDate.day() === 0 ? 6 : thisDate.day() - 1;
-          const eventDateStr = thisDate.format('YYYY-MM-DD');
+          const thisDate = startDate.clone().add(i * step, 'days')
+          const dayIndex = thisDate.day() === 0 ? 6 : thisDate.day() - 1
+          const eventDateStr = thisDate.format('YYYY-MM-DD')
 
-          let startRow;
-          let endRow;
+          let startRow
+          let endRow
           if (event.isAllDay) {
-            startRow = 0;
-            endRow = 2;
+            startRow = 0
+            endRow = 2
           } else {
-            const bounds = calculateEventBounds(event.starttime, event.endtime);
-            startRow = bounds.startRow;
-            endRow = bounds.endRow;
+            const bounds = calculateEventBounds(event.starttime, event.endtime)
+            startRow = bounds.startRow
+            endRow = bounds.endRow
           }
 
           events.push({
@@ -649,30 +685,29 @@ const TimetableContainer = () => {
             dayIndex,
             startRow,
             endRow,
-            startTime: event.isAllDay ? 'All Day' : (event.starttime || '09:00'),
-            endTime: event.isAllDay ? '' : (event.endtime || '10:00'),
+            startTime: event.isAllDay ? 'All Day' : event.starttime || '09:00',
+            endTime: event.isAllDay ? '' : event.endtime || '10:00',
             color: '#FF6B6B',
             slotName: 'Reminder',
             date: event.date, // Original date
             eventDate: eventDateStr, // This occurrence's date
             weekdays: repeatType, // Preserve the repeat pattern
-            originalEventId: event.id // Preserve original event ID
-          });
+            originalEventId: event.id, // Preserve original event ID
+          })
         }
-      });
+      })
+    }
 
-    };
-
-    addEplannerEvents();
+    addEplannerEvents()
 
     return events
   }
 
   const events = getEventsForView()
-  console.log('All Events:', events);
+  console.log('All Events:', events)
 
   const getDayViewDateDisplay = (date) => {
-    return `${date.format('dddd')}, ${date.format('D MMMM YYYY')}` 
+    return `${date.format('dddd')}, ${date.format('D MMMM YYYY')}`
   }
 
   const getDateDisplay = (date) => {
@@ -698,7 +733,7 @@ const TimetableContainer = () => {
         if (event.type === 'Lecture' || event.type === 'Tutorial') {
           return event.dayIndex === selectedDayIndex
         }
-        
+
         // For eplanner events (Personal, Exam, Reminder), check the actual date
         if (event.eventDate) {
           return event.eventDate === selectedDateString
@@ -706,7 +741,7 @@ const TimetableContainer = () => {
         if (event.date) {
           return moment(event.date).format('YYYY-MM-DD') === selectedDateString
         }
-        
+
         return event.dayIndex === selectedDayIndex
       }
 
@@ -715,7 +750,7 @@ const TimetableContainer = () => {
       if (event.type === 'Lecture' || event.type === 'Tutorial') {
         return event.dayIndex === todayDayIndex
       }
-      
+
       // For eplanner events (Personal, Exam, Reminder), check the actual date
       if (event.eventDate) {
         return event.eventDate === todayDateString
@@ -723,7 +758,7 @@ const TimetableContainer = () => {
       if (event.date) {
         return moment(event.date).format('YYYY-MM-DD') === todayDateString
       }
-      
+
       // Fallback to day index for other events
       return event.dayIndex === todayDayIndex
     })
@@ -736,13 +771,15 @@ const TimetableContainer = () => {
     const eventsByDayAndTime = {}
 
     // Filter out reminder events from clash detection
-    events.filter(event => event.type !== 'Reminder').forEach((event) => {
-      const key = `${event.dayIndex}-${event.startRow}`
-      if (!eventsByDayAndTime[key]) {
-        eventsByDayAndTime[key] = []
-      }
-      eventsByDayAndTime[key].push(event)
-    })
+    events
+      .filter((event) => event.type !== 'Reminder')
+      .forEach((event) => {
+        const key = `${event.dayIndex}-${event.startRow}`
+        if (!eventsByDayAndTime[key]) {
+          eventsByDayAndTime[key] = []
+        }
+        eventsByDayAndTime[key].push(event)
+      })
 
     Object.values(eventsByDayAndTime).forEach((eventsInSlot) => {
       if (eventsInSlot.length > 1) {
@@ -778,18 +815,18 @@ const TimetableContainer = () => {
         <PageHeading>
           <PageTitle>Timetable</PageTitle>
 
-  <Dropdown
-    overlay={addDropdownMenu}
-    trigger={['click']}
-    visible={dropdownVisible}
-    onVisibleChange={setDropdownVisible}
-    placement="bottomRight"
-  >
-    <AddButton onClick={() => setDropdownVisible(!dropdownVisible)}>
-      <Plus size="16" />
-      add
-    </AddButton>
-  </Dropdown>
+          <Dropdown
+            overlay={addDropdownMenu}
+            trigger={['click']}
+            visible={dropdownVisible}
+            onVisibleChange={setDropdownVisible}
+            placement="bottomRight"
+          >
+            <AddButton onClick={() => setDropdownVisible(!dropdownVisible)}>
+              <Plus size="16" />
+              add
+            </AddButton>
+          </Dropdown>
         </PageHeading>
       </TimetablePageHeadingWrapper>
 
@@ -798,7 +835,6 @@ const TimetableContainer = () => {
         <EventCountDisplay>{todayEvents.length} events today</EventCountDisplay>
         <TimetableShareButton coursesInTimetable={courseTimetableList} />
       </SubHeader>
-
 
       {loading && <LoaderAnimation />}
       <Spin
@@ -894,49 +930,54 @@ const TimetableContainer = () => {
       {coursesModalVisible && (
         <CoursesModal>
           <CoursesModalContent>
-            <CoursesModalHeader> 
-           <div style={{ 
-             display: 'flex', 
-             alignItems: 'center', 
-             justifyContent: 'center', 
-             height: '32px', 
-             width: '40px', 
-             backgroundColor: '#3b3452', 
-             borderRadius: '6px', 
-             marginRight: '12px'
-           }}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="white"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="white"
-              style={{ width: '30px', height: '20px' }}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6.75 4.5A1.5 1.5 0 018.25 3h7.5a1.5 1.5 0 011.5 1.5v16.75a.75.75 0 01-1.155.629L12 17.25l-4.095 2.879A.75.75 0 016.75 21.25V4.5z"
-              />
-            </svg>
-          </div>
+            <CoursesModalHeader>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '32px',
+                  width: '40px',
+                  backgroundColor: '#3b3452',
+                  borderRadius: '6px',
+                  marginRight: '12px',
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="white"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="white"
+                  style={{ width: '30px', height: '20px' }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6.75 4.5A1.5 1.5 0 018.25 3h7.5a1.5 1.5 0 011.5 1.5v16.75a.75.75 0 01-1.155.629L12 17.25l-4.095 2.879A.75.75 0 016.75 21.25V4.5z"
+                  />
+                </svg>
+              </div>
               <h2>Courses</h2>
               <CloseButton onClick={() => setCoursesModalVisible(false)}>
                 ✕
               </CloseButton>
             </CoursesModalHeader>
             <div style={{ width: '100%' }}>
-            <TimetableSearch
-              loading={loadingg}
-              setLoading={setLoadingg}
-              data={courseData}
-              addToTimetable={addToTimetable}
+              <TimetableSearch
+                loading={loadingg}
+                setLoading={setLoadingg}
+                data={courseData}
+                addToTimetable={addToTimetable}
               />
-              </div>
-            
- 
-              <h2 style={{color: 'white', fontWeight: 'bold', paddingTop: '16px'}}>My Courses</h2>
-            
+            </div>
+
+            <h2
+              style={{ color: 'white', fontWeight: 'bold', paddingTop: '16px' }}
+            >
+              My Courses
+            </h2>
+
             <CoursesContainer>
               <CoursesCardGrid>
                 {courseTimetableList.map(({ id, course }) => (
@@ -958,11 +999,13 @@ const TimetableContainer = () => {
                   <EmptyState>
                     <EmptyStateIcon>📚</EmptyStateIcon>
                     <EmptyStateText>No courses added yet</EmptyStateText>
-                    <EmptyStateSubtext>Use the search above to add courses to your timetable</EmptyStateSubtext>
+                    <EmptyStateSubtext>
+                      Use the search above to add courses to your timetable
+                    </EmptyStateSubtext>
                   </EmptyState>
                 )}
               </CoursesCardGrid>
-              
+
               <SaveButtonContainer>
                 <SaveButton onClick={handleSaveCourses} disabled={loading}>
                   {loading ? 'Saving...' : 'Save'}
@@ -973,10 +1016,16 @@ const TimetableContainer = () => {
         </CoursesModal>
       )}
 
-  {/* Eplanner Components - Hidden buttons, only triggered by dropdown events */}
-  <PersonalPlanner hideButton selectedDate={currentDate.format('YYYY-MM-DD')} />
-  <ExamPlanner hideButton selectedDate={currentDate.format('YYYY-MM-DD')} />
-  <ReminderPlanner hideButton selectedDate={currentDate.format('YYYY-MM-DD')} />
+      {/* Eplanner Components - Hidden buttons, only triggered by dropdown events */}
+      <PersonalPlanner
+        hideButton
+        selectedDate={currentDate.format('YYYY-MM-DD')}
+      />
+      <ExamPlanner hideButton selectedDate={currentDate.format('YYYY-MM-DD')} />
+      <ReminderPlanner
+        hideButton
+        selectedDate={currentDate.format('YYYY-MM-DD')}
+      />
     </>
   )
 }
@@ -1035,18 +1084,21 @@ const DayView = ({
   const selectedDay = currentDate.clone()
   const selectedDayIndex = selectedDay.isoWeekday() - 1 // Convert to 0-6 (Mon=0, Sun=6)
   const currentDateStr = selectedDay.format('YYYY-MM-DD')
-  
+
   const dayEvents = events.filter((event) => {
     // For course events (have type 'Lecture' or 'Tutorial'), filter by dayIndex only
     if (event.type === 'Lecture' || event.type === 'Tutorial') {
       return event.dayIndex === selectedDayIndex
     }
-    
+
     // For eplanner events (have type 'Personal', 'Exam'), check both dayIndex and specific date
     if (event.type === 'Personal' || event.type === 'Exam') {
-      return event.dayIndex === selectedDayIndex && event.eventDate === currentDateStr
+      return (
+        event.dayIndex === selectedDayIndex &&
+        event.eventDate === currentDateStr
+      )
     }
-    
+
     return false
   })
 
@@ -1056,37 +1108,42 @@ const DayView = ({
   // Process events for display - courses have absolute priority and overlap eplanner events
   const processEventsForDisplay = (eventsToProcess) => {
     const processedEvents = []
-    
+
     // Separate courses and eplanner events
-    const courseEvents = eventsToProcess.filter(event => event.type === 'Lecture' || event.type === 'Tutorial')
-    const eplannerEvents = eventsToProcess.filter(event => event.type === 'Personal' || event.type === 'Exam')
-    
+    const courseEvents = eventsToProcess.filter(
+      (event) => event.type === 'Lecture' || event.type === 'Tutorial'
+    )
+    const eplannerEvents = eventsToProcess.filter(
+      (event) => event.type === 'Personal' || event.type === 'Exam'
+    )
+
     // Function to check if two events overlap
     const eventsOverlap = (event1, event2) => {
       return event1.startRow < event2.endRow && event1.endRow > event2.startRow
     }
-    
+
     // Add eplanner events only if they don't overlap with any course
-    eplannerEvents.forEach(eplannerEvent => {
-      const hasOverlappingCourse = courseEvents.some(courseEvent => {
+    eplannerEvents.forEach((eplannerEvent) => {
+      const hasOverlappingCourse = courseEvents.some((courseEvent) => {
         return eventsOverlap(eplannerEvent, courseEvent)
       })
-      
+
       if (!hasOverlappingCourse) {
         processedEvents.push({
           ...eplannerEvent,
           displayStartRow: eplannerEvent.startRow,
           displayTop: eplannerEvent.startRow * ROW_HEIGHT,
-          displayHeight: (eplannerEvent.endRow - eplannerEvent.startRow) * ROW_HEIGHT,
+          displayHeight:
+            (eplannerEvent.endRow - eplannerEvent.startRow) * ROW_HEIGHT,
           stackPosition: 0,
           totalInStack: 1,
-          zIndex: 5
+          zIndex: 5,
         })
       }
     })
-    
+
     // Add all course events (they have priority)
-    courseEvents.forEach(event => {
+    courseEvents.forEach((event) => {
       processedEvents.push({
         ...event,
         displayStartRow: event.startRow,
@@ -1094,13 +1151,13 @@ const DayView = ({
         displayHeight: (event.endRow - event.startRow) * ROW_HEIGHT,
         stackPosition: 0,
         totalInStack: 1,
-        zIndex: 10
+        zIndex: 10,
       })
     })
-    
+
     return processedEvents
   }
-  
+
   const processedDayEvents = processEventsForDisplay(dayEvents)
   const isToday = selectedDay.isSame(moment(), 'day')
 
@@ -1108,167 +1165,202 @@ const DayView = ({
     <TimetableWrapper>
       <TimetableScrollInner>
         <DayViewContainer>
-      <ControlsLayout>
-        <DateDisplay>{dayDateString}</DateDisplay>
-        <ViewSelectorContainer>
-          <StyledRadioGroup onChange={handleViewChange} value={currentView}>
-            <Radio.Button value="Day">Day</Radio.Button>
-            <Radio.Button value="Week">Week</Radio.Button>
-            <Radio.Button value="Month">Month</Radio.Button>
-          </StyledRadioGroup>
-          <NavigationContainer>
-            <NavButton onClick={handleClickPrev}>
-              <ChevronLeft size="20" />
-            </NavButton>
-            <CurrentDateDisplay onClick={handleTodayClick}>
-              Today
-            </CurrentDateDisplay>
-            <NavButton onClick={handleClickNext}>
-              <ChevronRight size="20" />
-            </NavButton>
-          </NavigationContainer>
-        </ViewSelectorContainer>
-      </ControlsLayout>
-      <DayViewGrid>
-        <DayTimeColumn>
-          {timeSlots.map((time) => (
-            <TimeSlot key={time}>
-              {time.endsWith(':30') ? <TimeText>{time}</TimeText> : null}
-            </TimeSlot>
-          ))}
-        </DayTimeColumn>
-        <DayEventColumn>
-          {isToday && <CurrentTimeIndicator />}
-          {processedDayEvents.map((event) => {
-            const course = coursedata[event.courseCode]
-            
-            // Handle eplanner events (Personal, Exam)
-             if (event.type && ['Personal', 'Exam'].includes(event.type)) {
-                        // Choose description, or course name (for Exam), or fallback to title
-                        let displayName = event.description?.trim();
-                        if (!displayName) {
-                          if (event.type === 'Exam' && coursedata[event.title]) {
-                            displayName = coursedata[event.title]?.title || event.title;
-                          } else {
-                            displayName = event.title;
-                          }
-                        }
-              return (
-                <Tooltip
-                  key={event.id}
-                  title={
-                    <div>
-                      <div>
-                        <strong>
-                          {event.title} ({event.type})
-                        </strong>
-                      </div>
-                      {event.description && <div>{event.description}</div>}
-                      <div>
-                        {event.isAllDay ? 'All Day' : `${event.startTime} - ${event.endTime}`}
-                      </div>
-                      {event.date && <div>Date: {event.date}</div>}
-                    </div>
-                  }
-                  overlayStyle={{
-                    maxWidth: 250,
-                    fontSize: '0.9rem',
-                    color: '#333',
-                  }}
-                  placement="top"
-                >
-                  <DayEventBlock
-                    color={event.color}
-                    style={{
-                      position: 'absolute',
-                      top: `${event.displayTop}px`,
-                      left: '0.25rem',
-                      width: 'calc(100% - 0.5rem)',
-                      height: `${event.displayHeight}px`,
-                      padding: '0', // Remove padding for eplanner events
-                      zIndex: event.zIndex || 5,
-                    }}
-                  >
-                    <div style={{ 
-                      textAlign: 'center', 
-                      color: 'white', 
-                      padding: '4px',
-                      height: '100%',
-                      width: '100%',
-                      overflow: 'hidden',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      borderRadius: '8px',
-                      position: 'relative'
-                    }}>
-                      <div style={{
-                        position: 'absolute',
-                        left: -3,
-                        top: 0,
-                        zIndex: 100,
-                        maxWidth: 'calc(100% - 56px)',
-                        margin: 0,
-                      }}>
-                        <div style={{
-                          fontSize: event.totalInStack > 1 ? '0.8rem' : '1rem',
-                          fontWeight: '600',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                          textAlign: 'left',
-                          color: '#222',
-                          background: 'transparent',
-                          padding: '4px 12px',
-                          borderRadius: '8px',
-                          marginBottom: '-0.6rem'
-                        }}>
-                          {event.title} |  {event.isAllDay ? 'All Day' : event.startTime.substring(0, 5)}
-                        </div>
-                      </div>
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        fontSize: '0.9rem',
-                        opacity: 0.9,
-                        fontWeight: '500',
-                        color: 'black',
-                        flexDirection: 'row',
-                      }}>
-                        <div style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '4px',
-                          marginTop: '30px',
-                          marginLeft: "5px",
-                          flexDirection: 'row',
-                        }}>
-                          {(event.endRow - event.startRow) >= 2 && <span>{event.type}</span>}
+          <ControlsLayout>
+            <DateDisplay>{dayDateString}</DateDisplay>
+            <ViewSelectorContainer>
+              <StyledRadioGroup onChange={handleViewChange} value={currentView}>
+                <Radio.Button value="Day">Day</Radio.Button>
+                <Radio.Button value="Week">Week</Radio.Button>
+                <Radio.Button value="Month">Month</Radio.Button>
+              </StyledRadioGroup>
+              <NavigationContainer>
+                <NavButton onClick={handleClickPrev}>
+                  <ChevronLeft size="20" />
+                </NavButton>
+                <CurrentDateDisplay onClick={handleTodayClick}>
+                  Today
+                </CurrentDateDisplay>
+                <NavButton onClick={handleClickNext}>
+                  <ChevronRight size="20" />
+                </NavButton>
+              </NavigationContainer>
+            </ViewSelectorContainer>
+          </ControlsLayout>
+          <DayViewGrid>
+            <DayTimeColumn>
+              {timeSlots.map((time) => (
+                <TimeSlot key={time}>
+                  {time.endsWith(':30') ? <TimeText>{time}</TimeText> : null}
+                </TimeSlot>
+              ))}
+            </DayTimeColumn>
+            <DayEventColumn>
+              {isToday && <CurrentTimeIndicator />}
+              {processedDayEvents.map((event) => {
+                const course = coursedata[event.courseCode]
 
+                // Handle eplanner events (Personal, Exam)
+                if (event.type && ['Personal', 'Exam'].includes(event.type)) {
+                  // Choose description, or course name (for Exam), or fallback to title
+                  let displayName = event.description?.trim()
+                  if (!displayName) {
+                    if (event.type === 'Exam' && coursedata[event.title]) {
+                      displayName =
+                        coursedata[event.title]?.title || event.title
+                    } else {
+                      displayName = event.title
+                    }
+                  }
+                  return (
+                    <Tooltip
+                      key={event.id}
+                      title={
+                        <div>
+                          <div>
+                            <strong>
+                              {event.title} ({event.type})
+                            </strong>
+                          </div>
+                          {event.description && <div>{event.description}</div>}
+                          <div>
+                            {event.isAllDay
+                              ? 'All Day'
+                              : `${event.startTime} - ${event.endTime}`}
+                          </div>
+                          {event.date && <div>Date: {event.date}</div>}
                         </div>
-                        <div style={{ marginBottom: '8px', marginRight: '9px' }}>
-                          <button type="button" style={{
-                            background: 'transparent',
-                            border: 'none',
-                            borderRadius: '4px',
-                            padding: '2px 4px',
-                            cursor: 'pointer',
-                            color: 'black',
-                          }} onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            if (event.type === 'Personal') handleEditPersonal(event);
-                            else if (event.type === 'Exam') handleEditExam(event);
-                          }} title="Edit Event">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                              <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                            </svg>
-                          </button>
-                        
-                       
-                          {/* <button type="button" style={{
+                      }
+                      overlayStyle={{
+                        maxWidth: 250,
+                        fontSize: '0.9rem',
+                        color: '#333',
+                      }}
+                      placement="top"
+                    >
+                      <DayEventBlock
+                        color={event.color}
+                        style={{
+                          position: 'absolute',
+                          top: `${event.displayTop}px`,
+                          left: '0.25rem',
+                          width: 'calc(100% - 0.5rem)',
+                          height: `${event.displayHeight}px`,
+                          padding: '0', // Remove padding for eplanner events
+                          zIndex: event.zIndex || 5,
+                        }}
+                      >
+                        <div
+                          style={{
+                            textAlign: 'center',
+                            color: 'white',
+                            padding: '4px',
+                            height: '100%',
+                            width: '100%',
+                            overflow: 'hidden',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            borderRadius: '8px',
+                            position: 'relative',
+                          }}
+                        >
+                          <div
+                            style={{
+                              position: 'absolute',
+                              left: -3,
+                              top: 0,
+                              zIndex: 100,
+                              maxWidth: 'calc(100% - 56px)',
+                              margin: 0,
+                            }}
+                          >
+                            <div
+                              style={{
+                                fontSize:
+                                  event.totalInStack > 1 ? '0.8rem' : '1rem',
+                                fontWeight: '600',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                                textAlign: 'left',
+                                color: '#222',
+                                background: 'transparent',
+                                padding: '4px 12px',
+                                borderRadius: '8px',
+                                marginBottom: '-0.6rem',
+                              }}
+                            >
+                              {event.title} |{' '}
+                              {event.isAllDay
+                                ? 'All Day'
+                                : event.startTime.substring(0, 5)}
+                            </div>
+                          </div>
+                          <div
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              fontSize: '0.9rem',
+                              opacity: 0.9,
+                              fontWeight: '500',
+                              color: 'black',
+                              flexDirection: 'row',
+                            }}
+                          >
+                            <div
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                marginTop: '30px',
+                                marginLeft: '5px',
+                                flexDirection: 'row',
+                              }}
+                            >
+                              {event.endRow - event.startRow >= 2 && (
+                                <span>{event.type}</span>
+                              )}
+                            </div>
+                            <div
+                              style={{
+                                marginBottom: '8px',
+                                marginRight: '9px',
+                              }}
+                            >
+                              <button
+                                type="button"
+                                style={{
+                                  background: 'transparent',
+                                  border: 'none',
+                                  borderRadius: '4px',
+                                  padding: '2px 4px',
+                                  cursor: 'pointer',
+                                  color: 'black',
+                                }}
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                                  if (event.type === 'Personal')
+                                    handleEditPersonal(event)
+                                  else if (event.type === 'Exam')
+                                    handleEditExam(event)
+                                }}
+                                title="Edit Event"
+                              >
+                                <svg
+                                  width="20"
+                                  height="20"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                >
+                                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                  <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                </svg>
+                              </button>
+
+                              {/* <button type="button" style={{
                             background: 'transparent',
                             border: 'none',
                             borderRadius: '4px',
@@ -1284,73 +1376,94 @@ const DayView = ({
                               <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16l7-3 7 3z"/>
                             </svg>
                           </button> */}
+                            </div>
+                          </div>
+                        </div>
+                      </DayEventBlock>
+                    </Tooltip>
+                  )
+                }
+
+                // Handle course events
+                if (!course) return null
+
+                return (
+                  <Tooltip
+                    key={event.id}
+                    title={
+                      <div>
+                        <div>
+                          <strong>
+                            {event.courseCode} - {course.title}
+                          </strong>
+                        </div>
+                        <div>Slot: {event.slotName}</div>
+                        <div>
+                          {event.startTime} - {event.endTime}
                         </div>
                       </div>
-                    </div>
-                  </DayEventBlock>
-                </Tooltip>
-              )
-            }
-            
-            // Handle course events
-            if (!course) return null
-
-            return (
-              <Tooltip
-                key={event.id}
-                title={
-                  <div>
-                    <div>
-                      <strong>
-                        {event.courseCode} - {course.title}
-                      </strong>
-                    </div>
-                    <div>Slot: {event.slotName}</div>
-                    <div>
-                      {event.startTime} - {event.endTime}
-                    </div>
-                  </div>
-                }
-                overlayStyle={{
-                  maxWidth: 250,
-                  fontSize: '0.9rem',
-                  color: '#333',
-                }}
-                placement="top"
-              >
-                <DayEventBlock
-                  color={event.color}
-                  style={{
-                    position: 'absolute',
-                    top: `${event.displayTop}px`,
-                    left: '0.25rem',
-                    width: 'calc(100% - 0.5rem)',
-                    height: `${event.displayHeight}px`,
-                    zIndex: event.zIndex || 10,
-                  }}
-                >
-                  <Link
-                    to={coursePageUrl(event.courseCode, course.title)}
-                    style={{
-                      textDecoration: 'none',
-                      color: 'inherit',
-                      width: '100%',
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
+                    }
+                    overlayStyle={{
+                      maxWidth: 250,
+                      fontSize: '0.9rem',
+                      color: '#333',
                     }}
+                    placement="top"
                   >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                      <div style={{ flex: 1 }}>
-                          <EventTitle style={{ fontSize: event.totalInStack > 1 ? '0.8rem' : '1rem' }}>
-                            {event.courseCode} | {event.slotName} | {(event.endRow - event.startRow) >= 2 && (event.slotName && event.slotName.startsWith('L') ? 'Lab' : 'Lecture')}
-                          </EventTitle>
-                          <EventTime style={{ fontSize: event.totalInStack > 1 ? '0.7rem' : '0.8rem' }}>
-                            {event.startTime} - {event.endTime}
-                          </EventTime>
-                      </div>
-                      {/* <div style={{ display: 'flex', gap: '4px' }}>
+                    <DayEventBlock
+                      color={event.color}
+                      style={{
+                        position: 'absolute',
+                        top: `${event.displayTop}px`,
+                        left: '0.25rem',
+                        width: 'calc(100% - 0.5rem)',
+                        height: `${event.displayHeight}px`,
+                        zIndex: event.zIndex || 10,
+                      }}
+                    >
+                      <Link
+                        to={coursePageUrl(event.courseCode, course.title)}
+                        style={{
+                          textDecoration: 'none',
+                          color: 'inherit',
+                          width: '100%',
+                          height: '100%',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'flex-start',
+                          }}
+                        >
+                          <div style={{ flex: 1 }}>
+                            <EventTitle
+                              style={{
+                                fontSize:
+                                  event.totalInStack > 1 ? '0.8rem' : '1rem',
+                              }}
+                            >
+                              {event.courseCode} | {event.slotName} |{' '}
+                              {event.endRow - event.startRow >= 2 &&
+                                (event.slotName &&
+                                event.slotName.startsWith('L')
+                                  ? 'Lab'
+                                  : 'Lecture')}
+                            </EventTitle>
+                            <EventTime
+                              style={{
+                                fontSize:
+                                  event.totalInStack > 1 ? '0.7rem' : '0.8rem',
+                              }}
+                            >
+                              {event.startTime} - {event.endTime}
+                            </EventTime>
+                          </div>
+                          {/* <div style={{ display: 'flex', gap: '4px' }}>
                         <button type="button" style={{
                           background: 'transparent',
                           border: 'none',
@@ -1368,18 +1481,18 @@ const DayView = ({
                           </svg>
                         </button>
                       </div> */}
-                    
-                      <RedirectIcon>
-                        <ExternalLink size="16" />
-                      </RedirectIcon>
-                    </div>
-                  </Link>
-                </DayEventBlock>
-              </Tooltip>
-            )
-          })}
-        </DayEventColumn>
-      </DayViewGrid>
+
+                          <RedirectIcon>
+                            <ExternalLink size="16" />
+                          </RedirectIcon>
+                        </div>
+                      </Link>
+                    </DayEventBlock>
+                  </Tooltip>
+                )
+              })}
+            </DayEventColumn>
+          </DayViewGrid>
         </DayViewContainer>
       </TimetableScrollInner>
     </TimetableWrapper>
@@ -1419,35 +1532,42 @@ const WeekView = ({
   // Process events for display - courses have absolute priority and overlap eplanner events
   const processEventsForDisplay = (eventsToProcess) => {
     const processedEvents = []
-    
+
     // Separate courses and eplanner events
-    const courseEvents = eventsToProcess.filter(event => event.type === 'Lecture' || event.type === 'Tutorial')
-    const eplannerEvents = eventsToProcess.filter(event => event.type === 'Personal' || event.type === 'Exam')
-    
+    const courseEvents = eventsToProcess.filter(
+      (event) => event.type === 'Lecture' || event.type === 'Tutorial'
+    )
+    const eplannerEvents = eventsToProcess.filter(
+      (event) => event.type === 'Personal' || event.type === 'Exam'
+    )
+
     // Function to check if two events overlap
     const eventsOverlap = (event1, event2) => {
       return event1.startRow < event2.endRow && event1.endRow > event2.startRow
     }
-    
+
     // Add eplanner events only if they don't overlap with any course
-    eplannerEvents.forEach(eplannerEvent => {
-      const hasOverlappingCourse = courseEvents.some(courseEvent => eventsOverlap(eplannerEvent, courseEvent))
-      
+    eplannerEvents.forEach((eplannerEvent) => {
+      const hasOverlappingCourse = courseEvents.some((courseEvent) =>
+        eventsOverlap(eplannerEvent, courseEvent)
+      )
+
       if (!hasOverlappingCourse) {
         processedEvents.push({
           ...eplannerEvent,
           displayStartRow: eplannerEvent.startRow,
           displayTop: eplannerEvent.startRow * ROW_HEIGHT,
-          displayHeight: (eplannerEvent.endRow - eplannerEvent.startRow) * ROW_HEIGHT,
+          displayHeight:
+            (eplannerEvent.endRow - eplannerEvent.startRow) * ROW_HEIGHT,
           stackPosition: 0,
           totalInStack: 1,
-          zIndex: 5
+          zIndex: 5,
         })
       }
     })
-    
+
     // Add all course events (they have priority)
-    courseEvents.forEach(event => {
+    courseEvents.forEach((event) => {
       processedEvents.push({
         ...event,
         displayStartRow: event.startRow,
@@ -1455,10 +1575,10 @@ const WeekView = ({
         displayHeight: (event.endRow - event.startRow) * ROW_HEIGHT,
         stackPosition: 0,
         totalInStack: 1,
-        zIndex: 10
+        zIndex: 10,
       })
     })
-    
+
     return processedEvents
   }
 
@@ -1514,18 +1634,21 @@ const WeekView = ({
               // The index (0-6) will correctly correspond to Monday-Sunday.
               const isToday = day.isSame(moment(), 'day')
               const currentDayStr = day.format('YYYY-MM-DD')
-              
+
               const dayEvents = events.filter((event) => {
                 // For course events (have type 'Lecture' or 'Tutorial'), filter by dayIndex only
                 if (event.type === 'Lecture' || event.type === 'Tutorial') {
                   return event.dayIndex === dayIndex
                 }
-                
+
                 // For eplanner events (have type 'Personal', 'Exam'), check both dayIndex and specific date
                 if (event.type === 'Personal' || event.type === 'Exam') {
-                  return event.dayIndex === dayIndex && event.eventDate === currentDayStr
+                  return (
+                    event.dayIndex === dayIndex &&
+                    event.eventDate === currentDayStr
+                  )
                 }
-                
+
                 return false
               })
 
@@ -1541,14 +1664,18 @@ const WeekView = ({
                       // console.log(course);
 
                       // Handle eplanner events (Personal, Exam)
-                        if (event.type && ['Personal', 'Exam'].includes(event.type)) {
+                      if (
+                        event.type &&
+                        ['Personal', 'Exam'].includes(event.type)
+                      ) {
                         // Choose description, or course name (for Exam), or fallback to title
-                        let displayName = event.description?.trim();
+                        let displayName = event.description?.trim()
                         if (!displayName) {
                           if (event.type === 'Exam') {
-                            displayName = coursedata[event.title]?.title || event.title;
+                            displayName =
+                              coursedata[event.title]?.title || event.title
                           } else {
-                            displayName = event.title;
+                            displayName = event.title
                           }
                         }
 
@@ -1560,9 +1687,13 @@ const WeekView = ({
                                 <strong>
                                   {event.title} ({event.type})
                                 </strong>
-                                {event.description && <div>{event.description}</div>}
+                                {event.description && (
+                                  <div>{event.description}</div>
+                                )}
                                 <div>
-                                  {event.isAllDay ? 'All Day' : `${event.startTime} - ${event.endTime}`}
+                                  {event.isAllDay
+                                    ? 'All Day'
+                                    : `${event.startTime} - ${event.endTime}`}
                                 </div>
                                 {event.date && <div>Date: {event.date}</div>}
                               </div>
@@ -1574,115 +1705,116 @@ const WeekView = ({
                             }}
                             placement="top"
                           >
-                           <WeekEventBlock
-                    color={event.color}
-                    style={{
-                      position: 'absolute',
-                      top: `${event.displayTop}px`,
-                      left: '0.25rem',
-                      width: 'calc(100% - 0.5rem)',
-                      height: `${event.displayHeight}px`,
-                      padding: '0', // Remove padding for eplanner events
-                      zIndex: event.zIndex || 5,
-                    }}
-                  >
-                    <div style={{ 
-                      textAlign: 'center', 
-                      color: 'white', 
-                      padding: '4px',
-                      height: '100%',
-                      width: '100%',
-                      overflow: 'hidden',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      borderRadius: '8px',
-                      position: 'relative'
-                    }}>
-                      <div style={{
-                        position: 'absolute',
-                        left: -3,
-                        top: 0,
-                        zIndex: 100,
-                        maxWidth: 'calc(100% - 56px)',
-                        marginTop: '4px',
-                      }}>
-                        <div style={{
-                          fontSize: '0.7rem',
-                          fontWeight: '600',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                          textAlign: 'left',
-                          color: '#222',
-                          background: 'transparent',
-                          padding: '4px 12px',
-                          borderRadius: '8px',
-                          marginBottom: '-0.25rem'
-                        }}>
-                          {event.title}
-                        </div>
-                        {(event.isAllDay || event.startTime) && (
-                          <div style={{
-                            fontSize: '0.5rem',
-                            fontWeight: '500',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            textAlign: 'left',
-                            color: '#222',
-                            background: 'transparent',
-                            padding: '0px 12px',
-                            marginBottom: '-0.35rem',
-                          }}>
-                            {event.isAllDay ? 'All Day' : event.startTime.substring(0, 5)}
-                          </div>
-                        )}
-                      </div>
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        fontSize: '0.5rem',
-                        opacity: 0.9,
-                        fontWeight: '500',
-                        color: 'black',
-                        flexDirection: 'row',
-                        
-                      }}>
-                        <div style={{
-                          display: 'flex',
-                          fontSize: '0.7rem',
-                          alignItems: 'center',
-                          gap: '4px',
-                          marginTop: '15px',
-                          marginLeft: "5px",
-                          flexDirection: 'row',
-                        }}>
-                          <span>{event.type}</span>
+                            <WeekEventBlock
+                              color={event.color}
+                              style={{
+                                position: 'absolute',
+                                top: `${event.displayTop}px`,
+                                width: `${event.displayWidth}px`,
+                                height: `${event.displayHeight}px`,
+                                padding: '0', // Remove padding for eplanner events
+                                zIndex: event.zIndex || 5,
+                              }}
+                            >
+                              <div>
+                                <div>
+                                  <div
+                                    style={{
+                                      fontSize: '0.7rem',
+                                      fontWeight: '600',
+                                      overflow: 'hidden',
+                                      textOverflow: 'ellipsis',
+                                      whiteSpace: 'nowrap',
+                                      textAlign: 'left',
+                                      color: '#222',
+                                      background: 'transparent',
+                                      padding: '0.3rem',
+                                      borderRadius: '8px',
+                                      marginBottom: '-10px',
+                                    }}
+                                  >
+                                    {event.title}
+                                  </div>
+                                  {(event.isAllDay || event.startTime) && (
+                                    <div
+                                      style={{
+                                        fontSize: '0.5rem',
+                                        fontWeight: '500',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap',
+                                        textAlign: 'left',
+                                        color: '#222',
+                                        background: 'transparent',
+                                        padding: '0.3rem',
+                                        marginBottom: '-27px',
+                                      }}
+                                    >
+                                      {event.isAllDay
+                                        ? 'All Day'
+                                        : event.startTime.substring(0, 5)}
+                                    </div>
+                                  )}
+                                </div>
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    fontSize: '0.5rem',
+                                    opacity: 0.9,
+                                    fontWeight: '500',
+                                    color: 'black',
+                                    flexDirection: 'row',
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      display: 'flex',
+                                      fontSize: '0.7rem',
+                                      alignItems: 'center',
+                                      flexDirection: 'row',
+                                      padding: '0.3rem',
+                                      marginBottom: '0.5rem',
+                                      marginTop: '5px',
+                                    }}
+                                  >
+                                    <span>{event.type}</span>
+                                  </div>
+                                  <div style={{ margin: '30px 0px 10px 10px' }}>
+                                    <button
+                                      type="button"
+                                      style={{
+                                        background: 'transparent',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        padding: '2px 4px',
+                                        cursor: 'pointer',
+                                        color: 'black',
+                                      }}
+                                      onClick={(e) => {
+                                        e.preventDefault()
+                                        e.stopPropagation()
+                                        if (event.type === 'Personal')
+                                          handleEditPersonal(event)
+                                        else if (event.type === 'Exam')
+                                          handleEditExam(event)
+                                      }}
+                                      title="Edit Event"
+                                    >
+                                      <svg
+                                        width="15"
+                                        height="15"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                      >
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                        <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                      </svg>
+                                    </button>
 
-                        </div>
-                        <div style={{ margin: '30px 0px 10px 15px' }}>
-                          <button type="button" style={{
-                            background: 'transparent',
-                            border: 'none',
-                            borderRadius: '4px',
-                            padding: '2px 4px',
-                            cursor: 'pointer',
-                            color: 'black',
-                          }} onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            if (event.type === 'Personal') handleEditPersonal(event);
-                            else if (event.type === 'Exam') handleEditExam(event);
-                          }} title="Edit Event">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                              <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                            </svg>
-                          </button>
-                        
-{/*                        
+                                    {/*                        
                           <button type="button" style={{
                             background: 'transparent',
                             border: 'none',
@@ -1699,14 +1831,14 @@ const WeekView = ({
                               <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16l7-3 7 3z"/>
                             </svg>
                           </button> */}
-                        </div>
-                      </div>
-                    </div>
-                  </WeekEventBlock>
-                </Tooltip>
-              )
-            }
-                      
+                                  </div>
+                                </div>
+                              </div>
+                            </WeekEventBlock>
+                          </Tooltip>
+                        )
+                      }
+
                       // Handle course events
                       if (!course) return null
 
@@ -1720,7 +1852,8 @@ const WeekView = ({
                               </strong>
                               <div>Slot: {event.slotName}</div>
                               <div>
-                                {event.startTime.slice(0,5)} - {event.endTime.slice(0,5)}
+                                {event.startTime.slice(0, 5)} -{' '}
+                                {event.endTime.slice(0, 5)}
                               </div>
                             </div>
                           }
@@ -1731,65 +1864,93 @@ const WeekView = ({
                           }}
                           placement="top"
                         >
-                      <WeekEventBlock
-                        color={event.color}
-                        style={{
-                          position: 'absolute',
-                          top: `${event.displayTop}px`,
-                          left: '0.25rem',
-                          width: 'calc(100% - 0.5rem)',
-                          height: `${event.displayHeight}px`,
-                          zIndex: event.zIndex || 10,
-                        }}
-                      >
-                         
-                        <Link
-                          to={coursePageUrl(event.courseCode, course.title)}
-                          style={{
-                            textDecoration: 'none',
-                            color: 'inherit',
-                            width: '80%',
-                            height: '100%',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
-                            
-                          }}
-                        >
-                        
-                        <div style={{ display:'Flex', flexDirection:'row'}}>
-                          <div style={{justifyContent: 'space-between' }}>
-                            <div style={{ flex: 1 , marginBottom: '1rem' }}>
-                              <div style={{ marginBottom: '-0.25rem' }}>
-                                <EventTitle style={{ fontSize: '0.7rem' }}>
-                                  {event.courseCode} | {event.slotName}
-                                </EventTitle>
-                              </div>
-                              <div style={{ marginBottom: '-0.35rem' }}>
-                                <EventTime style={{ fontSize: '0.5rem', fontWeight: '500' }}>
-                                  {event.startTime}
-                                </EventTime>
-                              </div>
-                                <div style={{ 
-                                  fontSize: '0.7rem',
-                                  color: 'black',
-                                  fontWeight: '500',
-                                  marginBottom: '3rem',
-                                }}>
-                                  {(event.slotName && event.slotName.startsWith('L') ? 'Lab' : 'Lecture')}
+                          <WeekEventBlock
+                            color={event.color}
+                            style={{
+                              position: 'absolute',
+                              top: `${event.displayTop}px`,
+                              width: `${event.displayWidth}px`,
+                              height: `${event.displayHeight}px`,
+                              zIndex: event.zIndex || 10,
+                            }}
+                          >
+                            <Link
+                              to={coursePageUrl(event.courseCode, course.title)}
+                              style={{
+                                textDecoration: 'none',
+                                color: 'inherit',
+                                width: '80%',
+                                height: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                              }}
+                            >
+                              <div>
+                                <div
+                                  style={{
+                                    display: 'Flex',
+                                    flexDirection: 'row',
+                                  }}
+                                >
+                                  <div
+                                    style={{ justifyContent: 'space-between' }}
+                                  >
+                                    <div
+                                      style={{
+                                        flex: 1,
+                                        marginBottom: '-2.5rem',
+                                      }}
+                                    >
+                                      <div style={{ marginBottom: '-0.25rem' }}>
+                                        <EventTitle
+                                          style={{ fontSize: '0.7rem' }}
+                                        >
+                                          {event.courseCode} | {event.slotName}
+                                        </EventTitle>
+                                      </div>
+                                      <div style={{ marginBottom: '-0.35rem' }}>
+                                        <EventTime
+                                          style={{
+                                            fontSize: '0.5rem',
+                                            fontWeight: '500',
+                                          }}
+                                        >
+                                          {event.startTime}
+                                        </EventTime>
+                                      </div>
+                                      <div
+                                        style={{
+                                          fontSize: '0.7rem',
+                                          color: 'black',
+                                          fontWeight: '500',
+                                          marginBottom: '3rem',
+                                        }}
+                                      >
+                                        {event.slotName &&
+                                        event.slotName.startsWith('L')
+                                          ? 'Lab'
+                                          : 'Lecture'}
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
-                           </div>
-                          </div>
-                        </div>        
+                              </div>
 
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'right' }}>
-                            <RedirectIcon>
-                              <ExternalLink size="16" />
-                            </RedirectIcon>
-                          </div>
-                        </Link>
-                </WeekEventBlock>
-                    </Tooltip>
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  justifyContent: 'space-between',
+                                  alignItems: 'right',
+                                }}
+                              >
+                                <RedirectIcon>
+                                  <ExternalLink size="16" />
+                                </RedirectIcon>
+                              </div>
+                            </Link>
+                          </WeekEventBlock>
+                        </Tooltip>
                       )
                     })}
                   </div>
@@ -1869,36 +2030,39 @@ const MonthView = ({
 
       <MonthGrid>
         {monthGrid.map((weekRow) => (
-          
           // The key is now derived from the first day of the week, which is stable and unique.
           <MonthWeekRow key={weekRow[0].format('YYYY-MM-DD')}>
             {weekRow.map((currentDay) => {
               // Filter events for this specific day
-              const dayEvents = events.filter(event => {
+              const dayEvents = events.filter((event) => {
                 // For eplanner events (Personal, Exam, Reminder), check eventDate first
-                if (event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder') {
+                if (
+                  event.type === 'Personal' ||
+                  event.type === 'Exam' ||
+                  event.type === 'Reminder'
+                ) {
                   if (event.eventDate) {
-                    return moment(event.eventDate).isSame(currentDay, 'day');
+                    return moment(event.eventDate).isSame(currentDay, 'day')
                   }
                   // Fallback to original date if eventDate is not available
                   if (event.date) {
-                    return moment(event.date).isSame(currentDay, 'day');
+                    return moment(event.date).isSame(currentDay, 'day')
                   }
-                  return false;
+                  return false
                 }
-                
+
                 // For course events (Lecture, Tutorial), check if it's the right day of week
                 // if (event.type === 'Lecture' || event.type === 'Tutorial') {
                 //   const currentDayIndex = currentDay.day() === 0 ? 6 : currentDay.day() - 1;
                 //   return event.dayIndex === currentDayIndex;
                 // }
-                
+
                 // Fallback for other event types
                 if (event.date) {
-                  return moment(event.date).isSame(currentDay, 'day');
+                  return moment(event.date).isSame(currentDay, 'day')
                 }
-                return false;
-              });
+                return false
+              })
 
               return (
                 <MonthDayCell
@@ -1911,108 +2075,145 @@ const MonthView = ({
                   >
                     {currentDay.date()}
                   </MonthDayNumber>
-                  
+
                   {/* Display events for this day */}
                   {dayEvents.map((event) => {
-                    let timeDisplay = null;
-                    
+                    let timeDisplay = null
+
                     // For eplanner events, show time information (not title)
-                    if (event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder') {
+                    if (
+                      event.type === 'Personal' ||
+                      event.type === 'Exam' ||
+                      event.type === 'Reminder'
+                    ) {
                       if (event.isAllDay) {
                         timeDisplay = (
-                          <div style={{ 
-                            color: event.color,
-                            opacity: 0.8,
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            marginTop: '3px',
-                            padding: '0px 4px'
-                          }}>
+                          <div
+                            style={{
+                              color: event.color,
+                              opacity: 0.8,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              fontSize: '0.7rem',
+                              flexShrink: 0,
+                            }}
+                          >
                             All Day
                           </div>
-                        );
+                        )
                       } else if (event.startTime) {
                         timeDisplay = (
-                          <div style={{ 
-                            color: event.color,
-                            opacity: 0.8,
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            marginTop: '3px',
-                            padding: '0px 8px'
-                          }}>
-                            {event.startTime.slice(0,5)}
+                          <div
+                            style={{
+                              color: event.color,
+                              opacity: 0.8,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              fontSize: '0.7rem',
+                              flexShrink: 0,
+                            }}
+                          >
+                            {event.startTime.slice(0, 5)}
                           </div>
-                        );
+                        )
                       }
                     } else if (event.isAllDay) {
                       // For course events, keep original logic
                       timeDisplay = (
-                        <div style={{ 
-                          color: 'yellow',
-                          opacity: 0.8,
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                          marginTop: '3px',
-                          padding: '0px 4px'
-                        }}>
+                        <div
+                          style={{
+                            color: event.color,
+                            opacity: 0.8,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            fontSize: '0.7rem',
+                            flexShrink: 0,
+                          }}
+                        >
                           {event.title}
                         </div>
-                      );
+                      )
                     } else if (event.startTime) {
                       timeDisplay = (
-                        <div style={{ 
-                          color: 'yellow',
-                          opacity: 0.8,
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                          marginTop: '3px',
-                          padding: '0px 8px'
-                        }}>
-                          {event.startTime.slice(0,5)}
+                        <div
+                          style={{
+                            color: event.color,
+                            opacity: 0.8,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            fontSize: '0.7rem',
+                            flexShrink: 0,
+                          }}
+                        >
+                          {event.startTime.slice(0, 5)}
                         </div>
-                      );
+                      )
                     }
                     return (
                       <MonthEventBlock key={event.id} color={event.color}>
-                        <div style={{ 
-                          marginTop: '3px',
-                          color: event.color,
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                        }}>
+                        <div
+                          style={{
+                            marginTop: '3px',
+                            color: event.color,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            flex: 1,
+                            minWidth: 0,
+                          }}
+                        >
                           {(() => {
                             // For eplanner events (Personal, Exam, Reminder), always show title
-                            if (event.type === 'Personal' || event.type === 'Exam' || event.type === 'Reminder') {
-                              return event.title;
+                            if (
+                              event.type === 'Personal' ||
+                              event.type === 'Exam' ||
+                              event.type === 'Reminder'
+                            ) {
+                              return event.title
                             }
-                            
+
                             // For course events, check if event duration is less than 1 hour
-                            let showType = true;
+                            let showType = true
                             if (event.startTime && event.endTime) {
-                              const startHour = parseInt(event.startTime.split(':')[0], 10);
-                              const startMin = parseInt(event.startTime.split(':')[1], 10);
-                              const endHour = parseInt(event.endTime.split(':')[0], 10);
-                              const endMin = parseInt(event.endTime.split(':')[1], 10);
-                              const durationMinutes = (endHour * 60 + endMin) - (startHour * 60 + startMin);
-                              showType = durationMinutes >= 60;
+                              const startHour = parseInt(
+                                event.startTime.split(':')[0],
+                                10
+                              )
+                              const startMin = parseInt(
+                                event.startTime.split(':')[1],
+                                10
+                              )
+                              const endHour = parseInt(
+                                event.endTime.split(':')[0],
+                                10
+                              )
+                              const endMin = parseInt(
+                                event.endTime.split(':')[1],
+                                10
+                              )
+                              const durationMinutes =
+                                endHour * 60 +
+                                endMin -
+                                (startHour * 60 + startMin)
+                              showType = durationMinutes >= 60
                             } else if (event.endRow && event.startRow) {
-                              showType = (event.endRow - event.startRow) >= 2;
+                              showType = event.endRow - event.startRow >= 2
                             }
-                            return showType ? (event.type || event.title) : event.title;
+                            return showType
+                              ? event.type || event.title
+                              : event.title
                           })()}
                         </div>
                         {timeDisplay}
                       </MonthEventBlock>
-                    );
+                    )
                   })}
                 </MonthDayCell>
-              );
+              )
             })}
           </MonthWeekRow>
         ))}
@@ -2103,7 +2304,7 @@ const AddButton = styled.button`
   &:hover {
     background-color: ${darken(0.1, '#6d669e')};
   }
-`;
+`
 
 const AddDropdownMenu = styled.div`
   background: #2b273b;
@@ -2112,7 +2313,7 @@ const AddDropdownMenu = styled.div`
   padding: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   min-width: 160px;
-`;
+`
 
 const AddMenuItem = styled.div`
   display: flex;
@@ -2134,7 +2335,7 @@ const AddMenuItem = styled.div`
   &:not(:last-child) {
     margin-bottom: 4px;
   }
-`;
+`
 
 const AddMenuIcon = styled.div`
   display: flex;
@@ -2145,12 +2346,12 @@ const AddMenuIcon = styled.div`
   border-radius: 6px;
   background: rgba(109, 102, 158, 0.3);
   color: #ffffff;
-  
+
   svg {
     width: 16px;
     height: 16px;
   }
-`;
+`
 
 const SubHeader = styled.div`
   display: flex;
@@ -2368,7 +2569,7 @@ const DayEventBlock = styled.div`
   word-wrap: break-word;
   word-break: break-word;
   max-width: 100%;
-  
+
   box-sizing: border-box;
   &:hover {
     transform: translateY(-2px);
@@ -2513,14 +2714,14 @@ const WeekEventBlock = styled.div`
   background: ${({ color }) => makeGradient(color)};
   border-left: 4px solid ${({ color }) => darken(0.2, color)};
   border-radius: 6px;
-  padding: 0.5rem;
+  padding: 0.3rem;
   margin-bottom: 0.5rem;
   color: ${({ theme }) => theme.textColor};
   cursor: pointer;
   font-size: 0.8rem;
   transition: all 0.2s;
-  align: right;
-  width: 100%;
+  // align: right;
+  width: 101%;
   box-sizing: border-box;
   z-index: 5;
   position: relative;
@@ -2577,7 +2778,6 @@ const MonthGrid = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 0;
-  
 `
 
 const MonthWeekRow = styled.div`
@@ -2640,6 +2840,8 @@ const MonthEventBlock = styled.div`
   white-space: nowrap;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   gap: 5px;
 `
 
@@ -2708,7 +2910,8 @@ const CoursesModalContent = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
 `
 
 const CoursesModalHeader = styled.div`
@@ -2716,7 +2919,7 @@ const CoursesModalHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
-  
+
   h2 {
     color: white;
     padding-right: 280px;
@@ -2733,7 +2936,7 @@ const CloseButton = styled.button`
   color: white;
   opacity: 0.7;
   transition: opacity 0.2s;
-  
+
   &:hover {
     opacity: 1;
   }
@@ -2763,7 +2966,7 @@ const CourseCardSmall = styled.div`
   position: relative;
   // border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.2s ease;
-  
+
   &:hover {
     border-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
@@ -2799,13 +3002,13 @@ const RemoveButtonCard = styled.button`
   right: 1rem;
   background: none;
   border: none;
-  color: #D2C4F5;
+  color: #d2c4f5;
   font-size: 1.2rem;
   cursor: pointer;
   opacity: 0.7;
   transition: opacity 0.2s;
   font-weight: 500;
-  
+
   &:hover {
     opacity: 1;
   }
@@ -2819,7 +3022,7 @@ const SaveButtonContainer = styled.div`
 `
 
 const SaveButton = styled.button`
-  background: #8080FF;
+  background: #8080ff;
   color: white;
   border: none;
   border-radius: 8px;
@@ -2828,11 +3031,11 @@ const SaveButton = styled.button`
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s;
-  
+
   &:hover:not(:disabled) {
-    background: #7070EE;
+    background: #7070ee;
   }
-  
+
   &:disabled {
     background: #666;
     cursor: not-allowed;
@@ -2875,5 +3078,3 @@ const CourseCardContent = styled.div`
   justify-content: space-between;
   align-items: center;
 `
-
-
