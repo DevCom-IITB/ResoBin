@@ -752,7 +752,7 @@ const ExamCard = ({ isEmbedded = false, hideButton = false, selectedDate, select
                         if (loading) {
                           return editingId ? 'Updating...' : 'Saving...';
                         }
-                        return editingId ? 'Update Task' : 'Save';
+                        return editingId ? 'Update' : 'Save';
                       })()}
                     </button>
                     {editingId && (

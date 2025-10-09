@@ -626,7 +626,8 @@ const TimetableContainer = () => {
             events.push({
               id: `exam-${event.id}`,
               courseCode: event.courseCode,
-              title: event.course || event.title || 'Exam',
+              title: event.course || event.coursename || event.title || 'Exam',
+              course: event.course || event.coursename, // Store the actual course name
               description: event.description,
               type: 'Exam',
               dayIndex,
@@ -1201,12 +1202,24 @@ const DayView = ({
 
                 // Handle eplanner events (Personal, Exam)
                 if (event.type && ['Personal', 'Exam'].includes(event.type)) {
-                  // Choose description, or course name (for Exam), or fallback to title
+                  // For Exam events, prioritize the course name, then description, then title
                   let displayName = event.description?.trim()
                   if (!displayName) {
-                    if (event.type === 'Exam' && coursedata[event.title]) {
-                      displayName =
-                        coursedata[event.title]?.title || event.title
+                    if (event.type === 'Exam') {
+                      // For exam events, use the course field first, then try coursedata lookup
+                      displayName = event.course || event.coursename
+                      if (
+                        !displayName &&
+                        event.courseCode &&
+                        coursedata[event.courseCode]
+                      ) {
+                        displayName =
+                          coursedata[event.courseCode]?.title ||
+                          event.courseCode
+                      }
+                      if (!displayName) {
+                        displayName = event.title
+                      }
                     } else {
                       displayName = event.title
                     }
@@ -1282,9 +1295,9 @@ const DayView = ({
                                 textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap',
                                 textAlign: 'left',
-                                color: '#222',
+                                color: 'black',
                                 background: 'transparent',
-                                padding: '4px 12px',
+                                padding: '8px 12px',
                                 borderRadius: '8px',
                                 marginBottom: '-0.6rem',
                               }}
@@ -1319,7 +1332,10 @@ const DayView = ({
                             >
                               {event.isAllDay
                                 ? 'All Day'
-                                : event.startTime.substring(0, 5)}
+                                : `${event.startTime.substring(
+                                    0,
+                                    5
+                                  )} - ${event.endTime.substring(0, 5)}`}
                             </div>
                             <div
                               style={{
@@ -1666,12 +1682,24 @@ const WeekView = ({
                         event.type &&
                         ['Personal', 'Exam'].includes(event.type)
                       ) {
-                        // Choose description, or course name (for Exam), or fallback to title
+                        // For Exam events, prioritize the course name, then description, then title
                         let displayName = event.description?.trim()
                         if (!displayName) {
                           if (event.type === 'Exam') {
-                            displayName =
-                              coursedata[event.title]?.title || event.title
+                            // For exam events, use the course field first, then try coursedata lookup
+                            displayName = event.course || event.coursename
+                            if (
+                              !displayName &&
+                              event.courseCode &&
+                              coursedata[event.courseCode]
+                            ) {
+                              displayName =
+                                coursedata[event.courseCode]?.title ||
+                                event.courseCode
+                            }
+                            if (!displayName) {
+                              displayName = event.title
+                            }
                           } else {
                             displayName = event.title
                           }
@@ -2167,12 +2195,20 @@ const MonthView = ({
                           }}
                         >
                           {(() => {
-                            // For eplanner events (Personal, Exam, Reminder), always show title
+                            // For eplanner events (Personal, Exam, Reminder), show appropriate title
                             if (
                               event.type === 'Personal' ||
                               event.type === 'Exam' ||
                               event.type === 'Reminder'
                             ) {
+                              // For Exam events, prioritize the course name
+                              if (event.type === 'Exam') {
+                                return (
+                                  event.course ||
+                                  event.coursename ||
+                                  event.title
+                                )
+                              }
                               return event.title
                             }
 
@@ -2558,8 +2594,8 @@ const DayEventBlock = styled.div`
   background: ${({ color }) => makeGradient(color)};
   border-left: 4px solid ${({ color }) => darken(0.2, color)};
   border-radius: 8px;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  // margin-bottom: 0.5rem;
   color: ${({ theme }) => theme.textColor};
   cursor: pointer;
   width: 100%;
@@ -2816,8 +2852,8 @@ const MonthDayNumber = styled.div`
       left: 30%;
       top: 45%;
       transform: translate(-50%, -50%);
-      width: 32px;
-      height: 32px;
+      width: 39px;
+      height: 39px;
       background: rgba(109, 102, 158, 0.4);
       border-radius: 50%;
       z-index: -1;

@@ -731,7 +731,7 @@ const PersonalCard = ({ isEmbedded = false, hideButton = false, selectedDate }) 
                         if (loading) {
                           return editingId ? 'Updating...' : 'Saving...';
                         }
-                        return editingId ? 'Update Task' : 'Save';
+                        return editingId ? 'Update' : 'Save';
                       })()}
                     </button>
                     {editingId && (
