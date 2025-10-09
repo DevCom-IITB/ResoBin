@@ -377,6 +377,13 @@ const TimetableContainer = () => {
     } else {
       try {
         await API.profile.timetable.add({ id })
+
+        // Show success toast when course is added successfully
+        toast({
+          status: 'success',
+          content: `${code} added to timetable successfully!`,
+          key: 'course-add-success',
+        })
       } catch (error) {
         toast({ status: 'error', content: error })
       } finally {
@@ -1315,6 +1322,7 @@ const DayView = ({
                               alignItems: 'center',
                               fontSize: '0.8rem',
                               opacity: 0.9,
+                              // fontWeight: '500',
                               color: 'black',
                               flexDirection: 'row',
                             }}
