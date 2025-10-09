@@ -2113,6 +2113,8 @@ const MonthView = ({
                               whiteSpace: 'nowrap',
                               fontSize: '0.7rem',
                               flexShrink: 0,
+                              marginTop: '3px',
+                              // paddingTop: '3px',
                             }}
                           >
                             {event.startTime.slice(0, 5)}
@@ -2814,8 +2816,8 @@ const MonthDayNumber = styled.div`
     &::before {
       content: '';
       position: absolute;
-      left: 50%;
-      top: 50%;
+      left: 30%;
+      top: 45%;
       transform: translate(-50%, -50%);
       width: 32px;
       height: 32px;
@@ -2832,8 +2834,8 @@ const MonthEventBlock = styled.div`
   color: ${({ color }) => color};
   border: 1px solid ${({ color }) => color};
   border-radius: 4px;
-  padding: 2px 6px;
-  margin: 2px 0;
+  padding: 1.3px 4px;
+  margin: 10px 0;
   font-size: 0.7rem;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2842,7 +2844,7 @@ const MonthEventBlock = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 5px;
+  gap: 1px;
 `
 
 const AsideList = styled.div`
