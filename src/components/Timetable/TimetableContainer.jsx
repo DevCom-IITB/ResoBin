@@ -1242,8 +1242,7 @@ const DayView = ({
                         style={{
                           position: 'absolute',
                           top: `${event.displayTop}px`,
-                          left: '0.25rem',
-                          width: 'calc(100% - 0.5rem)',
+                          width: `${event.displayWidth}px`,
                           height: `${event.displayHeight}px`,
                           padding: '0', // Remove padding for eplanner events
                           zIndex: event.zIndex || 5,
@@ -1278,7 +1277,7 @@ const DayView = ({
                               style={{
                                 fontSize:
                                   event.totalInStack > 1 ? '0.8rem' : '1rem',
-                                fontWeight: '600',
+                                fontWeight: '500',
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap',
@@ -1291,9 +1290,9 @@ const DayView = ({
                               }}
                             >
                               {event.title} |{' '}
-                              {event.isAllDay
-                                ? 'All Day'
-                                : event.startTime.substring(0, 5)}
+                              {event.endRow - event.startRow >= 2 && (
+                                <span>{event.type}</span>
+                              )}
                             </div>
                           </div>
                           <div
@@ -1303,7 +1302,7 @@ const DayView = ({
                               alignItems: 'center',
                               fontSize: '0.9rem',
                               opacity: 0.9,
-                              fontWeight: '500',
+                              // fontWeight: '500',
                               color: 'black',
                               flexDirection: 'row',
                             }}
@@ -1318,9 +1317,9 @@ const DayView = ({
                                 flexDirection: 'row',
                               }}
                             >
-                              {event.endRow - event.startRow >= 2 && (
-                                <span>{event.type}</span>
-                              )}
+                              {event.isAllDay
+                                ? 'All Day'
+                                : event.startTime.substring(0, 5)}
                             </div>
                             <div
                               style={{
@@ -1415,8 +1414,7 @@ const DayView = ({
                       style={{
                         position: 'absolute',
                         top: `${event.displayTop}px`,
-                        left: '0.25rem',
-                        width: 'calc(100% - 0.5rem)',
+                        width: `${event.displayWidth}px`,
                         height: `${event.displayHeight}px`,
                         zIndex: event.zIndex || 10,
                       }}
@@ -2564,14 +2562,13 @@ const DayEventBlock = styled.div`
   margin-bottom: 0.5rem;
   color: ${({ theme }) => theme.textColor};
   cursor: pointer;
+  width: 100%;
   transition: all 0.2s;
   z-index: 10;
   position: relative;
   overflow: hidden;
   word-wrap: break-word;
   word-break: break-word;
-  max-width: 100%;
-
   box-sizing: border-box;
   &:hover {
     transform: translateY(-2px);
