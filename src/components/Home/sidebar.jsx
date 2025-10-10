@@ -800,11 +800,11 @@ const ScheduleTag = styled.span`
       case 'Tutorial':
         return '#644646'
       case 'Personal':
-        return '#64e47eff'
+        return '#2b4430ff'
       case 'Exam':
-        return '#60c2e6ff'
+        return '#2f4851ff'
       case 'Reminder':
-        return '#f04949ff'
+        return '#5a3535ff'
       default:
         return '#3e3e60'
     }

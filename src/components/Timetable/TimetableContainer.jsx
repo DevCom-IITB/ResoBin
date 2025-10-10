@@ -2856,8 +2856,8 @@ const MonthDayNumber = styled.div`
     &::before {
       content: '';
       position: absolute;
-      left: 30%;
-      top: 45%;
+      left: 48%;
+      top: 44.5%;
       transform: translate(-50%, -50%);
       width: 39px;
       height: 39px;
