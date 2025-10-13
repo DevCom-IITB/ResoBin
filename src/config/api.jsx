@@ -123,6 +123,7 @@ export const API = {
     },
   },
 
+
   // * Resources endpoints
   resources: {
     create: async ({ payload, onUploadProgress }) =>
@@ -217,7 +218,14 @@ export const API = {
     list: async ({ params }) => APIInstance.get('/timetable', { params }),
     read: async ({ id }) => APIInstance.get(`/timetable/${id}`),
   },
+  
+  gradingStats: {
+    list: async ({ code }) => APIInstance.get(`/courses/${code}/grading-stats-nested`),
+  },
 
+  examSchedule: {
+    getBatch: async ({ courses }) => APIInstance.post('/get-schedule-batch/', { courses }),
+  },
   // * Developer stats endpoints
   GitHub: {
     getContributors: async () => {

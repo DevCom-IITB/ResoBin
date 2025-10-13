@@ -6,6 +6,7 @@ import { TimetableContainer } from 'components/Timetable'
 // import ExamPlanner from 'components/Timetable/eplanner_Exam'
 // import PersonalPlanner from 'components/Timetable/eplanner_personal' 
 // import { Exam } from 'components/Timetable/ExamTimetable'
+// import { Exam } from 'components/Timetable/ExamTimetable' 
 
 const TimeTable = () => {
   return (
