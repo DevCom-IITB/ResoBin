@@ -22,9 +22,9 @@ const NoCoursesMsg = styled.div`
   padding: 0.5rem;
 `
 
-const StyledLink = styled.a`
-  text-decoration: none;
-`
+// const StyledLink = styled.a`
+//   text-decoration: none;
+// `
 
 const CardTitleRow = styled.div`
   font-size: 1.2rem;

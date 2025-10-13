@@ -28,12 +28,12 @@ const SearchBar = ({ loading, setLoading }) => {
       return
     }
 
-    setSearchLoading(true)
-    
+    // setSearchLoading(true)
+
     // Add minimum loading time to make animation more visible
-    const minLoadingTime = 800 // 800ms minimum loading time
+    const minLoadingTime = 750 // 750ms minimum loading time
     const startTime = Date.now()
-    
+
     try {
       if (ajaxRequest) ajaxRequest.cancel()
       ajaxRequest = axios.CancelToken.source()
@@ -41,58 +41,57 @@ const SearchBar = ({ loading, setLoading }) => {
       // Simple approach: always search in code field for course codes
       const response = await API.courses.list({
         params: {
-          search_fields: "code",
+          search_fields: 'code',
           q: searchTerm.toUpperCase(),
           page_size: 50, // Get more results to filter from
         },
-        cancelToken: ajaxRequest.token
+        cancelToken: ajaxRequest.token,
       })
 
-      // //console.log(`Search API Response for '${searchTerm}':`, response)
-      
+      console.log(`Search API Response for '${searchTerm}':`, response)
+
       // API interceptor unwraps the response data
       // @ts-ignore - API interceptor handles response unwrapping
       const courses = response?.results || []
       // //console.log("All courses from API:", courses.map(c => c.code))
-      
+
       // Simple filtering: show courses that START with the search term
-      const filteredCourses = courses.filter(course => 
+      const filteredCourses = courses.filter((course) =>
         course.code.toUpperCase().startsWith(searchTerm.toUpperCase())
       )
-      
+
       // //console.log(`Courses starting with '${searchTerm}':`, filteredCourses.map(c => c.code))
-      
+
       // Limit to 10 results and sort alphabetically
-      const limitedCourses = filteredCourses.slice(0, 10).sort((a, b) => 
-        a.code.localeCompare(b.code)
-      )
-      
+      const limitedCourses = filteredCourses
+        .slice(0, 10)
+        .sort((a, b) => a.code.localeCompare(b.code))
+
       const formattedSuggestions = limitedCourses.map((course) => ({
         id: course.code,
         value: `${course.code}${course.title ? ` - ${course.title}` : ''}`,
         link: `/courses/${course.code}`,
-        course
+        course,
       }))
 
       // Ensure minimum loading time for better UX
       const elapsedTime = Date.now() - startTime
       const remainingTime = Math.max(0, minLoadingTime - elapsedTime)
-      
+
       setTimeout(() => {
         setSuggestions(formattedSuggestions)
         // //console.log("Search found", formattedSuggestions.length, "courses for:", searchTerm)
-        setSearchLoading(false)
+        // setSearchLoading(false)
         setLoading(false) // Stop the main loading spinner
       }, remainingTime)
-      
     } catch (error) {
       if (axios.isCancel(error)) return
       // //console.error("Search error:", error)
-      
+
       // Ensure minimum loading time even for errors
       const elapsedTime = Date.now() - startTime
       const remainingTime = Math.max(0, minLoadingTime - elapsedTime)
-      
+
       setTimeout(() => {
         setSuggestions([])
         setSearchLoading(false)
@@ -105,7 +104,7 @@ const SearchBar = ({ loading, setLoading }) => {
     setSearch(value)
     setQueryString('q', value)
     deleteQueryString('p')
-    
+
     // Only show loading if there's actually a search term
     if (value && value.trim().length > 0) {
       setLoading(true)

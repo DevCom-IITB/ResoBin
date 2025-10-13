@@ -145,11 +145,6 @@ const TimetableContainer = () => {
         exam: examData || [],
         reminder: reminderData || [],
       })
-      console.log('Fetched eplanner events:', {
-        personalData,
-        examData,
-        reminderData,
-      })
     } catch (error) {
       console.error('Error fetching eplanner events:', error)
     }
@@ -310,7 +305,6 @@ const TimetableContainer = () => {
 
   const handleTodayClick = () => {
     setCurrentDate(moment()) // Reset to today's date
-    console.log('Today clicked, date reset to:', moment().format('YYYY-MM-DD'))
   }
 
   const handleSaveCourses = async () => {
@@ -562,11 +556,11 @@ const TimetableContainer = () => {
       }
 
       // Helper to get day index from date
-      const getDayIndexFromDate = (dateStr) => {
-        if (!dateStr) return -1
-        const date = moment(dateStr)
-        return date.day() === 0 ? 6 : date.day() - 1 // Convert Sunday=0 to 6, Mon=1 to 0, etc.
-      }
+      // const getDayIndexFromDate = (dateStr) => {
+      //   if (!dateStr) return -1
+      //   const date = moment(dateStr)
+      //   return date.day() === 0 ? 6 : date.day() - 1 // Convert Sunday=0 to 6, Mon=1 to 0, etc.
+      // }
 
       // Process Personal events
       eplannerEvents.personal.forEach((event) => {
@@ -712,8 +706,6 @@ const TimetableContainer = () => {
   }
 
   const events = getEventsForView()
-  console.log('All Events:', events)
-
   const getDayViewDateDisplay = (date) => {
     return `${date.format('dddd')}, ${date.format('D MMMM YYYY')}`
   }
@@ -2641,15 +2633,15 @@ const EventTime = styled.div`
   white-space: nowrap;
 `
 
-const EventText = styled.div`
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: white;
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`
+// const EventText = styled.div`
+//   font-size: 0.9rem;
+//   font-weight: 500;
+//   color: white;
+//   text-align: center;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+//   white-space: nowrap;
+// `
 
 const WeekViewContainer = styled.div`
   background: ${({ theme }) => theme.secondary};
@@ -3024,19 +3016,19 @@ const CourseCodeTitle = styled.h3`
   padding-bottom: 10px;
 `
 
-const CourseSubtitle = styled.p`
-  color: #9ca3af;
-  margin: 0 0 0.5rem 0;
-  font-size: 0.9rem;
-  line-height: 1.4;
-`
+// const CourseSubtitle = styled.p`
+//   color: #9ca3af;
+//   margin: 0 0 0.5rem 0;
+//   font-size: 0.9rem;
+//   line-height: 1.4;
+// `
 
-const CourseCreditsText = styled.p`
-  color: #9ca3af;
-  margin: 0;
-  font-size: 0.8rem;
-  font-weight: 500;
-`
+// const CourseCreditsText = styled.p`
+//   color: #9ca3af;
+//   margin: 0;
+//   font-size: 0.8rem;
+//   font-weight: 500;
+// `
 
 const RemoveButtonCard = styled.button`
   position: absolute;
@@ -3085,12 +3077,12 @@ const SaveButton = styled.button`
   }
 `
 
-const Icon = styled.span`
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  margin-right: 8px;
-`
+// const Icon = styled.span`
+//   display: inline-block;
+//   width: 16px;
+//   height: 16px;
+//   margin-right: 8px;
+// `
 
 const EmptyState = styled.div`
   text-align: center;

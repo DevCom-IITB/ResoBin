@@ -179,32 +179,32 @@ const PersonalCard = ({
   }
 
   // Clear form data and delete all tasks
-  const removePersonalData = async () => {
-    try {
-      setLoading(true)
-      // console.log("Deleting all personal data...");
+  // const removePersonalData = async () => {
+  //   try {
+  //     setLoading(true)
+  //     // console.log("Deleting all personal data...");
 
-      const result = await EplannerAPI.deletePersonalall()
-      // console.log("Deleted all data:", result);
+  //     const result = await EplannerAPI.deletePersonalall()
+  //     // console.log("Deleted all data:", result);
 
-      setPersonalItems([])
+  //     setPersonalItems([])
 
-      // Notify timetable to refresh
-      window.dispatchEvent(new CustomEvent('eplanner-updated'))
+  //     // Notify timetable to refresh
+  //     window.dispatchEvent(new CustomEvent('eplanner-updated'))
 
-      setTitle('')
-      setDescription('')
-      setDate('')
-      setWeekdays('')
-      setStarttime('')
-      setEndtime('')
-      setLocation('')
-    } catch (err) {
-      console.error('Error deleting all data:', err)
-    } finally {
-      setLoading(false)
-    }
-  }
+  //     setTitle('')
+  //     setDescription('')
+  //     setDate('')
+  //     setWeekdays('')
+  //     setStarttime('')
+  //     setEndtime('')
+  //     setLocation('')
+  //   } catch (err) {
+  //     console.error('Error deleting all data:', err)
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
   const deletePersonalItem = async (itemId) => {
     try {

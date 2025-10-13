@@ -78,7 +78,6 @@ const ExamCard = ({
     try {
       const response = await API.semesters.list()
       setSemesters(response[0])
-      console.log('Fetched semesters:', response[0])
     } catch (err) {
       console.error('Error fetching semesters:', err)
     }
@@ -91,13 +90,10 @@ const ExamCard = ({
   const fetchExamData = async () => {
     try {
       setLoading(true)
-      // console.log("Fetching exam data...");
 
       const data = await EplannerAPI.getExams()
       setExamItems(data)
-      // console.log("Fetched data:", data);
     } catch (err) {
-      console.error('Error fetching data:', err)
       setError('Failed to load data - using empty list')
       setExamItems([])
     } finally {
@@ -112,13 +108,11 @@ const ExamCard = ({
         setCoursesList([])
         return
       }
-      console.log('Fetching courses...')
       const response = await API.profile.timetable.read({
         season: semesters.season,
         year: semesters.year,
       })
       setCoursesList(response.data || response)
-      console.log('Fetched courses:', response)
     } catch (err) {
       console.error('Error fetching courses:', err)
       setCoursesList([])
@@ -219,31 +213,31 @@ const ExamCard = ({
     }
   }
 
-  const removeExamData = async () => {
-    try {
-      setLoading(true)
-      // console.log("Deleting all exam data...");
+  // const removeExamData = async () => {
+  //   try {
+  //     setLoading(true)
+  //     // console.log("Deleting all exam data...");
 
-      const result = await EplannerAPI.deleteExamAll()
-      // console.log("Deleted all data:", result);
+  //     const result = await EplannerAPI.deleteExamAll()
+  //     // console.log("Deleted all data:", result);
 
-      setExamItems([])
+  //     setExamItems([])
 
-      // Notify timetable to refresh
-      window.dispatchEvent(new CustomEvent('eplanner-updated'))
+  //     // Notify timetable to refresh
+  //     window.dispatchEvent(new CustomEvent('eplanner-updated'))
 
-      setCourse('')
-      setDescription('')
-      setDate('')
-      setStarttime('')
-      setEndtime('')
-      setLocation('')
-    } catch (err) {
-      console.error('Error deleting all data:', err)
-    } finally {
-      setLoading(false)
-    }
-  }
+  //     setCourse('')
+  //     setDescription('')
+  //     setDate('')
+  //     setStarttime('')
+  //     setEndtime('')
+  //     setLocation('')
+  //   } catch (err) {
+  //     console.error('Error deleting all data:', err)
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
   const deleteExamItem = async (itemId) => {
     try {

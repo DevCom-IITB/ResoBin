@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/react'
+// import * as Sentry from '@sentry/react'
 import { message } from 'antd'
 
 // Configure message to have higher z-index to appear above modals

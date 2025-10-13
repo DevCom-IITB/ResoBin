@@ -1,4 +1,4 @@
-import moment from 'moment'
+// import moment from 'moment'
 import React, { useState, useEffect } from 'react'
 
 import { toast } from 'components/shared'
@@ -33,46 +33,45 @@ const ReminderCard = ({
   const [ReminderItems, setReminderItems] = useState([])
   // Expanded reminders for display (show repeated instances)
   // This function expands reminders for daily/weekly repeat, and includes non-repeating ones
-  function expandRepeatingReminders(reminders) {
-    if (!Array.isArray(reminders)) return []
-    const expanded = []
-    const today = moment()
-    reminders.forEach((reminder) => {
-      if (!reminder.date) return // skip if no date
-      const baseDate = moment(reminder.date)
-      if (reminder.weekdays === 'Daily') {
-        // Expand for next 30 days
-        let i = 0
-        while (i < 30) {
-          const newDate = baseDate.clone().add(i, 'days')
-          expanded.push({
-            ...reminder,
-            date: newDate.format('YYYY-MM-DD'),
-            repeatType: 'Daily',
-          })
-          i += 1
-        }
-      } else if (reminder.weekdays === 'Weekly') {
-        // Expand for next 10 weeks (same weekday)
-        let i = 0
-        while (i < 10) {
-          const newDate = baseDate.clone().add(i, 'weeks')
-          expanded.push({
-            ...reminder,
-            date: newDate.format('YYYY-MM-DD'),
-            repeatType: 'Weekly',
-          })
-          i += 1
-        }
-      } else {
-        // Non-repeating, just add as is
-        expanded.push({ ...reminder, repeatType: 'None' })
-      }
-    })
-    // Sort by date ascending
-    return expanded.sort((a, b) => moment(a.date).diff(moment(b.date)))
-  }
-  const displayedReminders = expandRepeatingReminders(ReminderItems)
+  // function expandRepeatingReminders(reminders) {
+  //   if (!Array.isArray(reminders)) return []
+  //   const expanded = []
+  //   reminders.forEach((reminder) => {
+  //     if (!reminder.date) return // skip if no date
+  //     const baseDate = moment(reminder.date)
+  //     if (reminder.weekdays === 'Daily') {
+  //       // Expand for next 30 days
+  //       let i = 0
+  //       while (i < 30) {
+  //         const newDate = baseDate.clone().add(i, 'days')
+  //         expanded.push({
+  //           ...reminder,
+  //           date: newDate.format('YYYY-MM-DD'),
+  //           repeatType: 'Daily',
+  //         })
+  //         i += 1
+  //       }
+  //     } else if (reminder.weekdays === 'Weekly') {
+  //       // Expand for next 10 weeks (same weekday)
+  //       let i = 0
+  //       while (i < 10) {
+  //         const newDate = baseDate.clone().add(i, 'weeks')
+  //         expanded.push({
+  //           ...reminder,
+  //           date: newDate.format('YYYY-MM-DD'),
+  //           repeatType: 'Weekly',
+  //         })
+  //         i += 1
+  //       }
+  //     } else {
+  //       // Non-repeating, just add as is
+  //       expanded.push({ ...reminder, repeatType: 'None' })
+  //     }
+  //   })
+  //   // Sort by date ascending
+  //   return expanded.sort((a, b) => moment(a.date).diff(moment(b.date)))
+  // }
+  // const displayedReminders = expandRepeatingReminders(ReminderItems)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [editingId, setEditingId] = useState(null) // Track which item is being edited    // Listen for custom event from dropdown
@@ -130,10 +129,8 @@ const ReminderCard = ({
   const fetchReminderData = async () => {
     try {
       setLoading(true)
-      // console.log("Fetching personal data...");
       const data = await EplannerAPI.getReminders()
       setReminderItems(data)
-      console.log('Fetched reminder data:', data)
     } catch (err) {
       console.error(' Error fetching data:', err)
       setError('Failed to load data')
@@ -210,31 +207,29 @@ const ReminderCard = ({
   }
 
   // Clear form data and delete all tasks
-  const removeReminderData = async () => {
-    try {
-      setLoading(true)
-      // console.log("Deleting all reminder data...");
+  // const removeReminderData = async () => {
+  //   try {
+  //     setLoading(true)
 
-      const result = await EplannerAPI.deleteReminderall()
-      // console.log("Deleted all data:", result);
+  //     const result = await EplannerAPI.deleteReminderall()  
 
-      setReminderItems([])
+  //     setReminderItems([])
 
-      // Notify timetable to refresh
-      window.dispatchEvent(new CustomEvent('eplanner-updated'))
+  //     // Notify timetable to refresh
+  //     window.dispatchEvent(new CustomEvent('eplanner-updated'))
 
-      setTitle('')
-      setDescription('')
-      setDate('')
-      setWeekdays('')
-      setStarttime('')
-      setIsAllDay(false)
-    } catch (err) {
-      console.error('Error deleting all data:', err)
-    } finally {
-      setLoading(false)
-    }
-  }
+  //     setTitle('')
+  //     setDescription('')
+  //     setDate('')
+  //     setWeekdays('')
+  //     setStarttime('')
+  //     setIsAllDay(false)
+  //   } catch (err) {
+  //     console.error('Error deleting all data:', err)
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
   const deleteReminderItem = async (itemId) => {
     try {
