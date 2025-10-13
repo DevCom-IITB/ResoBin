@@ -348,6 +348,12 @@ const Sidebar = () => {
     })
 
     filtered.sort((a, b) => a.startTime.localeCompare(b.startTime))
+    filtered.sort((a, b) => {
+      if (a.isAllDay && !b.isAllDay) return -1
+      if (!a.isAllDay && b.isAllDay) return 1
+      return 0
+    })
+
     setSchedule(filtered)
     setLoadingSchedule(false)
   }
@@ -453,21 +459,29 @@ const Sidebar = () => {
       return <ScheduleLoading>Loading schedule...</ScheduleLoading>
     }
     if (schedule.length > 0) {
-      return schedule.map((item) => (
-        <ScheduleItem key={item.id}>
-          <TimeLabel>{item.startTime.slice(0, 5)}</TimeLabel>
-          <ScheduleContent>
-            <ScheduleTitle>{item.title}</ScheduleTitle>
-            <ScheduleTimeDetails>
-              {item.endTime !== '0'
-                ? `${item.startTime.slice(0, 5)} - ${item.endTime.slice(0, 5)}`
-                : item.startTime.slice(0, 5)}
-            </ScheduleTimeDetails>
+      return schedule.map((item) => {
+        const isAllDay = item.isAllDay || false
+        let timeDetails = 'All Day'
+        if (!isAllDay) {
+          timeDetails =
+            item.endTime !== '0'
+              ? `${item.startTime.slice(0, 5)} - ${item.endTime.slice(0, 5)}`
+              : item.startTime.slice(0, 5)
+        }
+        return (
+          <ScheduleItem key={item.id}>
+            <TimeLabel>
+              {isAllDay ? 'All Day' : item.startTime.slice(0, 5)}
+            </TimeLabel>
+            <ScheduleContent>
+              <ScheduleTitle>{item.title}</ScheduleTitle>
+              <ScheduleTimeDetails>{timeDetails}</ScheduleTimeDetails>
 
-            <ScheduleTag type={item.type}>{item.type}</ScheduleTag>
-          </ScheduleContent>
-        </ScheduleItem>
-      ))
+              <ScheduleTag type={item.type}>{item.type}</ScheduleTag>
+            </ScheduleContent>
+          </ScheduleItem>
+        )
+      })
     }
     return <ScheduleEmpty>Nothing scheduled for this day.</ScheduleEmpty>
   }

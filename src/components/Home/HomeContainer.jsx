@@ -16,28 +16,27 @@ import QuickActions from './QuickActions'
 import SearchBar from './SearchBar'
 import Sidebar from './sidebar'
 
-
 const NoCoursesMsg = styled.div`
   font-size: 0.85rem;
   color: #bbb;
   padding: 0.5rem;
-`;
+`
 
 const StyledLink = styled.a`
   text-decoration: none;
-`;
+`
 
 const CardTitleRow = styled.div`
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 0.25rem;
-`;
+`
 
 const DetailLine = styled.div`
   font-size: 0.7rem;
   color: #bbb;
   margin-top: 0.25rem;
-`;
+`
 
 const ProfTag = styled.span`
   display: inline-block;
@@ -49,7 +48,7 @@ const ProfTag = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
-`;
+`
 
 const CardBadge = styled.div`
   position: absolute;
@@ -65,7 +64,7 @@ const CardBadge = styled.div`
   color: white;
   font-size: 0.75rem;
   font-weight: 600;
-`;
+`
 
 const UploadBox = styled.button`
   position: absolute;
@@ -85,8 +84,7 @@ const UploadBox = styled.button`
   &:hover {
     background-color: #342f45;
   }
-`;
-
+`
 
 const CoursesThisSemester = () => {
   const [courseTimetableList, setCourseTimetableList] = useState([])
@@ -200,8 +198,8 @@ const CoursesThisSemester = () => {
       </TabsRow>
 
       <CoursesWrapper>
-        <OuterContainer style={{borderTopLeftRadius: '0px' }}>
-          <ArrowSideButton onClick={handlePrevPage} disabled={page === 0} >
+        <OuterContainer style={{ borderTopLeftRadius: '0px' }}>
+          <ArrowSideButton onClick={handlePrevPage} disabled={page === 0}>
             &lt;
           </ArrowSideButton>
 
@@ -354,10 +352,7 @@ const TopReqCourses = () => {
             padding: '0.5rem 1rem 0.5rem 0rem',
           }}
         >
-          <ArrowSideButton
-            onClick={handlePrevPage}
-            disabled={page === 0}
-          >
+          <ArrowSideButton onClick={handlePrevPage} disabled={page === 0}>
             &lt;
           </ArrowSideButton>
 
@@ -369,10 +364,7 @@ const TopReqCourses = () => {
                 courseData
                   .slice(page * COURSES_PER_PAGE, (page + 1) * COURSES_PER_PAGE)
                   .map((course) => (
-                    <Link
-                      key={course.code}
-                      to={coursePageUrl(course.code)}
-                    >
+                    <Link key={course.code} to={coursePageUrl(course.code)}>
                       <StyledCard>
                         <CardBadge>{course.resourceRequestersCount}</CardBadge>
                         <CardTitleRow>{course.code}</CardTitleRow>
@@ -418,10 +410,8 @@ const TopReqCourses = () => {
 }
 
 const HomeContainer = () => {
-  const profile = useSelector(selectUserProfile);
-  const [loadingg, setLoadingg] = useState(false); // No longer needed for course fetching
-
-
+  const profile = useSelector(selectUserProfile)
+  const [loadingg, setLoadingg] = useState(false) // No longer needed for course fetching
 
   return (
     <Container>
@@ -433,10 +423,7 @@ const HomeContainer = () => {
             </WelcomeText>
             <Subtitle>Here&apos;s everything you need for today</Subtitle>
           </div>
-          <SearchBar
-            loading={loadingg}
-            setLoading={setLoadingg}
-          />
+          <SearchBar loading={loadingg} setLoading={setLoadingg} />
         </HeaderRow>
 
         <QuickActions />
@@ -453,14 +440,13 @@ const HomeContainer = () => {
 
 export default HomeContainer
 
-
 const Container = styled.div`
   display: flex;
   background-color: #130d1d;
   min-height: 100vh;
   width: 100%;
   flex-wrap: nowrap;
-`;
+`
 
 const MainContent = styled.div`
   flex: 1 1 auto;
@@ -476,7 +462,7 @@ const MainContent = styled.div`
   @media (max-width: 768px) {
     padding: 1rem;
   }
-`;
+`
 
 const AsideContainer = styled.aside`
   flex: 0 0 clamp(260px, 22vw, 360px);
@@ -493,7 +479,7 @@ const AsideContainer = styled.aside`
   @media (max-width: 768px) {
     display: none;
   }
-`;
+`
 
 const HeaderRow = styled.div`
   display: flex;
@@ -506,7 +492,7 @@ const HeaderRow = styled.div`
     align-items: flex-start;
     gap: 1rem;
   }
-`;
+`
 
 const WelcomeText = styled.h1`
   color: white;
@@ -517,7 +503,7 @@ const WelcomeText = styled.h1`
   @media (max-width: 768px) {
     font-size: 1.25rem;
   }
-`;
+`
 
 const Subtitle = styled.div`
   color: #b0aecd;
@@ -527,7 +513,7 @@ const Subtitle = styled.div`
   @media (max-width: 768px) {
     font-size: 0.9rem;
   }
-`;
+`
 
 const TabsRow = styled.div`
   display: flex;
@@ -535,13 +521,13 @@ const TabsRow = styled.div`
   justify-content: space-between;
   gap: 1rem;
   margin-top: 2.5rem;
-  margin-left: clamp(0.95rem, 1vw, 1.05rem);;
+  margin-left: clamp(0.95rem, 1vw, 1.05rem);
   flex-wrap: wrap;
 
   @media (max-width: 768px) {
     justify-content: flex-start;
   }
-`;
+`
 
 const TabsWrapper = styled.div`
   background-color: #000;
@@ -554,7 +540,7 @@ const TabsWrapper = styled.div`
   @media (max-width: 600px) {
     height: auto;
   }
-`;
+`
 
 const Tab = styled.button`
   background-color: ${({ active }) => (active ? '#2B273B' : 'transparent')};
@@ -571,21 +557,19 @@ const Tab = styled.button`
     padding: 0.5rem 0.8rem;
     font-size: 0.9rem;
   }
-`;
+`
 
 const TotalCredits = styled.div`
   color: #d6c9f8;
   font-size: clamp(13px, 1.2vw, 16px);
   font-weight: 500;
-`;
+`
 
 const CoursesWrapper = styled.div`
   width: 100%;
   margin: 0;
   padding: 0 clamp(0.5rem, 1.5vw, 1rem);
-`;
-
-
+`
 
 const OuterContainer = styled.div`
   width: 100%;
@@ -603,7 +587,7 @@ const OuterContainer = styled.div`
     min-height: auto;
     padding: 1rem 0;
   }
-`;
+`
 
 const ScrollWrapper = styled.div`
   flex: 1 1 auto;
@@ -611,7 +595,7 @@ const ScrollWrapper = styled.div`
   align-items: stretch;
   justify-content: flex-start;
   overflow-x: auto;
-`;
+`
 
 const ScrollRow = styled.div`
   display: flex;
@@ -623,12 +607,13 @@ const ScrollRow = styled.div`
   @media (max-width: 600px) {
     gap: 0.4rem;
   }
-`;
+`
 
 const StyledCard = styled.div`
   position: relative;
   width: clamp(130px, 16vw, 180px);
   height: auto;
+  min-height: 100px;
   background: #231f31;
   border-radius: 7px;
   padding: clamp(0.4rem, 1vw, 0.6rem);
@@ -643,7 +628,7 @@ const StyledCard = styled.div`
     height: auto;
     padding: 0.4rem;
   }
-`;
+`
 
 const ArrowSideButton = styled.button`
   background-color: #6d5dfc;
@@ -663,4 +648,4 @@ const ArrowSideButton = styled.button`
     opacity: 0.4;
     cursor: not-allowed;
   }
-`;
+`
