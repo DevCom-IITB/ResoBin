@@ -29,9 +29,10 @@ const CourseFinderContainer = () => {
 
       const response = await API.courses.list({
         params,
-        cancelToken: ajaxRequest.token,
+        cancelToken: ajaxRequest.token
       })
       setCourseData(response)
+      console.log('Fetched Courses: nnn', response)
     } catch (error) {
       if (axios.isCancel(error)) return
       toast({ status: 'error', content: error })
@@ -57,6 +58,7 @@ const CourseFinderContainer = () => {
       ),
     }
 
+    console.log("API Request Params:", params)
     fetchCourses(params)
   }, [getQueryString])
 

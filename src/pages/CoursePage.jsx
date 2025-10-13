@@ -20,7 +20,6 @@ const CoursePage = () => {
       try {
         setLoading(true)
         const response = await API.courses.read({ code })
-        // console.log(response)
         const reponseCutoff = await API.courses.getCutoffs({ code })
         setCourseData(response)
         setCutoffs(reponseCutoff)

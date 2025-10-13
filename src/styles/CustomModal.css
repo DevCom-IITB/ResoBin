@@ -1,0 +1,119 @@
+/* CustomModal.css */
+
+/* Modal background overlay - targets Ant Design's default modal mask */
+/* This creates the semi-transparent dark background that covers the screen when the modal is open. */
+.ant-modal-mask {
+  background: rgba(0, 0, 0, 0.6); /* Darker, semi-transparent black overlay */
+}
+
+/* Modal box - targets the main content area of the Ant Design Modal */
+/* This applies styles to the modal's container when the 'custom-dark-modal' class is present on the Modal component itself. */
+.ant-modal.custom-dark-modal .ant-modal-content {
+  background-color: #1e1b2e; /* ResoBin-like dark purple for the modal background */
+  color: #ffffff; /* White text color for all elements inside the modal content */
+  padding: 24px; /* Internal spacing around the content within the modal */
+  border-radius: 12px; /* Rounded corners for the modal box */
+  width: 100%; /* Ensures the modal takes full width on smaller screens */
+  max-width: 500px; /* Limits the maximum width of the modal on larger screens */
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4); /* A subtle dark shadow to give depth to the modal */
+}
+
+/* Warning icon - targets the icon typically displayed in Ant Design's Confirm Modal */
+/* This styles the warning icon with a specific color and size. */
+.ant-modal.custom-dark-modal .ant-modal-confirm-icon {
+  font-size: 24px; /* Size of the warning icon */
+  color: #facc15; /* Yellow color, commonly used for warnings/alerts */
+  /* Ant Design's default styling often includes margins around the icon,
+       so explicit margin-bottom is not typically needed here unless overriding. */
+}
+
+/* Title - targets the title text within the Ant Design Confirm Modal */
+/* Styles the title to be prominent and match the dark theme. */
+.ant-modal.custom-dark-modal .ant-modal-confirm-title {
+  font-size: 20px; /* Font size for the modal title */
+  font-weight: bold; /* Makes the title text bold */
+  margin-bottom: 10px; /* Space below the title before the main message */
+  color: #ffffff; /* White color for the title text */
+}
+
+/* Main message - targets the content/description text within the Ant Design Confirm Modal */
+/* Styles the main message for readability within the dark theme. */
+.ant-modal.custom-dark-modal .ant-modal-confirm-content {
+  font-size: 16px; /* Font size for the main message text */
+  margin-bottom: 20px; /* Space below the message before the buttons */
+  line-height: 1.5; /* Increases line spacing for better readability */
+  color: #ffffff; /* White color for the message text */
+}
+
+/* Button container - targets the footer section of the Ant Design Modal */
+/* This section contains the action buttons (e.g., "Remove", "Cancel").
+     It uses flexbox to center the buttons horizontally and define spacing between them. */
+.ant-modal.custom-dark-modal .ant-modal-footer {
+  display: flex !important; /* Enables flexbox for button alignment */
+  justify-content: center !important;
+  align-items: center !important; /* Vertically centers the buttons*/
+  gap: 20rem !important; /* Space between buttons */
+  margin: 0 !important;
+  padding: 0 !important; /* Remove all padding to ensure perfect centering */
+  text-align: center !important; /* Additional centering for text alignment */
+}
+
+/* Common button styling - applied via okButtonProps and cancelButtonProps in JavaScript */
+/* These styles serve as a base for both the "Remove" and "Cancel" buttons. */
+.modal-button {
+  border: none; /* Removes default button borders */
+  padding: 10px 18px; /* Internal padding for the button text */
+  border-radius: 8px; /* Rounded corners for the buttons */
+  font-size: 14px; /* Font size for button text */
+  font-weight: 600; /* Bolder font weight for button text (increased from 500) */
+  transition: opacity 0.2s ease-in-out; /* Smooth transition effect for hover state */
+  color: white; /* White text color for all buttons */
+  height: auto; /* Overrides potential fixed height from Ant Design's default button styles,
+                     allowing padding to dictate button height. */
+}
+
+/* Specific styling for the "Cancel" button */
+.btn-cancel {
+  background-color: #6c5dd3; /* A lighter shade of purple for the cancel button */
+  font-weight: 600 !important; /* Ensure bold text */
+}
+
+/* Hover effect for the "Cancel" button */
+.btn-cancel:hover {
+  opacity: 0.85; /* Slightly reduces the opacity of the button on hover */
+  cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
+}
+
+/* Specific styling for the "Remove" button */
+.btn-remove {
+  background-color: #8b74e6 !important; /* Darker purple shade (changed from #a18aff) */
+  color: #fff !important;
+  border: none !important;
+  font-weight: 600 !important; /* Ensure bold text */
+}
+
+/* Hover effect for the "Remove" button */
+.btn-remove:hover {
+  opacity: 0.85; /* Slightly reduces the opacity of the button on hover */
+  cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
+}
+
+/* Ensure buttons in the custom dark modal have a minimum width and are evenly spaced */
+.custom-dark-modal .ant-btn {
+  min-width: 145px; /* Optional: make buttons same width */
+  font-weight: 600 !important; /* Ensure all buttons have bold text */
+}
+
+/* Primary button styles in the custom dark modal */
+.custom-dark-modal .ant-btn-primary {
+  background: #8b74e6 !important; /* Updated to match the darker shade */
+  color: #fff !important;
+  border: 1px solid #8b74e6 !important;
+  font-weight: 600 !important; /* Ensure bold text */
+}
+/* .custom-dark-modal .ant-btn-primary:hover */
+/* .custom-dark-modal .ant-btn-primary:focus {
+    background: #8b74e6 !important;
+    color: #fff !important;
+    border: 1px solid #8b74e6 !important;
+  } */
