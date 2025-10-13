@@ -1,14 +1,11 @@
-import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import axios from 'axios'
+import React, { useState, useEffect } from 'react'
 
-import { Form, toast } from 'components/shared';
-import { API } from 'config/api';
+import { Form, toast } from 'components/shared'
+import { API } from 'config/api'
 import { hash } from 'helpers'
 import { useQueryString, useColorPicker } from 'hooks'
 import { makeGradient } from 'styles/utils'
-
-
-
 
 export const filterKeys = [
   'p',
@@ -24,54 +21,59 @@ export const filterKeys = [
   'avoid_slot_clash',
 ]
 
-const montserratFontId = 'montserrat-font-link';
+const montserratFontId = 'montserrat-font-link'
 if (!document.getElementById(montserratFontId)) {
-  const link = document.createElement('link');
-  link.id = montserratFontId;
-  link.rel = 'stylesheet';
-  link.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap';
-  document.head.appendChild(link);
+  const link = document.createElement('link')
+  link.id = montserratFontId
+  link.rel = 'stylesheet'
+  link.href =
+    'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap'
+  document.head.appendChild(link)
 }
 
 const styles = {
   container: {
     padding: '1rem',
     fontFamily: 'Montserrat,Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
-    backgroundColor: '#26223A ',
+    backgroundColor: '#2d2941ff ',
     borderRadius: '12px',
+    JustifyContent: 'start',
+    marginTop: '1.2rem',
   },
   card: {
-    backgroundColor: '#26223A ',
+    backgroundColor: '#342f4bff  ',
     boxShadow: '0 6px 20px rgba(0, 0, 0, 0.1)',
     overflow: 'hidden',
     width: '100%',
-    maxWidth: '700px',
+    maxWidth: '900px',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
     minHeight: '200px',
+    JustifyContent: 'start',
   },
   title: {
     fontSize: '1.5rem',
-    fontWeight: '600',
-    padding: '1rem 1.5rem',
     backgroundColor: '#26223A ',
     color: '#fff',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+    borderRadius: '8px',
+    marginRight: '31rem',
   },
   table: {
-    width: '100%',
+    width: '105%',
     borderCollapse: 'collapse',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
-    border: '1px solid #39324d',
+    // border: '1px solid #39324d',
+    JustifyContent: 'start',
   },
   th: {
     textAlign: 'left',
     padding: '0.9rem 1.2rem',
-    backgroundColor: '#26223A ',
+    // backgroundColor: '#342f4bff  ',
     textTransform: 'uppercase',
     fontSize: '0.85rem',
     color: 'white',
+    // border: '1px solid #44405eff',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
-    border: '1px solid white ',
   },
   td: {
     padding: '0.9rem 1.2rem',
@@ -79,11 +81,11 @@ const styles = {
     color: '#444',
     textAlign: 'center',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
-    border: '1px solid white',
+    border: '1px solid #44405eff',
     backgroundColor: 'transparent',
   },
   rowEven: {
-    backgroundColor: '#23203A',
+    // backgroundColor: '#342f4bff ',
   },
   rowHover: {
     transition: 'background-color 0.2s ease-in-out',
@@ -110,10 +112,10 @@ const styles = {
     padding: '0.9rem 1.2rem',
     textAlign: 'left',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
-    border: '1px solid white ',
+    // border: '1px solid #44405eff',
   },
   courses: {
-    background: "linear-gradient(90deg, #3a3456 0%, #1B1728 100%)",
+    background: 'linear-gradient(90deg, #3a3456 0%, #1B1728 100%)',
     color: 'black',
     marginTop: '1rem',
     padding: '0.9rem 1.2rem',
@@ -122,107 +124,241 @@ const styles = {
     fontSize: '16px',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
     border: '1px solid white ',
-  }
-};
+  },
+}
 
 const Table = ({ timetable }) => {
+  // console.log('Table received timetable:', timetable)
   const colorPicker = useColorPicker()
 
-  const sortedDates = Object.keys(timetable).sort((a, b) => {
-    const extractDate = (str) => {
-      const datePart = str.split(' ')[1];
-      const [day, month, year] = datePart.split('/').map(num => parseInt(num, 10));
-      return new Date(2000 + year, month - 1, day);
-    };
-    return extractDate(a) - extractDate(b);
-  });
+  // Group data by weekday and time slot
+  const organizedData = React.useMemo(() => {
+    const weekdays = ['MON', 'TUES', 'WED', 'THURS', 'FRI', 'SAT', 'SUN']
+    const timeSlots = [
+      { label: '09:00 AM - 12:00 PM', slot: 1 },
+      { label: '1:30 PM - 4:30 PM', slot: 2 },
+      { label: '6:00 PM - 9:00 PM', slot: 3 },
+    ]
 
+    const organized = {}
+
+    // Initialize structure
+    timeSlots.forEach((timeSlot) => {
+      organized[timeSlot.slot] = {}
+      weekdays.forEach((day) => {
+        organized[timeSlot.slot][day] = []
+      })
+    })
+
+    // Populate with data from timetable
+    Object.entries(timetable).forEach(([dateStr, slotData]) => {
+      // console.log('Processing dateStr:', dateStr, 'slotData:', slotData)
+
+      // Extract weekday from date string (e.g., "Monday, 16/09/24" or "Monday 16/09/24")
+      const dayName = dateStr.split(/[, ]/)[0].toUpperCase()
+      // console.log('Extracted dayName:', dayName)
+
+      // Map day names to abbreviations
+      const dayMapping = {
+        MONDAY: 'MON',
+        TUESDAY: 'TUES',
+        WEDNESDAY: 'WED',
+        THURSDAY: 'THURS',
+        FRIDAY: 'FRI',
+        SATURDAY: 'SAT',
+        SUNDAY: 'SUN',
+      }
+      const mappedDay = dayMapping[dayName] || dayName
+      // console.log('Mapped day from', dayName, 'to', mappedDay)
+
+      // Extract date part (e.g., "16/09/24" -> "16\nSEPT")
+      const datePart = dateStr.split(/[, ]/).slice(1).join(' ')
+      // console.log('Extracted datePart:', datePart)
+      const [day, month] = datePart.split('/')
+      const monthNames = [
+        '',
+        'JAN',
+        'FEB',
+        'MAR',
+        'APR',
+        'MAY',
+        'JUN',
+        'JUL',
+        'AUG',
+        'SEPT',
+        'OCT',
+        'NOV',
+        'DEC',
+      ]
+      const monthAbbr = monthNames[parseInt(month, 10)] || month
+
+      Object.entries(slotData).forEach(([slotNum, courses]) => {
+        const slot = parseInt(slotNum, 10)
+        if (organized[slot] && organized[slot][mappedDay]) {
+          courses.forEach((courseCode) => {
+            organized[slot][mappedDay].push({
+              courseCode,
+              date: day,
+              month: monthAbbr,
+            })
+          })
+          // console.log(`Successfully added courses to slot ${slot}, day ${mappedDay}`)
+        }
+      })
+    })
+
+    // console.log('Final organized data:', organized)
+    // console.log('Number of courses in organized data:',
+    //   Object.values(organized).reduce((total, slots) =>
+    //     total + Object.values(slots).reduce((slotTotal, courses) => slotTotal + courses.length, 0), 0))
+
+    return { organized, timeSlots, weekdays }
+  }, [timetable])
+
+  const { organized, timeSlots, weekdays } = organizedData
 
   return (
     <div style={styles.container}>
-      <div style={{ ...styles.card, maxHeight: 'none', overflowY: 'visible' }}>
-        <h2 style={styles.title}>📚 Mid-semester Examinations</h2>
+      
         <div
           style={{
-            maxHeight: '320px',
+            maxHeight: '400px',
             overflowY: 'auto',
           }}
         >
           <table style={styles.table}>
             <thead>
               <tr>
-                <th style={styles.th}>Day/Date</th>
-                <th style={styles.th}>08:30 - 10:30</th>
-                <th style={styles.th}>11:00 - 13:00</th>
-                <th style={styles.th}>13:30 - 15:30</th>
-                <th style={styles.th}>16:00 - 18:00</th>
-                <th style={styles.th}>18:30 - 20:30</th>
+                <th style={{ ...styles.th, width: '120px' }}> </th>
+                {weekdays.map((day) => (
+                  <th key={day} style={styles.th}>
+                    {day}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {sortedDates.map((date, idx) => {
-                const slotData = timetable[date] || {};
-                const rowSlots = {
-                  "08:30 - 10:30": slotData[1] || [],
-                  "11:00 - 13:00": slotData[2] || [],
-                  "13:30 - 15:30": slotData[3] || [],
-                  "16:00 - 18:00": slotData[4] || [],
-                  "18:30 - 20:30": slotData[5] || [],
-                };
-
-                return (
-                  <tr
-                    key={date}
+              {timeSlots.map((timeSlot, idx) => (
+                <tr
+                  key={timeSlot.slot}
+                  style={{
+                    ...styles.rowHover,
+                    ...(idx % 2 === 1 ? styles.rowEven : {}),
+                  }}
+                >
+                  <td
                     style={{
-                      ...styles.rowHover,
-                      ...(idx % 2 === 1 ? styles.rowEven : {}),
+                      ...styles.date,
+                      textAlign: 'center',
+                      // verticalAlign: 'middle'
                     }}
                   >
-                    <td style={styles.date}>{date}</td>
-                    {Object.entries(rowSlots).map(([slotLabel, courses]) => (
+                    {timeSlot.label}
+                  </td>
+                  {weekdays.map((day) => {
+                    const courses = organized[timeSlot.slot][day] || []
+                    return (
                       <td
-                        key={slotLabel}
+                        key={day}
                         style={{
                           ...styles.td,
-                          padding: courses.length ? 0 : styles.td.padding,
-                          background: courses.length ? 'none' : styles.td.backgroundColor,
+                          padding: courses.length
+                            ? '0.5rem'
+                            : styles.td.padding,
+                          background: courses.length
+                            ? 'none'
+                            : styles.td.backgroundColor,
+                          verticalAlign: 'top',
                         }}
                       >
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                          {courses.map((courseCode) => (
-                            <span
-                              key={courseCode}
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.5rem',
+                            minHeight: '60px',
+                          }}
+                        >
+                          {courses.map((course) => (
+                            <div
+                              key={`${course.courseCode}-${course.date}-${course.month}`}
                               style={{
-                                background: makeGradient(colorPicker(hash(courseCode))),
+                                background: makeGradient(
+                                  colorPicker(hash(course.courseCode))
+                                ),
                                 color: 'black',
-                                borderRadius: '12px',
-                                padding: '0.5rem 1.5rem',
-                                fontWeight: 600,
-                                fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
-                                margin: '0.3rem 0.3rem',
-                                display: 'inline-block',
+                                borderRadius: '8px',
+                                padding: '0',
+                                fontWeight: 450,
+                                fontFamily:
+                                  'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'stretch', // <-- important
                                 textShadow: '0 1px 2px rgba(0,0,0,0.15)',
-                                fontSize: '1.1rem',
-                                letterSpacing: '1px',
+                                fontSize: '0.9rem',
+                                letterSpacing: '0.5px',
+                                overflow: 'hidden', // <-- to merge rounded corners cleanly
                               }}
                             >
-                              {courseCode}
-                            </span>
+                              {/* Left beige date column */}
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  justifyContent: 'center',
+                                  background: 'rgb(255, 233, 204)',
+                                  padding: '0.3rem 0.5rem',
+                                  width: '45px',
+                                  marginLeft: '0.2rem',
+                                  textAlign: 'center',
+                                  borderTopLeftRadius: '8px',
+                                  borderBottomLeftRadius: '8px',
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    fontSize: '1rem',
+                                    marginBottom: '2px',
+                                  }}
+                                >
+                                  {course.date}
+                                </div>
+                                <div
+                                  style={{ fontSize: '0.8rem', opacity: 0.8 }}
+                                >
+                                  {course.month}
+                                </div>
+                              </div>
+
+                              {/* Right course code */}
+                              <div
+                                style={{
+                                  flex: 1,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  fontSize: '1.1rem',
+                                  padding: '0.5rem 0.8rem',
+                                }}
+                              >
+                                {course.courseCode}
+                              </div>
+                            </div>
                           ))}
                         </div>
                       </td>
-                    ))}
-                  </tr>
-                );
-              })}
+                    )
+                  })}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
-      </div>
+      
     </div>
-  );
-};
-
+  )
+}
 
 const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
@@ -246,7 +382,7 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
       try {
         if (!semesters.season || !semesters.year) {
           setUserTimetableCourses([])
-          setCoursesAndSlots([], []);
+          setCoursesAndSlots([], [])
           return
         }
         const response = await API.profile.timetable.read({
@@ -256,33 +392,35 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
         setUserTimetableCourses(response)
         // console.log('User Timetable Courses:', response);
 
-        const filtered = response.filter(item => {
-          const firstSlot = Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
-            ? item.lectureSlots[0]
-            : '';
+        const filtered = response.filter((item) => {
+          const firstSlot =
+            Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
+              ? item.lectureSlots[0]
+              : ''
 
-          return !(typeof firstSlot === 'string' && firstSlot.startsWith('L'));
-        });
+          return !(typeof firstSlot === 'string' && firstSlot.startsWith('L'))
+        })
 
-        const courses = filtered.map(item => item.course);
-        const slots = filtered.map(item => {
-          const firstSlot = Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
-            ? item.lectureSlots[0]
-            : '';
+        const courses = filtered.map((item) => item.course)
+        const slots = filtered.map((item) => {
+          const firstSlot =
+            Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
+              ? item.lectureSlots[0]
+              : ''
 
-          if (!firstSlot) return 0;
+          if (!firstSlot) return 0
 
           // Extract all leading digits before any letter
-          const match = firstSlot.match(/^\d+/);
+          const match = firstSlot.match(/^\d+/)
           if (match) {
-            return parseInt(match[0], 10);
+            return parseInt(match[0], 10)
           }
 
-          return 0;
-        });
-        console.log('Courses:', courses);
-        console.log('All Lecture Slots:', slots);
-        setCoursesAndSlots(courses, slots);
+          return 0
+        })
+        // console.log('Courses:', courses)
+        // console.log('All Lecture Slots:', slots)
+        setCoursesAndSlots(courses, slots)
       } catch (error) {
         toast({
           status: 'error',
@@ -290,80 +428,90 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
           key: 'timetable-error',
         })
         setUserTimetableCourses([])
-        setCoursesAndSlots([], []);
+        setCoursesAndSlots([], [])
       }
     }
     fetchUserTimetable()
   }, [semesters, setCoursesAndSlots])
-  return null;
+  return null
 }
 
 const PopupExample = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [timetable, setTimetable] = useState({});
-  const [courses, setCourses] = useState([]);
-  const [slots, setSlots] = useState([]);
-
+  const [isOpen, setIsOpen] = useState(false)
+  const [timetable, setTimetable] = useState({})
+  const [courses, setCourses] = useState([])
+  const [slots, setSlots] = useState([])
 
   const setCoursesAndSlots = React.useCallback((coursesArr, slotsArr) => {
-    setCourses(coursesArr);
-    setSlots(slotsArr);
-  }, []);
-
+    setCourses(coursesArr)
+    setSlots(slotsArr)
+  }, [])
 
   const togglePopup = () => {
-    setIsOpen(!isOpen);
-  };
-
+    setIsOpen(!isOpen)
+  }
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) return () => {} // Return empty cleanup function
     if (!courses.length) {
-      setTimetable({});
-      return;
+      setTimetable({})
+      return () => {} // Return empty cleanup function
     }
-    const fetchSchedule = async () => {
 
-      const userCourses = courses.map((code, idx) => {
-        const slotNumber = slots[idx];
-        return slotNumber
-          ? { course_code: code, course_slot_number: slotNumber }
-          : { course_code: code };
-      });
+    // Add a small delay to prevent rapid successive calls
+    const timeoutId = setTimeout(() => {
+      const fetchSchedule = async () => {
+        const userCourses = courses.map((code, idx) => {
+          const slotNumber = slots[idx]
+          return slotNumber
+            ? { course_code: code, course_slot_number: slotNumber }
+            : { course_code: code }
+        })
 
-      try {
-        const res = await axios.post('http://localhost:8000/api/get-schedule-batch/', {
-          courses: userCourses,
-        });
-        const schedules = res.data;
+        try {
+          const res = await axios.post(
+            'http://localhost:8000/api/get-schedule-batch/',
+            {
+              courses: userCourses,
+            }
+          )
+          const schedules = res.data
 
-        const temp = {};
-        schedules
-          .filter(Boolean)
-          .forEach((schedule) => {
+          const temp = {}
+          schedules.filter(Boolean).forEach((schedule) => {
             const {
               day_date: dayDate,
               mapped_slot: mappedSlot,
               course_code: courseCode,
-            } = schedule;
+            } = schedule
 
-            if (!dayDate || !mappedSlot || !courseCode) return;
+            if (!dayDate || !mappedSlot || !courseCode) return
 
             if (!temp[dayDate]) {
-              temp[dayDate] = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+              temp[dayDate] = { 1: [], 2: [], 3: [] }
             }
 
-            temp[dayDate][mappedSlot].push(courseCode);
-          });
+            temp[dayDate][mappedSlot].push(courseCode)
+          })
 
-        setTimetable(temp);
-      } catch (err) {
-        setTimetable({});
+          setTimetable(temp)
+        } catch (err) {
+          // console.error('Failed to fetch schedule:', err)
+          if (err.response?.status === 429) {
+            // console.log('Rate limited - will retry after 2 seconds')
+            // Retry after 2 seconds if rate limited
+            setTimeout(fetchSchedule, 2000)
+          } else {
+            setTimetable({})
+          }
+        }
       }
-    };
 
-    fetchSchedule();
-  }, [courses, slots, isOpen]);
+      fetchSchedule()
+    }, 300) // 300ms delay to debounce rapid calls
+
+    return () => clearTimeout(timeoutId)
+  }, [courses, slots, isOpen])
 
   return (
     <div className="popup">
@@ -398,15 +546,33 @@ const PopupExample = () => {
             color: 'white',
           }}
         >
-          <h2
-            style={{
-              marginBottom: '10px',
-              fontFamily: 'monospace',
-              fontSize: '1.5rem',
-              textDecoration: 'underline',
-            }}
-          >
-            EXAM TIMETABLE
+          <h2 style={{ ...styles.title, marginRight: '42rem' ,marginBottom:'0.5rem', fontWeight:'520'}}>
+            {' '}
+            Exam Timetable
+          </h2>
+          <h2 style={{ ...styles.title }}>
+            {' '}
+            <svg
+              width="25"
+              height="25"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="auto" height="auto" fill="#2c2a3a" />
+
+              <g
+                fill="none"
+                stroke="#FFFFFF"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <g strokeWidth="1.5">
+                  <rect x="3.5" y="6.5" width="17" height="17" rx="2.5" />
+                  <line x1="3.5" y1="18.5" x2="20.5" y2="18.5" />
+                </g>
+              </g>
+            </svg>
+            {'  '}Mid-semester Examinations
           </h2>
           <Table timetable={timetable} />
           <CourseFinderFilterForm setCoursesAndSlots={setCoursesAndSlots} />
@@ -421,15 +587,15 @@ const PopupExample = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
 export const Exam = () => {
   return (
     <div className="Exam">
       <PopupExample />
     </div>
-  );
-};
+  )
+}
 
-export default Exam;
+export default Exam
