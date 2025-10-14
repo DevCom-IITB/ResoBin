@@ -27,6 +27,7 @@ import {
   toast,
 } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
+import { Exam } from 'components/Timetable/ExamTimetable'
 import { API } from 'config/api'
 import { slots, rows } from 'data/timetable'
 import { coursePageUrl, hash } from 'helpers'
@@ -814,19 +815,21 @@ const TimetableContainer = () => {
       <TimetablePageHeadingWrapper>
         <PageHeading>
           <PageTitle>Timetable</PageTitle>
-
-          <Dropdown
-            overlay={addDropdownMenu}
-            trigger={['click']}
-            visible={dropdownVisible}
-            onVisibleChange={setDropdownVisible}
-            placement="bottomRight"
-          >
-            <AddButton onClick={() => setDropdownVisible(!dropdownVisible)}>
-              <Plus size="16" />
-              add
-            </AddButton>
-          </Dropdown>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Exam />
+            <Dropdown
+              overlay={addDropdownMenu}
+              trigger={['click']}
+              visible={dropdownVisible}
+              onVisibleChange={setDropdownVisible}
+              placement="bottomRight"
+            >
+              <AddButton onClick={() => setDropdownVisible(!dropdownVisible)}>
+                <Plus size="16" />
+                add
+              </AddButton>
+            </Dropdown>
+          </div>
         </PageHeading>
       </TimetablePageHeadingWrapper>
 
@@ -2399,6 +2402,11 @@ const SubHeader = styled.div`
 const TimetablePageHeadingWrapper = styled.div`
   padding-bottom: 0.75rem;
   margin-bottom: -10px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: ${({ theme }) => theme.bg};
+  width: 100%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 `
 
