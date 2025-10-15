@@ -9,7 +9,7 @@ import {
   BookOpen,
   Bell,
 } from '@styled-icons/heroicons-outline'
-import { Spin, Alert, Modal, Radio, Tooltip, Dropdown, Menu } from 'antd'
+import { Spin, Alert, Modal, Radio, Tooltip, Dropdown} from 'antd'
 import axios from 'axios'
 import moment from 'moment'
 import { darken } from 'polished'
@@ -147,7 +147,7 @@ const TimetableContainer = () => {
         reminder: reminderData || [],
       })
     } catch (error) {
-      console.error('Error fetching eplanner events:', error)
+      // console.error('Error fetching eplanner events:', error)
     }
   }
 

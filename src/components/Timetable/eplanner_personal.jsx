@@ -96,7 +96,7 @@ const PersonalCard = ({
       setPersonalItems(data)
       // console.log(" Fetched data:", data);
     } catch (err) {
-      console.error(' Error fetching data:', err)
+      // console.error(' Error fetching data:', err)
       setError('Failed to load data')
     } finally {
       setLoading(false)
@@ -172,7 +172,7 @@ const PersonalCard = ({
       setEndtime('')
       setLocation('')
     } catch (err) {
-      console.error('Error saving data:', err)
+      // console.error('Error saving data:', err)
     } finally {
       setLoading(false)
     }
@@ -228,7 +228,7 @@ const PersonalCard = ({
       // Notify timetable to refresh
       window.dispatchEvent(new CustomEvent('eplanner-updated'))
     } catch (err) {
-      console.error(' Error deleting data:', err)
+      // console.error(' Error deleting data:', err)
     } finally {
       setLoading(false)
     }

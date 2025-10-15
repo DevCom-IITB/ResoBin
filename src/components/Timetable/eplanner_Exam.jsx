@@ -79,7 +79,7 @@ const ExamCard = ({
       const response = await API.semesters.list()
       setSemesters(response[0])
     } catch (err) {
-      console.error('Error fetching semesters:', err)
+      // console.error('Error fetching semesters:', err)
     }
   }
 
@@ -114,7 +114,7 @@ const ExamCard = ({
       })
       setCoursesList(response.data || response)
     } catch (err) {
-      console.error('Error fetching courses:', err)
+      // console.error('Error fetching courses:', err)
       setCoursesList([])
     }
   }
@@ -207,7 +207,7 @@ const ExamCard = ({
       setEndtime('')
       setLocation('')
     } catch (err) {
-      console.error('Error saving data:', err)
+      // console.error('Error saving data:', err)
     } finally {
       setLoading(false)
     }
@@ -261,7 +261,7 @@ const ExamCard = ({
       // Notify timetable to refresh
       window.dispatchEvent(new CustomEvent('eplanner-updated'))
     } catch (err) {
-      console.error(' Error deleting data:', err)
+      // console.error(' Error deleting data:', err)
     } finally {
       setLoading(false)
     }
