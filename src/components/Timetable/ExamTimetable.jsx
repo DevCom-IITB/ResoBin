@@ -487,21 +487,10 @@ const PopupExample = () => {
         })
 
         try {
-          const res = await axios.post(
-            'http://localhost:8000/api/get-schedule-batch/',
-            {
-              courses: userCourses,
-            }
-          )
-          const schedules = res.data
-
+          const res = await API.examSchedule.getBatch({ courses: userCourses })
           const temp = {}
-          schedules.filter(Boolean).forEach((schedule) => {
-            const {
-              day_date: dayDate,
-              mapped_slot: mappedSlot,
-              course_code: courseCode,
-            } = schedule
+          res.filter(Boolean).forEach((schedule) => {
+            const { dayDate, mappedSlot, courseCode } = schedule
 
             if (!dayDate || !mappedSlot || !courseCode) return
 
