@@ -1,39 +1,116 @@
 div.Popup-Window .Close-button {
-  
-    margin: auto;
-    display: block;
-    color: rgb(243, 235, 243);
-    background-color: #1a1624;
+  margin: auto;
+  display: block;
+  color: rgb(243, 235, 243);
+  background-color: #1a1624;
+}
+
+.Popup-Window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid black;
+  padding: 20px;
+  box-shadow: 0 4px 6px black;
+  z-index: 1000;
+}
+
+/* Mobile responsive styles for popup - only affects mobile, desktop unchanged */
+@media screen and (max-width: 768px) {
+  .Popup-Window {
+    max-width: 95vw;
+    max-height: 85vh;
+    padding: 15px;
+    width: calc(100vw - 20px);
+    min-width: unset;
+    overflow-y: auto;
   }
-  
-  .Popup-Window{
-    position :fixed;
-    top:50%;
-    left:50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    border: 1px solid black;
-    padding: 20px;
-    box-shadow: 0 4px 6px black;
-    z-index: 1000;
+}
+
+@media screen and (max-width: 480px) {
+  .Popup-Window {
+    max-width: 98vw;
+    max-height: 90vh;
+    padding: 10px;
+    width: calc(100vw - 10px);
   }
-  .popup
-  {
-    margin: 0;
-    text-align: center;
-    z-index: 999;
+}
+.popup {
+  margin: 0;
+  text-align: center;
+  z-index: 999;
+}
+
+.popup-button {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  transform: translateX(-30%);
+  display: inline-block;
+  margin: 10px auto;
+  color: rgb(246, 249, 246);
+  background-color: #1a1624;
+  z-index: 999;
+}
+
+/* Table responsive styles */
+.exam-table-container {
+  overflow-x: auto;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.exam-table {
+  min-width: 600px;
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .exam-table {
+    min-width: 500px;
+    font-size: 0.85rem;
   }
 
-  .popup-button{
-    position: fixed;
-    bottom: 32px;
-    right: 32px;
-    transform: translateX(-30%);
-    display: inline-block;
-    margin: 10px auto;
-    color: rgb(246, 249, 246);
-    background-color: #1a1624;
-    z-index: 999;
+  .exam-table th,
+  .exam-table td {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.8rem;
   }
-  
-  
+
+  /* Mobile responsive styles for popup content */
+  .Popup-Window h2 {
+    font-size: 1.1rem !important;
+    margin-right: 0 !important;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .Popup-Window table {
+    width: 100% !important;
+    overflow-x: auto;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .exam-table {
+    min-width: 350px;
+    font-size: 0.75rem;
+  }
+
+  .exam-table th,
+  .exam-table td {
+    padding: 0.4rem 0.3rem;
+    font-size: 0.7rem;
+  }
+
+  .Popup-Window h2 {
+    font-size: 1rem !important;
+    margin: 0 0 0.5rem 0 !important;
+  }
+
+  .Popup-Window {
+    font-size: 0.9rem;
+  }
+}

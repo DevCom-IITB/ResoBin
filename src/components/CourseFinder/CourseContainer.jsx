@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { Aside, toast } from 'components/shared'
 import { API } from 'config/api'
@@ -16,7 +16,7 @@ let ajaxRequest = null
 const CourseFinderContainer = () => {
   const { getQueryString, deleteQueryString } = useQueryString()
 
-  const [courseData, setCourseData] = useState([])
+  const [courseData, setCourseData] = useState({ count: 0, results: [] })
   const [loading, setLoading] = useState(true)
   const [seed, setSeed] = useState(1)
 
@@ -29,12 +29,16 @@ const CourseFinderContainer = () => {
 
       const response = await API.courses.list({
         params,
-        cancelToken: ajaxRequest.token
+        cancelToken: ajaxRequest.token,
       })
-      setCourseData(response)
+      // Normalize response shape (handle both AxiosResponse and plain data)
+      const data = response && response.data ? response.data : response
+      const count = (data && data.count) || 0
+      const results = (data && data.results) || []
+      setCourseData({ count, results })
     } catch (error) {
       if (axios.isCancel(error)) return
-      toast({ status: 'error', content: error })
+      toast({ status: 'error', content: error, key: 'course-list' })
     }
 
     setLoading(false)
@@ -42,17 +46,26 @@ const CourseFinderContainer = () => {
 
   useEffect(() => {
     const filter = getQueryString()
+    const filterObj = typeof filter === 'string' || !filter ? {} : filter
+    const rawQ = (filterObj.q || '').trim()
     let q
-    if (/^[A-Za-z]{2,3} [0-9]+$/.test(filter.q)) {
-      q = filter.q.replace(' ', '')
+    let searchFields = 'code,title,description'
+    if (/^[A-Za-z]{2,3} [0-9]+$/.test(rawQ)) {
+      // Exact code with a space like "CS 101" -> normalize and search code only
+      q = rawQ.replace(/\s+/g, '')
+      searchFields = 'code'
+    } else if (/^[A-Za-z]{1,4}[0-9]{0,3}$/i.test(rawQ)) {
+      // Looks like a code prefix like C, CH, CH1, CH10, CS101 -> search in code only
+      q = rawQ
+      searchFields = 'code'
     } else {
-      q = filter.q
+      q = rawQ
     }
     const params = {
-      search_fields: 'code,title,description',
+      search_fields: searchFields,
       q,
       ...filterKeys.reduce(
-        (accumulator, value) => ({ ...accumulator, [value]: filter[value] }),
+        (accumulator, value) => ({ ...accumulator, [value]: filterObj[value] }),
         {}
       ),
     }
