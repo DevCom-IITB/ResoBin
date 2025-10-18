@@ -49,7 +49,7 @@ const styles = {
     width: '100%',
     maxWidth: '900px',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
-    minHeight: '200px',
+    minHeight: '100px',
     JustifyContent: 'start',
   },
   title: {
@@ -58,10 +58,11 @@ const styles = {
     color: '#fff',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
     borderRadius: '8px',
-    marginRight: '31rem',
+    padding: '0.5rem 1rem',
+    margin: '0',
   },
   table: {
-    width: '105%',
+    width: '102%',
     borderCollapse: 'collapse',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
     // border: '1px solid #39324d',
@@ -72,8 +73,9 @@ const styles = {
     padding: '0.9rem 1.2rem',
     // backgroundColor: '#342f4bff  ',
     textTransform: 'uppercase',
-    fontSize: '0.85rem',
+    fontSize: '0.79rem',
     color: 'white',
+
     // border: '1px solid #44405eff',
     fontFamily: 'Montserrat, Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
   },
@@ -109,7 +111,7 @@ const styles = {
   date: {
     fontSize: '0.9rem',
     color: 'white',
-    fontStyle: 'italic',
+    // fontStyle: 'italic',
     fontWeight: '500',
     padding: '0.9rem 1.2rem',
     textAlign: 'left',
@@ -154,52 +156,24 @@ const Table = ({ timetable }) => {
   // console.log('Table received timetable:', timetable)
   const colorPicker = useColorPicker()
 
-  // Group data by weekday and time slot
+  // Group data by date and time slot
   const organizedData = React.useMemo(() => {
-    const weekdays = ['MON', 'TUES', 'WED', 'THURS', 'FRI', 'SAT', 'SUN']
     const timeSlots = [
       { label: '09:00 AM - 12:00 PM', slot: 1 },
       { label: '1:30 PM - 4:30 PM', slot: 2 },
       { label: '6:00 PM - 9:00 PM', slot: 3 },
     ]
 
-    const organized = {}
-
-    // Initialize structure
-    timeSlots.forEach((timeSlot) => {
-      organized[timeSlot.slot] = {}
-      weekdays.forEach((day) => {
-        organized[timeSlot.slot][day] = []
-      })
-    })
-
-    // Populate with data from timetable
-    Object.entries(timetable).forEach(([dateStr, slotData]) => {
-      // console.log('Processing dateStr:', dateStr, 'slotData:', slotData)
-
-      // Extract weekday from date string (e.g., "Monday, 16/09/24" or "Monday 16/09/24")
-      const dayName = dateStr.split(/[, ]/)[0].toUpperCase()
-      // console.log('Extracted dayName:', dayName)
-
-      // Map day names to abbreviations
-      const dayMapping = {
-        MONDAY: 'MON',
-        TUESDAY: 'TUES',
-        WEDNESDAY: 'WED',
-        THURSDAY: 'THURS',
-        FRIDAY: 'FRI',
-        SATURDAY: 'SAT',
-        SUNDAY: 'SUN',
-      }
-      const mappedDay = dayMapping[dayName] || dayName
-      // console.log('Mapped day from', dayName, 'to', mappedDay)
-
-      // Extract date part (e.g., "16/09/24" -> "16\nSEPT")
-      const datePart = dateStr.split(/[, ]/).slice(1).join(' ')
-      // console.log('Extracted datePart:', datePart)
-      const [day, month] = datePart.split('/')
-      const monthNames = [
-        '',
+    // Helper: Normalize a date string like "Friday, 21/11/25" -> "21 NOV"
+    const toDisplayKey = (dateStr) => {
+      // Get the part after the comma safely and trim
+      const afterComma = (dateStr.split(',')[1] || dateStr)
+        .replace(/\u00A0/g, ' ')
+        .trim()
+      const [rawDay = '', rawMonth = ''] = afterComma.split('/')
+      const dayNum = Number.parseInt(String(rawDay).trim(), 10)
+      const monthNum = Number.parseInt(String(rawMonth).trim(), 10)
+      const months = [
         'JAN',
         'FEB',
         'MAR',
@@ -208,61 +182,123 @@ const Table = ({ timetable }) => {
         'JUN',
         'JUL',
         'AUG',
-        'SEPT',
+        'SEP',
         'OCT',
         'NOV',
         'DEC',
       ]
-      const monthAbbr = monthNames[parseInt(month, 10)] || month
+      const monthAbbr = months[(monthNum || 0) - 1] || ''
+      return `${Number.isFinite(dayNum) ? dayNum : ''} ${monthAbbr}`.trim()
+    }
 
-      Object.entries(slotData).forEach(([slotNum, courses]) => {
-        const slot = parseInt(slotNum, 10)
-        if (organized[slot] && organized[slot][mappedDay]) {
-          courses.forEach((courseCode) => {
-            organized[slot][mappedDay].push({
-              courseCode,
-              date: day,
-              month: monthAbbr,
-            })
-          })
-          // console.log(`Successfully added courses to slot ${slot}, day ${mappedDay}`)
-        }
-      })
+    // Generate all dates from 10 NOV to 25 NOV (expanded range)
+    const allDates = []
+    for (let day = 10; day <= 25; day += 1) {
+      allDates.push(`${day} NOV`)
+    }
+
+    // Process timetable data and organize by date
+    const organized = {}
+
+    // Initialize all dates with empty slots
+    allDates.forEach((date) => {
+      organized[date] = { 1: [], 2: [], 3: [] }
     })
 
-    // console.log('Final organized data:', organized)
-    // console.log('Number of courses in organized data:',
-    //   Object.values(organized).reduce((total, slots) =>
-    //     total + Object.values(slots).reduce((slotTotal, courses) => slotTotal + courses.length, 0), 0))
+    // Populate with actual exam data
+    // Minimal debug to help diagnose in case of future mismatches
+    // console.debug('Timetable data dates:', Object.keys(timetable))
 
-    return { organized, timeSlots, weekdays }
+    Object.entries(timetable).forEach(([dateStr, slotData]) => {
+      // Normalize to our display key (e.g., "21 NOV")
+      const displayDate = toDisplayKey(dateStr)
+      const weekdayName = (dateStr.split(',')[0] || '').trim().toUpperCase()
+      const weekdayMapping = {
+        MONDAY: 'MON',
+        TUESDAY: 'TUE',
+        WEDNESDAY: 'WED',
+        THURSDAY: 'THU',
+        FRIDAY: 'FRI',
+        SATURDAY: 'SAT',
+        SUNDAY: 'SUN',
+      }
+      const weekdayAbbr = weekdayMapping[weekdayName] || weekdayName.slice(0, 3)
+
+      // If this date exists in our range, add the courses
+      if (organized[displayDate]) {
+        Object.entries(slotData).forEach(([slotNum, courses]) => {
+          const slot = parseInt(slotNum, 10)
+          if (organized[displayDate][slot]) {
+            courses.forEach((courseCode) => {
+              // Extract numeric date back from the key for display
+              const [dateOnly] = displayDate.split(' ')
+              organized[displayDate][slot].push({
+                courseCode,
+                weekday: weekdayAbbr,
+                date: dateOnly,
+                month: displayDate.includes(' ')
+                  ? displayDate.split(' ')[1]
+                  : 'NOV',
+              })
+            })
+          } else {
+            // console.debug('Unknown slot for date:', displayDate, slot)
+          }
+        })
+      }
+    })
+
+    return { organized, timeSlots, dates: allDates }
   }, [timetable])
 
-  const { organized, timeSlots, weekdays } = organizedData
+  const { organized, timeSlots, dates } = organizedData
 
   return (
     <div style={styles.container}>
       <div
         style={{
-          maxHeight: '400px',
+          maxHeight: '300px',
           overflowY: 'auto',
         }}
       >
         <table style={styles.table}>
-          <thead>
+          <thead style={{ position: 'sticky', top: '-1px', zIndex: 10 }}>
             <tr>
-              <th style={{ ...styles.th, width: '120px' }}> </th>
-              {weekdays.map((day) => (
-                <th key={day} style={styles.th}>
-                  {day}
+              <th
+                style={{
+                  ...styles.th,
+                  width: '50px',
+                  position: 'sticky',
+                  top: '-1px',
+                  paddingTop: '1.2rem',
+                  backgroundColor: '#2d2941ff',
+                  zIndex: 11,
+                  borderBottom: 'none',
+                }}
+              >
+                {' '}
+              </th>
+              {timeSlots.map((timeSlot) => (
+                <th
+                  key={timeSlot.slot}
+                  style={{
+                    ...styles.th,
+                    position: 'sticky',
+                    top: '-1px',
+                    backgroundColor: '#2d2941ff',
+                    zIndex: 10,
+                    borderBottom: 'none',
+                  }}
+                >
+                  {timeSlot.label}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {timeSlots.map((timeSlot, idx) => (
+            {dates.map((date, idx) => (
               <tr
-                key={timeSlot.slot}
+                key={date}
                 style={{
                   ...styles.rowHover,
                   ...(idx % 2 === 1 ? styles.rowEven : {}),
@@ -271,17 +307,16 @@ const Table = ({ timetable }) => {
                 <td
                   style={{
                     ...styles.date,
-                    textAlign: 'center',
-                    // verticalAlign: 'middle'
+                    textAlign: 'left',
                   }}
                 >
-                  {timeSlot.label}
+                  {date}
                 </td>
-                {weekdays.map((day) => {
-                  const courses = organized[timeSlot.slot][day] || []
+                {timeSlots.map((timeSlot) => {
+                  const courses = organized[date][timeSlot.slot] || []
                   return (
                     <td
-                      key={day}
+                      key={timeSlot.slot}
                       style={{
                         ...styles.td,
                         padding: courses.length ? '0.5rem' : styles.td.padding,
@@ -321,7 +356,7 @@ const Table = ({ timetable }) => {
                               overflow: 'hidden', // <-- to merge rounded corners cleanly
                             }}
                           >
-                            {/* Left beige date column */}
+                            {/* Left beige date/weekday column */}
                             <div
                               style={{
                                 display: 'flex',
@@ -339,13 +374,19 @@ const Table = ({ timetable }) => {
                               <div
                                 style={{
                                   fontSize: '1rem',
+                                  fontWeight: 'bold',
                                   marginBottom: '2px',
                                 }}
                               >
                                 {course.date}
                               </div>
-                              <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>
-                                {course.month}
+                              <div
+                                style={{
+                                  fontSize: '0.8rem',
+                                  opacity: 0.8,
+                                }}
+                              >
+                                {course.weekday}
                               </div>
                             </div>
 
@@ -538,16 +579,24 @@ const PopupExample = () => {
           <h2
             style={{
               ...styles.title,
-              marginRight: '42rem',
-              marginBottom: '0.5rem',
+              marginBottom: '-0.9rem',
               fontWeight: '520',
+              textAlign: 'left',
+              whiteSpace: 'nowrap',
             }}
           >
-            {' '}
             Exam Timetable
           </h2>
-          <h2 style={{ ...styles.title }}>
-            {' '}
+          <h2
+            style={{
+              ...styles.title,
+              textAlign: 'left',
+              whiteSpace: 'nowrap',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '5px',
+            }}
+          >
             <svg
               width="25"
               height="25"
@@ -563,13 +612,20 @@ const PopupExample = () => {
                 strokeLinejoin="round"
               >
                 <g strokeWidth="1.5">
-                  <rect x="3.5" y="6.5" width="17" height="17" rx="2.5" />
-                  <line x1="3.5" y1="18.5" x2="20.5" y2="18.5" />
+                  <rect x="3.5" y="4.5" width="17" height="17" rx="2.5" />
+                  <line x1="3.5" y1="15.5" x2="20.5" y2="15.5" />
                 </g>
               </g>
             </svg>
-            {'  '}End-semester Examinations
+            End-semester Examinations
           </h2>
+          <p
+            style={{ fontStyle: 'italic', color: 'yellow', fontSize: '0.9rem' }}
+          >
+            The timetable is generated based on the courses in your current
+            timetable. If you dont see any exams, please ensure that your
+            courses have valid lecture slots (not lab slots) in your timetable.
+          </p>
           <Table timetable={timetable} />
           <CourseFinderFilterForm setCoursesAndSlots={setCoursesAndSlots} />
           <button
