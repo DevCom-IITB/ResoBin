@@ -653,7 +653,7 @@ const PopupExample = () => {
             timetable. If you dont see any exams, please ensure that your
             courses have valid lecture slots (not lab slots) in your timetable.
           </p>
-          {/* <ExamTimetableDownload timetable={timetable} /> */}
+          <ExamTimetableDownload timetable={timetable} />
           <Table timetable={timetable} />
           <CourseFinderFilterForm setCoursesAndSlots={setCoursesAndSlots} />
           <button
