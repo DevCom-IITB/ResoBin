@@ -148,7 +148,7 @@ ${events.join('')}END:VCALENDAR`
     <DownloadButtonContainer>
       <DownloadButton onClick={handleDownloadExamTimetable}>
         <Download size="18" style={{ marginRight: '8px' }} />
-        Download Exam Timetable
+        Download as .ics
       </DownloadButton>
     </DownloadButtonContainer>
   )
