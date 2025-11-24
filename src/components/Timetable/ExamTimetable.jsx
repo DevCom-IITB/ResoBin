@@ -9,6 +9,8 @@ import { hash } from 'helpers'
 import { useColorPicker } from 'hooks'
 import { makeGradient } from 'styles/utils'
 
+import ExamTimetableDownload from './ExamTimetableDownload'
+
 export const filterKeys = [
   'p',
   'semester',
@@ -159,9 +161,24 @@ const Table = ({ timetable }) => {
   // Group data by date and time slot
   const organizedData = React.useMemo(() => {
     const timeSlots = [
-      { label: '09:00 AM - 12:00 PM', slot: 1 },
-      { label: '1:30 PM - 4:30 PM', slot: 2 },
-      { label: '6:00 PM - 9:00 PM', slot: 3 },
+      {
+        label: '09:00 AM - 12:00 PM',
+        slot: 1,
+        startTime: '09:00',
+        endTime: '12:00',
+      },
+      {
+        label: '1:30 PM - 4:30 PM',
+        slot: 2,
+        startTime: '13:30',
+        endTime: '16:30',
+      },
+      {
+        label: '6:00 PM - 9:00 PM',
+        slot: 3,
+        startTime: '18:00',
+        endTime: '21:00',
+      },
     ]
 
     // Helper: Normalize a date string like "Friday, 21/11/25" -> "21 NOV"
@@ -429,7 +446,7 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
       setSemesters(response[0])
       // console.log('Fetched timetable slots: here', response)
     } catch (error) {
-      toast({ status: 'error', content: error })
+      toast({ status: 'error', content: error, key: 'semester-error' })
     }
   }
   useEffect(() => {
@@ -626,6 +643,7 @@ const PopupExample = () => {
             timetable. If you dont see any exams, please ensure that your
             courses have valid lecture slots (not lab slots) in your timetable.
           </p>
+          <ExamTimetableDownload timetable={timetable} />
           <Table timetable={timetable} />
           <CourseFinderFilterForm setCoursesAndSlots={setCoursesAndSlots} />
           <button

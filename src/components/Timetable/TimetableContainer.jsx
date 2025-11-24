@@ -816,7 +816,7 @@ const TimetableContainer = () => {
         <PageHeading>
           <PageTitle>Timetable</PageTitle>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Exam />
+            {/* <Exam /> */}
             <Dropdown
               overlay={addDropdownMenu}
               trigger={['click']}
