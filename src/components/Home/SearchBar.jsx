@@ -48,7 +48,7 @@ const SearchBar = ({ loading, setLoading }) => {
         cancelToken: ajaxRequest.token,
       })
 
-      console.log(`Search API Response for '${searchTerm}':`, response)
+      // console.log(`Search API Response for '${searchTerm}':`, response)
 
       // API interceptor unwraps the response data
       // @ts-ignore - API interceptor handles response unwrapping

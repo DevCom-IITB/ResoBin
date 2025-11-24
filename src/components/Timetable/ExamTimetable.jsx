@@ -1,11 +1,12 @@
-import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components/macro'
 
-import { Form, toast } from 'components/shared'
+// import { Form, toast } from 'components/shared'
+import { toast } from 'components/shared'
 import { API } from 'config/api'
 import { hash } from 'helpers'
-import { useQueryString, useColorPicker } from 'hooks'
+// import { useQueryString, useColorPicker } from 'hooks'
+import { useColorPicker } from 'hooks'
 import { makeGradient } from 'styles/utils'
 
 import ExamTimetableDownload from './ExamTimetableDownload'
@@ -435,9 +436,9 @@ const Table = ({ timetable }) => {
 }
 
 const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
-  const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
-  const [form] = Form.useForm()
-  const [userTimetableCourses, setUserTimetableCourses] = useState([])
+  // const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
+  // const [form] = Form.useForm()
+  // const [userTimetableCourses, setUserTimetableCourses] = useState([])
   const [semesters, setSemesters] = useState({})
   const getSemesters = async () => {
     try {
@@ -455,7 +456,7 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
     const fetchUserTimetable = async () => {
       try {
         if (!semesters.season || !semesters.year) {
-          setUserTimetableCourses([])
+          // setUserTimetableCourses([])
           setCoursesAndSlots([], [])
           return
         }
@@ -463,7 +464,7 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
           season: semesters.season,
           year: semesters.year,
         })
-        setUserTimetableCourses(response)
+        // setUserTimetableCourses(response)
         // console.log('User Timetable Courses:', response);
 
         const filtered = response.filter((item) => {
@@ -501,7 +502,7 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
           content: 'Failed to fetch user timetable',
           key: 'timetable-error',
         })
-        setUserTimetableCourses([])
+        // setUserTimetableCourses([])
         setCoursesAndSlots([], [])
       }
     }
@@ -543,21 +544,10 @@ const PopupExample = () => {
         })
 
         try {
-          const res = await axios.post(
-            'http://localhost:8000/api/get-schedule-batch/',
-            {
-              courses: userCourses,
-            }
-          )
-          const schedules = res.data
-
+          const res = await API.examSchedule.getBatch({ courses: userCourses })
           const temp = {}
-          schedules.filter(Boolean).forEach((schedule) => {
-            const {
-              day_date: dayDate,
-              mapped_slot: mappedSlot,
-              course_code: courseCode,
-            } = schedule
+          res.filter(Boolean).forEach((schedule) => {
+            const { dayDate, mappedSlot, courseCode } = schedule
 
             if (!dayDate || !mappedSlot || !courseCode) return
 
