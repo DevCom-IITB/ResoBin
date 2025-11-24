@@ -34,12 +34,13 @@ const CourseResourceItem = ({ content: initialContent }) => {
   const [content, setContent] = useState(initialContent)
 
   const handleDownload = () => {
-    // window.open(content.file, '_blank', 'noopener,noreferrer')
-    const iframe = document.createElement('iframe')
-    iframe.src = content.file
-    iframe.style.display = 'none'
-    document.body.appendChild(iframe)
-    window.open(iframe.src, '_blank', 'noopener,noreferrer')
+    const a = document.createElement('a')
+    a.href = content.file
+    a.download = ''
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
   }
 
   const handleEdit = async (payload) => {
