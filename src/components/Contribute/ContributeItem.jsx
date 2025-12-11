@@ -44,7 +44,7 @@ const ContributeItem = ({
   const handleUpload = async (fileDetails) => {
     updateFileItem({ status: 'uploading' })
 
-    const MAX_FILE_SIZE = 26214400 // 25MB
+    const MAX_FILE_SIZE = 31457280 // 30MB
 
     if (!fileItem.file || fileItem.file.size > MAX_FILE_SIZE) {
       updateFileItem({ status: 'error' })
