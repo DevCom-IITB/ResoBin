@@ -1920,6 +1920,16 @@ const topics = [
       },
       {
         subheading: '',
+        linktext: `IDDDP Booklet`,
+        link: 'https://drive.google.com/file/d/16I4QIEBNni7X5Zcyec5tnqhkifhmuC46/view?usp=drive_link',
+      },
+      {
+        subheading: '',
+        linktext: `Course info booklet 2025`,
+        link: 'https://drive.google.com/file/d/1ISMUMvT9teRZsiWb4gvRJI0yyKfWv5V1/view?usp=drivesdk',
+      },
+      {
+        subheading: '',
         linktext: `Course info booklet 2022`,
         link: 'https://drive.google.com/drive/u/2/folders/1wi4SQwrBkj0BAG5u4Zw1XQ_tu4NTs3vz',
       },
