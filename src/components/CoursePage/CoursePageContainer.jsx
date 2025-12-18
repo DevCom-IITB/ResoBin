@@ -105,6 +105,7 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
     department,
     credits,
     description,
+    category,
     workloadIgnore,
     semester,
     favoritedByCount,
@@ -176,7 +177,8 @@ const CoursePageContainer = ({ courseData, cutoffs }) => {
 
               <h2>{title}</h2>
               <h3>
-                {department.name} &ensp;&#9679;&ensp; {credits} credits{' '}
+                {department.name} &ensp;&#9679;&ensp; {credits} credits
+                {category && <> &ensp;&#9679;&ensp; {category}</>}
                 <CPICutoff cutoff={cutoffs} />
               </h3>
 
