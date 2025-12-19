@@ -9,7 +9,7 @@ import styled, { createGlobalStyle } from 'styled-components/macro'
 import { useQueryString, useResponsive } from 'hooks'
 import { selectIsDropdownActive } from 'store/settingsSlice'
 
-const  TimetableSearch = ({ loading, setLoading, data, addToTimetable }) => {
+const TimetableSearch = ({ loading, setLoading, data, addToTimetable }) => {
   const { isDesktop } = useResponsive()
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
   const showFilter = useSelector(selectIsDropdownActive)
@@ -24,54 +24,68 @@ const  TimetableSearch = ({ loading, setLoading, data, addToTimetable }) => {
   }
 
   const filterSuggestions = (value) => {
-    if (!data ) {
-      return []
-    }
+    if (!data) return []
 
-    const lowercaseValue = value ? value.toLowerCase() : ''
+    const q = (value || '').trim().toLowerCase()
+    if (!q) return []
 
-    const suggestions = []
+    const codeMatches = []
+    const titleOnlyMatches = []
 
-    data.forEach(({ code, semester }) => {
-      const lowercaseCode = code.toLowerCase()
+    const titleWordStart = new RegExp(`(^|\\s)${q}`)
 
-      if (lowercaseCode.includes(lowercaseValue)) {
-        if (semester.length > 0) {
-          const { timetable } = semester[0]
+    data.forEach(({ code, title, semester }) => {
+      const codeLc = (code || '').toLowerCase()
+      const titleLc = (title || '').toLowerCase()
 
-          if (timetable.length > 0) {
-            timetable.forEach(
-              ({ id, division, lectureSlots, tutorialSlots }) => {
-                const suggestion = {
-                  id,
-                  value: `${code} - ${division}`,
-                  link: `/courses/${code}`,
-                }
+      const matchesCode = codeLc.startsWith(q) || codeLc.includes(q)
+      const matchesTitle = titleWordStart.test(titleLc)
 
-                if (lectureSlots.length > 0 && tutorialSlots.length > 0) {
-                  suggestion.value += ` - ${lectureSlots.join(
-                    ', '
-                  )} - ${tutorialSlots.join(', ')}`
-                } else if (lectureSlots.length > 0) {
-                  suggestion.value += ` - ${lectureSlots.join(', ')}`
-                } else if (tutorialSlots.length > 0) {
-                  suggestion.value += ` - ${tutorialSlots.join(', ')}`
-                }
+      if (!matchesCode && !matchesTitle) return
 
-                suggestions.push(suggestion)
-              }
-            )
-          } else {
-            suggestions.push({
-              id: -1,
-              value: code,
+      const titlePart = title ? ` - ${title}` : ''
+      const timetables = semester?.[0]?.timetable || []
+
+      if (timetables.length > 0) {
+        timetables.forEach(
+          ({ id, division, lectureSlots = [], tutorialSlots = [] }) => {
+            const suggestion = {
+              id,
+              value: `${code}${titlePart} - ${division}`,
               link: `/courses/${code}`,
-            })
+            }
+
+            if (lectureSlots.length > 0 && tutorialSlots.length > 0) {
+              suggestion.value += ` - ${lectureSlots.join(
+                ', '
+              )} - ${tutorialSlots.join(', ')}`
+            } else if (lectureSlots.length > 0) {
+              suggestion.value += ` - ${lectureSlots.join(', ')}`
+            } else if (tutorialSlots.length > 0) {
+              suggestion.value += ` - ${tutorialSlots.join(', ')}`
+            }
+
+            if (matchesCode) codeMatches.push(suggestion)
+            else titleOnlyMatches.push(suggestion)
           }
+        )
+      } else {
+        const suggestion = {
+          id: -1,
+          value: `${code}${titlePart}`,
+          link: `/courses/${code}`,
         }
+
+        if (matchesCode) codeMatches.push(suggestion)
+        else titleOnlyMatches.push(suggestion)
       }
     })
-    return suggestions
+    const seen = new Set()
+    return [...codeMatches, ...titleOnlyMatches].filter((s) => {
+      if (seen.has(s.value)) return false
+      seen.add(s.value)
+      return true
+    })
   }
 
   const suggestions = filterSuggestions(search)
@@ -105,7 +119,7 @@ const  TimetableSearch = ({ loading, setLoading, data, addToTimetable }) => {
                     event.stopPropagation()
                     addToTimetable(option.value, option.id)
                     deleteQueryString('q')
-                    setSearch("")
+                    setSearch('')
                   }}
                 >
                   ⚡ Add
@@ -198,8 +212,12 @@ const Suggestions = styled.div`
 const Option = styled.div`
   position: relative;
   padding: 0.5rem;
+  padding-right: 4rem;
   cursor: pointer;
   color: lightgray;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   &:hover {
     background-color: ${({ theme }) => theme.secondaryHover};
