@@ -37,28 +37,23 @@ const topics = [
       },
       {
         subheading: '',
-        description: `As a vertical of UGAC, and living up to our name, it is our duty to support you with the most 
-                relevant resources and an intricately researched array of both old and new curricula that 
-                prevail in the institute. This Course Information Page, a result of that ideal, houses an 
-                elaboration on the various components and nuances of the academic system at IIT Bombay. 
-                More pertinently, it also includes some aspects of the newly implemented Academic 
-                Curriculum`,
+        description: `Over the years, students at IIT Bombay have shared course material not out of obligation, but because someone once did it for them. ResoBin is a tribute to that spirit of shared learning. It reflects the simple truth that we move forward by building on the work of others. It is an archive of notes, reference material, and previous year papers, carefully compiled so that no student has to start from zero.`,
       },
       {
         subheading: '',
-        description: `On this page and ResoBin as a whole, you will find information, reviews and resources about 
-                various programs and courses, like minors, honours and electives, that you will get to explore
-                after the first year. As students, a fundamental motivation that defines our academic progress 
-                is curiosity; the willingness to learn; 'to strive, to seek, to find and not to yield', as Ulysses 
-                proudly declares. Keeping true to this, we have done our best to curate the content on this 
-                platform to provide you with whatever details you may want to know to decide upon an 
-                academic commitment. We believe this to be a comprehensive guide to finding your interests 
-                as you navigate your way through your undergraduate curriculum.`,
+        description: `However, with access comes responsibility. As users of ResoBin, we must uphold academic honesty. These resources are meant to supplement your study, not substitute it. Use past papers to test yourself. Use others’ notes to strengthen your foundation, not to avoid attending classes or engaging with textbooks. True learning is an internal process, and no amount of external material can replace the effort you put into thinking, questioning, and reflecting.`,
       },
       {
         subheading: '',
-        description: `  We hope you benefit significantly from this page and ResoBin. We are open to constructive 
-                feedback and any ideas to improve the content on this platform.`,
+        description: `The strength of ResoBin lies in its continuity. It grows with every batch that contributes. One day, you will finish a tough course, survive an exam you once feared, and find your own way of understanding something complex. In that moment, you will have a choice: to close that chapter and move on, or to upload your notes, your solutions, your insights, and make life a little easier for the next batch. When you upload your notes you are not doing a small clerical task, you are extending a hand to hundreds of juniors you may never meet. Years later, someone might clear a concept, pass a course, or discover a new interest because of a document you chose to share today. That invisible chain of help and gratitude is what makes this place special.`,
+      },
+      {
+        subheading: '',
+        description: `As Institute Secretary, Academic Affairs, I feel genuinely grateful and humbled to be writing this foreword. ResoBin is not my project or your project, it is our shared legacy. It has been built over the years by students who believed that competition and compassion can coexist, that excellence does not require isolation, and that helping someone else succeed does not dim your own light.`,
+      },
+      {
+        subheading: '',
+        description: `I invite you to explore ResoBin with curiosity and a sense of responsibility. Use it to prepare smarter and to help others learn better. And when the time comes, leave it richer than you found it.`,
       },
       {
         subheading: '',
@@ -66,15 +61,23 @@ const topics = [
       },
       {
         subheading: '',
-        description: `Shravya Suresh`,
+        description: `Avani Hasmukh Gala`,
       },
       {
         subheading: '',
-        description: ` Institute Secretary, Academic Affairs`,
+        description: `Institute Secretary, Academic Affairs`,
       },
       {
         subheading: '',
-        description: ` Head, Student Support Services (2023-2024)`,
+        description: `Head, Student Support Services (2025-2026)`,
+      },
+      {
+        subheading: '',
+        description: `Undergraduate Academic Council`,
+      },
+      {
+        subheading: '',
+        description: `Email: isaa.sss.iitb@gmail.com`,
       },
     ],
   },
@@ -1940,13 +1943,18 @@ const topics = [
       },
       {
         subheading: '',
-        linktext: `Course info booklet 2020`,
-        link: 'https://drive.google.com/file/d/1IoJ3qLBpsWafaLuci5hGq8d1vbmYfvwP/view',
+        linktext: `Procedures for rejoining after being inactive for a semester`,
+        link: 'https://drive.google.com/file/d/1VUTF75nSGQFEqQlWkCbe4y6Q12sTCXax/view?usp=share_link',
       },
       {
         subheading: '',
-        linktext: `Course info booklet 2019`,
-        link: 'https://gymkhana.iitb.ac.in/~ugacademics/Docs/CourseInfo_Booklet.pdf',
+        linktext: `BSBE Guide`,
+        link: 'https://drive.google.com/file/d/1HLuv4Ms3pkBl_R23IXABwTYQwbMyehL4/view?usp=share_link',
+      },
+      {
+        subheading: '',
+        linktext: `Library Spotlight`,
+        link: 'https://drive.google.com/file/d/1JD5tOVQDt663LMiH3-4NNQO6KgjX60IB/view?usp=share_link',
       },
       {
         subheading: '',
