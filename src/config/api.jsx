@@ -205,6 +205,10 @@ export const API = {
     read: async ({ id }) => APIInstance.get(`/program-reviews/${id}`),
   },
 
+  programs: {
+    dropdown: () => APIInstance.get('/programs/dropdown'),
+  },
+
   honors: {
     list: async () => APIInstance.get('/honors'),
   },
