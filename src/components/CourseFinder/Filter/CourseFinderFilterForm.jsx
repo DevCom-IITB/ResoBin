@@ -334,7 +334,22 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           />
         </Form.Item>
       </div>
-
+      <div>
+        <CourseFinderFilterItem
+          label="Minor Programs (Beta)"
+          onClear={handleFilterClear('programs', ['programs'])}
+        />
+        <Form.Item name="programs">
+          <Select
+            mode="multiple"
+            options={programOptions}
+            placeholder="Select minors..."
+            loading={loadingPrograms}
+            showArrow
+            allowClear
+          />
+        </Form.Item>
+      </div>
       <CourseFinderFilterItem
         label={
           <>
@@ -368,23 +383,6 @@ const CourseFinderFilterForm = ({ setLoading }) => {
             options={tagOptions}
             placeholder="Select something..."
             showArrow
-          />
-        </Form.Item>
-      </div>
-
-      <div>
-        <CourseFinderFilterItem
-          label="Minor Programs (Beta)"
-          onClear={handleFilterClear('programs', ['programs'])}
-        />
-        <Form.Item name="programs">
-          <Select
-            mode="multiple"
-            options={programOptions}
-            placeholder="Select minors..."
-            loading={loadingPrograms}
-            showArrow
-            allowClear
           />
         </Form.Item>
       </div>
