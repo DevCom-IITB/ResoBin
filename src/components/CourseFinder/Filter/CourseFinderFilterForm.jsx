@@ -25,6 +25,7 @@ export const filterKeys = [
   'slots',
   'avoid_slots',
   'avoid_slot_clash',
+  'programs',
 ]
 
 const CourseFinderFilterItem = ({ label, onClear, content }) => (
@@ -46,6 +47,9 @@ const CourseFinderFilterForm = ({ setLoading }) => {
   const [form] = Form.useForm()
   const [userTimetableCourses, setUserTimetableCourses] = useState([])
   const [semesters, setSemesters] = useState({})
+  const [programs, setPrograms] = useState([])
+  const [loadingPrograms, setLoadingPrograms] = useState(false)
+
   const getSemesters = async () => {
     try {
       const response = await API.semesters.list()
@@ -54,6 +58,24 @@ const CourseFinderFilterForm = ({ setLoading }) => {
       toast({ status: 'error', content: error })
     }
   }
+
+  const fetchPrograms = async () => {
+    try {
+      setLoadingPrograms(true)
+      const response = await API.programs.dropdown()
+      setPrograms(response.data || response)
+    } catch (error) {
+      toast({ 
+        status: 'error', 
+        content: 'Failed to load programs',
+        key: 'programs-error' 
+      })
+      setPrograms([])
+    } finally {
+      setLoadingPrograms(false)
+    }
+  }
+
   const getUserTimetableSlots = () => {
     if (!semesters.season || !semesters.year || !userTimetableCourses?.length)
       return []
@@ -64,7 +86,9 @@ const CourseFinderFilterForm = ({ setLoading }) => {
   }
   useEffect(() => {
     getSemesters()
+    fetchPrograms()
   }, [])
+
   useEffect(() => {
     const fetchUserTimetable = async () => {
       try {
@@ -100,6 +124,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
       slots: [],
       avoid_slots: [],
       avoid_slot_clash: false,
+      programs: [],
     }
 
     form.setFieldsValue({
@@ -133,6 +158,12 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     setQueryString('semester', allFields.semester)
     setQueryString('tags', allFields.tags)
     setQueryString('slots', allFields.slots)
+
+    if (allFields.programs && allFields.programs.length > 0) {
+      setQueryString('programs', allFields.programs.join(','))
+    } else {
+      deleteQueryString('programs')
+    }
 
     if (allFields.avoid_slot_clash) {
       const userSlots = getUserTimetableSlots()
@@ -178,6 +209,11 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     return acc
   }, [])
 
+  const programOptions = programs.map((program) => ({
+    label: `${program.name} (${program.courseCount} courses)`,
+    value: program.id,
+  }))
+
   return (
     <Form
       form={form}
@@ -201,6 +237,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
         avoid_slot_clash:
           getQueryString('avoid_slot_clash') === 'true' ||
           getQueryString('avoid_slots') !== null,
+        programs: getQueryString('programs')?.split(',') ?? [],
       }}
       style={{ gap: '1rem', padding: '0 0.5rem' }}
     >
@@ -312,7 +349,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           </Form.Item>
         }
       />
-            <div>
+      <div>
         <CourseFinderFilterItem
           label="Tags"
           onClear={handleFilterClear('tags', ['tags'])}
@@ -323,6 +360,23 @@ const CourseFinderFilterForm = ({ setLoading }) => {
             options={tagOptions}
             placeholder="Select something..."
             showArrow
+          />
+        </Form.Item>
+      </div>
+
+      <div>
+        <CourseFinderFilterItem
+          label="Minor/Honor Programs"
+          onClear={handleFilterClear('programs', ['programs'])}
+        />
+        <Form.Item name="programs">
+          <Select
+            mode="multiple"
+            options={programOptions}
+            placeholder="Select minors/honors..."
+            loading={loadingPrograms}
+            showArrow
+            allowClear
           />
         </Form.Item>
       </div>
