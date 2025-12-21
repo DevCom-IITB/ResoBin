@@ -65,10 +65,10 @@ const CourseFinderFilterForm = ({ setLoading }) => {
       const response = await API.programs.dropdown()
       setPrograms(response.data || response)
     } catch (error) {
-      toast({ 
-        status: 'error', 
+      toast({
+        status: 'error',
         content: 'Failed to load programs',
-        key: 'programs-error' 
+        key: 'programs-error',
       })
       setPrograms([])
     } finally {
@@ -209,10 +209,15 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     return acc
   }, [])
 
-  const programOptions = programs.map((program) => ({
-    label: `${program.name} (${program.courseCount} courses)`,
-    value: program.id,
-  }))
+  const programOptions = programs
+    .filter((program) =>
+      program.name?.includes('Centre for Machine Intelligence and Data Science')
+    )
+    .map((program) => ({
+      label: `${program.name} (${program.courseCount} courses)`,
+      value: program.id,
+    })) // TODO : need to replace with all the programs later
+
 
   return (
     <Form
@@ -335,7 +340,10 @@ const CourseFinderFilterForm = ({ setLoading }) => {
           <>
             Avoid Slot Clash
             <Tooltip title="When enabled, courses with slots that clash with your current timetable will be filtered out">
-              <InformationCircle size={16} style={{ marginLeft: '8px', cursor: 'help' }} />
+              <InformationCircle
+                size={16}
+                style={{ marginLeft: '8px', cursor: 'help' }}
+              />
             </Tooltip>
           </>
         }
@@ -366,14 +374,14 @@ const CourseFinderFilterForm = ({ setLoading }) => {
 
       <div>
         <CourseFinderFilterItem
-          label="Minor/Honor Programs"
+          label="Minor Programs (Beta)"
           onClear={handleFilterClear('programs', ['programs'])}
         />
         <Form.Item name="programs">
           <Select
             mode="multiple"
             options={programOptions}
-            placeholder="Select minors/honors..."
+            placeholder="Select minors..."
             loading={loadingPrograms}
             showArrow
             allowClear
