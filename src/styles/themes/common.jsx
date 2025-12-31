@@ -1,5 +1,5 @@
 const globalConfig = {
-  asideWidthRight: '16rem',
+  asideWidthRight: '20rem',
   asideWidthLeft: '9rem',
   headerHeight: '3rem',
 
