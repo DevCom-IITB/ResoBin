@@ -122,27 +122,117 @@ END:VCALENDAR
     return window.URL.createObjectURL(file)
   }
 
-  const generatePNGFile = (element) => {
-    const container = element.cloneNode(true)
-    container.setAttribute(
-      'style',
-      'width: 1250px; height: 700px; overflow: hidden;'
+  const switchToWeekView = () => {
+    const radioGroup = document.querySelector('[class*="StyledRadioGroup"]')
+    if (!radioGroup) return Promise.resolve()
+
+    const inputs = Array.from(
+      radioGroup.querySelectorAll('input[type="radio"]')
     )
+    const weekInput = inputs.find(
+      (input) => input instanceof HTMLInputElement && input.value === 'Week'
+    )
+    if (!weekInput || !(weekInput instanceof HTMLInputElement)) {
+      return Promise.resolve()
+    }
+
+    if (weekInput.checked) return Promise.resolve()
+
+    const weekButton = weekInput.closest('label') || weekInput.parentElement
+    if (weekButton && weekButton instanceof HTMLElement) {
+      weekButton.click()
+    } else if (weekInput instanceof HTMLElement) {
+      weekInput.click()
+    }
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve()
+      }, 500)
+    })
+  }
+
+  const generatePNGFile = async () => {
+    await switchToWeekView()
+
+    const timetableWrapper = document.querySelector(
+      '[class*="TimetableWrapper"]'
+    )
+    if (!timetableWrapper) {
+      throw new Error('Timetable not found')
+    }
+
+    const scrollInner = timetableWrapper.querySelector(
+      '[class*="TimetableScrollInner"]'
+    )
+    if (!scrollInner) {
+      throw new Error('Timetable view not found')
+    }
+
+    const weekViewContainer = scrollInner.querySelector(
+      '[class*="WeekViewContainer"]'
+    )
+    if (!weekViewContainer) {
+      throw new Error('Weekly view not found')
+    }
+
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve()
+      }, 100)
+    })
+
+    const container = weekViewContainer.cloneNode(true)
+    if (!(container instanceof HTMLElement)) {
+      throw new Error('Failed to clone timetable element')
+    }
+
+    const computedStyle = window.getComputedStyle(weekViewContainer)
+    const { scrollWidth, scrollHeight } = weekViewContainer
+    container.style.position = 'absolute'
+    container.style.left = '-9999px'
+    container.style.top = '0'
+    container.style.width = `${scrollWidth}px`
+    container.style.height = `${scrollHeight}px`
+    container.style.background = computedStyle.background
+    container.style.backgroundColor = computedStyle.backgroundColor
     document.body.appendChild(container)
 
-    return html2canvas(container.children[0])
-      .then((canvas) => {
-        const url = canvas.toDataURL('image/png')
-        const link = document.createElement('a')
-        link.href = url
-        link.download = 'TimeTable.png'
-        link.click()
-        return 'Download started'
+    try {
+      const canvas = await html2canvas(container, {
+        backgroundColor: computedStyle.backgroundColor || null,
+        scale: 2,
+        logging: false,
+        useCORS: true,
+        allowTaint: false,
+        width: scrollWidth,
+        height: scrollHeight,
       })
-      .catch((error) => {
-        throw new Error('Download failed: '.concat(error))
+
+      await new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            reject(new Error('Failed to create image blob'))
+            return
+          }
+          const url = URL.createObjectURL(blob)
+          const link = document.createElement('a')
+          link.href = url
+          link.download = 'TimeTable.png'
+          link.style.display = 'none'
+          document.body.appendChild(link)
+          link.click()
+          setTimeout(() => {
+            document.body.removeChild(link)
+            URL.revokeObjectURL(url)
+            resolve('Download started')
+          }, 100)
+        }, 'image/png')
       })
-      .finally(() => document.body.removeChild(container))
+    } finally {
+      if (document.body.contains(container)) {
+        document.body.removeChild(container)
+      }
+    }
   }
 
   const menu = (
@@ -153,16 +243,12 @@ END:VCALENDAR
           target="_blank"
           rel="noreferrer"
           download
+          style={{ textDecoration: 'none' }}
         >
           Google Calendar (.ics file)
         </a>
       </Menu.Item>
-      <Menu.Item
-        key="png"
-        onClick={() =>
-          generatePNGFile(document.getElementById('timetable-layout-wrapper'))
-        }
-      >
+      <Menu.Item key="png" onClick={() => generatePNGFile()}>
         Image (.png file)
       </Menu.Item>
     </Menu>
