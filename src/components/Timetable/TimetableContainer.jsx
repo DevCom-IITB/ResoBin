@@ -1601,7 +1601,7 @@ const WeekView = ({
   return (
     <TimetableWrapper>
       <TimetableScrollInner>
-        <WeekViewContainer>
+        <WeekViewContainer id="week-view-container">
           <ControlsLayout>
             <DateDisplay>{dayDateString}</DateDisplay>
             <ViewSelectorContainer>

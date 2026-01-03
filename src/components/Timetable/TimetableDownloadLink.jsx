@@ -154,23 +154,7 @@ END:VCALENDAR
   const generatePNGFile = async () => {
     await switchToWeekView()
 
-    const timetableWrapper = document.querySelector(
-      '[class*="TimetableWrapper"]'
-    )
-    if (!timetableWrapper) {
-      throw new Error('Timetable not found')
-    }
-
-    const scrollInner = timetableWrapper.querySelector(
-      '[class*="TimetableScrollInner"]'
-    )
-    if (!scrollInner) {
-      throw new Error('Timetable view not found')
-    }
-
-    const weekViewContainer = scrollInner.querySelector(
-      '[class*="WeekViewContainer"]'
-    )
+    const weekViewContainer = document.getElementById('week-view-container')
     if (!weekViewContainer) {
       throw new Error('Weekly view not found')
     }
