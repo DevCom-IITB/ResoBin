@@ -661,7 +661,7 @@ const PopupExample = () => {
                 </g>
               </g>
             </svg>
-            End-semester Examinations
+            Mid-semester Examinations
           </h2>
           <p
             style={{ fontStyle: 'italic', color: 'yellow', fontSize: '0.9rem' }}
