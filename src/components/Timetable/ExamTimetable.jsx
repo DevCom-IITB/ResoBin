@@ -233,13 +233,13 @@ const Table = ({ timetable }) => {
 
     // Populate with actual exam data
     // Minimal debug to help diagnose in case of future mismatches
-    console.log('Timetable data received:', timetable)
-    console.log('Timetable data dates:', Object.keys(timetable))
+    // console.log('Timetable data received:', timetable)
+    // console.log('Timetable data dates:', Object.keys(timetable))
 
     Object.entries(timetable).forEach(([dateStr, slotData]) => {
       // Normalize to our display key (e.g., "21 FEB")
       const displayDate = toDisplayKey(dateStr)
-      console.log(`Processing: "${dateStr}" -> "${displayDate}"`)
+      // console.log(`Processing: "${dateStr}" -> "${displayDate}"`)
       const weekdayName = (dateStr.split(',')[0] || '').trim().toUpperCase()
       const weekdayMapping = {
         MONDAY: 'MON',
@@ -254,16 +254,16 @@ const Table = ({ timetable }) => {
 
       // If this date exists in our range, add the courses
       if (organized[displayDate]) {
-        console.log(`Date ${displayDate} found in organized data`)
+        // console.log(`Date ${displayDate} found in organized data`)
         Object.entries(slotData).forEach(([slotNum, courses]) => {
           const slot = parseInt(slotNum, 10)
           if (organized[displayDate][slot]) {
             courses.forEach((courseCode) => {
               // Extract numeric date back from the key for display
               const [dateOnly] = displayDate.split(' ')
-              console.log(
-                `Adding course ${courseCode} to ${displayDate} slot ${slot}`
-              )
+              // console.log(
+              //   `Adding course ${courseCode} to ${displayDate} slot ${slot}`
+              // )
               organized[displayDate][slot].push({
                 courseCode,
                 weekday: weekdayAbbr,
@@ -274,14 +274,14 @@ const Table = ({ timetable }) => {
               })
             })
           } else {
-            console.warn('Unknown slot for date:', displayDate, slot)
+            // console.warn('Unknown slot for date:', displayDate, slot)
           }
         })
       } else {
-        console.warn(
-          `Date ${displayDate} NOT found in organized data. Available dates:`,
-          Object.keys(organized)
-        )
+        // console.warn(
+        //   `Date ${displayDate} NOT found in organized data. Available dates:`,
+        //   Object.keys(organized)
+        // )
       }
     })
 
