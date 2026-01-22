@@ -162,22 +162,28 @@ const Table = ({ timetable }) => {
   const organizedData = React.useMemo(() => {
     const timeSlots = [
       {
-        label: '09:00 AM - 12:00 PM',
+        label: '08:00 AM - 10:00 AM',
         slot: 1,
-        startTime: '09:00',
-        endTime: '12:00',
+        startTime: '08:00',
+        endTime: '10:00',
       },
       {
-        label: '1:30 PM - 4:30 PM',
+        label: '11:00 AM - 01:00 PM',
         slot: 2,
-        startTime: '13:30',
-        endTime: '16:30',
+        startTime: '11:00',
+        endTime: '13:00',
       },
       {
-        label: '6:00 PM - 9:00 PM',
+        label: '02:00 PM - 04:00 PM',
         slot: 3,
-        startTime: '18:00',
-        endTime: '21:00',
+        startTime: '14:00',
+        endTime: '16:00',
+      },
+      {
+        label: '05:00 PM - 07:00 PM',
+        slot: 4,
+        startTime: '17:00',
+        endTime: '19:00',
       },
     ]
 
@@ -208,27 +214,32 @@ const Table = ({ timetable }) => {
       return `${Number.isFinite(dayNum) ? dayNum : ''} ${monthAbbr}`.trim()
     }
 
-    // Generate all dates from 10 NOV to 25 NOV (expanded range)
+    // Generate all dates from 21 Feb to 1 Mar (expanded range)
     const allDates = []
-    for (let day = 10; day <= 25; day += 1) {
-      allDates.push(`${day} NOV`)
+    // Feb 21-28
+    for (let day = 21; day <= 28; day += 1) {
+      allDates.push(`${day} FEB`)
     }
+    // Mar 1
+    allDates.push('1 MAR')
 
     // Process timetable data and organize by date
     const organized = {}
 
     // Initialize all dates with empty slots
     allDates.forEach((date) => {
-      organized[date] = { 1: [], 2: [], 3: [] }
+      organized[date] = { 1: [], 2: [], 3: [], 4: [] }
     })
 
     // Populate with actual exam data
     // Minimal debug to help diagnose in case of future mismatches
-    // console.debug('Timetable data dates:', Object.keys(timetable))
+    console.log('Timetable data received:', timetable)
+    console.log('Timetable data dates:', Object.keys(timetable))
 
     Object.entries(timetable).forEach(([dateStr, slotData]) => {
-      // Normalize to our display key (e.g., "21 NOV")
+      // Normalize to our display key (e.g., "21 FEB")
       const displayDate = toDisplayKey(dateStr)
+      console.log(`Processing: "${dateStr}" -> "${displayDate}"`)
       const weekdayName = (dateStr.split(',')[0] || '').trim().toUpperCase()
       const weekdayMapping = {
         MONDAY: 'MON',
@@ -243,25 +254,34 @@ const Table = ({ timetable }) => {
 
       // If this date exists in our range, add the courses
       if (organized[displayDate]) {
+        console.log(`Date ${displayDate} found in organized data`)
         Object.entries(slotData).forEach(([slotNum, courses]) => {
           const slot = parseInt(slotNum, 10)
           if (organized[displayDate][slot]) {
             courses.forEach((courseCode) => {
               // Extract numeric date back from the key for display
               const [dateOnly] = displayDate.split(' ')
+              console.log(
+                `Adding course ${courseCode} to ${displayDate} slot ${slot}`
+              )
               organized[displayDate][slot].push({
                 courseCode,
                 weekday: weekdayAbbr,
                 date: dateOnly,
                 month: displayDate.includes(' ')
                   ? displayDate.split(' ')[1]
-                  : 'NOV',
+                  : 'FEB',
               })
             })
           } else {
-            // console.debug('Unknown slot for date:', displayDate, slot)
+            console.warn('Unknown slot for date:', displayDate, slot)
           }
         })
+      } else {
+        console.warn(
+          `Date ${displayDate} NOT found in organized data. Available dates:`,
+          Object.keys(organized)
+        )
       }
     })
 
@@ -545,17 +565,24 @@ const PopupExample = () => {
 
         try {
           const res = await API.examSchedule.getBatch({ courses: userCourses })
+          console.log('API Response:', res)
           const temp = {}
           res.filter(Boolean).forEach((schedule) => {
+            // API returns camelCase fields
             const { dayDate, mappedSlot, courseCode } = schedule
+            console.log('Processing schedule:', schedule)
 
-            if (!dayDate || !mappedSlot || !courseCode) return
+            if (!dayDate || !mappedSlot || !courseCode) {
+              console.warn('Skipping schedule due to missing fields:', schedule)
+              return
+            }
 
             if (!temp[dayDate]) {
-              temp[dayDate] = { 1: [], 2: [], 3: [] }
+              temp[dayDate] = { 1: [], 2: [], 3: [], 4: [] }
             }
 
             temp[dayDate][mappedSlot].push(courseCode)
+            console.log(`Added ${courseCode} to ${dayDate} slot ${mappedSlot}`)
           })
 
           setTimetable(temp)
