@@ -54,9 +54,10 @@ const ExamTimetableDownload = ({ timetable }) => {
     }
 
     const timeSlots = {
-      1: { start: '09:00', end: '12:00' },
-      2: { start: '13:30', end: '16:30' },
-      3: { start: '18:00', end: '21:00' },
+      1: { start: '08:00', end: '10:00' },
+      2: { start: '11:00', end: '13:00' },
+      3: { start: '14:00', end: '16:00' },
+      4: { start: '17:00', end: '19:00' },
     }
 
     const events = []
