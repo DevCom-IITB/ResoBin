@@ -27,7 +27,7 @@ import {
   toast,
 } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
-// import { Exam } from 'components/Timetable/ExamTimetable'
+import { Exam } from 'components/Timetable/ExamTimetable'
 import { API } from 'config/api'
 import { slots, rows } from 'data/timetable'
 import { coursePageUrl, hash } from 'helpers'
@@ -816,7 +816,7 @@ const TimetableContainer = () => {
         <PageHeading>
           <PageTitle>Timetable</PageTitle>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {/* <Exam /> */}
+            <Exam />
             <Dropdown
               overlay={addDropdownMenu}
               trigger={['click']}
