@@ -91,8 +91,8 @@ UID:${courseCode}-exam-${dateInfo.year}${dateInfo.month}${
           }-${slot}@resobin
 DTSTART:${formatICSDateTime(startDateTime)}
 DTEND:${formatICSDateTime(endDateTime)}
-SUMMARY:${courseCode} - End Semester Exam
-DESCRIPTION:End Semester Examination for ${courseCode}
+SUMMARY:${courseCode} - Mid Semester Exam
+DESCRIPTION:Mid Semester Examination for ${courseCode}
 LOCATION:Examination Hall
 STATUS:CONFIRMED
 END:VEVENT
@@ -116,7 +116,7 @@ VERSION:2.0
 PRODID:-//ResoBin//Exam Timetable//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-X-WR-CALNAME:End Semester Exams
+X-WR-CALNAME:Mid Semester Exams
 X-WR-TIMEZONE:Asia/Kolkata
 ${events.join('')}END:VCALENDAR`
 
