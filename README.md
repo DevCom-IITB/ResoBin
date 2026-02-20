@@ -48,7 +48,7 @@
 * Build & tag the image file
 
   ```powershell
-  docker build --rm -f Dockerfile -t resobin:latest .
+  docker build --rm -f Dockerfile -t resobin:latest
   ```
 
 * Run the image file
