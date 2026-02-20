@@ -51,7 +51,7 @@
   docker build --rm -f Dockerfile -t resobin:latest
   ```
 
-* Run the image file
+* Run the  image file
 
   ```powershell
   docker run --rm -d -p 80:80 resobin:latest
