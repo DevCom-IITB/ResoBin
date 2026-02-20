@@ -31,7 +31,7 @@
   yarn start
   ```
 
-* The frontend server runs at [`http://localhost:3000`](http://localhost:3000), and might take a few minutes to start.
+* The frontend server runs at [`http://localhost:3000`](http://localhost:3000), and might take a few minutes to start
 
 ### Production
 
