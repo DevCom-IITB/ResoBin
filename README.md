@@ -14,7 +14,7 @@
 * Clone this repository
 
   ```powershell
-  git clone https://github.com/wncc/ResoBin.git
+  git clone https://github.com/DevCom-IITB/ResoBin.git
   cd ResoBin
   ```
 
