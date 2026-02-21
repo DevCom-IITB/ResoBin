@@ -7,7 +7,7 @@
 ## Getting started
 
 * Note: Enviroment variables are located [here](https://drive.google.com/drive/folders/1HCzepWZyzKJg0-yOyt4ZW46gO3z4-mHv?usp=sharing), and will only be accessible to the core developers.
-* Before starting, make sure to [install Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable). Also, **avoid** using npm in this repository.
+* Before starting, make sure to [install yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable). Also, **avoid** using npm in this repository.
 
 ### Development
 
