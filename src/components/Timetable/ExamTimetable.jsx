@@ -705,7 +705,7 @@ const PopupExample = () => {
   return (
     <div className="popup">
       <ExamButton type="button" onClick={togglePopup}>
-        Mid Sem
+        End Sem
       </ExamButton>
 
       {isOpen && (
