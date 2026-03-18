@@ -133,6 +133,65 @@ const styles = {
   },
 }
 
+// Keep ONE config uncommented and comment the other.
+
+const EXAM_DATE_RANGE = {
+  start: '20/04/26',
+  end: '01/05/26',
+}
+// MID-SEMESTER (4 slots)
+// const EXAM_LABEL = 'Mid-semester Examinations'
+
+// const EXAM_TIME_SLOTS = [
+//   {
+//     label: '08:00 AM - 10:00 AM',
+//     slot: 1,
+//     startTime: '08:00',
+//     endTime: '10:00',
+//   },
+//   {
+//     label: '11:00 AM - 01:00 PM',
+//     slot: 2,
+//     startTime: '11:00',
+//     endTime: '13:00',
+//   },
+//   {
+//     label: '02:00 PM - 04:00 PM',
+//     slot: 3,
+//     startTime: '14:00',
+//     endTime: '16:00',
+//   },
+//   {
+//     label: '05:00 PM - 07:00 PM',
+//     slot: 4,
+//     startTime: '17:00',
+//     endTime: '19:00',
+//   },
+// ]
+
+// END-SEMESTER (3 slots)
+const EXAM_LABEL = 'End-semester Examinations'
+const EXAM_TIME_SLOTS = [
+  {
+    label: '08:00 AM - 11:00 AM',
+    slot: 1,
+    startTime: '08:00',
+    endTime: '11:00',
+  },
+  {
+    label: '01:00 PM - 04:00 PM',
+    slot: 2,
+    startTime: '13:00',
+    endTime: '16:00',
+  },
+  {
+    label: '05:30 PM - 08:30 PM',
+    slot: 3,
+    startTime: '17:30',
+    endTime: '20:30',
+  },
+]
+
 // Styled trigger button to match the "Add" button in Timetable (same look and layering)
 const ExamButton = styled.button`
   background-color: #6d669e;
@@ -160,32 +219,15 @@ const Table = ({ timetable }) => {
 
   // Group data by date and time slot
   const organizedData = React.useMemo(() => {
-    const timeSlots = [
-      {
-        label: '08:00 AM - 10:00 AM',
-        slot: 1,
-        startTime: '08:00',
-        endTime: '10:00',
-      },
-      {
-        label: '11:00 AM - 01:00 PM',
-        slot: 2,
-        startTime: '11:00',
-        endTime: '13:00',
-      },
-      {
-        label: '02:00 PM - 04:00 PM',
-        slot: 3,
-        startTime: '14:00',
-        endTime: '16:00',
-      },
-      {
-        label: '05:00 PM - 07:00 PM',
-        slot: 4,
-        startTime: '17:00',
-        endTime: '19:00',
-      },
-    ]
+    const timeSlots = EXAM_TIME_SLOTS
+    const activeSlotIds = timeSlots.map((item) => item.slot)
+    const createEmptySlotMap = () => {
+      const emptySlotMap = {}
+      activeSlotIds.forEach((slotId) => {
+        emptySlotMap[slotId] = []
+      })
+      return emptySlotMap
+    }
 
     // Helper: Normalize a date string like "Friday, 21/11/25" -> "21 NOV"
     const toDisplayKey = (dateStr) => {
@@ -214,21 +256,65 @@ const Table = ({ timetable }) => {
       return `${Number.isFinite(dayNum) ? dayNum : ''} ${monthAbbr}`.trim()
     }
 
-    // Generate all dates from 21 Feb to 1 Mar (expanded range)
-    const allDates = []
-    // Feb 21-28
-    for (let day = 21; day <= 28; day += 1) {
-      allDates.push(`${day} FEB`)
+    const parseShortDate = (datePart) => {
+      const [rawDay = '', rawMonth = '', rawYear = ''] = datePart.split('/')
+      const dayNum = Number.parseInt(String(rawDay).trim(), 10)
+      const monthNum = Number.parseInt(String(rawMonth).trim(), 10)
+      const yearNum = Number.parseInt(String(rawYear).trim(), 10)
+      if (
+        !Number.isFinite(dayNum) ||
+        !Number.isFinite(monthNum) ||
+        !Number.isFinite(yearNum)
+      ) {
+        return null
+      }
+
+      let safeYear = yearNum
+      if (yearNum < 100) {
+        safeYear = 2000 + yearNum
+      }
+      return new Date(safeYear, monthNum - 1, dayNum)
     }
-    // Mar 1
-    allDates.push('1 MAR')
+
+    const buildDisplayDatesFromRange = () => {
+      if (!EXAM_DATE_RANGE?.start || !EXAM_DATE_RANGE?.end) return []
+
+      const startDate = parseShortDate(EXAM_DATE_RANGE.start)
+      const endDate = parseShortDate(EXAM_DATE_RANGE.end)
+      if (!startDate || !endDate || startDate > endDate) return []
+
+      const dates = []
+      const cursor = new Date(startDate)
+      while (cursor <= endDate) {
+        const day = cursor.getDate()
+        const month = cursor.getMonth() + 1
+        const year = String(cursor.getFullYear()).slice(-2)
+        const sourceDate = `Dummy, ${String(day).padStart(2, '0')}/${String(
+          month
+        ).padStart(2, '0')}/${year}`
+        dates.push(toDisplayKey(sourceDate))
+        cursor.setDate(cursor.getDate() + 1)
+      }
+
+      return dates
+    }
+
+    const datesFromRange = buildDisplayDatesFromRange()
+    const datesFromData = Array.from(
+      new Set(
+        Object.keys(timetable)
+          .map((dateStr) => toDisplayKey(dateStr))
+          .filter(Boolean)
+      )
+    )
+    const allDates = datesFromRange.length ? datesFromRange : datesFromData
 
     // Process timetable data and organize by date
     const organized = {}
 
     // Initialize all dates with empty slots
     allDates.forEach((date) => {
-      organized[date] = { 1: [], 2: [], 3: [], 4: [] }
+      organized[date] = createEmptySlotMap()
     })
 
     // Populate with actual exam data
@@ -567,6 +653,9 @@ const PopupExample = () => {
           const res = await API.examSchedule.getBatch({ courses: userCourses })
           console.log('API Response:', res)
           const temp = {}
+          const createEmptySlots = () =>
+            Object.fromEntries(EXAM_TIME_SLOTS.map(({ slot }) => [slot, []]))
+
           res.filter(Boolean).forEach((schedule) => {
             // API returns camelCase fields
             const { dayDate, mappedSlot, courseCode } = schedule
@@ -578,7 +667,16 @@ const PopupExample = () => {
             }
 
             if (!temp[dayDate]) {
-              temp[dayDate] = { 1: [], 2: [], 3: [], 4: [] }
+              temp[dayDate] = createEmptySlots()
+            }
+
+            if (
+              !Object.prototype.hasOwnProperty.call(temp[dayDate], mappedSlot)
+            ) {
+              console.warn(
+                `Skipping ${courseCode} due to unexpected slot ${mappedSlot} for active exam config.`
+              )
+              return
             }
 
             temp[dayDate][mappedSlot].push(courseCode)
@@ -661,7 +759,7 @@ const PopupExample = () => {
                 </g>
               </g>
             </svg>
-            Mid-semester Examinations
+            {EXAM_LABEL}
           </h2>
           <p
             style={{ fontStyle: 'italic', color: 'yellow', fontSize: '0.9rem' }}
