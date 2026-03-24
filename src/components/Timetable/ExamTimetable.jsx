@@ -651,7 +651,7 @@ const PopupExample = () => {
 
         try {
           const res = await API.examSchedule.getBatch({ courses: userCourses })
-          console.log('API Response:', res)
+          // console.log('API Response:', res)
           const temp = {}
           const createEmptySlots = () =>
             Object.fromEntries(EXAM_TIME_SLOTS.map(({ slot }) => [slot, []]))
@@ -659,10 +659,10 @@ const PopupExample = () => {
           res.filter(Boolean).forEach((schedule) => {
             // API returns camelCase fields
             const { dayDate, mappedSlot, courseCode } = schedule
-            console.log('Processing schedule:', schedule)
+            // console.log('Processing schedule:', schedule)
 
             if (!dayDate || !mappedSlot || !courseCode) {
-              console.warn('Skipping schedule due to missing fields:', schedule)
+              // console.warn('Skipping schedule due to missing fields:', schedule)
               return
             }
 
@@ -673,14 +673,14 @@ const PopupExample = () => {
             if (
               !Object.prototype.hasOwnProperty.call(temp[dayDate], mappedSlot)
             ) {
-              console.warn(
-                `Skipping ${courseCode} due to unexpected slot ${mappedSlot} for active exam config.`
-              )
+              // console.warn(
+              //   `Skipping ${courseCode} due to unexpected slot ${mappedSlot} for active exam config.`
+              // )
               return
             }
 
             temp[dayDate][mappedSlot].push(courseCode)
-            console.log(`Added ${courseCode} to ${dayDate} slot ${mappedSlot}`)
+            // console.log(`Added ${courseCode} to ${dayDate} slot ${mappedSlot}`)
           })
 
           setTimetable(temp)
