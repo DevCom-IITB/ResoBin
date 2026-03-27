@@ -652,36 +652,65 @@ const PopupExample = () => {
         try {
           const res = await API.examSchedule.getBatch({ courses: userCourses })
           // console.log('API Response:', res)
+          /** @type {Array<any>} */
+          let scheduleRows = []
+          if (Array.isArray(res)) {
+            scheduleRows = res
+          } else if (Array.isArray(res?.data)) {
+            scheduleRows = res.data
+          }
           const temp = {}
           const createEmptySlots = () =>
             Object.fromEntries(EXAM_TIME_SLOTS.map(({ slot }) => [slot, []]))
 
-          res.filter(Boolean).forEach((schedule) => {
-            // API returns camelCase fields
-            const { dayDate, mappedSlot, courseCode } = schedule
-            // console.log('Processing schedule:', schedule)
+          const failedSchedules = scheduleRows.filter(
+            (schedule) => schedule && typeof schedule.error === 'string'
+          )
 
-            if (!dayDate || !mappedSlot || !courseCode) {
-              // console.warn('Skipping schedule due to missing fields:', schedule)
-              return
-            }
+          if (failedSchedules.length > 0) {
+            const sampleErrors = failedSchedules
+              .slice(0, 3)
+              .map(
+                ({ courseCode, course_code: rawCourseCode, error }) =>
+                  `${courseCode || rawCourseCode || 'Unknown course'}: ${error}`
+              )
+              .join(' | ')
 
-            if (!temp[dayDate]) {
-              temp[dayDate] = createEmptySlots()
-            }
+            toast({
+              status: 'error',
+              key: 'exam-schedule-batch-errors',
+              content: `Exam timetable generation failed for ${failedSchedules.length} course(s). ${sampleErrors}`,
+            })
+          }
 
-            if (
-              !Object.prototype.hasOwnProperty.call(temp[dayDate], mappedSlot)
-            ) {
-              // console.warn(
-              //   `Skipping ${courseCode} due to unexpected slot ${mappedSlot} for active exam config.`
-              // )
-              return
-            }
+          scheduleRows
+            .filter((schedule) => schedule && !schedule.error)
+            .forEach((schedule) => {
+              // API returns camelCase fields
+              const { dayDate, mappedSlot, courseCode } = schedule
+              // console.log('Processing schedule:', schedule)
 
-            temp[dayDate][mappedSlot].push(courseCode)
-            // console.log(`Added ${courseCode} to ${dayDate} slot ${mappedSlot}`)
-          })
+              if (!dayDate || !mappedSlot || !courseCode) {
+                // console.warn('Skipping schedule due to missing fields:', schedule)
+                return
+              }
+
+              if (!temp[dayDate]) {
+                temp[dayDate] = createEmptySlots()
+              }
+
+              if (
+                !Object.prototype.hasOwnProperty.call(temp[dayDate], mappedSlot)
+              ) {
+                // console.warn(
+                //   `Skipping ${courseCode} due to unexpected slot ${mappedSlot} for active exam config.`
+                // )
+                return
+              }
+
+              temp[dayDate][mappedSlot].push(courseCode)
+              // console.log(`Added ${courseCode} to ${dayDate} slot ${mappedSlot}`)
+            })
 
           setTimetable(temp)
         } catch (err) {
