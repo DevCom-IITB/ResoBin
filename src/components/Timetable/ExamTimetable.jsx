@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components/macro'
 
 // import { Form, toast } from 'components/shared'
-import { toast } from 'components/shared'
 import { API } from 'config/api'
 import { hash } from 'helpers'
 // import { useQueryString, useColorPicker } from 'hooks'
@@ -552,7 +551,7 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
       setSemesters(response[0])
       // console.log('Fetched timetable slots: here', response)
     } catch (error) {
-      toast({ status: 'error', content: error, key: 'semester-error' })
+      setSemesters({})
     }
   }
   useEffect(() => {
@@ -603,11 +602,6 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
         // console.log('All Lecture Slots:', slots)
         setCoursesAndSlots(courses, slots)
       } catch (error) {
-        toast({
-          status: 'error',
-          content: 'Failed to fetch user timetable',
-          key: 'timetable-error',
-        })
         // setUserTimetableCourses([])
         setCoursesAndSlots([], [])
       }
@@ -662,26 +656,6 @@ const PopupExample = () => {
           const temp = {}
           const createEmptySlots = () =>
             Object.fromEntries(EXAM_TIME_SLOTS.map(({ slot }) => [slot, []]))
-
-          const failedSchedules = scheduleRows.filter(
-            (schedule) => schedule && typeof schedule.error === 'string'
-          )
-
-          if (failedSchedules.length > 0) {
-            const sampleErrors = failedSchedules
-              .slice(0, 3)
-              .map(
-                ({ courseCode, course_code: rawCourseCode, error }) =>
-                  `${courseCode || rawCourseCode || 'Unknown course'}: ${error}`
-              )
-              .join(' | ')
-
-            toast({
-              status: 'error',
-              key: 'exam-schedule-batch-errors',
-              content: `Exam timetable generation failed for ${failedSchedules.length} course(s). ${sampleErrors}`,
-            })
-          }
 
           scheduleRows
             .filter((schedule) => schedule && !schedule.error)
