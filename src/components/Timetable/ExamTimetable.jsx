@@ -8,6 +8,11 @@ import { hash } from 'helpers'
 import { useColorPicker } from 'hooks'
 import { makeGradient } from 'styles/utils'
 
+import {
+  EXAM_DATE_RANGE,
+  EXAM_LABEL,
+  EXAM_TIME_SLOTS,
+} from './examTimetableConfig'
 import ExamTimetableDownload from './ExamTimetableDownload'
 
 export const filterKeys = [
@@ -131,65 +136,6 @@ const styles = {
     border: '1px solid white ',
   },
 }
-
-// Keep ONE config uncommented and comment the other.
-
-const EXAM_DATE_RANGE = {
-  start: '20/04/26',
-  end: '01/05/26',
-}
-// MID-SEMESTER (4 slots)
-// const EXAM_LABEL = 'Mid-semester Examinations'
-
-// const EXAM_TIME_SLOTS = [
-//   {
-//     label: '08:00 AM - 10:00 AM',
-//     slot: 1,
-//     startTime: '08:00',
-//     endTime: '10:00',
-//   },
-//   {
-//     label: '11:00 AM - 01:00 PM',
-//     slot: 2,
-//     startTime: '11:00',
-//     endTime: '13:00',
-//   },
-//   {
-//     label: '02:00 PM - 04:00 PM',
-//     slot: 3,
-//     startTime: '14:00',
-//     endTime: '16:00',
-//   },
-//   {
-//     label: '05:00 PM - 07:00 PM',
-//     slot: 4,
-//     startTime: '17:00',
-//     endTime: '19:00',
-//   },
-// ]
-
-// END-SEMESTER (3 slots)
-const EXAM_LABEL = 'End-semester Examinations'
-const EXAM_TIME_SLOTS = [
-  {
-    label: '08:00 AM - 11:00 AM',
-    slot: 1,
-    startTime: '08:00',
-    endTime: '11:00',
-  },
-  {
-    label: '01:00 PM - 04:00 PM',
-    slot: 2,
-    startTime: '13:00',
-    endTime: '16:00',
-  },
-  {
-    label: '05:30 PM - 08:30 PM',
-    slot: 3,
-    startTime: '17:30',
-    endTime: '20:30',
-  },
-]
 
 // Styled trigger button to match the "Add" button in Timetable (same look and layering)
 const ExamButton = styled.button`

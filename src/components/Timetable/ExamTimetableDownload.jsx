@@ -4,6 +4,13 @@ import styled from 'styled-components/macro'
 
 import { toast } from 'components/shared'
 
+import {
+  EXAM_CALENDAR_NAME,
+  EXAM_LABEL,
+  EXAM_EVENT_LABEL,
+  EXAM_TIME_SLOTS,
+} from './examTimetableConfig'
+
 const ExamTimetableDownload = ({ timetable }) => {
   // Helper function to convert date string to proper format for ICS
   const parseExamDate = (dateStr) => {
@@ -53,12 +60,12 @@ const ExamTimetableDownload = ({ timetable }) => {
       return null
     }
 
-    const timeSlots = {
-      1: { start: '08:00', end: '10:00' },
-      2: { start: '11:00', end: '13:00' },
-      3: { start: '14:00', end: '16:00' },
-      4: { start: '17:00', end: '19:00' },
-    }
+    const timeSlots = Object.fromEntries(
+      EXAM_TIME_SLOTS.map(({ slot, startTime, endTime }) => [
+        slot,
+        { start: startTime, end: endTime },
+      ])
+    )
 
     const events = []
 
@@ -91,8 +98,8 @@ UID:${courseCode}-exam-${dateInfo.year}${dateInfo.month}${
           }-${slot}@resobin
 DTSTART:${formatICSDateTime(startDateTime)}
 DTEND:${formatICSDateTime(endDateTime)}
-SUMMARY:${courseCode} - Mid Semester Exam
-DESCRIPTION:Mid Semester Examination for ${courseCode}
+SUMMARY:${courseCode} - ${EXAM_EVENT_LABEL}
+DESCRIPTION:${EXAM_LABEL} for ${courseCode}
 LOCATION:Examination Hall
 STATUS:CONFIRMED
 END:VEVENT
@@ -116,7 +123,7 @@ VERSION:2.0
 PRODID:-//ResoBin//Exam Timetable//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-X-WR-CALNAME:Mid Semester Exams
+X-WR-CALNAME:${EXAM_CALENDAR_NAME}
 X-WR-TIMEZONE:Asia/Kolkata
 ${events.join('')}END:VCALENDAR`
 
