@@ -6,7 +6,7 @@ const CurrentTime = ({
   lineThickness = '0.1rem',
 }) => {
   const date = new Date()
-  const mins = String(30 * Math.floor(date.getMinutes() / 30))
+  const mins = String(30 * Math.floor(date.getMinutes() / 30) -30)
   const hours = String(date.getHours())
   const day = date.getDay()
   const time = `${hours.padStart(2, '0')}${mins.padStart(2, '0')}`
@@ -49,6 +49,7 @@ const Circle = styled.div`
 
 const Line = styled.div`
   position: absolute;
+  z-index: 5;
   top: calc(
     -${({ mode, thickness }) => (mode === 'vertical' ? thickness : 0)} / 2
   );
