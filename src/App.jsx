@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components/macro';
 
 import PopupModal from 'components/Popup/PopupModal';
-import { LoaderAnimation } from 'components/shared';
+import { GlobalStyles2, LoaderAnimation } from 'components/shared';
 import { AppRoutes } from 'routes';
 import { selectAuthLoading } from 'store/authSlice';
 import { selectTheme } from 'store/settingsSlice';
@@ -33,6 +33,7 @@ const App = () => {
           />
         </Helmet>
         <GlobalStyles />
+        <GlobalStyles2 />
         <LoaderAnimation fixed disable={!authLoading} />
 
         <Suspense fallback={<LoaderAnimation fixed />}>

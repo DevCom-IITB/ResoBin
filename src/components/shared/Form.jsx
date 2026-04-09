@@ -1,6 +1,6 @@
 import { Form } from 'antd'
 import { rgba } from 'polished'
-import styled from 'styled-components/macro'
+import styled, { createGlobalStyle } from 'styled-components/macro'
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -34,14 +34,6 @@ const StyledForm = styled(Form)`
     border: 1px solid ${({ theme }) => rgba(theme.textColorInactive, 0.3)};
   }
 
-  .ant-select-focused,
-  .ant-select-open {
-    .ant-select-selector {
-      border-color: ${({ theme }) => theme.textColorInactive} !important;
-      box-shadow: none !important;
-    }
-  }
-
   .ant-form-item-has-error
     :not(.ant-input-disabled):not(.ant-input-borderless).ant-input {
     background: transparent;
@@ -68,6 +60,14 @@ const StyledForm = styled(Form)`
     &:focus {
       border-color: ${({ theme }) => theme.logo};
       box-shadow: 0 10px 1rem ${({ theme }) => rgba(theme.logo, 0.1)};
+    }
+  }
+
+  .ant-select-focused,
+  .ant-select-open {
+    .ant-select-selector {
+      border-color: ${({ theme }) => theme.textColorInactive} !important;
+      box-shadow: none !important;
     }
   }
 
@@ -104,6 +104,16 @@ const StyledForm = styled(Form)`
   .ant-switch-checked {
     background: ${({ theme }) => theme.logo};
   }
+`
+
+/** Ant Design Select dropdown (portaled to body); inject once in App. */
+export const GlobalStyles2 = createGlobalStyle`
+  .ant-select-dropdown {
+    padding: 0.6rem 0.8rem;
+    cursor: pointer;
+    font-size: 2rem;
+  }
+  
 `
 
 export default StyledForm

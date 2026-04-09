@@ -42,6 +42,14 @@ const CourseFinderFilterItem = ({ label, onClear, content }) => (
   </CourseFinderFilterItemContainer>
 )
 
+/** Mount Select dropdown inside this root (not body) so it scrolls with the aside / filter panel. */
+const FILTER_POPUP_ROOT_ID = 'course-filter-popup-root'
+
+const getFilterSelectPopupContainer = (trigger) => {
+  if (!trigger?.closest) return document.body
+  return trigger.closest(`#${FILTER_POPUP_ROOT_ID}`) || document.body
+}
+
 const CourseFinderFilterForm = ({ setLoading }) => {
   const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
   const [form] = Form.useForm()
@@ -209,188 +217,198 @@ const CourseFinderFilterForm = ({ setLoading }) => {
     return acc
   }, [])
 
-  const programOptions = programs
-    .filter((program) =>
-      program.name?.includes('Centre for Machine Intelligence and Data Science')
-    )
-    .map((program) => ({
-      label: `${program.name} (${program.courseCount} courses)`,
-      value: program.id,
-    })) // TODO : need to replace with all the programs later
-
+  const programOptions = programs.map((program) => ({
+    label: `${program.name} (${program.courseCount} courses)`,
+    value: program.id,
+  })) // TODO : need to replace with all the programs later
 
   return (
-    <Form
-      form={form}
-      name="course_filter"
-      layout="vertical"
-      onValuesChange={handleFilterUpdate}
-      initialValues={{
-        semester: getQueryString('semester')?.split(',') ?? [],
-        halfsem: getQueryString('halfsem') === 'true',
-        running: getQueryString('running') === 'true',
-        credits: [
-          parseInt(getQueryString('credits_min') ?? 2, 10),
-          parseInt(getQueryString('credits_max') ?? 9, 10),
-        ],
-        department: getQueryString('department')?.split(',') ?? [],
-        tags: getQueryString('tags')?.split(',') ?? [],
-        slots: getQueryString('slots')?.split(',') ?? [],
-        avoid_slots: getQueryString('avoid_slots')
-          ? getQueryString('avoid_slots').split(',')
-          : [],
-        avoid_slot_clash:
-          getQueryString('avoid_slot_clash') === 'true' ||
-          getQueryString('avoid_slots') !== null,
-        programs: getQueryString('programs')?.split(',') ?? [],
-      }}
-      style={{ gap: '1rem', padding: '0 0.5rem' }}
-    >
-      <CourseFinderFilterItem
-        label="Running courses only"
-        onClear={handleFilterClear('running', ['running'])}
-        content={
-          <Form.Item name="running" valuePropName="checked">
-            <Switch />
+    <FilterFormRoot id={FILTER_POPUP_ROOT_ID}>
+      <Form
+        form={form}
+        name="course_filter"
+        layout="vertical"
+        onValuesChange={handleFilterUpdate}
+        initialValues={{
+          semester: getQueryString('semester')?.split(',') ?? [],
+          halfsem: getQueryString('halfsem') === 'true',
+          running: getQueryString('running') === 'true',
+          credits: [
+            parseInt(getQueryString('credits_min') ?? 2, 10),
+            parseInt(getQueryString('credits_max') ?? 9, 10),
+          ],
+          department: getQueryString('department')?.split(',') ?? [],
+          tags: getQueryString('tags')?.split(',') ?? [],
+          slots: getQueryString('slots')?.split(',') ?? [],
+          avoid_slots: getQueryString('avoid_slots')
+            ? getQueryString('avoid_slots').split(',')
+            : [],
+          avoid_slot_clash:
+            getQueryString('avoid_slot_clash') === 'true' ||
+            getQueryString('avoid_slots') !== null,
+          programs: getQueryString('programs')?.split(',') ?? [],
+        }}
+        style={{ gap: '1rem', padding: '0 0.5rem' }}
+      >
+        <CourseFinderFilterItem
+          label="Running courses only"
+          onClear={handleFilterClear('running', ['running'])}
+          content={
+            <Form.Item name="running" valuePropName="checked">
+              <Switch />
+            </Form.Item>
+          }
+        />
+
+        <div>
+          <CourseFinderFilterItem
+            label="Departments"
+            onClear={handleFilterClear('department', ['department'])}
+          />
+          <Form.Item name="department">
+            <Select
+              mode="multiple"
+              options={departmentOptions}
+              getPopupContainer={getFilterSelectPopupContainer}
+              placeholder="Type something..."
+              showArrow
+            />
           </Form.Item>
-        }
-      />
+        </div>
 
-      <div>
-        <CourseFinderFilterItem
-          label="Departments"
-          onClear={handleFilterClear('department', ['department'])}
-        />
-        <Form.Item name="department">
-          <Select
-            mode="multiple"
-            options={departmentOptions}
-            placeholder="Type something..."
-            showArrow
+        <div>
+          <CourseFinderFilterItem
+            label="Semesters"
+            onClear={handleFilterClear('semester', ['semester'])}
           />
-        </Form.Item>
-      </div>
-
-      <div>
-        <CourseFinderFilterItem
-          label="Semesters"
-          onClear={handleFilterClear('semester', ['semester'])}
-        />
-        <Form.Item name="semester">
-          <Checkbox.Group
-            options={semesterOptions}
-            style={{ display: 'flex', gap: '1rem' }}
-          />
-        </Form.Item>
-      </div>
-
-      <CourseFinderFilterItem
-        label="Half semester only"
-        onClear={handleFilterClear('halfsem', ['halfsem'])}
-        content={
-          <Form.Item name="halfsem" valuePropName="checked">
-            <Switch />
+          <Form.Item name="semester">
+            <Checkbox.Group
+              options={semesterOptions}
+              style={{ display: 'flex', gap: '1rem' }}
+            />
           </Form.Item>
-        }
-      />
+        </div>
 
-      <div>
         <CourseFinderFilterItem
-          label="Credits"
-          onClear={handleFilterClear('credits', ['credits_min', 'credits_max'])}
+          label="Half semester only"
+          onClear={handleFilterClear('halfsem', ['halfsem'])}
+          content={
+            <Form.Item name="halfsem" valuePropName="checked">
+              <Switch />
+            </Form.Item>
+          }
         />
-        <Form.Item name="credits">
-          <Slider
-            range
-            min={2}
-            max={9}
-            step={null}
-            marks={{
-              2: '<3',
-              3: '3',
-              4: '4',
-              5: '5',
-              6: '6',
-              7: '7',
-              8: '8',
-              9: '>8',
-            }}
-            tipFormatter={null}
-            style={{ marginRight: '1rem', marginLeft: '0.5rem' }}
+
+        <div>
+          <CourseFinderFilterItem
+            label="Credits"
+            onClear={handleFilterClear('credits', [
+              'credits_min',
+              'credits_max',
+            ])}
           />
-        </Form.Item>
-      </div>
-      <div>
-        <CourseFinderFilterItem
-          label="Slots"
-          onClear={handleFilterClear('slots', ['slots'])}
-        />
-        <Form.Item name="slots">
-          <Select
-            mode="multiple"
-            options={slotOptions}
-            placeholder="Select slots..."
-            showArrow
-          />
-        </Form.Item>
-      </div>
-      <div>
-        <CourseFinderFilterItem
-          label="Minor Programs (Beta)"
-          onClear={handleFilterClear('programs', ['programs'])}
-        />
-        <Form.Item name="programs">
-          <Select
-            mode="multiple"
-            options={programOptions}
-            placeholder="Select minors..."
-            loading={loadingPrograms}
-            showArrow
-            allowClear
-          />
-        </Form.Item>
-      </div>
-      <CourseFinderFilterItem
-        label={
-          <>
-            Avoid Slot Clash
-            <Tooltip title="When enabled, courses with slots that clash with your current timetable will be filtered out">
-              <InformationCircle
-                size={16}
-                style={{ marginLeft: '8px', cursor: 'help' }}
-              />
-            </Tooltip>
-          </>
-        }
-        onClear={handleFilterClear('avoid_slot_clash', [
-          'avoid_slot_clash',
-          'avoid_slots',
-        ])}
-        content={
-          <Form.Item name="avoid_slot_clash" valuePropName="checked">
-            <Switch />
+          <Form.Item name="credits">
+            <Slider
+              range
+              min={2}
+              max={9}
+              step={null}
+              marks={{
+                2: '<3',
+                3: '3',
+                4: '4',
+                5: '5',
+                6: '6',
+                7: '7',
+                8: '8',
+                9: '>8',
+              }}
+              tipFormatter={null}
+              style={{ marginRight: '1rem', marginLeft: '0.5rem' }}
+            />
           </Form.Item>
-        }
-      />
-      <div>
-        <CourseFinderFilterItem
-          label="Tags"
-          onClear={handleFilterClear('tags', ['tags'])}
-        />
-        <Form.Item name="tags">
-          <Select
-            mode="multiple"
-            options={tagOptions}
-            placeholder="Select something..."
-            showArrow
+        </div>
+        <div>
+          <CourseFinderFilterItem
+            label="Slots"
+            onClear={handleFilterClear('slots', ['slots'])}
           />
-        </Form.Item>
-      </div>
-    </Form>
+          <Form.Item name="slots">
+            <Select
+              mode="multiple"
+              options={slotOptions}
+              placeholder="Select slots..."
+              getPopupContainer={getFilterSelectPopupContainer}
+              showArrow
+            />
+          </Form.Item>
+        </div>
+        <div>
+          <CourseFinderFilterItem
+            label="Minor Programs (Beta)"
+            onClear={handleFilterClear('programs', ['programs'])}
+          />
+          <Form.Item name="programs">
+            <Select
+              mode="multiple"
+              options={programOptions}
+              placeholder="Select minors..."
+              loading={loadingPrograms}
+              getPopupContainer={getFilterSelectPopupContainer}
+              showArrow
+              allowClear
+            />
+          </Form.Item>
+        </div>
+        <CourseFinderFilterItem
+          label={
+            <>
+              Avoid Slot Clash
+              <Tooltip title="When enabled, courses with slots that clash with your current timetable will be filtered out">
+                <InformationCircle
+                  size={16}
+                  style={{ marginLeft: '8px', cursor: 'help' }}
+                />
+              </Tooltip>
+            </>
+          }
+          onClear={handleFilterClear('avoid_slot_clash', [
+            'avoid_slot_clash',
+            'avoid_slots',
+          ])}
+          content={
+            <Form.Item name="avoid_slot_clash" valuePropName="checked">
+              <Switch />
+            </Form.Item>
+          }
+        />
+        <div>
+          <CourseFinderFilterItem
+            label="Tags"
+            onClear={handleFilterClear('tags', ['tags'])}
+          />
+          <Form.Item name="tags">
+            <Select
+              mode="multiple"
+              options={tagOptions}
+              placeholder="Select something..."
+              getPopupContainer={getFilterSelectPopupContainer}
+              showArrow
+            />
+          </Form.Item>
+        </div>
+      </Form>
+    </FilterFormRoot>
   )
 }
 
 export default CourseFinderFilterForm
+
+/** Plain div so id + closest() always work (styled antd Form may not put id on a real DOM node). */
+const FilterFormRoot = styled.div`
+  position: relative;
+  min-height: 0;
+`
 
 const FilterTitle = styled.span`
   display: inline-block;
