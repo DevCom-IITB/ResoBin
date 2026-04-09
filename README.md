@@ -2,7 +2,7 @@
 
 ## Requirements
 
-* React 17+
+*  React 17+
 
 ## Getting started
 

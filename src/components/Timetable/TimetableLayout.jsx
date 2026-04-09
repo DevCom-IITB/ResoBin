@@ -49,6 +49,7 @@ const Container = styled.div`
   margin-bottom: 1rem;
   padding: 0.75rem;
   overflow-x: scroll;
+  z-index:1;
   background: ${({ theme }) => theme.secondary};
   border-radius: ${({ theme }) => theme.borderRadius};
 
