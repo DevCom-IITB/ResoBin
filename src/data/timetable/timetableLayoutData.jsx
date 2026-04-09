@@ -17,6 +17,8 @@ export const rows = [
   { id: 'time-1200', title: '12:00' },
   { id: 'time-1230', title: '12:30' },
   // * Lunch break
+  { id: 'time-1300', title: '13:00' },
+  { id: 'time-1330', title: '13:30' },
   { id: 'time-1400', title: '14:00' },
   { id: 'time-1430', title: '14:30' },
   { id: 'time-1500', title: '15:00' },
