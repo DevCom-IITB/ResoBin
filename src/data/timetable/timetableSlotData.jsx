@@ -34,35 +34,35 @@ const combineSlots = (...slots) => ({
     '7A': { col: 3, row: { start: 0, end: 2 } },
     '7B': { col: 5, row: { start: 0, end: 2 } },
   
-    '8A': { col: 1, row: { start: 9, end: 12 } },
-    '8B': { col: 4, row: { start: 9, end: 12 } },
+    '8A': { col: 1, row: { start: 11, end: 14 } },
+    '8B': { col: 4, row: { start: 11, end: 14 } },
   
-    '9A': { col: 1, row: { start: 12, end: 15 } },
-    '9B': { col: 4, row: { start: 12, end: 15 } },
+    '9A': { col: 1, row: { start: 14, end: 17 } },
+    '9B': { col: 4, row: { start: 14, end: 17 } },
   
-    '10A': { col: 2, row: { start: 9, end: 12 } },
-    '10B': { col: 5, row: { start: 9, end: 12 } },
+    '10A': { col: 2, row: { start: 11, end: 14 } },
+    '10B': { col: 5, row: { start: 11, end: 14 } },
   
-    '11A': { col: 2, row: { start: 12, end: 15 } },
-    '11B': { col: 5, row: { start: 12, end: 15 } },
+    '11A': { col: 2, row: { start: 14, end: 17 } },
+    '11B': { col: 5, row: { start: 14, end: 17 } },
   
-    '12A': { col: 1, row: { start: 16, end: 19 } },
-    '12B': { col: 4, row: { start: 16, end: 19 } },
+    '12A': { col: 1, row: { start: 18, end: 21 } },
+    '12B': { col: 4, row: { start: 18, end: 21 } },
   
-    '13A': { col: 1, row: { start: 19, end: 22 } },
-    '13B': { col: 4, row: { start: 19, end: 22 } },
+    '13A': { col: 1, row: { start: 21, end: 24 } },
+    '13B': { col: 4, row: { start: 21, end: 24 } },
   
-    '14A': { col: 2, row: { start: 16, end: 19 } },
-    '14B': { col: 5, row: { start: 16, end: 19 } },
+    '14A': { col: 2, row: { start: 18, end: 21 } },
+    '14B': { col: 5, row: { start: 18, end: 21 } },
   
-    '15A': { col: 2, row: { start: 19, end: 22 } },
-    '15B': { col: 5, row: { start: 19, end: 22 } },
+    '15A': { col: 2, row: { start: 21, end: 24 } },
+    '15B': { col: 5, row: { start: 21, end: 24 } },
   
-    X1: { col: 3, row: { start: 9, end: 11 } },
-    X2: { col: 3, row: { start: 11, end: 13 } },
-    X3: { col: 3, row: { start: 13, end: 15 } },
-    XC: { col: 3, row: { start: 16, end: 19 } },
-    XD: { col: 3, row: { start: 19, end: 22 } },
+    X1: { col: 3, row: { start: 11, end: 13 } },
+    X2: { col: 3, row: { start: 13, end: 15 } },
+    X3: { col: 3, row: { start: 15, end: 17 } },
+    XC: { col: 3, row: { start: 18, end: 21 } },
+    XD: { col: 3, row: { start: 21, end: 24 } },
   }
   
   // ? lab slots (3h)
