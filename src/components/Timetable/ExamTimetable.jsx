@@ -536,8 +536,13 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
 
           if (!firstSlot) return 0
 
+          const normalizedFirstSlot = String(firstSlot).trim().toUpperCase()
+          if (normalizedFirstSlot.includes('X')) {
+            return 'X'
+          }
+
           // Extract all leading digits before any letter
-          const match = firstSlot.match(/^\d+/)
+          const match = normalizedFirstSlot.match(/^\d+/)
           if (match) {
             return parseInt(match[0], 10)
           }
