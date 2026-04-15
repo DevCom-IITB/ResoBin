@@ -168,7 +168,13 @@ export default SearchBar
 const GlobalStyles = createGlobalStyle`
   .ant-select-dropdown {
     min-height: 200px;
+  
   }
+  .ant-select-dropdown .ant-select-item {
+    padding: 0.6rem 0.8rem;
+    cursor: pointer;
+    
+
 `
 
 const SearchContainer = styled.div`
