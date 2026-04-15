@@ -476,25 +476,27 @@ const TimetableContainer = () => {
           { time: '12:00', row: 7 },
           { time: '12:30', row: 8 },
           // Lunch break gap
-          { time: '14:00', row: 9 },
-          { time: '14:30', row: 10 },
-          { time: '15:00', row: 11 },
-          { time: '15:30', row: 12 },
-          { time: '16:00', row: 13 },
-          { time: '16:30', row: 14 },
-          { time: '17:00', row: 15 },
+          { time: '13:00', row: 9 },
+          { time: '13:30', row: 10 },
+          { time: '14:00', row: 11 },
+          { time: '14:30', row: 12 },
+          { time: '15:00', row: 13 },
+          { time: '15:30', row: 14 },
+          { time: '16:00', row: 15 },
+          { time: '16:30', row: 16 },
+          { time: '17:00', row: 17 },
           // Evening break gap
-          { time: '17:30', row: 16 },
-          { time: '18:00', row: 17 },
-          { time: '18:30', row: 18 },
-          { time: '19:00', row: 19 },
-          { time: '19:30', row: 20 },
-          { time: '20:00', row: 21 },
-          { time: '20:30', row: 22 },
-          { time: '21:00', row: 23 },
-          { time: '21:30', row: 24 },
-          { time: '22:00', row: 25 },
-          { time: '22:30', row: 26 },
+          { time: '17:30', row: 18 },
+          { time: '18:00', row: 19 },
+          { time: '18:30', row: 20 },
+          { time: '19:00', row: 21 },
+          { time: '19:30', row: 22 },
+          { time: '20:00', row: 23 },
+          { time: '20:30', row: 24 },
+          { time: '21:00', row: 25 },
+          { time: '21:30', row: 26 },
+          { time: '22:00', row: 27 },
+          { time: '22:30', row: 28 },
         ]
 
         // Convert time slots to minutes for comparison
@@ -528,7 +530,7 @@ const TimetableContainer = () => {
 
       // Helper function to ensure proper event sizing within bounds
       const calculateEventBounds = (startTime, endTime) => {
-        const maxRow = 26 // Now includes 22:30 as row 26
+        const maxRow = 28 // Now includes 22:30 as row 28
         let startRow = timeToRow(startTime)
 
         // Default span based on event type
@@ -540,9 +542,9 @@ const TimetableContainer = () => {
         // Ensure startRow is within bounds
         startRow = Math.max(0, Math.min(startRow, maxRow))
 
-        // For events starting at 21:30 (row 24), ensure they extend exactly 2 rows to 22:30 (row 26)
-        if (startRow === 24) {
-          endRow = 26 // Always extend to 22:30 for events starting at 21:30
+        // For events starting at 21:30 (row 26), ensure they extend exactly 2 rows to 22:30 (row 28)
+        if (startRow === 26) {
+          endRow = 28 // Always extend to 22:30 for events starting at 21:30
         } else {
           // For other events, cap endRow to maximum available row
           endRow = Math.min(endRow, maxRow)
@@ -1140,7 +1142,7 @@ const DayView = ({
             (eplannerEvent.endRow - eplannerEvent.startRow) * ROW_HEIGHT,
           stackPosition: 0,
           totalInStack: 1,
-          zIndex: 5,
+          zIndex: 0,
         })
       }
     })
@@ -1154,7 +1156,7 @@ const DayView = ({
         displayHeight: (event.endRow - event.startRow) * ROW_HEIGHT,
         stackPosition: 0,
         totalInStack: 1,
-        zIndex: 10,
+        zIndex: 0,
       })
     })
 
@@ -2314,7 +2316,7 @@ const IndicatorLine = styled.div`
   right: 0;
   height: 1.5px;
   background-color: #eb4d4b;
-  z-index: 10;
+  z-index: 1000000;
 
   &::before {
     content: '';

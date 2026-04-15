@@ -6,7 +6,7 @@ const CurrentTime = ({
   lineThickness = '0.1rem',
 }) => {
   const date = new Date()
-  const mins = String(30 * Math.floor(date.getMinutes() / 30))
+  const mins = String((30* Math.floor(date.getMinutes()/30))) 
   const hours = String(date.getHours())
   const day = date.getDay()
   const time = `${hours.padStart(2, '0')}${mins.padStart(2, '0')}`
@@ -25,8 +25,10 @@ const CurrentTime = ({
 
 export default CurrentTime
 
+
 const Container = styled.div`
-  position: relative;
+  position: absolute;
+  z-index:999;
   grid-row: ${({ row }) => row};
   grid-column: ${({ column }) => column};
   width: ${({ mode }) => (mode === 'vertical' ? '100%' : '0')};
@@ -39,6 +41,7 @@ const Container = styled.div`
 
 const Circle = styled.div`
   position: absolute;
+  z-index: 1000;
   top: calc(-${({ diameter }) => diameter} / 2);
   left: calc(-${({ diameter }) => diameter} / 2);
   width: calc(${({ diameter }) => diameter });
@@ -49,6 +52,7 @@ const Circle = styled.div`
 
 const Line = styled.div`
   position: absolute;
+  z-index: 1000;
   top: calc(
     -${({ mode, thickness }) => (mode === 'vertical' ? thickness : 0)} / 2
   );
