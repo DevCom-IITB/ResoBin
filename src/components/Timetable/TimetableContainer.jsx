@@ -3134,7 +3134,7 @@ const LunchBlock = styled.div`
   top: 240px;
   left: 0; 
   width: 100%; 
-  height: 30px;
+  height: 90px;
   
   background-color: ${({ theme }) => theme.secondary || '#2b273b'};
   
@@ -3162,7 +3162,7 @@ const WeekLunchBlock = styled.div`
   top: 240px;
   left: 80px; 
   width: calc(100% - 80px); 
-  height: 30px;
+  height: 90px;
   
   background-color: ${({ theme }) => theme.secondary || '#2b273b'};
   background-image: linear-gradient(90deg, rgba(34, 70, 168, 0.79) 0%, rgba(34, 70, 168, 0.31) 100%);
