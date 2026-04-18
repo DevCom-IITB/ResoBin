@@ -1,3 +1,14 @@
+
+import ExamTimetable from './ExamTimetable'
+import { isExamPeriod } from './examTimetableConfig'
+import TimetableContainer from './TimetableContainer'
+
+const TimetablePage = () => {
+  if (isExamPeriod()) {
+    return <ExamTimetable />
+  }
+  return <TimetableContainer />
+}
 export { default as TimetableContainer } from './TimetableContainer'
 export { default as TimetableCourseItem } from './TimetableCourseItem'
 export { default as TimetableShareContainer } from './TimetableShareContainer'

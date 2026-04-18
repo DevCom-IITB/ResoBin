@@ -12,6 +12,7 @@ import {
   EXAM_DATE_RANGE,
   EXAM_LABEL,
   EXAM_TIME_SLOTS,
+   isExamPeriod
 } from './examTimetableConfig'
 import ExamTimetableDownload from './ExamTimetableDownload'
 
@@ -222,10 +223,11 @@ const Table = ({ timetable }) => {
     }
 
     const buildDisplayDatesFromRange = () => {
-      if (!EXAM_DATE_RANGE?.start || !EXAM_DATE_RANGE?.end) return []
+      const range = Array.isArray(EXAM_DATE_RANGE) ? EXAM_DATE_RANGE[0] : EXAM_DATE_RANGE
+      if (!range?.start || !range?.end) return []
 
-      const startDate = parseShortDate(EXAM_DATE_RANGE.start)
-      const endDate = parseShortDate(EXAM_DATE_RANGE.end)
+      const startDate = parseShortDate(range.start.split('-').reverse().join('/'))
+      const endDate = parseShortDate(range.end.split('-').reverse().join('/'))
       if (!startDate || !endDate || startDate > endDate) return []
 
       const dates = []
@@ -558,7 +560,7 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
 }
 
 const PopupExample = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(isExamPeriod())
   const [timetable, setTimetable] = useState({})
   const [courses, setCourses] = useState([])
   const [slots, setSlots] = useState([])

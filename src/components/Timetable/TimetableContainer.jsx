@@ -41,11 +41,21 @@ import ExamPlanner from './eplanner_Exam'
 import PersonalPlanner from './eplanner_personal'
 import ReminderPlanner from './eplanner_reminder'
 import EplannerAPI from './eplannerAPI'
+import ExamTimetable from './ExamTimetable' 
+import { isExamPeriod } from './examTimetableConfig'
 import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableSearch from './TimetableSearch'
 import TimetableShareButton from './TimetableShareButton'
 
+const TimetablePage = () => {
+  if (isExamPeriod()) {
+    return <ExamTimetable />
+  }
+  return <TimetableContainer />
+}
+
 const TimetableContainer = () => {
+
   const dispatch = useDispatch()
   const semesterList = useSelector(selectSemesters)
   const courseAPILoading = useSelector(selectCourseAPILoading)
@@ -75,6 +85,7 @@ const TimetableContainer = () => {
   const [currentView, setCurrentView] = useState(getInitialView)
   const [dropdownVisible, setDropdownVisible] = useState(false)
   const [coursesModalVisible, setCoursesModalVisible] = useState(false)
+
 
   // Eplanner events state
   const [eplannerEvents, setEplannerEvents] = useState({
