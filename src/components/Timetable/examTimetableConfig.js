@@ -1,7 +1,7 @@
-export const EXAM_DATE_RANGE = {
-  start: '20/04/26',
-  end: '01/05/26',
-}
+export const EXAM_DATE_RANGE =[ {
+  start: '2026-05-10',
+  end: '2026-05-18',
+}]
 
 export const EXAM_LABEL = 'End-semester Examinations'
 export const EXAM_CALENDAR_NAME = 'End Semester Exams'
@@ -27,3 +27,12 @@ export const EXAM_TIME_SLOTS = [
     endTime: '20:30',
   },
 ]
+export const isExamPeriod = () => {
+  const today = new Date()
+  return EXAM_DATE_RANGE.some(({ start, end }) => {
+    const s = new Date(start)
+    const e = new Date(end)
+    e.setHours(23, 59, 59) // include the end day fully
+    return today >= s && today <= e
+  })
+}

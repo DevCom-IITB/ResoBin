@@ -12,6 +12,7 @@ import {
   EXAM_DATE_RANGE,
   EXAM_LABEL,
   EXAM_TIME_SLOTS,
+   isExamPeriod
 } from './examTimetableConfig'
 import ExamTimetableDownload from './ExamTimetableDownload'
 
@@ -41,12 +42,13 @@ if (!document.getElementById(montserratFontId)) {
 
 const styles = {
   container: {
-    padding: '1rem',
+    padding: '12px',
     fontFamily: 'Montserrat,Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
     backgroundColor: '#2d2941ff ',
     borderRadius: '12px',
     JustifyContent: 'start',
-    marginTop: '1.2rem',
+    margin: '0px',
+    width:'550px'
   },
   card: {
     backgroundColor: '#342f4bff  ',
@@ -222,10 +224,11 @@ const Table = ({ timetable }) => {
     }
 
     const buildDisplayDatesFromRange = () => {
-      if (!EXAM_DATE_RANGE?.start || !EXAM_DATE_RANGE?.end) return []
+      const range = Array.isArray(EXAM_DATE_RANGE) ? EXAM_DATE_RANGE[0] : EXAM_DATE_RANGE
+      if (!range?.start || !range?.end) return []
 
-      const startDate = parseShortDate(EXAM_DATE_RANGE.start)
-      const endDate = parseShortDate(EXAM_DATE_RANGE.end)
+      const startDate = parseShortDate(range.start.split('-').reverse().join('/'))
+      const endDate = parseShortDate(range.end.split('-').reverse().join('/'))
       if (!startDate || !endDate || startDate > endDate) return []
 
       const dates = []
@@ -325,7 +328,8 @@ const Table = ({ timetable }) => {
     <div style={styles.container}>
       <div
         style={{
-          maxHeight: '300px',
+          marginTop:'10px',
+          maxHeight: '200px',
           overflowY: 'auto',
         }}
       >
@@ -487,15 +491,12 @@ const Table = ({ timetable }) => {
 }
 
 const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
-  // const { deleteQueryString, getQueryString, setQueryString } = useQueryString()
-  // const [form] = Form.useForm()
-  // const [userTimetableCourses, setUserTimetableCourses] = useState([])
+
   const [semesters, setSemesters] = useState({})
   const getSemesters = async () => {
     try {
       const response = await API.semesters.list()
       setSemesters(response[0])
-      // console.log('Fetched timetable slots: here', response)
     } catch (error) {
       setSemesters({})
     }
@@ -562,7 +563,9 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
   return null
 }
 
-const PopupExample = () => {
+const PopupExample = ({
+  setShowRegularTimetable,
+}) => {
   const [isOpen, setIsOpen] = useState(false)
   const [timetable, setTimetable] = useState({})
   const [courses, setCourses] = useState([])
@@ -658,7 +661,14 @@ const PopupExample = () => {
 
   return (
     <div className="popup">
-      <ExamButton type="button" onClick={togglePopup}>
+      <ExamButton
+  type="button"
+  onClick={() => {
+    if (isExamPeriod()) {
+      togglePopup()
+    }
+  }}
+>
         End Sem
       </ExamButton>
 
@@ -739,10 +749,14 @@ const PopupExample = () => {
   )
 }
 
-export const Exam = () => {
+export const Exam = ({
+  setShowRegularTimetable,
+}) => {
   return (
     <div className="Exam">
-      <PopupExample />
+      <PopupExample
+        setShowRegularTimetable={setShowRegularTimetable}
+      />
     </div>
   )
 }
