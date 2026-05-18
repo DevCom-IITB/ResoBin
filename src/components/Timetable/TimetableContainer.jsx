@@ -37,22 +37,21 @@ import { updateTimetable } from 'store/userSlice'
 import { makeGradient } from 'styles'
 import 'styles/CustomModal.css'
 
+
 import ExamPlanner from './eplanner_Exam'
 import PersonalPlanner from './eplanner_personal'
 import ReminderPlanner from './eplanner_reminder'
 import EplannerAPI from './eplannerAPI'
-import ExamTimetable from './ExamTimetable' 
-import { isExamPeriod } from './examTimetableConfig'
+import {
+  EXAM_DATE_RANGE,
+  EXAM_LABEL,
+  EXAM_TIME_SLOTS,
+  isExamPeriod,
+} from './examTimetableConfig'
+import ExamTimetableDownload from './ExamTimetableDownload'
 import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableSearch from './TimetableSearch'
 import TimetableShareButton from './TimetableShareButton'
-
-const TimetablePage = () => {
-  if (isExamPeriod()) {
-    return <ExamTimetable />
-  }
-  return <TimetableContainer />
-}
 
 const TimetableContainer = () => {
 
@@ -62,11 +61,15 @@ const TimetableContainer = () => {
 
   const [courseTimetableList, setCourseTimetableList] = useState([])
   const [courseData, setCourseData] = useState([])
+  const [examTimetable, setExamTimetable] = useState({})
+const [examCourses, setExamCourses] = useState([])
+const [examSlots, setExamSlots] = useState([])
   const [coursedata, setCoursedata] = useState({})
   const [loading, setLoading] = useState(courseAPILoading)
   const [semIdx, setSemIdx] = useState(null)
   const [currentDate, setCurrentDate] = useState(moment())
   const [loadingg, setLoadingg] = useState(true)
+  const [showRegularTimetable, setShowRegularTimetable] = useState(!isExamPeriod())
   // const [reminderItems, ]
 
   const { getQueryString } = useQueryString()
@@ -207,7 +210,8 @@ const TimetableContainer = () => {
         </AddMenuIcon>
         Personal
       </AddMenuItem>
-      <AddMenuItem onClick={() => handleDropdownItemClick('exam')}>
+      <AddMenuItem onClick={() => {
+ handleDropdownItemClick('exam')}}>
         <AddMenuIcon>
           <BookOpen size="16" />
         </AddMenuIcon>
@@ -402,8 +406,7 @@ const TimetableContainer = () => {
     const courseList = courseTimetableList.map((item) => item.course)
     return courseList
   }
-
-  useEffect(() => {
+   useEffect(() => {
     const fetchCourseData = async () => {
       try {
         setLoading(true)
@@ -456,17 +459,16 @@ const TimetableContainer = () => {
           })
         }
       }
-
       item.lectureSlots.forEach((slotName) =>
         createEventHandler(slotName, 'Lecture')
       )
       item.tutorialSlots.forEach((slotName) =>
         createEventHandler(slotName, 'Tutorial')
-      )
-    })
-
+      )}
+    )
     // Add eplanner events to the events array
-    const addEplannerEvents = () => {
+   
+     const addEplannerEvents = () => {
       // Helper to convert time to row index
       const timeToRow = (timeStr) => {
         if (!timeStr) return 0
@@ -713,13 +715,177 @@ const TimetableContainer = () => {
         }
       })
     }
-
-    addEplannerEvents()
-
+     addEplannerEvents()
     return events
   }
+ const events = getEventsForView()
+const parseISODate = (str) => {
+  // expects 'YYYY-MM-DD'
+  const [year, month, day] = str.split('-').map(Number)
+  return new Date(year, month - 1, day)
+}
 
-  const events = getEventsForView()
+const buildAllDates = () => {
+  const range = Array.isArray(EXAM_DATE_RANGE)
+    ? EXAM_DATE_RANGE[0]
+    : EXAM_DATE_RANGE
+  if (!range?.start || !range?.end) return []
+
+  const start = parseISODate(range.start)
+  const end = parseISODate(range.end)
+  end.setHours(23, 59, 59)
+
+  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']
+  const weekdays = ['SUN','MON','TUE','WED','THU','FRI','SAT']
+
+  const dates = []
+  const cursor = new Date(start)
+  while (cursor <= end) {
+    dates.push({
+      display: `${cursor.getDate()} ${months[cursor.getMonth()]}`,
+      weekday: weekdays[cursor.getDay()],
+      iso: cursor.toISOString().slice(0, 10),
+    })
+    cursor.setDate(cursor.getDate() + 1)
+  }
+  return dates
+}
+
+// The API returns dayDate strings like "Friday, 18/04/26"
+// Convert to display key "18 APR" to match our date list
+const toDisplayKey = (dateStr) => {
+  const afterComma = (dateStr.split(',')[1] || dateStr)
+    .replace(/\u00A0/g, ' ')
+    .trim()
+  const [rawDay = '', rawMonth = ''] = afterComma.split('/')
+  const dayNum = parseInt(String(rawDay).trim(), 10)
+  const monthNum = parseInt(String(rawMonth).trim(), 10)
+  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']
+  const monthAbbr = months[(monthNum || 0) - 1] || ''
+  return `${Number.isFinite(dayNum) ? dayNum : ''} ${monthAbbr}`.trim()
+}
+useEffect(() => {
+  const filtered = courseTimetableList.filter((item) => {
+    const firstSlot =
+      Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
+        ? item.lectureSlots[0]
+        : ''
+
+    return !(typeof firstSlot === 'string' && firstSlot.startsWith('L'))
+  })
+
+  const courseArr = filtered.map((item) => item.course)
+
+  const slotArr = filtered.map((item) => {
+    const firstSlot =
+      Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
+        ? item.lectureSlots[0]
+        : ''
+
+    if (!firstSlot) return 0
+
+    const match = firstSlot.match(/^\d+/)
+
+    return match ? parseInt(match[0], 10) : 0
+  })
+
+  setExamCourses(courseArr)
+  setExamSlots(slotArr)
+}, [courseTimetableList])
+useEffect(() => {
+    console.log('examCourses:', examCourses)
+  console.log('isExamPeriod:', isExamPeriod())
+  if (!isExamPeriod()) return undefined
+
+  if (!examCourses.length) {
+    setExamTimetable({})
+    return undefined
+  }
+
+  const timeoutId = setTimeout(async () => {
+    const userCourses = examCourses.map((code, idx) => {
+      const slotNumber = examSlots[idx]
+
+      return slotNumber
+        ? { course_code: code, course_slot_number: slotNumber }
+        : { course_code: code }
+    })
+
+    try {
+      const res = await API.examSchedule.getBatch({
+        courses: userCourses,
+      })
+
+      let scheduleRows = []
+
+      if (Array.isArray(res)) scheduleRows = res
+      else if (Array.isArray(res?.data)) scheduleRows = res.data
+
+      const temp = {}
+
+      const createEmptySlots = () =>
+        Object.fromEntries(
+          EXAM_TIME_SLOTS.map(({ slot }) => [slot, []])
+        )
+
+      scheduleRows
+        .filter((s) => s && !s.error)
+        .forEach((schedule) => {
+          const { dayDate, mappedSlot, courseCode } = schedule
+
+          if (!dayDate || !mappedSlot || !courseCode) return
+
+          if (!temp[dayDate]) {
+            temp[dayDate] = createEmptySlots()
+          }
+
+          if (
+            Object.prototype.hasOwnProperty.call(
+              temp[dayDate],
+              mappedSlot
+            )
+          ) {
+            temp[dayDate][mappedSlot].push(courseCode)
+          }
+        })
+
+      setExamTimetable(temp)
+    } catch (err) {
+      toast({
+        status: 'error',
+        content: 'Failed to fetch exam schedule',
+      })
+    }
+  }, 300)
+
+  return () => clearTimeout(timeoutId)
+}, [examCourses, examSlots])
+const allDates = buildAllDates()
+
+const organized = {}
+
+allDates.forEach(({ display }) => {
+  organized[display] = Object.fromEntries(
+    EXAM_TIME_SLOTS.map(({ slot }) => [slot, []])
+  )
+})
+
+Object.entries(examTimetable).forEach(([dateStr, slotData]) => {
+  const displayKey = toDisplayKey(dateStr)
+
+  if (!organized[displayKey]) return
+
+  Object.entries(slotData).forEach(([slotNum, courseCodes]) => {
+    const slot = parseInt(slotNum, 10)
+
+    if (organized[displayKey][slot]) {
+      courseCodes.forEach((code) => {
+        organized[displayKey][slot].push(code)
+      })
+    }
+  })
+}) 
+
   const getDayViewDateDisplay = (date) => {
     return `${date.format('dddd')}, ${date.format('D MMMM YYYY')}`
   }
@@ -829,7 +995,31 @@ const TimetableContainer = () => {
         <PageHeading>
           <PageTitle>Timetable</PageTitle>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Exam />
+            <button
+  type="button"
+  onClick={() =>
+    setShowRegularTimetable((prev) => !prev)
+  }
+style={{
+  backgroundColor: '#6d669e',
+  color: '#ffffff',
+  border: 'none',
+  height: '32px',
+  borderRadius: '8px',
+  padding: '8px 16px',
+  fontSize: '0.9rem',
+  fontWeight: 400,
+  cursor: 'pointer',
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '8px',
+  transition: 'background-color 0.2s ease',
+}}
+>
+  {showRegularTimetable
+    ? 'Exam Timetable'
+    : 'Regular Timetable'}
+</button>
             <Dropdown
               overlay={addDropdownMenu}
               trigger={['click']}
@@ -857,6 +1047,67 @@ const TimetableContainer = () => {
         spinning={loading}
         indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
       >
+        { !showRegularTimetable ? (
+  <>
+    <ExamLabel>{EXAM_LABEL}</ExamLabel>
+
+    <ExamTimetableDownload timetable={examTimetable} />
+
+    <TableWrapper>
+      <div style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+        <StyledTable>
+          <thead>
+            <tr>
+              <Th style={{ width: '80px' }} />
+              {EXAM_TIME_SLOTS.map((timeSlot) => (
+                <Th key={timeSlot.slot}>
+                  {timeSlot.label}
+                </Th>
+              ))}
+            </tr>
+          </thead>
+
+          <tbody>
+            {allDates.map(({ display, weekday }) => (
+              <tr key={display}>
+                <DateTd>
+                  <div style={{ fontWeight: 'bold' }}>
+                    {display}
+                  </div>
+
+                  <div style={{ opacity: 0.7 }}>
+                    {weekday}
+                  </div>
+                </DateTd>
+
+                {EXAM_TIME_SLOTS.map((timeSlot) => {
+                  const coursesInSlot =
+                    organized[display]?.[timeSlot.slot] || []
+
+                  return (
+                    <Td key={timeSlot.slot}>
+                      {coursesInSlot.map((code) => (
+                        <CourseBlock
+                          key={`${code}-${display}-${timeSlot.slot}`}
+                          bg={makeGradient(
+                            colorPicker(hash(code))
+                          )}
+                        >
+                          <CourseCode>{code}</CourseCode>
+                        </CourseBlock>
+                      ))}
+                    </Td>
+                  )
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </StyledTable>
+      </div>
+    </TableWrapper>
+  </>
+):(
+  <>
         {currentView === 'Day' && (
           <DayView
             currentDate={currentDate}
@@ -905,6 +1156,8 @@ const TimetableContainer = () => {
             dayDateString={dayDateString}
           />
         )}
+        </>
+)}
       </Spin>
 
       <Aside title="My courses" loading={loading}>
@@ -1076,6 +1329,91 @@ const CurrentTimeIndicator = () => {
 
   return <IndicatorLine style={{ top: `${topPosition}px` }} />
 }
+// exam view
+const ExamLabel = styled.div`
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: white;
+`
+
+const TableWrapper = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  color: white;
+`
+
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+`
+
+const Th = styled.th`
+  text-align: left;
+  padding: 0.9rem 1.2rem;
+  text-transform: uppercase;
+  font-size: 0.79rem;
+  color: white;
+  background-color: #2d2941;
+  position: sticky;
+  top: -1px;
+  z-index: 10;
+`
+
+const Td = styled.td`
+  padding: 0.9rem 1.2rem;
+  font-size: 0.95rem;
+  text-align: center;
+  border: 1px solid #44405e;
+  background-color: transparent;
+  vertical-align: top;
+`
+
+const DateTd = styled(Td)`
+  font-size: 0.9rem;
+  color: white;
+  font-weight: 500;
+  padding: 0.9rem 1.2rem;
+  text-align: left;
+  border: 1px solid #44405e;
+`
+
+const CourseBlock = styled.div`
+  background: ${({ bg }) => bg};
+  color: black;
+  border-radius: 8px;
+  padding: 0;
+  font-weight: 450;
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  font-size: 0.9rem;
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+`
+
+const CourseDateBadge = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgb(255, 233, 204);
+  padding: 0.3rem 0.5rem;
+  width: 45px;
+  text-align: center;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+`
+
+const CourseCode = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  padding: 0.5rem 0.8rem;
+`
 
 // Day View Component
 const DayView = ({
@@ -2308,7 +2646,6 @@ const TimetableAsideItem = ({ course, handleRemove, loading }) => {
     </Link>
   )
 }
-
 export default TimetableContainer
 
 // ##################################################################

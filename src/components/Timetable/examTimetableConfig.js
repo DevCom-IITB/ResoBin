@@ -1,6 +1,6 @@
 export const EXAM_DATE_RANGE =[ {
-  start: '2026-04-20',
-  end: '2026-05-01',
+  start: '2026-05-10',
+  end: '2026-05-18',
 }]
 
 export const EXAM_LABEL = 'End-semester Examinations'
