@@ -1,4 +1,4 @@
-import { Download } from '@styled-icons/heroicons-outline'
+import { ArrowDownTray as Download } from '@styled-icons/heroicons-outline'
 import React from 'react'
 import styled from 'styled-components/macro'
 

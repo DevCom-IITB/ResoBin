@@ -1,4 +1,4 @@
-import { InformationCircle, X } from '@styled-icons/heroicons-outline'
+import { InformationCircle, XMark as X } from '@styled-icons/heroicons-outline'
 import { Checkbox, Select, Switch, Tooltip } from 'antd'
 import { kebabCase } from 'lodash'
 import React, { useState, useEffect } from 'react'

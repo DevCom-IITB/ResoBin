@@ -1,4 +1,4 @@
-import { DocumentAdd } from '@styled-icons/heroicons-outline'
+import { DocumentPlus as DocumentAdd } from '@styled-icons/heroicons-outline'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 

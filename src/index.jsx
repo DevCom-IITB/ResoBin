@@ -24,7 +24,12 @@ const StrictApp = () => {
     <StrictMode>
       <Provider store={store}>
         <PersistGate loading={<LoaderAnimation />} persistor={persistor}>
-          <Router>
+          <Router
+            future={{
+              v7_relativeSplatPath: true,
+              v7_startTransition: true,
+            }}
+          >
             <HelmetProvider>
               <CookiesProvider>
                 <App />

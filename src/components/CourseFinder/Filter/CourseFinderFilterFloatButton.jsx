@@ -1,4 +1,4 @@
-import { Filter, X } from '@styled-icons/heroicons-outline'
+import { Funnel as Filter, XMark as X } from '@styled-icons/heroicons-outline'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'

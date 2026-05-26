@@ -16,10 +16,6 @@ const PopupModal = () => {
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
 
-  const BlurBackdrop = styled(Backdrop)`
-    backdrop-filter: blur(10px);
-  `
-
   useEffect(() => {
     // Show popup only if the user is authenticated
     if (isAuthenticated) {
@@ -53,7 +49,7 @@ const PopupModal = () => {
       open={open}
       onClose={handleToClose}
       BackdropComponent={BlurBackdrop}
-      fullWidth="md"
+      fullWidth
       maxWidth="md"
     >
       <StyledTitle>
@@ -80,6 +76,10 @@ const PopupModal = () => {
 }
 
 export default PopupModal
+
+const BlurBackdrop = styled(Backdrop)`
+  backdrop-filter: blur(10px);
+`
 
 const StyledDialog = styled(Dialog)`
   && .MuiDialog-container {

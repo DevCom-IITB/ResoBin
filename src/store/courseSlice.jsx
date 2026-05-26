@@ -32,39 +32,38 @@ const courseSlice = createSlice({
     semesters: [],
   },
 
-  extraReducers: {
-    [getDepartmentList.fulfilled]: (state, { payload }) => {
-      state.departments = payload
-      state.loading = false
-    },
-    [getDepartmentList.pending]: (state) => {
-      state.loading = true
-    },
-    [getDepartmentList.rejected]: (state) => {
-      state.loading = false
-    },
-
-    [getSemesterList.fulfilled]: (state, { payload }) => {
-      state.semesters = payload?.reverse()
-      state.loading = false
-    },
-    [getSemesterList.pending]: (state) => {
-      state.loading = true
-    },
-    [getSemesterList.rejected]: (state) => {
-      state.loading = false
-    },
-
-    [getCourseListMinified.fulfilled]: (state, { payload }) => {
-      state.listMinified = payload
-      state.loading = false
-    },
-    [getCourseListMinified.pending]: (state) => {
-      state.loading = true
-    },
-    [getCourseListMinified.rejected]: (state) => {
-      state.loading = false
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getDepartmentList.fulfilled, (state, { payload }) => {
+        state.departments = payload
+        state.loading = false
+      })
+      .addCase(getDepartmentList.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(getDepartmentList.rejected, (state) => {
+        state.loading = false
+      })
+      .addCase(getSemesterList.fulfilled, (state, { payload }) => {
+        state.semesters = payload?.reverse()
+        state.loading = false
+      })
+      .addCase(getSemesterList.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(getSemesterList.rejected, (state) => {
+        state.loading = false
+      })
+      .addCase(getCourseListMinified.fulfilled, (state, { payload }) => {
+        state.listMinified = payload
+        state.loading = false
+      })
+      .addCase(getCourseListMinified.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(getCourseListMinified.rejected, (state) => {
+        state.loading = false
+      })
   },
 })
 

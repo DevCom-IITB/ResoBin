@@ -10,7 +10,13 @@ const QuickReviewContainer = () => {
   const [selectedCourse, setSelectedCourse] = useState('')
   const [courseTimetableList, setCourseTimetableList] = useState([])
   const [questions, setQuestions] = useState([])
-  const [semesters, setSemesters] = useState({})
+
+  // SAFER INITIAL STATE
+  const [semesters, setSemesters] = useState({
+    season: null,
+    year: null,
+  })
+
   const [ratings, setRatings] = useState({})
 
   const desc = [
@@ -24,7 +30,11 @@ const QuickReviewContainer = () => {
   const getSemesters = async () => {
     try {
       const response = await API.semesters.list()
-      setSemesters(response[1])
+
+      // SAFETY CHECK
+      if (response && response[1]) {
+        setSemesters(response[1])
+      }
     } catch (error) {
       toast({ status: 'error', content: error })
     }
@@ -33,6 +43,7 @@ const QuickReviewContainer = () => {
   const fetchUserTimetable = useCallback(async (season, year) => {
     try {
       const givenReviews = await API.profile.rapidreviews.list()
+
       const response = await API.profile.timetable.read({
         season,
         year,
@@ -55,6 +66,7 @@ const QuickReviewContainer = () => {
       await API.rapidreviews.create({
         payload: { course: code, parent: null, body },
       })
+
       toast({ status: 'success', content: 'Thanks for the review!' })
     } catch (error) {
       toast({ status: 'error', content: error })
@@ -66,13 +78,17 @@ const QuickReviewContainer = () => {
   }, [])
 
   useEffect(() => {
-    if (semesters.season && semesters.year) {
+    // SAFETY CHECK
+    if (semesters?.season && semesters?.year) {
       fetchUserTimetable(semesters.season, semesters.year)
     }
-  }, [semesters])
+  }, [semesters, fetchUserTimetable])
 
   useEffect(() => {
-    const courseList = courseTimetableList.map((item) => item.course)
+    // SAFER MAPPING
+    const courseList =
+      courseTimetableList?.map((item) => item.course) || []
+
     setCourses(courseList)
 
     if (courseList.length > 0) {
@@ -82,7 +98,6 @@ const QuickReviewContainer = () => {
 
   useEffect(() => {
     if (selectedCourse) {
-      // Placeholder for fetching questions
       setQuestions([
         'How was your overall experience taking this course?',
         'How much was the course content and material relevant while preparing for exams?',
@@ -110,10 +125,13 @@ const QuickReviewContainer = () => {
 
   function convertJsonToHtmlString(jsonRatings) {
     const jsonData = JSON.parse(jsonRatings)
+
     let htmlString = ''
+
     Object.entries(jsonData).forEach(([question, value]) => {
       htmlString += `<h3>${question} - ${desc[value - 1]}</h3><br>`
     })
+
     return htmlString
   }
 
@@ -129,11 +147,11 @@ const QuickReviewContainer = () => {
       setSelectedCourse('')
       setRatings({})
 
-      if (semesters.season && semesters.year) {
+      // SAFETY CHECK
+      if (semesters?.season && semesters?.year) {
         await fetchUserTimetable(semesters.season, semesters.year)
       }
     } catch (error) {
-      // Handle error if the review submission fails
       toast({ status: 'error', content: error })
     }
   }
@@ -150,6 +168,7 @@ const QuickReviewContainer = () => {
                 value={selectedCourse}
               >
                 <option value="">Select a Course</option>
+
                 {courses.map((course) => (
                   <option key={course} value={course}>
                     {course}
@@ -166,30 +185,37 @@ const QuickReviewContainer = () => {
               still visit the respective course page on ResoBin to write a
               detailed review about your experience with the course.
             </h4>
+
             <h4 style={{ textAlign: 'center', paddingBottom: '5px' }}>
               Thank you!
             </h4>
           </div>
         )}
+
         {selectedCourse &&
           questions.map((question) => (
             <QuestionContainer key={question}>
-              {' '}
-              {/* Use the question text itself as the key */}
               <Label>
                 {question}
+
                 <Stars>
                   <Rate
                     tooltips={desc}
-                    onChange={(value) => handleRatingChange(question, value)}
+                    onChange={(value) =>
+                      handleRatingChange(question, value)
+                    }
                     value={ratings[question] || 3}
                   />
                 </Stars>
               </Label>
             </QuestionContainer>
           ))}
+
         {selectedCourse && (
-          <SubmitButton type="submit" data-umami-event="Rapid Review Submit">
+          <SubmitButton
+            type="submit"
+            data-umami-event="Rapid Review Submit"
+          >
             Submit
           </SubmitButton>
         )}
@@ -201,6 +227,7 @@ const QuickReviewContainer = () => {
 export default QuickReviewContainer
 
 // Styled components
+
 const Container = styled.div`
   background-color: ${({ theme }) => theme.darksecondary};
   border-radius: 8px;

@@ -1,4 +1,4 @@
-import { Download } from '@styled-icons/heroicons-outline'
+import { ArrowDownTray as Download } from '@styled-icons/heroicons-outline'
 import { Dropdown, Menu } from 'antd'
 import html2canvas from 'html2canvas'
 import { useSelector } from 'react-redux'

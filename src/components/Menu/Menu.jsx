@@ -2,15 +2,15 @@ import {
   ShieldCheck,
   Bookmark,
   BookOpen,
-  CloudUpload,
+  CloudArrowUp as CloudUpload,
   Cog,
   Calendar,
   Home,
   AcademicCap,
-  Archive,
+  ArchiveBox as Archive,
   InformationCircle,
+  Lifebuoy as ContactSupport,
 } from '@styled-icons/heroicons-outline'
-import { ContactSupport } from '@styled-icons/material-outlined'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 

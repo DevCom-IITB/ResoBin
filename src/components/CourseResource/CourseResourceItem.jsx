@@ -1,7 +1,7 @@
 import {
-  Download,
+  ArrowDownTray as Download,
   InformationCircle,
-  PencilAlt,
+  PencilSquare as PencilAlt,
 } from '@styled-icons/heroicons-outline'
 import { Popover } from 'antd'
 import { rgba } from 'polished'

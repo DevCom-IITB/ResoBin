@@ -28,40 +28,39 @@ export const deleteProfileAction = createAsyncThunk(
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  extraReducers: {
-    [loginAction.fulfilled]: (state, { payload }) => {
-      state.isAuthenticated = true
-      state.loading = false
-    },
-    [loginAction.pending]: (state) => {
-      state.loading = true
-    },
-    [loginAction.rejected]: (state) => {
-      state.loading = false
-    },
-
-    [logoutAction.fulfilled]: (state, action) => {
-      state.isAuthenticated = false
-      state.loading = false
-    },
-    [logoutAction.pending]: (state) => {
-      state.loading = true
-    },
-    [logoutAction.rejected]: (state) => {
-      state.loading = false
-    },
-
-    [getAuthStatusAction.fulfilled]: (state, { payload }) => {
-      state.isAuthenticated = true
-      state.loading = false
-    },
-    [getAuthStatusAction.pending]: (state) => {
-      state.loading = true
-    },
-    [getAuthStatusAction.rejected]: (state) => {
-      state.isAuthenticated = false
-      state.loading = false
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginAction.fulfilled, (state) => {
+        state.isAuthenticated = true
+        state.loading = false
+      })
+      .addCase(loginAction.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(loginAction.rejected, (state) => {
+        state.loading = false
+      })
+      .addCase(logoutAction.fulfilled, (state) => {
+        state.isAuthenticated = false
+        state.loading = false
+      })
+      .addCase(logoutAction.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(logoutAction.rejected, (state) => {
+        state.loading = false
+      })
+      .addCase(getAuthStatusAction.fulfilled, (state) => {
+        state.isAuthenticated = true
+        state.loading = false
+      })
+      .addCase(getAuthStatusAction.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(getAuthStatusAction.rejected, (state) => {
+        state.isAuthenticated = false
+        state.loading = false
+      })
   },
 })
 

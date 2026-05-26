@@ -1,4 +1,7 @@
-import { ChatAlt, DocumentText } from '@styled-icons/heroicons-outline'
+import {
+  ChatBubbleLeftEllipsis as ChatAlt,
+  DocumentText,
+} from '@styled-icons/heroicons-outline'
 import { Fragment, useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'

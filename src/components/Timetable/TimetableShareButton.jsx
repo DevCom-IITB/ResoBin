@@ -1,5 +1,9 @@
 import { Whatsapp } from '@styled-icons/fa-brands'
-import { ClipboardCopy, Mail, Share } from '@styled-icons/heroicons-outline'
+import {
+  ClipboardDocument as ClipboardCopy,
+  Envelope as Mail,
+  Share,
+} from '@styled-icons/heroicons-outline'
 import { Button, Input } from 'antd'
 import { rgba } from 'polished'
 import QRCode from 'qrcode.react'

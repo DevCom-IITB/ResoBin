@@ -2,18 +2,18 @@ import { LoadingOutlined } from '@ant-design/icons'
 import {
   ChevronLeft,
   ChevronRight,
-  X,
-  ExternalLink,
+  XMark as X,
+  ArrowTopRightOnSquare as ExternalLink,
   Plus,
   Calendar,
   BookOpen,
   Bell,
 } from '@styled-icons/heroicons-outline'
-import { Spin, Alert, Modal, Radio, Tooltip, Dropdown} from 'antd'
+import { Spin, Alert, Modal, Radio, Tooltip } from 'antd'
 import axios from 'axios'
 import moment from 'moment'
 import { darken } from 'polished'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
@@ -75,6 +75,7 @@ const TimetableContainer = () => {
   const [currentView, setCurrentView] = useState(getInitialView)
   const [dropdownVisible, setDropdownVisible] = useState(false)
   const [coursesModalVisible, setCoursesModalVisible] = useState(false)
+  const radialMenuRef = useRef(null)
 
   // Eplanner events state
   const [eplannerEvents, setEplannerEvents] = useState({
@@ -98,6 +99,20 @@ const TimetableContainer = () => {
       window.dispatchEvent(new CustomEvent(`toggle-${itemType}-planner`))
     }
   }
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (radialMenuRef.current && !radialMenuRef.current.contains(e.target)) {
+        setDropdownVisible(false)
+      }
+    }
+    if (dropdownVisible) {
+      document.addEventListener('mousedown', handleOutsideClick)
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick)
+    }
+  }, [dropdownVisible])
 
   useEffect(() => {
     if (autoOpen === 'reminder') {
@@ -188,34 +203,12 @@ const TimetableContainer = () => {
     )
   }, [])
 
-  const addDropdownMenu = (
-    <AddDropdownMenu>
-      <AddMenuItem onClick={() => handleDropdownItemClick('personal')}>
-        <AddMenuIcon>
-          <Calendar size="16" />
-        </AddMenuIcon>
-        Personal
-      </AddMenuItem>
-      <AddMenuItem onClick={() => handleDropdownItemClick('exam')}>
-        <AddMenuIcon>
-          <BookOpen size="16" />
-        </AddMenuIcon>
-        Exam
-      </AddMenuItem>
-      <AddMenuItem onClick={() => handleDropdownItemClick('reminder')}>
-        <AddMenuIcon>
-          <Bell size="16" />
-        </AddMenuIcon>
-        Reminder
-      </AddMenuItem>
-      <AddMenuItem onClick={() => handleDropdownItemClick('courses')}>
-        <AddMenuIcon>
-          <BookOpen size="16" />
-        </AddMenuIcon>
-        Courses
-      </AddMenuItem>
-    </AddDropdownMenu>
-  )
+  const radialMenuItems = [
+    { key: 'personal', icon: <Calendar size="16" />, label: 'Personal', x: -38, y: -78 },
+    { key: 'exam', icon: <BookOpen size="16" />, label: 'Exam', x: -122, y: -26 },
+    { key: 'reminder', icon: <Bell size="16" />, label: 'Reminder', x: -122, y: 26 },
+    { key: 'courses', icon: <BookOpen size="16" />, label: 'Courses', x: -38, y: 78 },
+  ]
 
   // Add the fetchCourses function
   const fetchCourses = async (params) => {
@@ -817,18 +810,28 @@ const TimetableContainer = () => {
           <PageTitle>Timetable</PageTitle>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Exam />
-            <Dropdown
-              overlay={addDropdownMenu}
-              trigger={['click']}
-              visible={dropdownVisible}
-              onVisibleChange={setDropdownVisible}
-              placement="bottomRight"
-            >
-              <AddButton onClick={() => setDropdownVisible(!dropdownVisible)}>
-                <Plus size="16" />
-                add
+            <RadialMenuWrapper ref={radialMenuRef}>
+              <AddButton
+                onClick={() => setDropdownVisible(!dropdownVisible)}
+                $active={dropdownVisible}
+              >
+                {dropdownVisible ? <X size="16" /> : <Plus size="16" />}
+                {dropdownVisible ? 'close' : 'add'}
               </AddButton>
-            </Dropdown>
+              {dropdownVisible &&
+                radialMenuItems.map(({ key, icon, label, x, y }, i) => (
+                  <RadialItem
+                    key={key}
+                    style={{ '--x': `${x}px`, '--y': `${y}px`, '--i': i }}
+                    onClick={() => handleDropdownItemClick(key)}
+                  >
+                    <RadialItemPetal>
+                      {icon}
+                      <span>{label}</span>
+                    </RadialItemPetal>
+                  </RadialItem>
+                ))}
+            </RadialMenuWrapper>
           </div>
         </PageHeading>
       </TimetablePageHeadingWrapper>
@@ -2324,70 +2327,117 @@ const IndicatorLine = styled.div`
   }
 `
 
+const RadialMenuWrapper = styled.div`
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 101;
+  padding: 4px;
+  border: 1px solid rgba(109, 102, 158, 0.35);
+  border-radius: 10px;
+  background: rgba(27, 23, 40, 0.68);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.24);
+`
+
 const AddButton = styled.button`
-  background-color: #6d669e;
+  background: ${({ $active }) =>
+    $active
+      ? 'linear-gradient(135deg, #514a86 0%, #6d669e 100%)'
+      : 'linear-gradient(135deg, #6d669e 0%, #8179bb 100%)'};
   color: #ffffff;
-  border: none;
-  height: 32px;
-  border-radius: 8px;
-  padding: 8px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  height: 36px;
+  border-radius: 7px;
+  padding: 8px 14px;
   font-size: 0.9rem;
-  font-weight: 400;
+  font-weight: 600;
+  text-transform: capitalize;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: background-color 0.2s ease;
+  box-shadow: ${({ $active }) =>
+    $active
+      ? 'inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 8px 18px rgba(0, 0, 0, 0.28)'
+      : 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 5px 12px rgba(109, 102, 158, 0.28)'};
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  position: relative;
+  z-index: 102;
 
   &:hover {
-    background-color: ${darken(0.1, '#6d669e')};
+    filter: brightness(1.06);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(109, 102, 158, 0.32);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.75);
+    outline-offset: 3px;
   }
 `
 
-const AddDropdownMenu = styled.div`
-  background: #2b273b;
-  border: 1px solid #6d669e;
-  border-radius: 12px;
-  padding: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  min-width: 160px;
-`
-
-const AddMenuItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  color: #ffffff;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: rgba(109, 102, 158, 0.2);
-    color: #ffffff;
-  }
-
-  &:not(:last-child) {
-    margin-bottom: 4px;
-  }
-`
-
-const AddMenuIcon = styled.div`
+const RadialItem = styled.button`
+  position: absolute;
+  top: 50%;
+  left: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
-  background: rgba(109, 102, 158, 0.3);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 102;
+  transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y)));
+  animation: radialOpen 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i) * 55ms) both;
+
+  @keyframes radialOpen {
+    from {
+      transform: translate(-50%, -50%) scale(0.3);
+      opacity: 0;
+    }
+    to {
+      transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1);
+      opacity: 1;
+    }
+  }
+
+  &:hover > div:first-child {
+    background: linear-gradient(135deg, #6d669e 0%, #8179bb 100%);
+    border-color: rgba(255, 255, 255, 0.32);
+    transform: scale(1.06);
+  }
+`
+
+const RadialItemPetal = styled.div`
+  width: 96px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(27, 23, 40, 0.96);
+  border: 1px solid rgba(109, 102, 158, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   color: #ffffff;
+  box-shadow: 0 9px 18px rgba(0, 0, 0, 0.34);
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
 
   svg {
     width: 16px;
     height: 16px;
+    flex: 0 0 auto;
+  }
+
+  span {
+    display: block;
+    overflow: hidden;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 `
 

@@ -1,4 +1,4 @@
-import { CloudUpload } from '@styled-icons/heroicons-outline'
+import { CloudArrowUp as CloudUpload } from '@styled-icons/heroicons-outline'
 import { lighten, rgba } from 'polished'
 import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components/macro'

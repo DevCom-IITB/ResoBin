@@ -1,5 +1,5 @@
 import { LoadingOutlined } from '@ant-design/icons'
-import { Search } from '@styled-icons/heroicons-outline'
+import { MagnifyingGlass as Search } from '@styled-icons/heroicons-outline'
 import { Input } from 'antd'
 import axios from 'axios'
 import { rgba } from 'polished'

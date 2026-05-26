@@ -1,4 +1,4 @@
-import { CloudUpload } from '@styled-icons/heroicons-outline'
+import { CloudArrowUp as CloudUpload } from '@styled-icons/heroicons-outline'
 import { Select } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -429,4 +429,3 @@ const Header = styled.div`
   justify-content: start;
   margin: 1rem 0;
 `
-

@@ -1,5 +1,5 @@
-import { ThumbUp as ThumbUpOutlined } from '@styled-icons/heroicons-outline'
-import { ThumbUp as ThumbUpFilled } from '@styled-icons/heroicons-solid'
+import { HandThumbUp as ThumbUpOutlined } from '@styled-icons/heroicons-outline'
+import { HandThumbUp as ThumbUpFilled } from '@styled-icons/heroicons-solid'
 import { Button } from 'antd'
 import DOMPurify from 'dompurify'
 import { useState } from 'react'

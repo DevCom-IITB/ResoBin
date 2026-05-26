@@ -1,4 +1,4 @@
-import { ExternalLink } from '@styled-icons/heroicons-outline'
+import { ArrowTopRightOnSquare as ExternalLink } from '@styled-icons/heroicons-outline'
 import { Tooltip } from 'antd'
 import { darken } from 'polished'
 import { useCallback } from 'react'
