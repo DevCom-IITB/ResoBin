@@ -2409,9 +2409,9 @@ const SubHeader = styled.div`
 const TimetablePageHeadingWrapper = styled.div`
   padding-bottom: 0.75rem;
   margin-bottom: -10px;
-  // position: sticky;
-  // top: 0;
-  // z-index: 100;
+  /* position: sticky; */
+  /* top: 0; */
+  /* z-index: 100; */
   background: ${({ theme }) => theme.bg};
   width: 100%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
