@@ -1201,6 +1201,9 @@ const DayView = ({
             </DayTimeColumn>
             <DayEventColumn>
               {isToday && <CurrentTimeIndicator />}
+
+              <LunchBlock>LUNCH</LunchBlock>
+
               {processedDayEvents.map((event) => {
                 const course = coursedata[event.courseCode]
 
@@ -1646,6 +1649,8 @@ const WeekView = ({
                 </TimeSlot>
               ))}
             </WeekTimeColumn>
+
+              <WeekLunchBlock>LUNCH</WeekLunchBlock>
 
             {/* 4. Map over the `daysOfWeek` array again for the columns, using the index. */}
             {daysOfWeek.map((day, dayIndex) => {
@@ -2404,9 +2409,9 @@ const SubHeader = styled.div`
 const TimetablePageHeadingWrapper = styled.div`
   padding-bottom: 0.75rem;
   margin-bottom: -10px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  /* position: sticky; */
+  /* top: 0; */
+  /* z-index: 100; */
   background: ${({ theme }) => theme.bg};
   width: 100%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
@@ -2726,6 +2731,7 @@ const WeekGrid = styled.div`
   min-width: 800px;
   width: 100%;
   color: #ffffff0f;
+  position: relative;
 `
 
 const WeekTimeColumn = styled.div`
@@ -3121,4 +3127,59 @@ const CourseCardContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`
+
+const LunchBlock = styled.div`
+  position: absolute;
+  top: 240px;
+  left: 0; 
+  width: 100%; 
+  height: 90px;
+  
+  background-color: ${({ theme }) => theme.secondary || '#2b273b'};
+  
+  background-image: linear-gradient(90deg, rgba(34, 70, 168, 0.79) 0%, rgba(34, 70, 168, 0.31) 100%);
+  
+  border: 1px dashed rgba(59, 130, 246, 0.4); 
+  border-radius: 6px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  color: #c3c6cb; 
+  font-size: 0.9rem; 
+  font-weight: 500;
+  font-family: "Century Schoolbook", "Century", "Helvetica Neue", Helvetica, serif;
+  
+  z-index: 1;
+  pointer-events: none;
+  box-sizing: border-box;
+`
+
+const WeekLunchBlock = styled.div`
+  position: absolute;
+  top: 240px;
+  left: 80px; 
+  width: calc(100% - 80px); 
+  height: 90px;
+  
+  background-color: ${({ theme }) => theme.secondary || '#2b273b'};
+  background-image: linear-gradient(90deg, rgba(34, 70, 168, 0.79) 0%, rgba(34, 70, 168, 0.31) 100%);
+  
+  border: 1px dashed rgba(59, 130, 246, 0.4); 
+  border-radius: 6px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  color: #c3c6cb; 
+  font-size: 1rem; 
+  font-weight: 500;
+  font-family: "Century Schoolbook", "Century", "Helvetica Neue", Helvetica, serif;
+  
+  z-index: 1;
+  pointer-events: none;
+  box-sizing: border-box;
 `
