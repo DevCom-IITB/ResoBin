@@ -1,6 +1,6 @@
 # Contributing Guidelines
 
-Thank you for investing your time in contributing to this NewBee! To ensure a smooth, transparent, and scalable development workflow, we strictly adhere to industry-standard Git conventions. 
+Thank you for investing your time in contributing to this ResoBin! To ensure a smooth, transparent, and scalable development workflow, we strictly adhere to industry-standard Git conventions. 
 
 Please read this guide fully before starting your work.
 
@@ -89,12 +89,12 @@ When opening a PR, your description must be thorough. *Copy the template below i
 
 ## Type of Change
 <!-- Mark the appropriate box with an 'x' -->
-- [ ] 🚀 **New Feature** (non-breaking change introducing new functionality)
-- [ ] 🐛 **Bug Fix** (non-breaking fix for a known issue)
-- [ ] 💥 **Breaking Change** (fix or feature that causes existing functionality to break)
-- [ ] ♻️ **Refactor** (code change that neither fixes a bug nor adds a feature)
-- [ ] 📝 **Documentation** (updates to README, inline docs, or contributor guides)
-- [ ] 🤖 **Chore / Tooling** (CI pipelines, package bumps, build scripts)
+- [ ] **New Feature** (non-breaking change introducing new functionality)
+- [ ] **Bug Fix** (non-breaking fix for a known issue)
+- [ ] **Breaking Change** (fix or feature that causes existing functionality to break)
+- [ ] **Refactor** (code change that neither fixes a bug nor adds a feature)
+- [ ] **Documentation** (updates to README, inline docs, or contributor guides)
+- [ ] **Chore / Tooling** (CI pipelines, package bumps, build scripts)
 
 ## Proposed Changes
 <!-- Bullet point the technical implementations made under the hood -->
@@ -115,7 +115,7 @@ When opening a PR, your description must be thorough. *Copy the template below i
 
 ***
 
-### 📦 Codebase Impact Summary
+### Codebase Impact Summary
 * **Total Files Touched:** `[e.g., 6]`
 * **Files Created:** `[Count]`
 * **Files Modified:** `[Count]`
