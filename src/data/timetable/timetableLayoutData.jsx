@@ -7,6 +7,7 @@ export const cols = [
 ]
 
 export const rows = [
+  { id: 'time-0800', title: '08:00' },
   { id: 'time-0830', title: '08:30' },
   { id: 'time-0900', title: '09:00' },
   { id: 'time-0930', title: '09:30' },
