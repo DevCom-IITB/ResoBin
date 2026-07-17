@@ -58,7 +58,7 @@ const LogoContainer = styled(Link)`
 const Container = styled.div`
   position: sticky;
   top: 0;
-  z-index: 9;
+  z-index: 99;
   display: flex;
   align-items: center;
   justify-content: center;

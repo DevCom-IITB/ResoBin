@@ -27,7 +27,7 @@ import {
   toast,
 } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
-import { Exam } from 'components/Timetable/ExamTimetable'
+// import { Exam } from 'components/Timetable/ExamTimetable'
 import { API } from 'config/api'
 import { slots, rows } from 'data/timetable'
 import { coursePageUrl, hash } from 'helpers'
@@ -817,14 +817,15 @@ const TimetableContainer = () => {
       <TimetablePageHeadingWrapper>
         <PageHeading>
           <PageTitle>Timetable</PageTitle>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Exam />
+          <div style={{ position: 'relative', zIndex: 50, display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* <Exam /> */}
             <Dropdown
               overlay={addDropdownMenu}
               trigger={['click']}
               visible={dropdownVisible}
               onVisibleChange={setDropdownVisible}
               placement="bottomRight"
+              getPopupContainer={(trigger) => trigger.parentNode}
             >
               <AddButton onClick={() => setDropdownVisible(!dropdownVisible)}>
                 <Plus size="16" />
@@ -1195,7 +1196,7 @@ const DayView = ({
             <DayTimeColumn>
               {timeSlots.map((time) => (
                 <TimeSlot key={time}>
-                  {time.endsWith(':30') ? <TimeText>{time}</TimeText> : null}
+                  {time.endsWith(':00') ? <TimeText>{time}</TimeText> : null}
                 </TimeSlot>
               ))}
             </DayTimeColumn>
@@ -1645,7 +1646,7 @@ const WeekView = ({
             <WeekTimeColumn>
               {timeSlots.map((time) => (
                 <TimeSlot key={time}>
-                  {time.endsWith(':30') ? <TimeText>{time}</TimeText> : null}
+                  {time.endsWith(':00') ? <TimeText>{time}</TimeText> : null}
                 </TimeSlot>
               ))}
             </WeekTimeColumn>
@@ -3131,7 +3132,7 @@ const CourseCardContent = styled.div`
 
 const LunchBlock = styled.div`
   position: absolute;
-  top: 240px;
+  top: 270px;
   left: 0; 
   width: 100%; 
   height: 90px;
@@ -3159,7 +3160,7 @@ const LunchBlock = styled.div`
 
 const WeekLunchBlock = styled.div`
   position: absolute;
-  top: 240px;
+  top: 270px;
   left: 80px; 
   width: calc(100% - 80px); 
   height: 90px;
