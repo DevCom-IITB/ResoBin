@@ -226,7 +226,7 @@ const CoursesThisSemester = () => {
                             <CardTitleRow>{code}</CardTitleRow>
                             <DetailLine>
                               <ProfTag>
-                                {semester[0].timetable[0].professor
+                                {semester?.[0]?.timetable?.[0]?.professor
                                   ? `Prof. ${semester[0].timetable[0].professor}`
                                   : 'Unknown'}
                               </ProfTag>
@@ -238,7 +238,7 @@ const CoursesThisSemester = () => {
                     }
                     const { code, credits, semester } = item
                     if (!code) return null
-                    const professor = semester[0]?.timetable[0]?.professor
+                    const professor = semester?.[0]?.timetable?.[0]?.professor
                     return (
                       <Link key={code} to={coursePageUrl(code)}>
                         <StyledCard>
@@ -370,7 +370,7 @@ const TopReqCourses = () => {
                         <CardTitleRow>{course.code}</CardTitleRow>
                         <DetailLine>
                           <ProfTag>
-                            {course.semester[0].timetable[0]
+                            {course.semester?.[0]?.timetable?.[0]?.professor
                               ? `Prof. ${course.semester[0].timetable[0].professor}`
                               : 'Unknown'}
                           </ProfTag>
