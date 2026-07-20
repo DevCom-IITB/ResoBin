@@ -48,14 +48,13 @@ const lectureSlots = {
   '11B': { col: 5, row: { start: 15, end: 18 } },
   'XD': { col: 5, row: { start: 18, end: 20 } },
 
-  // Unmentioned remaining slots, shifted by +1 to maintain original visual time position
-  '4C': { col: 4, row: { start: 3, end: 5 } }, 
-  '13A': { col: 1, row: { start: 22, end: 25 } },
-  '13B': { col: 4, row: { start: 22, end: 25 } },
-  '14A': { col: 2, row: { start: 19, end: 22 } }, 
-  '14B': { col: 5, row: { start: 19, end: 22 } },
-  '15A': { col: 2, row: { start: 22, end: 25 } },
-  '15B': { col: 5, row: { start: 22, end: 25 } },
+  '4C': { col: 4, row: { start: 3, end: 5 } },
+  '13A': { col: 1, row: { start: 21, end: 24 } },
+  '13B': { col: 4, row: { start: 21, end: 24 } },
+  '14A': { col: 2, row: { start: 18, end: 21 } },
+  '14B': { col: 5, row: { start: 18, end: 21 } },
+  '15A': { col: 2, row: { start: 21, end: 24 } },
+  '15B': { col: 5, row: { start: 21, end: 24 } },
 }
 
 // ? lab slots (3h)
