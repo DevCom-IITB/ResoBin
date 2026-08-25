@@ -1,6 +1,6 @@
 import React from 'react'
-import { FaRegFile } from 'react-icons/fa'
-import { FiCalendar, FiBell, FiUpload } from 'react-icons/fi'
+import { FaRegFile } from 'react-icons/fa/index.mjs'
+import { FiCalendar, FiBell, FiUpload } from 'react-icons/fi/index.mjs'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
