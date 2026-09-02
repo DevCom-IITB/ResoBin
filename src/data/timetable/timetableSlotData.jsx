@@ -67,6 +67,12 @@ export const labSlots = {
 
   L5: combineSlots(lectureSlots['6A'], lectureSlots['7A']),
   L6: combineSlots(lectureSlots['6B'], lectureSlots['7B']),
+  
+  // Custom morning labs
+  L7: combineSlots(lectureSlots['1A'], lectureSlots['2A'], lectureSlots['3A']), // Monday Morning
+  L8: combineSlots(lectureSlots['1B'], lectureSlots['2B'], lectureSlots['3B']), // Tuesday Morning
+  L9: combineSlots(lectureSlots['1C'], lectureSlots['2C'], lectureSlots['3C']), // Thursday Morning
+  
   LX: combineSlots(lectureSlots.X1, lectureSlots.X2, lectureSlots.X3),
 }
 

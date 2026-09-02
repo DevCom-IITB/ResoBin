@@ -536,13 +536,8 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
 
           if (!firstSlot) return 0
 
-          const normalizedFirstSlot = String(firstSlot).trim().toUpperCase()
-          if (normalizedFirstSlot.includes('X')) {
-            return 'X'
-          }
-
           // Extract all leading digits before any letter
-          const match = normalizedFirstSlot.match(/^\d+/)
+          const match = firstSlot.match(/^\d+/)
           if (match) {
             return parseInt(match[0], 10)
           }
@@ -659,7 +654,7 @@ const PopupExample = () => {
   return (
     <div className="popup">
       <ExamButton type="button" onClick={togglePopup}>
-        End Sem
+        Mid Sem
       </ExamButton>
 
       {isOpen && (
