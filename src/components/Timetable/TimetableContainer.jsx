@@ -9,7 +9,7 @@ import {
   BookOpen,
   Bell,
 } from '@styled-icons/heroicons-outline'
-import { Spin, Alert, Modal, Radio, Tooltip, Dropdown} from 'antd'
+import { Spin, Alert, Modal, Radio, Tooltip, Dropdown } from 'antd'
 import axios from 'axios'
 import moment from 'moment'
 import { darken } from 'polished'
@@ -1341,9 +1341,9 @@ const DayView = ({
                               {event.isAllDay
                                 ? 'All Day'
                                 : `${event.startTime.substring(
-                                    0,
-                                    5
-                                  )} - ${event.endTime.substring(0, 5)}`}
+                                  0,
+                                  5
+                                )} - ${event.endTime.substring(0, 5)}`}
                             </div>
                             <div
                               style={{
@@ -1472,7 +1472,7 @@ const DayView = ({
                               {event.courseCode} | {event.slotName} |{' '}
                               {event.endRow - event.startRow >= 2 &&
                                 (event.slotName &&
-                                event.slotName.startsWith('L')
+                                  event.slotName.startsWith('L')
                                   ? 'Lab'
                                   : 'Lecture')}
                             </EventTitle>
@@ -1651,7 +1651,7 @@ const WeekView = ({
               ))}
             </WeekTimeColumn>
 
-              <WeekLunchBlock>LUNCH</WeekLunchBlock>
+            <WeekLunchBlock>LUNCH</WeekLunchBlock>
 
             {/* 4. Map over the `daysOfWeek` array again for the columns, using the index. */}
             {daysOfWeek.map((day, dayIndex) => {
@@ -1964,7 +1964,7 @@ const WeekView = ({
                                         }}
                                       >
                                         {event.slotName &&
-                                        event.slotName.startsWith('L')
+                                          event.slotName.startsWith('L')
                                           ? 'Lab'
                                           : 'Lecture'}
                                       </div>
