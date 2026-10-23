@@ -1,5 +1,6 @@
 export { default as copyToClipboard } from './copyToClipboard'
 export { default as CSRFToken } from './csrfToken'
+export { default as getDailyQuote } from './dailyQuote'
 export { displayYear, coursePageUrl, MinorDepartmentPageUrl, HonorsDepartmentPageUrl } from './format'
 export { default as hash } from './hash'
 export { default as nest } from './nest'

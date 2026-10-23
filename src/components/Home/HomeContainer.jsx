@@ -12,6 +12,7 @@ import { coursePageUrl } from 'helpers'
 import { selectSemesters } from 'store/courseSlice'
 import { selectUserProfile } from 'store/userSlice'
 
+import DailyQuote from './DailyQuote'
 import QuickActions from './QuickActions'
 import SearchBar from './SearchBar'
 import Sidebar from './sidebar'
@@ -425,6 +426,8 @@ const HomeContainer = () => {
           </div>
           <SearchBar loading={loadingg} setLoading={setLoadingg} />
         </HeaderRow>
+
+        <DailyQuote />
 
         <QuickActions />
         <CoursesThisSemester />
