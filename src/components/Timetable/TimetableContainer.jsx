@@ -12,7 +12,7 @@ import {
 import { Spin, Alert, Modal, Radio, Tooltip, Dropdown } from 'antd'
 import axios from 'axios'
 import moment from 'moment'
-import { darken } from 'polished'
+import { darken, rgba } from 'polished'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
@@ -28,6 +28,7 @@ import {
 } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
 import { Exam } from 'components/Timetable/ExamTimetable'
+import { EXAM_LABEL } from 'components/Timetable/examTimetableConfig'
 import { API } from 'config/api'
 import { slots, rows } from 'data/timetable'
 import { coursePageUrl, hash } from 'helpers'
@@ -41,9 +42,11 @@ import ExamPlanner from './eplanner_Exam'
 import PersonalPlanner from './eplanner_personal'
 import ReminderPlanner from './eplanner_reminder'
 import EplannerAPI from './eplannerAPI'
+import { isWithinExamWindow } from './examScheduleUtils'
 import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableSearch from './TimetableSearch'
 import TimetableShareButton from './TimetableShareButton'
+import useExamSchedule from './useExamSchedule'
 
 const TimetableContainer = () => {
   const dispatch = useDispatch()
@@ -75,6 +78,8 @@ const TimetableContainer = () => {
   const [currentView, setCurrentView] = useState(getInitialView)
   const [dropdownVisible, setDropdownVisible] = useState(false)
   const [coursesModalVisible, setCoursesModalVisible] = useState(false)
+  // ? During the exam window the exam schedule replaces the regular timetable
+  const [examMode, setExamMode] = useState(() => isWithinExamWindow())
 
   // Eplanner events state
   const [eplannerEvents, setEplannerEvents] = useState({
@@ -165,6 +170,9 @@ const TimetableContainer = () => {
   }, [])
 
   const handleEditExam = useCallback((event) => {
+    // Exams pulled from the official schedule are read-only
+    if (!event || event.isExamSchedule) return
+
     // Dispatch custom event to trigger exam eplanner modal in edit mode
     window.dispatchEvent(
       new CustomEvent('edit-exam-event', {
@@ -709,6 +717,15 @@ const TimetableContainer = () => {
   }
 
   const events = getEventsForView()
+
+  // ? Same endpoint as the "End Sem" button, rendered as calendar events
+  const {
+    events: examScheduleEvents,
+    loading: examScheduleLoading,
+    error: examScheduleError,
+  } = useExamSchedule(courseTimetableList, { enabled: examMode })
+
+  const viewEvents = examMode ? examScheduleEvents : events
   const getDayViewDateDisplay = (date) => {
     return `${date.format('dddd')}, ${date.format('D MMMM YYYY')}`
   }
@@ -722,12 +739,12 @@ const TimetableContainer = () => {
     return `${start.format('D MMM')} - ${end.format('D MMM YYYY')}`
   }
 
-  const getTodayEvents = () => {
+  const getTodayEvents = (eventList = events) => {
     const today = moment()
     const todayDayIndex = today.isoWeekday() - 1 // Mon=0, ..., Sun=6
     const todayDateString = today.format('YYYY-MM-DD')
 
-    return events.filter((event) => {
+    return eventList.filter((event) => {
       if (currentView === 'Day') {
         const selectedDayIndex = currentDate.isoWeekday() - 1
         const selectedDateString = currentDate.format('YYYY-MM-DD')
@@ -767,7 +784,7 @@ const TimetableContainer = () => {
     })
   }
 
-  const todayEvents = getTodayEvents()
+  const todayEvents = getTodayEvents(viewEvents)
 
   const detectClashes = () => {
     const clashes = []
@@ -808,7 +825,8 @@ const TimetableContainer = () => {
     return clashes
   }
 
-  const warnings = detectClashes()
+  // ? Course clashes are meaningless while showing the exam schedule
+  const warnings = examMode ? [] : detectClashes()
 
   const dayDateString = getDayViewDateDisplay(currentDate)
   const dateString = getDateDisplay(currentDate)
@@ -840,7 +858,30 @@ const TimetableContainer = () => {
         <TimetableDownloadLink coursesInTimetable={courseTimetableList} />
         <EventCountDisplay>{todayEvents.length} events today</EventCountDisplay>
         <TimetableShareButton coursesInTimetable={courseTimetableList} />
+        <ExamModeSwitch>
+          <ExamModeLabel>Show</ExamModeLabel>
+          <Radio.Group
+            size="small"
+            value={examMode ? 'exams' : 'regular'}
+            onChange={(e) => setExamMode(e.target.value === 'exams')}
+          >
+            <Radio.Button value="regular">Regular</Radio.Button>
+            <Radio.Button value="exams">Exams</Radio.Button>
+          </Radio.Group>
+          {examScheduleLoading && <ExamModeLabel>loading...</ExamModeLabel>}
+        </ExamModeSwitch>
       </SubHeader>
+
+      {examMode && (
+        <ExamModeBanner>
+          <strong>{EXAM_LABEL}</strong>
+          <span>
+            {examScheduleError
+              ? 'Could not load your exam schedule. Switch back to Regular or retry in a moment.'
+              : 'Day, Week and Month now show your exam dates instead of classes.'}
+          </span>
+        </ExamModeBanner>
+      )}
 
       {loading && <LoaderAnimation />}
       <Spin
@@ -850,7 +891,7 @@ const TimetableContainer = () => {
         {currentView === 'Day' && (
           <DayView
             currentDate={currentDate}
-            events={events}
+            events={viewEvents}
             slots={slots}
             rows={rows}
             coursedata={coursedata}
@@ -868,7 +909,7 @@ const TimetableContainer = () => {
         {currentView === 'Week' && (
           <WeekView
             currentDate={currentDate}
-            events={events}
+            events={viewEvents}
             slots={slots}
             rows={rows}
             coursedata={coursedata}
@@ -886,7 +927,7 @@ const TimetableContainer = () => {
         {currentView === 'Month' && (
           <MonthView
             currentDate={currentDate}
-            events={events}
+            events={viewEvents}
             currentView={currentView}
             handleViewChange={handleViewChange}
             handleClickPrev={handleClickPrev}
@@ -2428,6 +2469,32 @@ const ControlsLayout = styled.div`
 const EventCountDisplay = styled.div`
   font-size: 1rem;
   color: ${({ theme }) => theme.textColor};
+`
+
+const ExamModeSwitch = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`
+
+const ExamModeLabel = styled.span`
+  font-size: 0.8rem;
+  color: ${({ theme }) => theme.textColor};
+  opacity: 0.8;
+`
+
+const ExamModeBanner = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  color: ${({ theme }) => theme.textColor};
+  background: ${({ theme }) => rgba(theme.primary, 0.08)};
+  border-left: 3px solid #ff6b35;
+  border-radius: ${({ theme }) => theme.borderRadius};
 `
 
 const ViewSelectorContainer = styled.div`
