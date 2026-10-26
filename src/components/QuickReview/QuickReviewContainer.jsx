@@ -24,7 +24,7 @@ const QuickReviewContainer = () => {
   const getSemesters = async () => {
     try {
       const response = await API.semesters.list()
-      setSemesters(response[1])
+      setSemesters(response?.[1] ?? {})
     } catch (error) {
       toast({ status: 'error', content: error })
     }

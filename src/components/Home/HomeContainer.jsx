@@ -114,7 +114,7 @@ const CoursesThisSemester = () => {
   }, [])
 
   useEffect(() => {
-    if (semesterList.length) setSemIdx(semesterList.length - 1)
+    if (semesterList?.length) setSemIdx(semesterList.length - 1)
   }, [semesterList])
 
   const fetchUserTimetable = useCallback(async (_semester) => {

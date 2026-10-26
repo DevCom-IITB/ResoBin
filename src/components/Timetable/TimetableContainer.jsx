@@ -264,7 +264,7 @@ const TimetableContainer = () => {
   }, [])
 
   useEffect(() => {
-    if (semesterList.length) setSemIdx(semesterList.length - 1)
+    if (semesterList?.length) setSemIdx(semesterList.length - 1)
   }, [semesterList])
 
   const fetchUserTimetable = useCallback(async (_semester) => {
@@ -280,7 +280,8 @@ const TimetableContainer = () => {
   }, [])
 
   useEffect(() => {
-    if (semIdx !== null) fetchUserTimetable(semesterList[semIdx])
+    if (semIdx !== null && semesterList?.[semIdx])
+      fetchUserTimetable(semesterList[semIdx])
     else setLoading(true)
   }, [fetchUserTimetable, semesterList, semIdx])
 

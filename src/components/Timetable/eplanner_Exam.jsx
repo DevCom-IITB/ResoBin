@@ -77,7 +77,7 @@ const ExamCard = ({
   const getSemesters = async () => {
     try {
       const response = await API.semesters.list()
-      setSemesters(response[0])
+      setSemesters(response?.[0] ?? {})
     } catch (err) {
       // console.error('Error fetching semesters:', err)
     }

@@ -45,13 +45,19 @@ const courseSlice = createSlice({
     },
 
     [getSemesterList.fulfilled]: (state, { payload }) => {
-      state.semesters = payload?.reverse()
+      // ? The endpoint can answer with nothing at all (204, an error body, or a
+      // ? bare `null`). `payload?.reverse()` used to store `undefined` here,
+      // ? which made every `semesters.length` consumer throw - see issue #88.
+      // ? Normalising to an array keeps the rest of the app honest, and the
+      // ? copy avoids reversing the thunk payload in place.
+      state.semesters = Array.isArray(payload) ? [...payload].reverse() : []
       state.loading = false
     },
     [getSemesterList.pending]: (state) => {
       state.loading = true
     },
     [getSemesterList.rejected]: (state) => {
+      state.semesters = []
       state.loading = false
     },
 

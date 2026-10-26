@@ -61,7 +61,7 @@ const CourseFinderFilterForm = ({ setLoading }) => {
   const getSemesters = async () => {
     try {
       const response = await API.semesters.list()
-      setSemesters(response[0])
+      setSemesters(response?.[0] ?? {})
     } catch (error) {
       toast({ status: 'error', content: error })
     }

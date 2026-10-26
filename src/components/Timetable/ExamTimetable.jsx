@@ -494,7 +494,7 @@ const CourseFinderFilterForm = ({ setCoursesAndSlots }) => {
   const getSemesters = async () => {
     try {
       const response = await API.semesters.list()
-      setSemesters(response[0])
+      setSemesters(response?.[0] ?? {})
       // console.log('Fetched timetable slots: here', response)
     } catch (error) {
       setSemesters({})
