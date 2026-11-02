@@ -363,16 +363,16 @@ const TopReqCourses = () => {
               ) : (
                 courseData
                   .slice(page * COURSES_PER_PAGE, (page + 1) * COURSES_PER_PAGE)
-                  .map((course) => (
+                  .map((course) => {
+                    const professor = course.semester?.[0]?.timetable?.[0]?.professor
+                    return(
                     <Link key={course.code} to={coursePageUrl(course.code)}>
                       <StyledCard>
                         <CardBadge>{course.resourceRequestersCount}</CardBadge>
                         <CardTitleRow>{course.code}</CardTitleRow>
                         <DetailLine>
                           <ProfTag>
-                            {course.semester[0].timetable[0]
-                              ? `Prof. ${course.semester[0].timetable[0].professor}`
-                              : 'Unknown'}
+                            {professor ? `Prof. ${professor}` : 'Unknown'}
                           </ProfTag>
                         </DetailLine>
                         <UploadBox
@@ -390,7 +390,7 @@ const TopReqCourses = () => {
                         </UploadBox>
                       </StyledCard>
                     </Link>
-                  ))
+                  )})
               )}
             </ScrollRow>
           </ScrollWrapper>

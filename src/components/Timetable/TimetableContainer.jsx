@@ -9,7 +9,7 @@ import {
   BookOpen,
   Bell,
 } from '@styled-icons/heroicons-outline'
-import { Spin, Alert, Modal, Radio, Tooltip, Dropdown} from 'antd'
+import { Spin, Alert, Modal, Radio, Tooltip, Dropdown } from 'antd'
 import axios from 'axios'
 import moment from 'moment'
 import { darken } from 'polished'
@@ -27,7 +27,6 @@ import {
   toast,
 } from 'components/shared'
 import { ButtonIconDanger } from 'components/shared/Buttons'
-import { Exam } from 'components/Timetable/ExamTimetable'
 import { API } from 'config/api'
 import { slots, rows } from 'data/timetable'
 import { coursePageUrl, hash } from 'helpers'
@@ -36,7 +35,6 @@ import { selectCourseAPILoading, selectSemesters } from 'store/courseSlice'
 import { updateTimetable } from 'store/userSlice'
 import { makeGradient } from 'styles'
 import 'styles/CustomModal.css'
-
 
 import ExamPlanner from './eplanner_Exam'
 import PersonalPlanner from './eplanner_personal'
@@ -53,8 +51,60 @@ import TimetableDownloadLink from './TimetableDownloadLink'
 import TimetableSearch from './TimetableSearch'
 import TimetableShareButton from './TimetableShareButton'
 
-const TimetableContainer = () => {
+// Reads start/end from the slot config. Uses slot.start/end if present,
+// otherwise parses the label (e.g. "9:30 AM - 12:30 PM" or "09:30 - 12:30")
+const getExamSlotTimes = (timeSlot) => {
+  if (timeSlot.start && timeSlot.end) return [timeSlot.start, timeSlot.end]
 
+  const matches = [
+    ...String(timeSlot.label).matchAll(/(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?/gi),
+  ]
+  const to24 = ([, h, m, ap], fallbackAp) => {
+    let hour = parseInt(h, 10)
+    const meridiem = (ap || fallbackAp || '').toUpperCase()
+    if (meridiem === 'PM' && hour < 12) hour += 12
+    if (meridiem === 'AM' && hour === 12) hour = 0
+    if (!meridiem && hour < 8) hour += 12 // bare "2:00" means afternoon
+    return `${String(hour).padStart(2, '0')}:${m || '00'}`
+  }
+  if (matches.length < 2) return ['09:30', '12:30']
+  return [to24(matches[0], matches[1][3]), to24(matches[1])]
+}
+
+// Keep the chosen mode/date across Day/Week/Month route changes
+const MODE_KEY = 'timetable:mode'
+const DATE_KEY = 'timetable:date'
+const JUMPED_KEY = 'timetable:examJumped'
+const store = {
+  get: (key) => {
+    try {
+      return window.sessionStorage.getItem(key)
+    } catch {
+      return null
+    }
+  },
+  set: (key, value) => {
+    try {
+      window.sessionStorage.setItem(key, value)
+    } catch {
+      // ignore
+    }
+  },
+  remove: (key) => {
+    try {
+      window.sessionStorage.removeItem(key)
+    } catch {
+      // ignore
+    }
+  },
+}
+
+const getCourseBlockLabel = (event) => {
+  if (event.type === 'EndSem') return 'End Sem'
+  return event.slotName && event.slotName.startsWith('L') ? 'Lab' : 'Lecture'
+}
+
+const TimetableContainer = () => {
   const dispatch = useDispatch()
   const semesterList = useSelector(selectSemesters)
   const courseAPILoading = useSelector(selectCourseAPILoading)
@@ -62,15 +112,38 @@ const TimetableContainer = () => {
   const [courseTimetableList, setCourseTimetableList] = useState([])
   const [courseData, setCourseData] = useState([])
   const [examTimetable, setExamTimetable] = useState({})
-const [examCourses, setExamCourses] = useState([])
-const [examSlots, setExamSlots] = useState([])
+  const [examCourses, setExamCourses] = useState([])
+  const [examSlots, setExamSlots] = useState([])
   const [coursedata, setCoursedata] = useState({})
   const [loading, setLoading] = useState(courseAPILoading)
   const [semIdx, setSemIdx] = useState(null)
-  const [currentDate, setCurrentDate] = useState(moment())
+  const [currentDate, setCurrentDate] = useState(() => {
+    const savedDate = store.get(DATE_KEY)
+    if (savedDate && moment(savedDate, 'YYYY-MM-DD').isValid()) {
+      return moment(savedDate, 'YYYY-MM-DD')
+    }
+    if (isExamPeriod() && store.get(MODE_KEY) !== 'regular') {
+      const range = Array.isArray(EXAM_DATE_RANGE)
+        ? EXAM_DATE_RANGE[0]
+        : EXAM_DATE_RANGE
+      if (range?.start) return moment(range.start, 'YYYY-MM-DD')
+    }
+    return moment()
+  })
   const [loadingg, setLoadingg] = useState(true)
-  const [showRegularTimetable, setShowRegularTimetable] = useState(!isExamPeriod())
-  // const [reminderItems, ]
+  const [showRegularTimetable, setShowRegularTimetable] = useState(() => {
+    const savedMode = store.get(MODE_KEY)
+    if (savedMode) return savedMode === 'regular'
+    return !isExamPeriod()
+  })
+
+  // Persist mode and date so changing Day/Week/Month doesn't reset them
+  useEffect(() => {
+    store.set(MODE_KEY, showRegularTimetable ? 'regular' : 'exam')
+  }, [showRegularTimetable])
+  useEffect(() => {
+    store.set(DATE_KEY, currentDate.format('YYYY-MM-DD'))
+  }, [currentDate])
 
   const { getQueryString } = useQueryString()
   let ajaxRequest = null
@@ -89,7 +162,6 @@ const [examSlots, setExamSlots] = useState([])
   const [dropdownVisible, setDropdownVisible] = useState(false)
   const [coursesModalVisible, setCoursesModalVisible] = useState(false)
 
-
   // Eplanner events state
   const [eplannerEvents, setEplannerEvents] = useState({
     personal: [],
@@ -101,6 +173,24 @@ const [examSlots, setExamSlots] = useState([])
     const newView = e.target.value
     setCurrentView(newView)
     navigate(`/timetable/${newView.toLowerCase()}`)
+  }
+
+  // Switch between regular and exam timetable and jump to the relevant dates
+  const handleToggleTimetable = () => {
+    const goingToExam = showRegularTimetable
+    setShowRegularTimetable(!showRegularTimetable)
+    store.remove(JUMPED_KEY) // allow one fresh jump to the first exam date
+
+    if (goingToExam) {
+      const range = Array.isArray(EXAM_DATE_RANGE)
+        ? EXAM_DATE_RANGE[0]
+        : EXAM_DATE_RANGE
+      setCurrentDate(
+        range?.start ? moment(range.start, 'YYYY-MM-DD') : moment()
+      )
+    } else {
+      setCurrentDate(moment())
+    }
   }
 
   const handleDropdownItemClick = (itemType) => {
@@ -210,8 +300,11 @@ const [examSlots, setExamSlots] = useState([])
         </AddMenuIcon>
         Personal
       </AddMenuItem>
-      <AddMenuItem onClick={() => {
- handleDropdownItemClick('exam')}}>
+      <AddMenuItem
+        onClick={() => {
+          handleDropdownItemClick('exam')
+        }}
+      >
         <AddMenuIcon>
           <BookOpen size="16" />
         </AddMenuIcon>
@@ -406,7 +499,7 @@ const [examSlots, setExamSlots] = useState([])
     const courseList = courseTimetableList.map((item) => item.course)
     return courseList
   }
-   useEffect(() => {
+  useEffect(() => {
     const fetchCourseData = async () => {
       try {
         setLoading(true)
@@ -436,6 +529,8 @@ const [examSlots, setExamSlots] = useState([])
     const events = []
 
     courseTimetableList.forEach((item) => {
+      // In exam mode the regular lectures/tutorials are hidden
+      if (!showRegularTimetable) return
       const course = coursedata[item.course]
       if (!course) return
 
@@ -464,11 +559,11 @@ const [examSlots, setExamSlots] = useState([])
       )
       item.tutorialSlots.forEach((slotName) =>
         createEventHandler(slotName, 'Tutorial')
-      )}
-    )
-    // Add eplanner events to the events array
-   
-     const addEplannerEvents = () => {
+      )
+    })
+
+    // Add eplanner events (and end-sem exam events) to the events array
+    const addEplannerEvents = () => {
       // Helper to convert time to row index
       const timeToRow = (timeStr) => {
         if (!timeStr) return 0
@@ -571,12 +666,51 @@ const [examSlots, setExamSlots] = useState([])
         return { startRow, endRow }
       }
 
-      // Helper to get day index from date
-      // const getDayIndexFromDate = (dateStr) => {
-      //   if (!dateStr) return -1
-      //   const date = moment(dateStr)
-      //   return date.day() === 0 ? 6 : date.day() - 1 // Convert Sunday=0 to 6, Mon=1 to 0, etc.
-      // }
+      // End-sem exam events (only in exam mode)
+      if (!showRegularTimetable) {
+        Object.entries(examTimetable).forEach(([dayDate, slotData]) => {
+          // dayDate looks like "Friday, 18/04/26"
+          const datePart = (dayDate.split(',')[1] || dayDate)
+            .replace(/\u00A0/g, ' ')
+            .trim()
+          const examDate = moment(datePart, 'DD/MM/YY')
+          if (!examDate.isValid()) return
+
+          const dayIndex = examDate.isoWeekday() - 1
+          const eventDateStr = examDate.format('YYYY-MM-DD')
+
+          Object.entries(slotData).forEach(([slotNum, codes]) => {
+            const timeSlot = EXAM_TIME_SLOTS.find(
+              ({ slot }) => slot === parseInt(slotNum, 10)
+            )
+            if (!timeSlot || !codes.length) return
+
+            const [startTime, endTime] = getExamSlotTimes(timeSlot)
+            const { startRow, endRow } = calculateEventBounds(
+              startTime,
+              endTime
+            )
+
+            codes.forEach((code) => {
+              events.push({
+                id: `endsem-${code}-${eventDateStr}-${timeSlot.slot}`,
+                courseCode: code,
+                title: coursedata[code]?.title || code,
+                type: 'EndSem',
+                dayIndex,
+                startRow,
+                endRow,
+                startTime,
+                endTime,
+                color: colorPicker(hash(code)),
+                slotName: `Slot ${timeSlot.slot}`,
+                date: eventDateStr,
+                eventDate: eventDateStr,
+              })
+            })
+          })
+        })
+      }
 
       // Process Personal events
       eplannerEvents.personal.forEach((event) => {
@@ -715,176 +849,112 @@ const [examSlots, setExamSlots] = useState([])
         }
       })
     }
-     addEplannerEvents()
+    addEplannerEvents()
     return events
   }
- const events = getEventsForView()
-const parseISODate = (str) => {
-  // expects 'YYYY-MM-DD'
-  const [year, month, day] = str.split('-').map(Number)
-  return new Date(year, month - 1, day)
-}
+  const events = getEventsForView()
+  console.log('[exam] mode:', showRegularTimetable ? 'regular' : 'exam', '| courses:', examCourses, '| isExamPeriod:', isExamPeriod())
 
-const buildAllDates = () => {
-  const range = Array.isArray(EXAM_DATE_RANGE)
-    ? EXAM_DATE_RANGE[0]
-    : EXAM_DATE_RANGE
-  if (!range?.start || !range?.end) return []
+  // Work out which courses (and their lecture slot numbers) go to the exam API
+  useEffect(() => {
+    const filtered = courseTimetableList.filter((item) => {
+      const firstSlot =
+        Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
+          ? item.lectureSlots[0]
+          : ''
 
-  const start = parseISODate(range.start)
-  const end = parseISODate(range.end)
-  end.setHours(23, 59, 59)
-
-  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']
-  const weekdays = ['SUN','MON','TUE','WED','THU','FRI','SAT']
-
-  const dates = []
-  const cursor = new Date(start)
-  while (cursor <= end) {
-    dates.push({
-      display: `${cursor.getDate()} ${months[cursor.getMonth()]}`,
-      weekday: weekdays[cursor.getDay()],
-      iso: cursor.toISOString().slice(0, 10),
-    })
-    cursor.setDate(cursor.getDate() + 1)
-  }
-  return dates
-}
-
-// The API returns dayDate strings like "Friday, 18/04/26"
-// Convert to display key "18 APR" to match our date list
-const toDisplayKey = (dateStr) => {
-  const afterComma = (dateStr.split(',')[1] || dateStr)
-    .replace(/\u00A0/g, ' ')
-    .trim()
-  const [rawDay = '', rawMonth = ''] = afterComma.split('/')
-  const dayNum = parseInt(String(rawDay).trim(), 10)
-  const monthNum = parseInt(String(rawMonth).trim(), 10)
-  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']
-  const monthAbbr = months[(monthNum || 0) - 1] || ''
-  return `${Number.isFinite(dayNum) ? dayNum : ''} ${monthAbbr}`.trim()
-}
-useEffect(() => {
-  const filtered = courseTimetableList.filter((item) => {
-    const firstSlot =
-      Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
-        ? item.lectureSlots[0]
-        : ''
-
-    return !(typeof firstSlot === 'string' && firstSlot.startsWith('L'))
-  })
-
-  const courseArr = filtered.map((item) => item.course)
-
-  const slotArr = filtered.map((item) => {
-    const firstSlot =
-      Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
-        ? item.lectureSlots[0]
-        : ''
-
-    if (!firstSlot) return 0
-
-    const match = firstSlot.match(/^\d+/)
-
-    return match ? parseInt(match[0], 10) : 0
-  })
-
-  setExamCourses(courseArr)
-  setExamSlots(slotArr)
-}, [courseTimetableList])
-useEffect(() => {
-    console.log('examCourses:', examCourses)
-  console.log('isExamPeriod:', isExamPeriod())
-  if (!isExamPeriod()) return undefined
-
-  if (!examCourses.length) {
-    setExamTimetable({})
-    return undefined
-  }
-
-  const timeoutId = setTimeout(async () => {
-    const userCourses = examCourses.map((code, idx) => {
-      const slotNumber = examSlots[idx]
-
-      return slotNumber
-        ? { course_code: code, course_slot_number: slotNumber }
-        : { course_code: code }
+      return !(typeof firstSlot === 'string' && firstSlot.startsWith('L'))
     })
 
-    try {
-      const res = await API.examSchedule.getBatch({
-        courses: userCourses,
-      })
+    const courseArr = filtered.map((item) => item.course)
 
-      let scheduleRows = []
+    const slotArr = filtered.map((item) => {
+      const firstSlot =
+        Array.isArray(item.lectureSlots) && item.lectureSlots.length > 0
+          ? item.lectureSlots[0]
+          : ''
 
-      if (Array.isArray(res)) scheduleRows = res
-      else if (Array.isArray(res?.data)) scheduleRows = res.data
+      if (!firstSlot) return 0
 
-      const temp = {}
+      const match = firstSlot.match(/^\d+/)
 
-      const createEmptySlots = () =>
-        Object.fromEntries(
-          EXAM_TIME_SLOTS.map(({ slot }) => [slot, []])
-        )
+      return match ? parseInt(match[0], 10) : 0
+    })
 
-      scheduleRows
-        .filter((s) => s && !s.error)
-        .forEach((schedule) => {
-          const { dayDate, mappedSlot, courseCode } = schedule
+    setExamCourses(courseArr)
+    setExamSlots(slotArr)
+  }, [courseTimetableList])
 
-          if (!dayDate || !mappedSlot || !courseCode) return
+  // Fetch the exam schedule whenever exam mode is on
+  useEffect(() => {
+    if (showRegularTimetable) return undefined
 
-          if (!temp[dayDate]) {
-            temp[dayDate] = createEmptySlots()
-          }
-
-          if (
-            Object.prototype.hasOwnProperty.call(
-              temp[dayDate],
-              mappedSlot
-            )
-          ) {
-            temp[dayDate][mappedSlot].push(courseCode)
-          }
-        })
-
-      setExamTimetable(temp)
-    } catch (err) {
-      toast({
-        status: 'error',
-        content: 'Failed to fetch exam schedule',
-      })
+    if (!examCourses.length) {
+      setExamTimetable({})
+      return undefined
     }
-  }, 300)
 
-  return () => clearTimeout(timeoutId)
-}, [examCourses, examSlots])
-const allDates = buildAllDates()
+    const timeoutId = setTimeout(async () => {
+      const userCourses = examCourses.map((code, idx) => {
+        const slotNumber = examSlots[idx]
 
-const organized = {}
-
-allDates.forEach(({ display }) => {
-  organized[display] = Object.fromEntries(
-    EXAM_TIME_SLOTS.map(({ slot }) => [slot, []])
-  )
-})
-
-Object.entries(examTimetable).forEach(([dateStr, slotData]) => {
-  const displayKey = toDisplayKey(dateStr)
-
-  if (!organized[displayKey]) return
-
-  Object.entries(slotData).forEach(([slotNum, courseCodes]) => {
-    const slot = parseInt(slotNum, 10)
-
-    if (organized[displayKey][slot]) {
-      courseCodes.forEach((code) => {
-        organized[displayKey][slot].push(code)
+        return slotNumber
+          ? { course_code: code, course_slot_number: slotNumber }
+          : { course_code: code }
       })
+
+      try {
+        const res = await API.examSchedule.getBatch({ courses: userCourses })
+        console.log('[exam] request:', userCourses)
+        console.log('[exam] response:', res)
+
+        let scheduleRows = []
+        if (Array.isArray(res)) scheduleRows = res
+        else if (Array.isArray(res?.data)) scheduleRows = res.data
+
+        const temp = {}
+        const createEmptySlots = () =>
+          Object.fromEntries(EXAM_TIME_SLOTS.map(({ slot }) => [slot, []]))
+
+        scheduleRows
+          .filter((s) => s && !s.error)
+          .forEach((schedule) => {
+            const { dayDate, mappedSlot, courseCode } = schedule
+            if (!dayDate || !mappedSlot || !courseCode) return
+
+            if (!temp[dayDate]) temp[dayDate] = createEmptySlots()
+
+            if (Object.prototype.hasOwnProperty.call(temp[dayDate], mappedSlot)) {
+              temp[dayDate][mappedSlot].push(courseCode)
+            } else {
+              console.warn('[exam] unknown slot', mappedSlot, 'for', courseCode)
+            }
+          })
+
+        console.log('[exam] grouped timetable:', temp)
+        setExamTimetable(temp)
+      } catch (err) {
+        console.error('[exam] fetch failed:', err)
+        toast({ status: 'error', content: 'Failed to fetch exam schedule' })
+      }
+    }, 300)
+
+    return () => clearTimeout(timeoutId)
+  }, [examCourses, examSlots, showRegularTimetable])
+
+  // Open the calendar on the first exam date once the schedule is loaded
+  useEffect(() => {
+    if (showRegularTimetable || store.get(JUMPED_KEY)) return
+    const dates = Object.keys(examTimetable)
+      .map((dayDate) =>
+        moment((dayDate.split(',')[1] || dayDate).trim(), 'DD/MM/YY')
+      )
+      .filter((m) => m.isValid())
+    if (dates.length) {
+      setCurrentDate(moment.min(dates))
+      store.set(JUMPED_KEY, '1')
     }
-  })
-}) 
+  }, [examTimetable, showRegularTimetable])
 
   const getDayViewDateDisplay = (date) => {
     return `${date.format('dddd')}, ${date.format('D MMMM YYYY')}`
@@ -914,7 +984,7 @@ Object.entries(examTimetable).forEach(([dateStr, slotData]) => {
           return event.dayIndex === selectedDayIndex
         }
 
-        // For eplanner events (Personal, Exam, Reminder), check the actual date
+        // For eplanner / end-sem events, check the actual date
         if (event.eventDate) {
           return event.eventDate === selectedDateString
         }
@@ -931,7 +1001,7 @@ Object.entries(examTimetable).forEach(([dateStr, slotData]) => {
         return event.dayIndex === todayDayIndex
       }
 
-      // For eplanner events (Personal, Exam, Reminder), check the actual date
+      // For eplanner / end-sem events, check the actual date
       if (event.eventDate) {
         return event.eventDate === todayDateString
       }
@@ -954,7 +1024,10 @@ Object.entries(examTimetable).forEach(([dateStr, slotData]) => {
     events
       .filter((event) => event.type !== 'Reminder')
       .forEach((event) => {
-        const key = `${event.dayIndex}-${event.startRow}`
+        // End-sem events happen on a specific date, so include the date in the key
+        const key = `${event.type === 'EndSem' ? event.eventDate : ''}-${
+          event.dayIndex
+        }-${event.startRow}`
         if (!eventsByDayAndTime[key]) {
           eventsByDayAndTime[key] = []
         }
@@ -996,30 +1069,26 @@ Object.entries(examTimetable).forEach(([dateStr, slotData]) => {
           <PageTitle>Timetable</PageTitle>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <button
-  type="button"
-  onClick={() =>
-    setShowRegularTimetable((prev) => !prev)
-  }
-style={{
-  backgroundColor: '#6d669e',
-  color: '#ffffff',
-  border: 'none',
-  height: '32px',
-  borderRadius: '8px',
-  padding: '8px 16px',
-  fontSize: '0.9rem',
-  fontWeight: 400,
-  cursor: 'pointer',
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '8px',
-  transition: 'background-color 0.2s ease',
-}}
->
-  {showRegularTimetable
-    ? 'Exam Timetable'
-    : 'Regular Timetable'}
-</button>
+              type="button"
+              onClick={handleToggleTimetable}
+              style={{
+                backgroundColor: '#6d669e',
+                color: '#ffffff',
+                border: 'none',
+                height: '32px',
+                borderRadius: '8px',
+                padding: '8px 16px',
+                fontSize: '0.9rem',
+                fontWeight: 400,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                transition: 'background-color 0.2s ease',
+              }}
+            >
+              {showRegularTimetable ? 'Exam Timetable' : 'Regular Timetable'}
+            </button>
             <Dropdown
               overlay={addDropdownMenu}
               trigger={['click']}
@@ -1047,117 +1116,63 @@ style={{
         spinning={loading}
         indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
       >
-        { !showRegularTimetable ? (
-  <>
-    <ExamLabel>{EXAM_LABEL}</ExamLabel>
+        <>
+          {!showRegularTimetable && (
+            <ExamHeaderRow>
+              <ExamLabel>{EXAM_LABEL}</ExamLabel>
+              <ExamTimetableDownload timetable={examTimetable} />
+            </ExamHeaderRow>
+          )}
 
-    <ExamTimetableDownload timetable={examTimetable} />
-
-    <TableWrapper>
-      <div style={{ maxHeight: '70vh', overflowY: 'auto' }}>
-        <StyledTable>
-          <thead>
-            <tr>
-              <Th style={{ width: '80px' }} />
-              {EXAM_TIME_SLOTS.map((timeSlot) => (
-                <Th key={timeSlot.slot}>
-                  {timeSlot.label}
-                </Th>
-              ))}
-            </tr>
-          </thead>
-
-          <tbody>
-            {allDates.map(({ display, weekday }) => (
-              <tr key={display}>
-                <DateTd>
-                  <div style={{ fontWeight: 'bold' }}>
-                    {display}
-                  </div>
-
-                  <div style={{ opacity: 0.7 }}>
-                    {weekday}
-                  </div>
-                </DateTd>
-
-                {EXAM_TIME_SLOTS.map((timeSlot) => {
-                  const coursesInSlot =
-                    organized[display]?.[timeSlot.slot] || []
-
-                  return (
-                    <Td key={timeSlot.slot}>
-                      {coursesInSlot.map((code) => (
-                        <CourseBlock
-                          key={`${code}-${display}-${timeSlot.slot}`}
-                          bg={makeGradient(
-                            colorPicker(hash(code))
-                          )}
-                        >
-                          <CourseCode>{code}</CourseCode>
-                        </CourseBlock>
-                      ))}
-                    </Td>
-                  )
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </StyledTable>
-      </div>
-    </TableWrapper>
-  </>
-):(
-  <>
-        {currentView === 'Day' && (
-          <DayView
-            currentDate={currentDate}
-            events={events}
-            slots={slots}
-            rows={rows}
-            coursedata={coursedata}
-            currentView={currentView}
-            handleViewChange={handleViewChange}
-            handleClickPrev={handleClickPrev}
-            handleClickNext={handleClickNext}
-            handleTodayClick={handleTodayClick}
-            dayDateString={dayDateString}
-            handleEditPersonal={handleEditPersonal}
-            handleEditExam={handleEditExam}
-            handleEditReminder={handleEditReminder}
-          />
-        )}
-        {currentView === 'Week' && (
-          <WeekView
-            currentDate={currentDate}
-            events={events}
-            slots={slots}
-            rows={rows}
-            coursedata={coursedata}
-            currentView={currentView}
-            handleViewChange={handleViewChange}
-            handleClickPrev={handleClickPrev}
-            handleClickNext={handleClickNext}
-            handleTodayClick={handleTodayClick}
-            dayDateString={dateString}
-            handleEditPersonal={handleEditPersonal}
-            handleEditExam={handleEditExam}
-            handleEditReminder={handleEditReminder}
-          />
-        )}
-        {currentView === 'Month' && (
-          <MonthView
-            currentDate={currentDate}
-            events={events}
-            currentView={currentView}
-            handleViewChange={handleViewChange}
-            handleClickPrev={handleClickPrev}
-            handleClickNext={handleClickNext}
-            handleTodayClick={handleTodayClick}
-            dayDateString={dayDateString}
-          />
-        )}
+          {currentView === 'Day' && (
+            <DayView
+              currentDate={currentDate}
+              events={events}
+              slots={slots}
+              rows={rows}
+              coursedata={coursedata}
+              currentView={currentView}
+              handleViewChange={handleViewChange}
+              handleClickPrev={handleClickPrev}
+              handleClickNext={handleClickNext}
+              handleTodayClick={handleTodayClick}
+              dayDateString={dayDateString}
+              handleEditPersonal={handleEditPersonal}
+              handleEditExam={handleEditExam}
+              handleEditReminder={handleEditReminder}
+            />
+          )}
+          {currentView === 'Week' && (
+            <WeekView
+              currentDate={currentDate}
+              events={events}
+              slots={slots}
+              rows={rows}
+              coursedata={coursedata}
+              currentView={currentView}
+              handleViewChange={handleViewChange}
+              handleClickPrev={handleClickPrev}
+              handleClickNext={handleClickNext}
+              handleTodayClick={handleTodayClick}
+              dayDateString={dateString}
+              handleEditPersonal={handleEditPersonal}
+              handleEditExam={handleEditExam}
+              handleEditReminder={handleEditReminder}
+            />
+          )}
+          {currentView === 'Month' && (
+            <MonthView
+              currentDate={currentDate}
+              events={events}
+              currentView={currentView}
+              handleViewChange={handleViewChange}
+              handleClickPrev={handleClickPrev}
+              handleClickNext={handleClickNext}
+              handleTodayClick={handleTodayClick}
+              dayDateString={dayDateString}
+            />
+          )}
         </>
-)}
       </Spin>
 
       <Aside title="My courses" loading={loading}>
@@ -1253,8 +1268,6 @@ style={{
                   <CourseCardSmall key={id}>
                     <CourseCardContent>
                       <CourseCodeTitle>{course}</CourseCodeTitle>
-                      {/* <CourseSubtitle>{coursedata[course]?.title || 'Loading...'}</CourseSubtitle>
-                      <CourseCreditsText>Credits: {coursedata[course]?.credits || 'N/A'}</CourseCreditsText> */}
                     </CourseCardContent>
                     <RemoveButtonCard
                       onClick={removeFromTimetable(id)}
@@ -1329,90 +1342,21 @@ const CurrentTimeIndicator = () => {
 
   return <IndicatorLine style={{ top: `${topPosition}px` }} />
 }
-// exam view
+
+// exam label shown above the calendar in exam mode
+const ExamHeaderRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 16px;
+`
+
 const ExamLabel = styled.div`
   font-size: 1.2rem;
   font-weight: bold;
-  margin-bottom: 16px;
+  margin: 0;
   color: white;
-`
-
-const TableWrapper = styled.div`
-  width: 100%;
-  overflow-x: auto;
-  color: white;
-`
-
-const StyledTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-`
-
-const Th = styled.th`
-  text-align: left;
-  padding: 0.9rem 1.2rem;
-  text-transform: uppercase;
-  font-size: 0.79rem;
-  color: white;
-  background-color: #2d2941;
-  position: sticky;
-  top: -1px;
-  z-index: 10;
-`
-
-const Td = styled.td`
-  padding: 0.9rem 1.2rem;
-  font-size: 0.95rem;
-  text-align: center;
-  border: 1px solid #44405e;
-  background-color: transparent;
-  vertical-align: top;
-`
-
-const DateTd = styled(Td)`
-  font-size: 0.9rem;
-  color: white;
-  font-weight: 500;
-  padding: 0.9rem 1.2rem;
-  text-align: left;
-  border: 1px solid #44405e;
-`
-
-const CourseBlock = styled.div`
-  background: ${({ bg }) => bg};
-  color: black;
-  border-radius: 8px;
-  padding: 0;
-  font-weight: 450;
-  font-family: 'Montserrat', sans-serif;
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  font-size: 0.9rem;
-  overflow: hidden;
-  margin-bottom: 0.4rem;
-`
-
-const CourseDateBadge = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: rgb(255, 233, 204);
-  padding: 0.3rem 0.5rem;
-  width: 45px;
-  text-align: center;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-`
-
-const CourseCode = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  padding: 0.5rem 0.8rem;
 `
 
 // Day View Component
@@ -1440,6 +1384,11 @@ const DayView = ({
   const currentDateStr = selectedDay.format('YYYY-MM-DD')
 
   const dayEvents = events.filter((event) => {
+    // End-sem events belong to one specific date
+    if (event.type === 'EndSem') {
+      return event.eventDate === currentDateStr
+    }
+
     // For course events (have type 'Lecture' or 'Tutorial'), filter by dayIndex only
     if (event.type === 'Lecture' || event.type === 'Tutorial') {
       return event.dayIndex === selectedDayIndex
@@ -1465,7 +1414,10 @@ const DayView = ({
 
     // Separate courses and eplanner events
     const courseEvents = eventsToProcess.filter(
-      (event) => event.type === 'Lecture' || event.type === 'Tutorial'
+      (event) =>
+        event.type === 'Lecture' ||
+        event.type === 'Tutorial' ||
+        event.type === 'EndSem'
     )
     const eplannerEvents = eventsToProcess.filter(
       (event) => event.type === 'Personal' || event.type === 'Exam'
@@ -1555,28 +1507,6 @@ const DayView = ({
 
                 // Handle eplanner events (Personal, Exam)
                 if (event.type && ['Personal', 'Exam'].includes(event.type)) {
-                  // For Exam events, prioritize the course name, then description, then title
-                  let displayName = event.description?.trim()
-                  if (!displayName) {
-                    if (event.type === 'Exam') {
-                      // For exam events, use the course field first, then try coursedata lookup
-                      displayName = event.course || event.coursename
-                      if (
-                        !displayName &&
-                        event.courseCode &&
-                        coursedata[event.courseCode]
-                      ) {
-                        displayName =
-                          coursedata[event.courseCode]?.title ||
-                          event.courseCode
-                      }
-                      if (!displayName) {
-                        displayName = event.title
-                      }
-                    } else {
-                      displayName = event.title
-                    }
-                  }
                   return (
                     <Tooltip
                       key={event.id}
@@ -1668,7 +1598,6 @@ const DayView = ({
                               alignItems: 'center',
                               fontSize: '0.8rem',
                               opacity: 0.9,
-                              // fontWeight: '500',
                               color: 'black',
                               flexDirection: 'row',
                             }}
@@ -1727,23 +1656,6 @@ const DayView = ({
                                   <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                                 </svg>
                               </button>
-
-                              {/* <button type="button" style={{
-                            background: 'transparent',
-                            border: 'none',
-                            borderRadius: '4px',
-                            padding: '2px 4px',
-                            cursor: 'pointer',
-                            color: 'black'
-                          }} onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            // Bookmark functionality will be added later
-                          }} title="Bookmark Event">
-                            <svg width="30" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                              <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16l7-3 7 3z"/>
-                            </svg>
-                          </button> */}
                             </div>
                           </div>
                         </div>
@@ -1752,7 +1664,7 @@ const DayView = ({
                   )
                 }
 
-                // Handle course events
+                // Handle course events (lectures, tutorials and end-sem exams)
                 if (!course) return null
 
                 return (
@@ -1816,10 +1728,7 @@ const DayView = ({
                             >
                               {event.courseCode} | {event.slotName} |{' '}
                               {event.endRow - event.startRow >= 2 &&
-                                (event.slotName &&
-                                event.slotName.startsWith('L')
-                                  ? 'Lab'
-                                  : 'Lecture')}
+                                getCourseBlockLabel(event)}
                             </EventTitle>
                             <EventTime
                               style={{
@@ -1830,24 +1739,6 @@ const DayView = ({
                               {event.startTime} - {event.endTime}
                             </EventTime>
                           </div>
-                          {/* <div style={{ display: 'flex', gap: '4px' }}>
-                        <button type="button" style={{
-                          background: 'transparent',
-                          border: 'none',
-                          borderRadius: '4px',
-                          padding: '2px 4px',
-                          cursor: 'pointer',
-                          color: 'black'
-                        }} onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          // Bookmark functionality will be added later
-                        }}>
-                          <svg width="30" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16l7-3 7 3z"/>
-                          </svg>
-                        </button>
-                      </div> */}
 
                           <RedirectIcon>
                             <ExternalLink size="16" />
@@ -1902,7 +1793,10 @@ const WeekView = ({
 
     // Separate courses and eplanner events
     const courseEvents = eventsToProcess.filter(
-      (event) => event.type === 'Lecture' || event.type === 'Tutorial'
+      (event) =>
+        event.type === 'Lecture' ||
+        event.type === 'Tutorial' ||
+        event.type === 'EndSem'
     )
     const eplannerEvents = eventsToProcess.filter(
       (event) => event.type === 'Personal' || event.type === 'Exam'
@@ -2003,6 +1897,11 @@ const WeekView = ({
               const currentDayStr = day.format('YYYY-MM-DD')
 
               const dayEvents = events.filter((event) => {
+                // End-sem events belong to one specific date
+                if (event.type === 'EndSem') {
+                  return event.eventDate === currentDayStr
+                }
+
                 // For course events (have type 'Lecture' or 'Tutorial'), filter by dayIndex only
                 if (event.type === 'Lecture' || event.type === 'Tutorial') {
                   return event.dayIndex === dayIndex
@@ -2028,36 +1927,12 @@ const WeekView = ({
                     {isToday && <CurrentTimeIndicator />}
                     {processedDayEvents.map((event) => {
                       const course = coursedata[event.courseCode]
-                      // console.log(course);
 
                       // Handle eplanner events (Personal, Exam)
                       if (
                         event.type &&
                         ['Personal', 'Exam'].includes(event.type)
                       ) {
-                        // For Exam events, prioritize the course name, then description, then title
-                        let displayName = event.description?.trim()
-                        if (!displayName) {
-                          if (event.type === 'Exam') {
-                            // For exam events, use the course field first, then try coursedata lookup
-                            displayName = event.course || event.coursename
-                            if (
-                              !displayName &&
-                              event.courseCode &&
-                              coursedata[event.courseCode]
-                            ) {
-                              displayName =
-                                coursedata[event.courseCode]?.title ||
-                                event.courseCode
-                            }
-                            if (!displayName) {
-                              displayName = event.title
-                            }
-                          } else {
-                            displayName = event.title
-                          }
-                        }
-
                         return (
                           <Tooltip
                             key={event.id}
@@ -2192,24 +2067,6 @@ const WeekView = ({
                                         <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                                       </svg>
                                     </button>
-
-                                    {/*                        
-                          <button type="button" style={{
-                            background: 'transparent',
-                            border: 'none',
-                            borderRadius: '4px',
-                            padding: '0px 4px',
-                            cursor: 'pointer',
-                            color: 'black'
-                          }} onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            // Bookmark functionality will be added later
-                          }} title="Bookmark Event">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                              <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16l7-3 7 3z"/>
-                            </svg>
-                          </button> */}
                                   </div>
                                 </div>
                               </div>
@@ -2218,7 +2075,7 @@ const WeekView = ({
                         )
                       }
 
-                      // Handle course events
+                      // Handle course events (lectures, tutorials and end-sem exams)
                       if (!course) return null
 
                       return (
@@ -2306,10 +2163,7 @@ const WeekView = ({
                                           marginBottom: '3rem',
                                         }}
                                       >
-                                        {event.slotName &&
-                                        event.slotName.startsWith('L')
-                                          ? 'Lab'
-                                          : 'Lecture'}
+                                        {getCourseBlockLabel(event)}
                                       </div>
                                     </div>
                                   </div>
@@ -2430,13 +2284,7 @@ const MonthView = ({
                   return false
                 }
 
-                // For course events (Lecture, Tutorial), check if it's the right day of week
-                // if (event.type === 'Lecture' || event.type === 'Tutorial') {
-                //   const currentDayIndex = currentDay.day() === 0 ? 6 : currentDay.day() - 1;
-                //   return event.dayIndex === currentDayIndex;
-                // }
-
-                // Fallback for other event types
+                // Fallback for other event types (including end-sem events)
                 if (event.date) {
                   return moment(event.date).isSame(currentDay, 'day')
                 }
@@ -2493,7 +2341,6 @@ const MonthView = ({
                               fontSize: '0.7rem',
                               flexShrink: 0,
                               marginTop: '3px',
-                              // paddingTop: '3px',
                             }}
                           >
                             {event.startTime.slice(0, 5)}
@@ -2564,6 +2411,9 @@ const MonthView = ({
                               }
                               return event.title
                             }
+
+                            // End-sem exams show just the course code
+                            if (event.type === 'EndSem') return event.courseCode
 
                             // For course events, check if event duration is less than 1 hour
                             let showType = true
@@ -2650,7 +2500,6 @@ export default TimetableContainer
 
 // ##################################################################
 // ##                       STYLED COMPONENTS                      ##
-// ##                   (No changes needed below)                  ##
 // ##################################################################
 
 const IndicatorLine = styled.div`
@@ -2952,7 +2801,6 @@ const DayEventBlock = styled.div`
   border-left: 4px solid ${({ color }) => darken(0.2, color)};
   border-radius: 8px;
   padding: 0.5rem;
-  // margin-bottom: 0.5rem;
   color: ${({ theme }) => theme.textColor};
   cursor: pointer;
   width: 100%;
@@ -2990,16 +2838,6 @@ const EventTime = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
 `
-
-// const EventText = styled.div`
-//   font-size: 0.9rem;
-//   font-weight: 500;
-//   color: white;
-//   text-align: center;
-//   overflow: hidden;
-//   text-overflow: ellipsis;
-//   white-space: nowrap;
-// `
 
 const WeekViewContainer = styled.div`
   background: ${({ theme }) => theme.secondary};
@@ -3112,7 +2950,6 @@ const WeekEventBlock = styled.div`
   cursor: pointer;
   font-size: 0.8rem;
   transition: all 0.2s;
-  // align: right;
   width: 101%;
   box-sizing: border-box;
   z-index: 5;
@@ -3356,7 +3193,6 @@ const CourseCardSmall = styled.div`
   padding: 1.5rem;
   height: 10px;
   position: relative;
-  // border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.2s ease;
 
   &:hover {
@@ -3373,20 +3209,6 @@ const CourseCodeTitle = styled.h3`
   font-weight: 600;
   padding-bottom: 10px;
 `
-
-// const CourseSubtitle = styled.p`
-//   color: #9ca3af;
-//   margin: 0 0 0.5rem 0;
-//   font-size: 0.9rem;
-//   line-height: 1.4;
-// `
-
-// const CourseCreditsText = styled.p`
-//   color: #9ca3af;
-//   margin: 0;
-//   font-size: 0.8rem;
-//   font-weight: 500;
-// `
 
 const RemoveButtonCard = styled.button`
   position: absolute;
@@ -3434,13 +3256,6 @@ const SaveButton = styled.button`
     opacity: 0.6;
   }
 `
-
-// const Icon = styled.span`
-//   display: inline-block;
-//   width: 16px;
-//   height: 16px;
-//   margin-right: 8px;
-// `
 
 const EmptyState = styled.div`
   text-align: center;
